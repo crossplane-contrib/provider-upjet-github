@@ -7,11 +7,9 @@ graph LR
     github_repository --> branch
     github_repository --> github_action_secret
     subgraph repository
-        direction TB
         github_repository --> github_repository_webhook
         github_repository --> github_repository_deploy_key
         subgraph branch
-            direction TB
             github_branch --> github_branch_default
             github_branch_protection
         end
