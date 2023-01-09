@@ -41,14 +41,14 @@ graph LR
     classDef default text-align: left;
     Team.team --> TeamAccess.repo
     subgraph repo
-        Repo.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/>terraformResoureName: github_repository)
-        Webhook.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Webhook<br/>terraformResoureName: github_repository_webhook)
-        DeployKey.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: DeployKey<br/>terraformResoureName: github_repository_deploy_key)
-        Branch.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Branch<br/>terraformResoureName: github_branch)
-        DefaultBranch.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: DefaultBranch<br/>terraformResoureName: github_branch_default)
-        BranchProtection.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: BranchProtection<br/>terraformResoureName: github_branch_protection)
-        ActionSecret.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: ActionSecret<br/>terraformResoureName: github_action_secret)
-        TeamAccess.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: TeamAccess<br/>terraformResoureName: github_team_repository)   
+        Repo.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/><br/>ref: github_repository)
+        Webhook.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Webhook<br/><br/>ref: github_repository_webhook)
+        DeployKey.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: DeployKey<br/><br/>ref: github_repository_deploy_key)
+        Branch.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Branch<br/><br/>ref: github_branch)
+        DefaultBranch.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: DefaultBranch<br/><br/>ref: github_branch_default)
+        BranchProtection.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: BranchProtection<br/><br/>ref: github_branch_protection)
+        ActionSecret.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: ActionSecret<br/><br/>ref: github_action_secret)
+        TeamAccess.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: TeamAccess<br/><br/>ref: github_team_repository)   
         
         Repo.repo --> Webhook.repo
         Repo.repo --> DeployKey.repo
@@ -59,9 +59,9 @@ graph LR
         Repo.repo --> TeamAccess.repo
     end
     subgraph team
-        Team.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/>terraformResoureName: github_team)
-        TeamSettings.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/>terraformResoureName: github_team_settings)
-        TeamMembers.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/>terraformResoureName: github_team_members)
+        Team.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/><br/>ref: github_team)
+        TeamSettings.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/><br/>ref: github_team_settings)
+        TeamMembers.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/><br/>ref: github_team_members)
 
         Team.team --> TeamSettings.team
         Team.team --> TeamMembers.team
