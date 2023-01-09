@@ -18,7 +18,6 @@ graph LR
         end
     end
     subgraph teams
-        direction TB
         github_team --> github_team_members
         github_team --> github_team_settings
         github_team --> github_team_repository
@@ -29,7 +28,7 @@ graph LR
 
 ```mermaid
 graph LR
-        Team.team.provider-github --> TeamAccess.repo.provider-github
+    Team.team.provider-github --> TeamAccess.repo.provider-github
     subgraph repo
         Repo.repo.provider-github --> Webhook.repo.provider-github
         Repo.repo.provider-github --> DeployKey.repo.provider-github
