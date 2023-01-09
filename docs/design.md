@@ -59,9 +59,9 @@ graph LR
         Repo.repo --> TeamAccess.repo
     end
     subgraph team
-        Team.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/><br/>ref: github_team)
-        TeamSettings.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/><br/>ref: github_team_settings)
-        TeamMembers.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/><br/>ref: github_team_members)
+        Team.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Team<br/><br/>ref: github_team)
+        TeamSettings.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: TeamSettings<br/><br/>ref: github_team_settings)
+        TeamMembers.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: TeamMembers<br/><br/>ref: github_team_members)
 
         Team.team --> TeamSettings.team
         Team.team --> TeamMembers.team
