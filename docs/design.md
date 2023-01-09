@@ -39,31 +39,31 @@ graph LR
 
 graph LR
     classDef default text-align: left;
-    Team.team --> TeamAccess.repo
+    Repository.repo --> TeamRepository.team
     subgraph repo
-        Repo.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/><br/>ref: github_repository)
+        Repository.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/><br/>ref: github_repository)
         Webhook.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Webhook<br/><br/>ref: github_repository_webhook)
         DeployKey.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: DeployKey<br/><br/>ref: github_repository_deploy_key)
         Branch.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Branch<br/><br/>ref: github_branch)
         DefaultBranch.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: DefaultBranch<br/><br/>ref: github_branch_default)
         BranchProtection.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: BranchProtection<br/><br/>ref: github_branch_protection)
         ActionSecret.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: ActionSecret<br/><br/>ref: github_action_secret)
-        TeamAccess.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: TeamAccess<br/><br/>ref: github_team_repository)   
-        
-        Repo.repo --> Webhook.repo
-        Repo.repo --> DeployKey.repo
-        Repo.repo --> Branch.repo
-        Repo.repo --> DefaultBranch.repo
-        Repo.repo --> BranchProtection.repo
-        Repo.repo --> ActionSecret.repo
-        Repo.repo --> TeamAccess.repo
+  
+        Repository.repo --> Webhook.repo
+        Repository.repo --> DeployKey.repo
+        Repository.repo --> Branch.repo
+        Repository.repo --> DefaultBranch.repo
+        Repository.repo --> BranchProtection.repo
+        Repository.repo --> ActionSecret.repo
     end
     subgraph team
         Team.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Team<br/><br/>ref: github_team)
         TeamSettings.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: TeamSettings<br/><br/>ref: github_team_settings)
         TeamMembers.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: TeamMembers<br/><br/>ref: github_team_members)
+        TeamRepository.team(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: TeamRepository<br/><br/>ref: github_team_repository) 
 
         Team.team --> TeamSettings.team
         Team.team --> TeamMembers.team
+        Team.team --> TeamRepository.team
     end
 ```
