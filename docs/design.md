@@ -2,6 +2,7 @@
 
 ### Terraform mapping
 ```mermaid
+%%{init: {'theme':'base'}}%%
 graph LR
     github_repository --> github_team_repository
     github_repository --> github_branch
@@ -27,19 +28,42 @@ graph LR
 ### Proposed mapping in github provider
 
 ```mermaid
+%%{
+    init: {
+        'flowchart' : {
+            'curve' : 'basis'
+        },
+        'theme':'base'
+    }
+}%%
+
 graph LR
-    Team.team.provider-github --> TeamAccess.repo.provider-github
+    classDef default text-align: left;
+    Team.team --> TeamAccess.repo
     subgraph repo
-        Repo.repo.provider-github --> Webhook.repo.provider-github
-        Repo.repo.provider-github --> DeployKey.repo.provider-github
-        Repo.repo.provider-github --> Branch.repo.provider-github
-        Repo.repo.provider-github --> DefaultBranch.repo.provider-github
-        Repo.repo.provider-github --> BranchProtection.repo.provider-gitub
-        Repo.repo.provider-github --> ActionSecret.repo.provider-github
-        Repo.repo.provider-github --> TeamAccess.repo.provider-github
+        Repo.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/>terraformResoureName: github_repository)
+        Webhook.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Webhook<br/>terraformResoureName: github_repository_webhook)
+        DeployKey.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: DeployKey<br/>terraformResoureName: github_repository_deploy_key)
+        Branch.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Branch<br/>terraformResoureName: github_branch)
+        DefaultBranch.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: DefaultBranch<br/>terraformResoureName: github_branch_default)
+        BranchProtection.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: BranchProtection<br/>terraformResoureName: github_branch_protection)
+        ActionSecret.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: ActionSecret<br/>terraformResoureName: github_action_secret)
+        TeamAccess.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: TeamAccess<br/>terraformResoureName: github_team_repository)   
+        
+        Repo.repo --> Webhook.repo
+        Repo.repo --> DeployKey.repo
+        Repo.repo --> Branch.repo
+        Repo.repo --> DefaultBranch.repo
+        Repo.repo --> BranchProtection.repo
+        Repo.repo --> ActionSecret.repo
+        Repo.repo --> TeamAccess.repo
     end
     subgraph team
-        Team.team.provider-github --> TeamSettings.team.provider-github
-        Team.team.provider-github --> TeamMembers.team.provider-github
+        Team.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/>terraformResoureName: github_team)
+        TeamSettings.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/>terraformResoureName: github_team_settings)
+        TeamMembers.team(apiVersion: team.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/>terraformResoureName: github_team_members)
+
+        Team.team --> TeamSettings.team
+        Team.team --> TeamMembers.team
     end
 ```
