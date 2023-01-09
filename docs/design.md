@@ -4,7 +4,7 @@
 ```mermaid
 graph LR
     github_repository --> github_team_repository
-    github_repository --> branch
+    github_repository --> github_branch
     github_repository --> github_action_secret
     subgraph repository
         github_repository --> github_repository_webhook
