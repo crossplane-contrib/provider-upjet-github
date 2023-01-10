@@ -41,7 +41,7 @@ graph LR
     classDef default text-align: left;
     Repository.repo --> TeamRepository.team
     subgraph repo
-        Repository.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Repo<br/><br/>ref: github_repository)
+        Repository.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Repository<br/><br/>ref: github_repository)
         Webhook.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Webhook<br/><br/>ref: github_repository_webhook)
         DeployKey.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: DeployKey<br/><br/>ref: github_repository_deploy_key)
         Branch.repo(apiVersion: repo.provider-github.upbound.io/v1alpha1<br/>kind: Branch<br/><br/>ref: github_branch)
