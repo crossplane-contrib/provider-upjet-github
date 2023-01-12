@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: resources.null.github.upbound.io
+  name: branches.repo.github.upbound.io
 spec:
-  group: null.github.upbound.io
+  group: repo.github.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - github
-    kind: Resource
-    listKind: ResourceList
-    plural: resources
-    singular: resource
+    kind: Branch
+    listKind: BranchList
+    plural: branches
+    singular: branch
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Resource is the Schema for the Resources API. <no value>
+        description: Branch is the Schema for the Branchs API. Creates and manages
+          branches within GitHub repositories.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: ResourceSpec defines the desired state of Resource
+            description: BranchSpec defines the desired state of Branch
             properties:
               deletionPolicy:
                 default: Delete
@@ -63,13 +64,89 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  triggers:
-                    additionalProperties:
-                      type: string
-                    description: A map of arbitrary strings that, when changed, will
-                      force the null resource to be replaced, re-running any associated
-                      provisioners.
+                  repository:
+                    description: The GitHub repository name.
+                    type: string
+                  repositoryRef:
+                    description: Reference to a Repository in repo to populate repository.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
                     type: object
+                  repositorySelector:
+                    description: Selector for a Repository in repo to populate repository.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  sourceBranch:
+                    description: The branch name to start from. Defaults to main.
+                    type: string
+                  sourceSha:
+                    description: The commit hash to start from. Defaults to the tip
+                      of source_branch. If provided, source_branch is ignored.
+                    type: string
                 type: object
               providerConfigRef:
                 default:
@@ -243,11 +320,21 @@ spec:
             - forProvider
             type: object
           status:
-            description: ResourceStatus defines the observed state of Resource.
+            description: BranchStatus defines the observed state of Branch.
             properties:
               atProvider:
                 properties:
+                  etag:
+                    description: An etag representing the Branch object.
+                    type: string
                   id:
+                    type: string
+                  ref:
+                    description: A string representing a branch reference, in the
+                      form of refs/heads/<branch>.
+                    type: string
+                  sha:
+                    description: A string storing the reference's HEAD commit's SHA1.
                     type: string
                 type: object
               conditions:

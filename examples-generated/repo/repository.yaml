@@ -1,0 +1,19 @@
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repository
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    description: My awesome codebase
+    template:
+    - includeAllBranches: true
+      owner: github
+      repository: terraform-module-template
+    visibility: public
+
+---
+

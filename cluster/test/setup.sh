@@ -3,7 +3,7 @@ set -aeuo pipefail
 
 echo "Running setup.sh"
 echo "Creating cloud credential secret..."
-${KUBECTL} -n upbound-system create secret generic provider-secret --from-literal=credentials="{\"token\":\"${UPTEST_CLOUD_CREDENTIALS}\"}" --dry-run=client -o yaml | ${KUBECTL} apply -f -
+${KUBECTL} -n upbound-system create secret generic provider-secret --from-literal=credentials="{\"token\":\"${UPTEST_CLOUD_CREDENTIALS}\",\"owner\":\"coop-scratchpad\"}" --dry-run=client -o yaml | ${KUBECTL} apply -f -
 
 echo "Waiting until provider is healthy..."
 ${KUBECTL} wait provider.pkg --all --for condition=Healthy --timeout 5m
@@ -24,3 +24,4 @@ spec:
       name: provider-secret
       namespace: upbound-system
       key: credentials
+EOF
