@@ -1,0 +1,80 @@
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: BranchProtection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/branchprotection
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    allowsDeletions: true
+    enforceAdmins: true
+    pattern: main
+    pushRestrictions:
+    - ${data.github_user.example.node_id}
+    - /exampleuser
+    - exampleorganization/exampleteam
+    repositoryIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    requiredPullRequestReviews:
+    - dismissStaleReviews: true
+      dismissalRestrictions:
+      - ${data.github_user.example.node_id}
+      - ${github_team.example.node_id}
+      - /exampleuser
+      - exampleorganization/exampleteam
+      restrictDismissals: true
+    requiredStatusChecks:
+    - contexts:
+      - ci/travis
+      strict: false
+
+---
+
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/branchprotection
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider: {}
+
+---
+
+apiVersion: team.github.upbound.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/branchprotection
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: Example Name
+
+---
+
+apiVersion: team.github.upbound.io/v1alpha1
+kind: TeamRepository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/branchprotection
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    permission: pull
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    teamId: ${github_team.example.id}
+
+---
+

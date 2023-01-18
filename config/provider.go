@@ -9,7 +9,11 @@ import (
 	_ "embed"
 
 	"github.com/coopnorge/provider-github/config/branch"
+	"github.com/coopnorge/provider-github/config/branchprotection"
+	"github.com/coopnorge/provider-github/config/defaultbranch"
 	"github.com/coopnorge/provider-github/config/repository"
+	"github.com/coopnorge/provider-github/config/team"
+	"github.com/coopnorge/provider-github/config/teamrepository"
 	ujconfig "github.com/upbound/upjet/pkg/config"
 )
 
@@ -36,6 +40,10 @@ func GetProvider() *ujconfig.Provider {
 		// add custom config functions
 		repository.Configure,
 		branch.Configure,
+		team.Configure,
+		teamrepository.Configure,
+		defaultbranch.Configure,
+		branchprotection.Configure,
 	} {
 		configure(pc)
 	}

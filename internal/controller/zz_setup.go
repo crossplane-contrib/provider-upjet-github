@@ -9,24 +9,26 @@ import (
 
 	"github.com/upbound/upjet/pkg/controller"
 
-	protection "github.com/coopnorge/provider-github/internal/controller/branch/protection"
-	team "github.com/coopnorge/provider-github/internal/controller/github/team"
 	providerconfig "github.com/coopnorge/provider-github/internal/controller/providerconfig"
 	branch "github.com/coopnorge/provider-github/internal/controller/repo/branch"
+	branchprotection "github.com/coopnorge/provider-github/internal/controller/repo/branchprotection"
+	defaultbranch "github.com/coopnorge/provider-github/internal/controller/repo/defaultbranch"
 	repository "github.com/coopnorge/provider-github/internal/controller/repo/repository"
-	repositoryteam "github.com/coopnorge/provider-github/internal/controller/team/repository"
+	team "github.com/coopnorge/provider-github/internal/controller/team/team"
+	teamrepository "github.com/coopnorge/provider-github/internal/controller/team/teamrepository"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		protection.Setup,
-		team.Setup,
 		providerconfig.Setup,
 		branch.Setup,
+		branchprotection.Setup,
+		defaultbranch.Setup,
 		repository.Setup,
-		repositoryteam.Setup,
+		team.Setup,
+		teamrepository.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err
