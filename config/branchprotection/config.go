@@ -2,6 +2,7 @@ package branchprotection
 
 import "github.com/upbound/upjet/pkg/config"
 
+// Configure github_branch_protection resource
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("github_branch_protection", func(r *config.Resource) {
 		// We need to override the default group that upjet generated for

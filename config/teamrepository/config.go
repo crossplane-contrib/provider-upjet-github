@@ -2,6 +2,7 @@ package teamrepository
 
 import "github.com/upbound/upjet/pkg/config"
 
+// Configure github_team_repository resource
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("github_team_repository", func(r *config.Resource) {
 		// We need to override the default group that upjet generated for

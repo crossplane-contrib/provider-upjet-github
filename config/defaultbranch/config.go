@@ -2,7 +2,7 @@ package defaultbranch
 
 import "github.com/upbound/upjet/pkg/config"
 
-// Configure configures individual resources by adding custom ResourceConfigurators.
+// Configure github_branch_default resource.
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("github_branch_default", func(r *config.Resource) {
 		// We need to override the default group that upjet generated for
