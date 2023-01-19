@@ -844,6 +844,11 @@ func (in *RepositoryParameters) DeepCopyInto(out *RepositoryParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.HasDiscussions != nil {
+		in, out := &in.HasDiscussions, &out.HasDiscussions
+		*out = new(bool)
+		**out = **in
+	}
 	if in.HasDownloads != nil {
 		in, out := &in.HasDownloads, &out.HasDownloads
 		*out = new(bool)

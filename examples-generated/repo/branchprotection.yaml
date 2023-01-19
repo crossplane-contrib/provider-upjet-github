@@ -74,7 +74,9 @@ spec:
     repositorySelector:
       matchLabels:
         testing.upbound.io/example-name: example
-    teamId: ${github_team.example.id}
+    teamIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
 
 ---
 

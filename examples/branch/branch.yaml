@@ -1,10 +1,10 @@
 apiVersion: branch.github.upbound.io/v1alpha1
 kind: Branch
 metadata:
-  name: hello-upjet
+  name: hello-provider-github
 spec:
   forProvider:
     repositoryRef:
-      name: hello-crossplane
+      name: hello-provider-github
   providerConfigRef:
     name: default

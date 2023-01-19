@@ -114,6 +114,10 @@ spec:
                     description: Use the name of the template without the extension.
                       For example, "Haskell".
                     type: string
+                  hasDiscussions:
+                    description: Set to true to enable GitHub Discussions on the repository.
+                      Defaults to false.
+                    type: boolean
                   hasDownloads:
                     description: Set to true to enable the (deprecated) downloads
                       features on the repository.
@@ -203,12 +207,17 @@ spec:
                         advancedSecurity:
                           description: The advanced security configuration for the
                             repository. See Advanced Security Configuration below
-                            for details.
+                            for details. If a repository's visibility is public, advanced
+                            security is always enabled and cannot be changed, so this
+                            setting cannot be supplied.
                           items:
                             properties:
                               status:
                                 description: Set to enabled to enable secret scanning
-                                  on the repository. Can be enabled or disabled.
+                                  on the repository. Can be enabled or disabled. If
+                                  set to enabled, the repository's visibility must
+                                  be public or security_and_analysis[0].advanced_security[0].status
+                                  must also be set to enabled.
                                 type: string
                             required:
                             - status
@@ -221,7 +230,10 @@ spec:
                             properties:
                               status:
                                 description: Set to enabled to enable secret scanning
-                                  on the repository. Can be enabled or disabled.
+                                  on the repository. Can be enabled or disabled. If
+                                  set to enabled, the repository's visibility must
+                                  be public or security_and_analysis[0].advanced_security[0].status
+                                  must also be set to enabled.
                                 type: string
                             required:
                             - status
@@ -235,16 +247,15 @@ spec:
                             properties:
                               status:
                                 description: Set to enabled to enable secret scanning
-                                  on the repository. Can be enabled or disabled.
+                                  on the repository. Can be enabled or disabled. If
+                                  set to enabled, the repository's visibility must
+                                  be public or security_and_analysis[0].advanced_security[0].status
+                                  must also be set to enabled.
                                 type: string
                             required:
                             - status
                             type: object
                           type: array
-                      required:
-                      - advancedSecurity
-                      - secretScanning
-                      - secretScanningPushProtection
                       type: object
                     type: array
                   squashMergeCommitMessage:
@@ -511,7 +522,10 @@ spec:
                           type: string
                         status:
                           description: Set to enabled to enable secret scanning on
-                            the repository. Can be enabled or disabled.
+                            the repository. Can be enabled or disabled. If set to
+                            enabled, the repository's visibility must be public or
+                            security_and_analysis[0].advanced_security[0].status must
+                            also be set to enabled.
                           type: string
                         url:
                           type: string

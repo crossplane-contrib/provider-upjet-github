@@ -16,7 +16,7 @@ func Configure(p *config.Provider) {
 		r.References["repository"] = config.Reference{
 			Type: "github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository",
 		}
-		r.References["team"] = config.Reference{
+		r.References["team_id"] = config.Reference{
 			Type: "github.com/coopnorge/provider-github/apis/team/v1alpha1.Team",
 		}
 	})

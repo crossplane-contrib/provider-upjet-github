@@ -43,12 +43,30 @@ resources:
                     }
         argumentDocs:
             created_at: '- Date of actions_environment_secret creation.'
-            encrypted_value: '- (Optional) Encrypted value of the secret using the Github public key in Base64 format.'
+            encrypted_value: '- (Optional) Encrypted value of the secret using the GitHub public key in Base64 format.'
             environment: '- (Required) Name of the environment.'
             plaintext_value: '- (Optional) Plaintext value of the secret to be encrypted.'
             repository: '- (Required) Name of the repository.'
             secret_name: '- (Required) Name of the secret.'
             updated_at: '- Date of actions_environment_secret update.'
+        importStatements: []
+    github_actions_organization_oidc_subject_claim_customization_template:
+        subCategory: ""
+        description: Creates and manages an OpenID Connect subject claim customization template for an organization
+        name: github_actions_organization_oidc_subject_claim_customization_template
+        title: github_actions_organization_oidc_subject_claim_customization_template
+        examples:
+            - name: example_template
+              manifest: |-
+                {
+                  "include_claim_keys": [
+                    "actor",
+                    "context",
+                    "repository_owner"
+                  ]
+                }
+        argumentDocs:
+            include_claim_keys: '- (Required) A list of OpenID Connect claims.'
         importStatements: []
     github_actions_organization_permissions:
         subCategory: ""
@@ -144,7 +162,7 @@ resources:
                 encrypted_value: var.some_encrypted_secret_string
         argumentDocs:
             created_at: '- Date of actions_secret creation.'
-            encrypted_value: '- (Optional) Encrypted value of the secret using the Github public key in Base64 format.'
+            encrypted_value: '- (Optional) Encrypted value of the secret using the GitHub public key in Base64 format.'
             plaintext_value: '- (Optional) Plaintext value of the secret to be encrypted'
             secret_name: '- (Required) Name of the secret'
             selected_repository_ids: '- (Optional) An array of repository ids that can access the organization secret.'
@@ -194,6 +212,36 @@ resources:
         argumentDocs:
             access_level: '- (Required) Where the actions or reusable workflows of the repository may be used. Possible values are none, user, organization, or enterprise.'
             repository: '- (Required) The GitHub repository'
+        importStatements: []
+    github_actions_repository_oidc_subject_claim_customization_template:
+        subCategory: ""
+        description: Creates and manages an OpenID Connect subject claim customization template for a repository
+        name: github_actions_repository_oidc_subject_claim_customization_template
+        title: github_actions_repository_oidc_subject_claim_customization_template
+        examples:
+            - name: example_template
+              manifest: |-
+                {
+                  "include_claim_keys": [
+                    "actor",
+                    "context",
+                    "repository_owner"
+                  ],
+                  "repository": "${github_repository.example.name}",
+                  "use_default": false
+                }
+              references:
+                repository: github_repository.example.name
+              dependencies:
+                github_repository.example: |-
+                    {
+                      "name": "example-repository"
+                    }
+        argumentDocs:
+            include_claim_keys: '- (Optional) A list of OpenID Connect claims.'
+            use_default: |-
+                - (Required) Whether to use the default template or not. If true, include_claim_keys must not
+                be set.
         importStatements: []
     github_actions_repository_permissions:
         subCategory: ""
@@ -261,9 +309,11 @@ resources:
             etag: '- An etag representing the runner group object'
             inherited: '- Whether the runner group is inherited from the enterprise level'
             name: '- (Required) Name of the runner group'
+            restricted_to_workflows: '- If true, the runner group will be restricted to running only the workflows specified in the selected_workflows array. Defaults to false.'
             runners_url: '- The GitHub API URL for the runner group''s runners'
-            selected_repositories_url: '- Github API URL for the runner group''s repositories'
+            selected_repositories_url: '- GitHub API URL for the runner group''s repositories'
             selected_repository_ids: '- (Optional) IDs of the repositories which should be added to the runner group'
+            selected_workflows: '- List of workflows the runner group should be allowed to run. This setting will be ignored unless restricted_to_workflows is set to true.'
             visibility: '- (Optional) Visibility of a runner group. Whether the runner group can include all, selected, or private repositories. A value of private is not currently supported due to limitations in the GitHub API.'
         importStatements: []
     github_actions_secret:
@@ -292,7 +342,7 @@ resources:
                 encrypted_value: var.some_encrypted_secret_string
         argumentDocs:
             created_at: '- Date of actions_secret creation.'
-            encrypted_value: '- (Optional) Encrypted value of the secret using the Github public key in Base64 format.'
+            encrypted_value: '- (Optional) Encrypted value of the secret using the GitHub public key in Base64 format.'
             plaintext_value: '- (Optional) Plaintext value of the secret to be encrypted'
             repository: '- (Required) Name of the repository'
             secret_name: '- (Required) Name of the secret'
@@ -604,7 +654,7 @@ resources:
                 encrypted_value: var.some_encrypted_secret_string
         argumentDocs:
             created_at: '- Date of dependabot_secret creation.'
-            encrypted_value: '- (Optional) Encrypted value of the secret using the Github public key in Base64 format.'
+            encrypted_value: '- (Optional) Encrypted value of the secret using the GitHub public key in Base64 format.'
             plaintext_value: '- (Optional) Plaintext value of the secret to be encrypted'
             secret_name: '- (Required) Name of the secret'
             selected_repository_ids: '- (Optional) An array of repository ids that can access the organization secret.'
@@ -666,7 +716,7 @@ resources:
                 encrypted_value: var.some_encrypted_secret_string
         argumentDocs:
             created_at: '- Date of actions_secret creation.'
-            encrypted_value: '- (Optional) Encrypted value of the secret using the Github public key in Base64 format.'
+            encrypted_value: '- (Optional) Encrypted value of the secret using the GitHub public key in Base64 format.'
             plaintext_value: '- (Optional) Plaintext value of the secret to be encrypted'
             repository: '- (Required) Name of the repository'
             secret_name: '- (Required) Name of the secret'
@@ -1106,7 +1156,7 @@ resources:
                     {
                       "include_all_branches": true,
                       "owner": "github",
-                      "repository": "terraform-module-template"
+                      "repository": "terraform-template-module"
                     }
                   ],
                   "visibility": "public"
@@ -1148,6 +1198,7 @@ resources:
             full_name: '- A string of the form "orgname/reponame".'
             git_clone_url: '- URL that can be provided to git clone to clone the repository anonymously via the git protocol.'
             gitignore_template: '- (Optional) Use the name of the template without the extension. For example, "Haskell".'
+            has_discussions: '- (Optional) Set to true to enable GitHub Discussions on the repository. Defaults to false.'
             has_downloads: '- (Optional) Set to true to enable the (deprecated) downloads features on the repository.'
             has_issues: |-
                 - (Optional) Set to true to enable the GitHub Issues features
@@ -1177,7 +1228,7 @@ resources:
             repo_id: '- GitHub ID for the repository'
             repository: ': The name of the template repository.'
             security_and_analysis: '- (Optional) The repository''s security and analysis configuration. See Security and Analysis Configuration below for details.'
-            security_and_analysis.advanced_security: '- (Required) The advanced security configuration for the repository. See Advanced Security Configuration below for details.'
+            security_and_analysis.advanced_security: '- (Optional) The advanced security configuration for the repository. See Advanced Security Configuration below for details. If a repository''s visibility is public, advanced security is always enabled and cannot be changed, so this setting cannot be supplied.'
             security_and_analysis.secret_scanning: '- (Required) The secret scanning configuration for the repository. See Secret Scanning Configuration below for details.'
             security_and_analysis.secret_scanning_push_protection: '- (Required) The secret scanning push protection configuration for the repository. See Secret Scanning Push Protection Configuration below for details.'
             source.branch: '- (Required) The repository branch used to publish the site''s source files. (i.e. main or gh-pages.'
@@ -1185,7 +1236,7 @@ resources:
             squash_merge_commit_message: '- (Optional) Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message.'
             squash_merge_commit_title: '- (Optional) Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title.'
             ssh_clone_url: '- URL that can be provided to git clone to clone the repository via SSH.'
-            status: '- (Required) Set to enabled to enable secret scanning on the repository. Can be enabled or disabled.'
+            status: '- (Required) Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository''s visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.'
             svn_url: '- URL that can be provided to svn checkout to check out the repository via GitHub''s Subversion protocol emulation.'
             template: '- (Optional) Use a template repository to create this resource. See Template Repositories below for details.'
             topics: '- (Optional) The list of topics of the repository.'
@@ -1558,7 +1609,7 @@ resources:
                       "name": "SomeTeam"
                     }
         argumentDocs:
-            members: '- (Optional) List of team members. See Members below for details.'
+            members: '- (Required) List of team members. See Members below for details.'
             role: |-
                 - (Optional) The role of the user within the team.
                 Must be one of member or maintainer. Defaults to member.

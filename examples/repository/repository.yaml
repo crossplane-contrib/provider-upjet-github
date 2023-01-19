@@ -2,20 +2,18 @@
 apiVersion: repo.github.upbound.io/v1alpha1
 kind: Repository
 metadata:
-  name: github-crossplane-provider-testing
+  name: hello-provider-github
 spec:
   forProvider:
-    description: "Managed with Crossplane Github Provider (generated with Upjet)"
     visibility: public
-    template:
-      - owner: upbound
-        repository: upjet-provider-template
-    securityAndAnalysis:
-      - advancedSecurity:
-        - status: enabled
-        secretScanning:
-        - status: disabled
-        secretScanningPushProtection:
-        - status: disabled  
+    gitignoreTemplate: Terraform
+
+    # securityAndAnalysis:
+    #   - advancedSecurity:
+    #     - status: enabled
+    #     secretScanning:
+    #     - status: disabled
+    #     secretScanningPushProtection:
+    #     - status: disabled  
   providerConfigRef:
     name: default

@@ -18,7 +18,7 @@ type AdvancedSecurityObservation struct {
 
 type AdvancedSecurityParameters struct {
 
-	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled.
+	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
 	// +kubebuilder:validation:Required
 	Status *string `json:"status" tf:"status,omitempty"`
 }
@@ -31,7 +31,7 @@ type PagesObservation struct {
 	// URL to the repository on the web.
 	HTMLURL *string `json:"htmlUrl,omitempty" tf:"html_url,omitempty"`
 
-	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled.
+	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
@@ -135,6 +135,10 @@ type RepositoryParameters struct {
 	// +kubebuilder:validation:Optional
 	GitignoreTemplate *string `json:"gitignoreTemplate,omitempty" tf:"gitignore_template,omitempty"`
 
+	// Set to true to enable GitHub Discussions on the repository. Defaults to false.
+	// +kubebuilder:validation:Optional
+	HasDiscussions *bool `json:"hasDiscussions,omitempty" tf:"has_discussions,omitempty"`
+
 	// Set to true to enable the (deprecated) downloads features on the repository.
 	// +kubebuilder:validation:Optional
 	HasDownloads *bool `json:"hasDownloads,omitempty" tf:"has_downloads,omitempty"`
@@ -221,7 +225,7 @@ type SecretScanningObservation struct {
 
 type SecretScanningParameters struct {
 
-	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled.
+	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
 	// +kubebuilder:validation:Required
 	Status *string `json:"status" tf:"status,omitempty"`
 }
@@ -231,7 +235,7 @@ type SecretScanningPushProtectionObservation struct {
 
 type SecretScanningPushProtectionParameters struct {
 
-	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled.
+	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
 	// +kubebuilder:validation:Required
 	Status *string `json:"status" tf:"status,omitempty"`
 }
@@ -241,17 +245,17 @@ type SecurityAndAnalysisObservation struct {
 
 type SecurityAndAnalysisParameters struct {
 
-	// The advanced security configuration for the repository. See Advanced Security Configuration below for details.
-	// +kubebuilder:validation:Required
-	AdvancedSecurity []AdvancedSecurityParameters `json:"advancedSecurity" tf:"advanced_security,omitempty"`
+	// The advanced security configuration for the repository. See Advanced Security Configuration below for details. If a repository's visibility is public, advanced security is always enabled and cannot be changed, so this setting cannot be supplied.
+	// +kubebuilder:validation:Optional
+	AdvancedSecurity []AdvancedSecurityParameters `json:"advancedSecurity,omitempty" tf:"advanced_security,omitempty"`
 
 	// The secret scanning configuration for the repository. See Secret Scanning Configuration below for details.
-	// +kubebuilder:validation:Required
-	SecretScanning []SecretScanningParameters `json:"secretScanning" tf:"secret_scanning,omitempty"`
+	// +kubebuilder:validation:Optional
+	SecretScanning []SecretScanningParameters `json:"secretScanning,omitempty" tf:"secret_scanning,omitempty"`
 
 	// The secret scanning push protection configuration for the repository. See Secret Scanning Push Protection Configuration below for details.
-	// +kubebuilder:validation:Required
-	SecretScanningPushProtection []SecretScanningPushProtectionParameters `json:"secretScanningPushProtection" tf:"secret_scanning_push_protection,omitempty"`
+	// +kubebuilder:validation:Optional
+	SecretScanningPushProtection []SecretScanningPushProtectionParameters `json:"secretScanningPushProtection,omitempty" tf:"secret_scanning_push_protection,omitempty"`
 }
 
 type SourceObservation struct {
