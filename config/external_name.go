@@ -14,11 +14,11 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	// The import ID consists of several parameters. We'll use branch name as
 	// the external name.
 	"github_branch":            config.TemplatedStringAsIdentifier("branch", "{{ .parameters.repository }}:{{ .external_name }}:{{ .parameters.source_branch }}"),
-	"github_branch_default":    config.IdentifierFromProvider, //TemplatedStringAsIdentifier("defaultbranch", "{{ .parameters.repository }}:{{ .parameters.branch }}"),
-	"github_branch_protection": config.IdentifierFromProvider, //TemplatedStringAsIdentifier("branchprotection", "{{ .parameters.repository }}:{{ .parameters.branch }}"),
+	"github_branch_default":    config.IdentifierFromProvider, // TemplatedStringAsIdentifier("defaultbranch", "{{ .parameters.repository }}:{{ .parameters.branch }}"),
+	"github_branch_protection": config.IdentifierFromProvider, // TemplatedStringAsIdentifier("branchprotection", "{{ .parameters.repository }}:{{ .parameters.branch }}"),
 
-	"github_team":            config.IdentifierFromProvider,
-	"github_team_repository": config.IdentifierFromProvider, //TemplatedStringAsIdentifier("teamrepository", "{{ .parameters.team_id }}:{{ .parameters.repository }}"),
+	"github_team":            config.NameAsIdentifier,
+	"github_team_repository": config.IdentifierFromProvider, // TemplatedStringAsIdentifier("teamrepository", "{{ .parameters.team_id }}:{{ .parameters.repository }}"),
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
