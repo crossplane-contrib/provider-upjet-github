@@ -1,0 +1,71 @@
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  name: github-crossplane-provider-testing
+spec:
+  forProvider:
+    visibility: public
+    autoInit: true
+    gitignoreTemplate: Terraform
+  providerConfigRef:
+    name: default
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Branch
+metadata:
+  name: github-crossplane-provider-testing-branch
+spec:
+  forProvider:
+    repositoryRef:
+      name: github-crossplane-provider-testing
+  providerConfigRef:
+    name: default
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: BranchProtection
+metadata:
+  name: github-crossplane-provider-testing-branchprotection
+spec:
+  forProvider:
+    repositoryIdRef:
+      name: github-crossplane-provider-testing
+    pattern: github-*
+    requiredPullRequestReviews:
+      - requiredApprovingReviewCount: 2
+  providerConfigRef:
+    name: default
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: DefaultBranch
+metadata:
+  name: github-crossplane-provider-testing-defaultbranch
+spec:
+  forProvider:
+    repositoryRef:
+      name: github-crossplane-provider-testing
+    branchRef:
+      name: github-crossplane-provider-testing-branch
+  providerConfigRef:
+    name: default
+---
+apiVersion: team.github.upbound.io/v1alpha1
+kind: Team
+metadata:
+  name: github-crossplane-provider-test-team
+spec:
+  forProvider:
+    name: github-crossplane-provider-test-team
+--- 
+apiVersion: team.github.upbound.io/v1alpha1
+kind: TeamRepository
+metadata:
+  name: github-crossplane-provider-test-teamrepository
+spec:
+  forProvider:
+    teamIdRef:
+      name: github-crossplane-provider-test-team
+    repositoryRef:
+      name: github-crossplane-provider-testing
+    
+

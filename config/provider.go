@@ -8,14 +8,18 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
+	"github.com/coopnorge/provider-github/config/branch"
+	"github.com/coopnorge/provider-github/config/branchprotection"
+	"github.com/coopnorge/provider-github/config/defaultbranch"
+	"github.com/coopnorge/provider-github/config/repository"
+	"github.com/coopnorge/provider-github/config/team"
+	"github.com/coopnorge/provider-github/config/teamrepository"
 	ujconfig "github.com/upbound/upjet/pkg/config"
-
-	"github.com/upbound/upjet-provider-template/config/null"
 )
 
 const (
-	resourcePrefix = "template"
-	modulePath     = "github.com/upbound/upjet-provider-template"
+	resourcePrefix = "github"
+	modulePath     = "github.com/coopnorge/provider-github"
 )
 
 //go:embed schema.json
@@ -34,7 +38,12 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		null.Configure,
+		repository.Configure,
+		branch.Configure,
+		team.Configure,
+		teamrepository.Configure,
+		defaultbranch.Configure,
+		branchprotection.Configure,
 	} {
 		configure(pc)
 	}
