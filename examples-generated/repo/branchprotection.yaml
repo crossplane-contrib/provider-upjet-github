@@ -55,8 +55,7 @@ metadata:
     testing.upbound.io/example-name: example
   name: example
 spec:
-  forProvider:
-    name: Example Name
+  forProvider: {}
 
 ---
 
