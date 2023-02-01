@@ -131,6 +131,11 @@ func (in *TeamParameters) DeepCopyInto(out *TeamParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
 	if in.ParentTeamID != nil {
 		in, out := &in.ParentTeamID, &out.ParentTeamID
 		*out = new(float64)
@@ -257,21 +262,6 @@ func (in *TeamRepositoryParameters) DeepCopyInto(out *TeamRepositoryParameters) 
 	}
 	if in.RepositorySelector != nil {
 		in, out := &in.RepositorySelector, &out.RepositorySelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.TeamID != nil {
-		in, out := &in.TeamID, &out.TeamID
-		*out = new(string)
-		**out = **in
-	}
-	if in.TeamIDRef != nil {
-		in, out := &in.TeamIDRef, &out.TeamIDRef
-		*out = new(v1.Reference)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.TeamIDSelector != nil {
-		in, out := &in.TeamIDSelector, &out.TeamIDSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}

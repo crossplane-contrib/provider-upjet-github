@@ -87,21 +87,5 @@ func (mg *DefaultBranch) ResolveReferences(ctx context.Context, c client.Reader)
 	mg.Spec.ForProvider.Branch = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BranchRef = rsp.ResolvedReference
 
-	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Repository),
-		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.ForProvider.RepositoryRef,
-		Selector:     mg.Spec.ForProvider.RepositorySelector,
-		To: reference.To{
-			List:    &RepositoryList{},
-			Managed: &Repository{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.ForProvider.Repository")
-	}
-	mg.Spec.ForProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.RepositoryRef = rsp.ResolvedReference
-
 	return nil
 }

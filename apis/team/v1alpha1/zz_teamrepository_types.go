@@ -38,20 +38,6 @@ type TeamRepositoryParameters struct {
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
-
-	// The GitHub team id or the GitHub team slug
-	// ID or slug of team
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/team/v1alpha1.Team
-	// +kubebuilder:validation:Optional
-	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
-
-	// Reference to a Team in team to populate teamId.
-	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
-
-	// Selector for a Team in team to populate teamId.
-	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 // TeamRepositorySpec defines the desired state of TeamRepository

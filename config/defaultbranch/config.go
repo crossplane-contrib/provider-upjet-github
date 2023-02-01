@@ -9,8 +9,7 @@ func Configure(p *config.Provider) {
 		// this resource, which would be "github"
 		r.Kind = "DefaultBranch"
 		r.ShortGroup = "repo"
-
-		// This resource need the repository in which branch would be created
+  	// This resource need the repository in which branch would be created
 		// as an input. And by defining it as a reference to Repository
 		// object, we can build cross resource referencing. See
 		// repositoryRef in the example in the Testing section below.

@@ -14,8 +14,5 @@ func Configure(p *config.Provider) {
 		// as an input. And by defining it as a reference to Repository
 		// object, we can build cross resource referencing. See
 		// repositoryRef in the example in the Testing section below.
-		r.References["repository"] = config.Reference{
-			Type: "github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository",
-		}
 	})
 }

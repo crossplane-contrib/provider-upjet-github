@@ -44,6 +44,10 @@ type TeamParameters struct {
 	// +kubebuilder:validation:Optional
 	LdapDn *string `json:"ldapDn,omitempty" tf:"ldap_dn,omitempty"`
 
+	// The name of the team.
+	// +kubebuilder:validation:Required
+	Name *string `json:"name" tf:"name,omitempty"`
+
 	// The ID of the parent team, if this is a nested team.
 	// +kubebuilder:validation:Optional
 	ParentTeamID *float64 `json:"parentTeamId,omitempty" tf:"parent_team_id,omitempty"`

@@ -11,9 +11,6 @@ spec:
     branchSelector:
       matchLabels:
         testing.upbound.io/example-name: development
-    repositorySelector:
-      matchLabels:
-        testing.upbound.io/example-name: example
 
 ---
 

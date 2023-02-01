@@ -55,7 +55,8 @@ metadata:
     testing.upbound.io/example-name: example
   name: example
 spec:
-  forProvider: {}
+  forProvider:
+    name: Example Name
 
 ---
 
@@ -71,9 +72,6 @@ spec:
   forProvider:
     permission: pull
     repositorySelector:
-      matchLabels:
-        testing.upbound.io/example-name: example
-    teamIdSelector:
       matchLabels:
         testing.upbound.io/example-name: example
 
