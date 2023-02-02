@@ -131,6 +131,11 @@ func (in *TeamParameters) DeepCopyInto(out *TeamParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
 	if in.ParentTeamID != nil {
 		in, out := &in.ParentTeamID, &out.ParentTeamID
 		*out = new(float64)

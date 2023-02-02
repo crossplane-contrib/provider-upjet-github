@@ -42,6 +42,7 @@ metadata:
 spec:
   forProvider:
     description: Some cool team
+    name: SomeTeam
 
 ---
 

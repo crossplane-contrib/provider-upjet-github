@@ -14,7 +14,7 @@ spec:
 apiVersion: repo.github.upbound.io/v1alpha1
 kind: Branch
 metadata:
-  name: github-crossplane-provider-testing-branch
+  name: github-crossplane-provider-testing
 spec:
   forProvider:
     repositoryRef:
@@ -39,13 +39,11 @@ spec:
 apiVersion: repo.github.upbound.io/v1alpha1
 kind: DefaultBranch
 metadata:
-  name: github-crossplane-provider-testing-defaultbranch
+  name: github-crossplane-provider-testing
 spec:
   forProvider:
-    repositoryRef:
-      name: github-crossplane-provider-testing
     branchRef:
-      name: github-crossplane-provider-testing-branch
+      name: github-crossplane-provider-testing
   providerConfigRef:
     name: default
 ---
@@ -56,16 +54,17 @@ metadata:
 spec:
   forProvider:
     name: github-crossplane-provider-test-team
+  providerConfigRef:
+    name: default
 --- 
 apiVersion: team.github.upbound.io/v1alpha1
 kind: TeamRepository
 metadata:
-  name: github-crossplane-provider-test-teamrepository
+  name: github-crossplane-provider-test-team
 spec:
   forProvider:
-    teamIdRef:
-      name: github-crossplane-provider-test-team
     repositoryRef:
       name: github-crossplane-provider-testing
+    teamId: github-crossplane-provider-test-team
     
 

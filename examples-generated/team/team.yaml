@@ -9,6 +9,7 @@ metadata:
 spec:
   forProvider:
     description: Some cool team
+    name: some-team
     privacy: closed
 
 ---
