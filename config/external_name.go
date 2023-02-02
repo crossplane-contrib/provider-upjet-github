@@ -19,9 +19,11 @@ var ExternalNameConfigs = map[string]config.ExternalName{
   // We cannot use the external_name = pattern here since pattern can contain non alpha numberic characters
 	"github_branch_protection": config.IdentifierFromProvider, 
   // Imported by using the following format: {{ id / slug }}
-	"github_team":            config.IdentifierFromProvider,
+	// The id in the state needs to use the numberic id of the team. Cannot make external_name nice
+  "github_team":            config.IdentifierFromProvider,
   // Imported by using the following format: {{ team_id/slug }}:{{ repository }}
-  "github_team_repository": config.TemplatedStringAsIdentifier("team_id","{{ .external_name }}:{{ .parameters.repository }}"), 
+	// The id in the state needs to use the numberic id of the team plus the repository. Cannot make external_name nice
+  "github_team_repository": config.IdentifierFromProvider, 
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

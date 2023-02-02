@@ -36,5 +36,21 @@ func (mg *TeamRepository) ResolveReferences(ctx context.Context, c client.Reader
 	mg.Spec.ForProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.RepositoryRef = rsp.ResolvedReference
 
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.TeamID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.TeamIDRef,
+		Selector:     mg.Spec.ForProvider.TeamIDSelector,
+		To: reference.To{
+			List:    &TeamList{},
+			Managed: &Team{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.TeamID")
+	}
+	mg.Spec.ForProvider.TeamID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.TeamIDRef = rsp.ResolvedReference
+
 	return nil
 }

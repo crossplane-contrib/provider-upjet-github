@@ -65,5 +65,6 @@ spec:
   forProvider:
     repositoryRef:
       name: github-crossplane-provider-testing
+    teamId: github-crossplane-provider-test-team
     
 
