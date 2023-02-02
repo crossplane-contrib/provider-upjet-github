@@ -11,19 +11,19 @@ import "github.com/upbound/upjet/pkg/config"
 var ExternalNameConfigs = map[string]config.ExternalName{
 	// Imported by using the following format: {{name}}
 	"github_repository": config.NameAsIdentifier,
-  // Imported by using the following format: {{ repository }}:{{ name }}:{{ source branch }}
-  "github_branch": config.TemplatedStringAsIdentifier("branch","{{ .parameters.repository }}:{{ .external_name }}:{{ .parameters.source_branch }}"),
-  // Imported by using the following format: {{ repository }}
+	// Imported by using the following format: {{ repository }}:{{ name }}:{{ source branch }}
+	"github_branch": config.TemplatedStringAsIdentifier("branch", "{{ .parameters.repository }}:{{ .external_name }}:{{ .parameters.source_branch }}"),
+	// Imported by using the following format: {{ repository }}
 	"github_branch_default": config.TemplatedStringAsIdentifier("repository", "{{ .external_name }}"),
-  // Imported by using the following format: {{ repository }}:{{ pattern }}
-  // We cannot use the external_name = pattern here since pattern can contain non alpha numberic characters
-	"github_branch_protection": config.IdentifierFromProvider, 
-  // Imported by using the following format: {{ id / slug }}
+	// Imported by using the following format: {{ repository }}:{{ pattern }}
+	// We cannot use the external_name = pattern here since pattern can contain non alpha numberic characters
+	"github_branch_protection": config.IdentifierFromProvider,
+	// Imported by using the following format: {{ id / slug }}
 	// The id in the state needs to use the numberic id of the team. Cannot make external_name nice
-  "github_team":            config.IdentifierFromProvider,
-  // Imported by using the following format: {{ team_id/slug }}:{{ repository }}
+	"github_team": config.IdentifierFromProvider,
+	// Imported by using the following format: {{ team_id/slug }}:{{ repository }}
 	// The id in the state needs to use the numberic id of the team plus the repository. Cannot make external_name nice
-  "github_team_repository": config.IdentifierFromProvider, 
+	"github_team_repository": config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

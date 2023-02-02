@@ -8,7 +8,7 @@ func Configure(p *config.Provider) {
 		r.Kind = "DefaultBranch"
 		r.ShortGroup = "repo"
 
-    r.References["repository"] = config.Reference{
+		r.References["repository"] = config.Reference{
 			Type: "github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository",
 		}
 		r.References["branch"] = config.Reference{
