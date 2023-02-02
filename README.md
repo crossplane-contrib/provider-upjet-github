@@ -24,37 +24,16 @@ spec:
   package: coopnorge/provider-github:v0.1.0
 EOF
 ```
-
-Notice that in this example Provider resource is referencing ControllerConfig with debug enabled.
-
 You can see the API reference [here](https://doc.crds.dev/github.com/coopnorge/provider-github).
 
-## Developing
+## Supported resources
 
-Run code-generation pipeline:
-```console
-go run cmd/generator/main.go "$PWD"
-```
+| Kind | Group | Terraform Resource Name | Notes  |
+| ---- | ----- | ----------------------- | ------ |
+| `Repository` | `repo` | `github_repository` |  |
+| `Branch` | `repo` |  `github_branch`      |  |
+| `DefaultBranch` | `repo` | `github_branch_default` | name change |
+| `BranchProtection` | `repo` | `github_branch_protection` | |
+| `Team` | `team` | `github_team` | | 
+| `TeamRepository` | `team` | `github_team_repository` | |
 
-Run against a Kubernetes cluster:
-
-```console
-make run
-```
-
-Build, push, and install:
-
-```console
-make all
-```
-
-Build binary:
-
-```console
-make build
-```
-
-## Report a Bug
-
-For filing bugs, suggesting improvements, or requesting new features, please
-open an [issue](https://github.com/coopnorge/provider-github/issues).
