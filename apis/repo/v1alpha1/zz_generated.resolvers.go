@@ -89,3 +89,45 @@ func (mg *DefaultBranch) ResolveReferences(ctx context.Context, c client.Reader)
 
 	return nil
 }
+
+// ResolveReferences of this RepositoryFile.
+func (mg *RepositoryFile) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Branch),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.BranchRef,
+		Selector:     mg.Spec.ForProvider.BranchSelector,
+		To: reference.To{
+			List:    &BranchList{},
+			Managed: &Branch{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Branch")
+	}
+	mg.Spec.ForProvider.Branch = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.BranchRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Repository),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.RepositoryRef,
+		Selector:     mg.Spec.ForProvider.RepositorySelector,
+		To: reference.To{
+			List:    &RepositoryList{},
+			Managed: &Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Repository")
+	}
+	mg.Spec.ForProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RepositoryRef = rsp.ResolvedReference
+
+	return nil
+}
