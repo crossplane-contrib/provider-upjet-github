@@ -12,6 +12,7 @@ import (
 	"github.com/coopnorge/provider-github/config/branchprotection"
 	"github.com/coopnorge/provider-github/config/defaultbranch"
 	"github.com/coopnorge/provider-github/config/repository"
+	"github.com/coopnorge/provider-github/config/repositoryfile"
 	"github.com/coopnorge/provider-github/config/team"
 	"github.com/coopnorge/provider-github/config/teamrepository"
 	ujconfig "github.com/upbound/upjet/pkg/config"
@@ -40,6 +41,7 @@ func GetProvider() *ujconfig.Provider {
 		// add custom config functions
 		repository.Configure,
 		branch.Configure,
+		repositoryfile.Configure,
 		team.Configure,
 		teamrepository.Configure,
 		defaultbranch.Configure,

@@ -1,0 +1,44 @@
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  name: github-crossplane-file-test
+spec:
+  forProvider:
+    visibility: public
+    autoInit: true
+    gitignoreTemplate: Terraform
+  providerConfigRef:
+    name: default
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Branch
+metadata:
+  name: add-file-branch
+spec:
+  forProvider:
+    repositoryRef:
+      name: github-crossplane-file-test
+  providerConfigRef:
+    name: default
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: RepositoryFile
+metadata:
+  name: sample-file-dot-txt
+spec:
+  forProvider:
+    file: sample-file.txt
+    content: |
+      I am an crossplane 
+      provider. This should be nice.
+    commitMessage: "managed by crossplane provider"
+    commitAuthor: "Crossplane Github Provider"
+    commitEmail: "github-provider@crossplane.com"
+    repositoryRef:
+      name: github-crossplane-file-test
+    branchRef:
+      name: add-file-branch
+  providerConfigRef:
+    name: default
+
