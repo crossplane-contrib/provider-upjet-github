@@ -41,7 +41,7 @@ func GetProvider() *ujconfig.Provider {
 		// add custom config functions
 		repository.Configure,
 		branch.Configure,
-    repositoryfile.Configure,
+		repositoryfile.Configure,
 		team.Configure,
 		teamrepository.Configure,
 		defaultbranch.Configure,

@@ -9,11 +9,11 @@ func Configure(p *config.Provider) {
 		// this resource, which would be "github"
 		r.Kind = "RepositoryFile"
 		r.ShortGroup = "repo"
-		
-    r.References["repository"] = config.Reference{
+
+		r.References["repository"] = config.Reference{
 			Type: "Repository",
 		}
-    r.References["branch"] = config.Reference{
+		r.References["branch"] = config.Reference{
 			Type: "Branch",
 		}
 	})
