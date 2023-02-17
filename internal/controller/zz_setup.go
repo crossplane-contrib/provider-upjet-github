@@ -14,6 +14,7 @@ import (
 	branch "github.com/coopnorge/provider-github/internal/controller/repo/branch"
 	branchprotection "github.com/coopnorge/provider-github/internal/controller/repo/branchprotection"
 	defaultbranch "github.com/coopnorge/provider-github/internal/controller/repo/defaultbranch"
+	deploykey "github.com/coopnorge/provider-github/internal/controller/repo/deploykey"
 	repository "github.com/coopnorge/provider-github/internal/controller/repo/repository"
 	repositoryfile "github.com/coopnorge/provider-github/internal/controller/repo/repositoryfile"
 	team "github.com/coopnorge/provider-github/internal/controller/team/team"
@@ -29,6 +30,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		branch.Setup,
 		branchprotection.Setup,
 		defaultbranch.Setup,
+		deploykey.Setup,
 		repository.Setup,
 		repositoryfile.Setup,
 		team.Setup,
