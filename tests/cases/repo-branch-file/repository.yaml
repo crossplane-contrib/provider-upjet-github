@@ -41,4 +41,23 @@ spec:
       name: add-file-branch
   providerConfigRef:
     name: default
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: PullRequest
+metadata:
+  name: test-pr
+spec:
+  forProvider:
+    baseRepositoryRef:
+      name: github-crossplane-file-test
+    baseBranch: main
+    headRefRef:
+      name: add-file-branch
+    title: |
+      Test Pull PullRequest 
+    body: |
+      A nice long `desc` of 
+      a nice pr
+  providerConfigRef:
+    name: default
 

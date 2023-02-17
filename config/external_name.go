@@ -18,7 +18,9 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	// Imported by using the following format: {{ repository }}:{{ pattern }}
 	// We cannot use the external_name = pattern here since pattern can contain non alpha numberic characters
 	"github_branch_protection": config.IdentifierFromProvider,
-	// Imported by using the following format: github_repository_file.gitignore {{repository}}/{{file}}:{{branch}}
+	// No documentation on how to import
+	"github_repository_pull_request": config.IdentifierFromProvider,
+  // Imported by using the following format: github_repository_file.gitignore {{repository}}/{{file}}:{{branch}}
 	// We cannot use file as external name since filenames are not DNSSpec and metadata.name requires this.
 	"github_repository_file": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ id / slug }}
