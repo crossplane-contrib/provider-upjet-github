@@ -15,6 +15,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"github_branch": config.TemplatedStringAsIdentifier("branch", "{{ .parameters.repository }}:{{ .external_name }}:{{ .parameters.source_branch }}"),
 	// Imported by using the following format: {{ repository }}
 	"github_branch_default": config.TemplatedStringAsIdentifier("repository", "{{ .external_name }}"),
+	// Imported by using the following format: {{ repository }}:{{ (key_id, fetchable from api) }}
+	"github_repository_deploy_key": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository }}:{{ pattern }}
 	// We cannot use the external_name = pattern here since pattern can contain non alpha numberic characters
 	"github_branch_protection": config.IdentifierFromProvider,
