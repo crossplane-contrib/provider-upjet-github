@@ -8,6 +8,7 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
+	"github.com/coopnorge/provider-github/config/actionssecret"
 	"github.com/coopnorge/provider-github/config/branch"
 	"github.com/coopnorge/provider-github/config/branchprotection"
 	"github.com/coopnorge/provider-github/config/defaultbranch"
@@ -46,6 +47,8 @@ func GetProvider() *ujconfig.Provider {
 		teamrepository.Configure,
 		defaultbranch.Configure,
 		branchprotection.Configure,
+		repositoryfile.Configure,
+		actionssecret.Configure,
 	} {
 		configure(pc)
 	}

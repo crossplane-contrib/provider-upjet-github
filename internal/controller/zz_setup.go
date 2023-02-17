@@ -9,6 +9,7 @@ import (
 
 	"github.com/upbound/upjet/pkg/controller"
 
+	actionssecret "github.com/coopnorge/provider-github/internal/controller/actions/actionssecret"
 	providerconfig "github.com/coopnorge/provider-github/internal/controller/providerconfig"
 	branch "github.com/coopnorge/provider-github/internal/controller/repo/branch"
 	branchprotection "github.com/coopnorge/provider-github/internal/controller/repo/branchprotection"
@@ -23,6 +24,7 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		actionssecret.Setup,
 		providerconfig.Setup,
 		branch.Setup,
 		branchprotection.Setup,

@@ -37,7 +37,7 @@ You can see the API reference [here](https://doc.crds.dev/github.com/coopnorge/p
 | `RepositoryFile` | `repo` | `github_repository_file` | |
 | `Team` | `team` | `github_team` | | 
 | `TeamRepository` | `team` | `github_team_repository` | |
-
+| ActionsSecrets | actions | github_actions_secret | | 
 
 
 ## Adding resources

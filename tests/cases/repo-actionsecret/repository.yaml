@@ -1,0 +1,34 @@
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  name: github-crossplane-action-secret
+spec:
+  forProvider:
+    visibility: public
+    autoInit: true
+    gitignoreTemplate: Terraform
+  providerConfigRef:
+    name: default
+---
+apiVersion: actions.github.upbound.io/v1alpha1
+kind: ActionsSecret 
+metadata:
+  name: action-secret-test
+spec:
+  forProvider:
+    secretName: TEST_SECRET 
+    repositoryRef:
+      name: github-crossplane-action-secret
+    plaintextValueSecretRef:
+      key: howdy
+      name: action-secret-secret 
+      namespace: default
+
+---
+apiVersion: v1 
+kind: Secret 
+metadata:
+  name: action-secret-secret 
+stringData:
+  howdy: a-secret-text
