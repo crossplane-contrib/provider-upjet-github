@@ -26,6 +26,37 @@ EOF
 ```
 You can see the API reference [here](https://doc.crds.dev/github.com/coopnorge/provider-github).
 
+### Adding provider config
+
+Add this to configure the provider. Reference on how to configure this
+can be found at the terraform provider documentation
+https://registry.terraform.io/providers/integrations/github/latest/docs 
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: provider-secret
+  namespace: upbound-system
+type: Opaque
+stringData:
+  credentials: "{\"token\":\"${GH_TOKEN}\",\"owner\":\"${GH_OWNER}\"}"
+---
+apiVersion: github.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: default
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      name: provider-secret
+      namespace: upbound-system
+      key: credentials
+
+```
+
+
 ## Supported resources
 
 | Kind | Group | Terraform Resource Name | Notes  |
