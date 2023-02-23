@@ -66,6 +66,7 @@ spec:
 | `DefaultBranch` | `repo` | `github_branch_default` | name change |
 | `BranchProtection` | `repo` | `github_branch_protection` | |
 | `RepositoryFile` | `repo` | `github_repository_file` | |
+| `PullRequest` | `repo` | `github_repository_pull_request` | |
 | `DeployKey` | `repo` | `github_repository_deploy_key` | |
 | `Team` | `team` | `github_team` | | 
 | `TeamRepository` | `team` | `github_team_repository` | |

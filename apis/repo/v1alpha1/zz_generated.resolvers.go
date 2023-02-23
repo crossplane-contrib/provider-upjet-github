@@ -116,6 +116,48 @@ func (mg *DeployKey) ResolveReferences(ctx context.Context, c client.Reader) err
 	return nil
 }
 
+// ResolveReferences of this PullRequest.
+func (mg *PullRequest) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.BaseRepository),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.BaseRepositoryRef,
+		Selector:     mg.Spec.ForProvider.BaseRepositorySelector,
+		To: reference.To{
+			List:    &RepositoryList{},
+			Managed: &Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.BaseRepository")
+	}
+	mg.Spec.ForProvider.BaseRepository = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.BaseRepositoryRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.HeadRef),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.HeadRefRef,
+		Selector:     mg.Spec.ForProvider.HeadRefSelector,
+		To: reference.To{
+			List:    &BranchList{},
+			Managed: &Branch{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.HeadRef")
+	}
+	mg.Spec.ForProvider.HeadRef = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.HeadRefRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this RepositoryFile.
 func (mg *RepositoryFile) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
