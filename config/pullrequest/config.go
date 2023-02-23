@@ -16,13 +16,12 @@ func Configure(p *config.Provider) {
 		r.References["base_repository"] = config.Reference{
 			Type: "github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository",
 		}
-//    r.References["base_ref"] = config.Reference{
-//			Type: "github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch",
-//		}
-    r.References["head_ref"] = config.Reference{
+		//    r.References["base_ref"] = config.Reference{
+		//			Type: "github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch",
+		//		}
+		r.References["head_ref"] = config.Reference{
 			Type: "github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch",
 		}
-
 
 	})
 }

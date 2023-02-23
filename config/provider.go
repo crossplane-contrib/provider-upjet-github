@@ -13,11 +13,11 @@ import (
 	"github.com/coopnorge/provider-github/config/branchprotection"
 	"github.com/coopnorge/provider-github/config/defaultbranch"
 	"github.com/coopnorge/provider-github/config/deploykey"
+	"github.com/coopnorge/provider-github/config/pullrequest"
 	"github.com/coopnorge/provider-github/config/repository"
 	"github.com/coopnorge/provider-github/config/repositoryfile"
 	"github.com/coopnorge/provider-github/config/team"
 	"github.com/coopnorge/provider-github/config/teamrepository"
-	"github.com/coopnorge/provider-github/config/pullrequest"
 	ujconfig "github.com/upbound/upjet/pkg/config"
 )
 
