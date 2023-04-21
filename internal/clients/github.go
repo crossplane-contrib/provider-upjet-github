@@ -20,11 +20,13 @@ import (
 
 const (
 	// error messages
-	errNoProviderConfig     = "no providerConfigRef provided"
-	errGetProviderConfig    = "cannot get referenced ProviderConfig"
-	errTrackUsage           = "cannot track ProviderConfig usage"
-	errExtractCredentials   = "cannot extract credentials"
-	errUnmarshalCredentials = "cannot unmarshal github credentials as JSON"
+	errNoProviderConfig              = "no providerConfigRef provided"
+	errGetProviderConfig             = "cannot get referenced ProviderConfig"
+	errTrackUsage                    = "cannot track ProviderConfig usage"
+	errExtractCredentials            = "cannot extract credentials"
+	errUnmarshalCredentials          = "cannot unmarshal github credentials as JSON"
+	errProviderConfigurationBuilder  = "cannot build configuration for terraform provider block"
+	errTerraformProviderMissingOwner = "github provider app_auth needs owner key to be set"
 
 	// provider config variables
 	keyBaseURL               = "base_url"
@@ -53,7 +55,7 @@ type githubConfig struct {
 	ReadDelayMs  *int       `json:"read_delay_ms,omitempty"`
 }
 
-func terraformProviderConfigurationBuilder(creds githubConfig) terraform.ProviderConfiguration {
+func terraformProviderConfigurationBuilder(creds githubConfig) (terraform.ProviderConfiguration, error) {
 
 	cnf := terraform.ProviderConfiguration{}
 
@@ -70,6 +72,10 @@ func terraformProviderConfigurationBuilder(creds githubConfig) terraform.Provide
 	}
 
 	if creds.AppAuth != nil {
+		if creds.Owner == nil {
+			return cnf, errors.Errorf(errTerraformProviderMissingOwner)
+		}
+
 		aaList := []map[string]any{}
 
 		aa := map[string]any{
@@ -90,7 +96,7 @@ func terraformProviderConfigurationBuilder(creds githubConfig) terraform.Provide
 		cnf[keyReadDelayMs] = *creds.ReadDelayMs
 	}
 
-	return cnf
+	return cnf, nil
 
 }
 
@@ -130,7 +136,10 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
 
-		ps.Configuration = terraformProviderConfigurationBuilder(creds)
+		ps.Configuration, err = terraformProviderConfigurationBuilder(creds)
+		if err != nil {
+			return ps, errors.Wrap(err, errProviderConfigurationBuilder)
+		}
 
 		return ps, nil
 
