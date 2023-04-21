@@ -20,20 +20,87 @@ import (
 
 const (
 	// error messages
-	errNoProviderConfig     = "no providerConfigRef provided"
-	errGetProviderConfig    = "cannot get referenced ProviderConfig"
-	errTrackUsage           = "cannot track ProviderConfig usage"
-	errExtractCredentials   = "cannot extract credentials"
-	errUnmarshalCredentials = "cannot unmarshal github credentials as JSON"
+	errNoProviderConfig              = "no providerConfigRef provided"
+	errGetProviderConfig             = "cannot get referenced ProviderConfig"
+	errTrackUsage                    = "cannot track ProviderConfig usage"
+	errExtractCredentials            = "cannot extract credentials"
+	errUnmarshalCredentials          = "cannot unmarshal github credentials as JSON"
+	errProviderConfigurationBuilder  = "cannot build configuration for terraform provider block"
+	errTerraformProviderMissingOwner = "github provider app_auth needs owner key to be set"
 
 	// provider config variables
-	keyBaseURL = "base_url"
-	keyOwner   = "owner"
-	keyToken   = "token"
+	keyBaseURL               = "base_url"
+	keyOwner                 = "owner"
+	keyToken                 = "token"
+	keyAppAuth               = "app_auth"
+	keyAppAuthID             = "id"
+	keyAppAuthInstallationID = "installation_id"
+	keyAppAuthPemFile        = "pem_file"
+	keyWriteDelayMs          = "write_delay_ms"
+	keyReadDelayMs           = "read_delay_ms"
 )
 
-// TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
-// returns Terraform provider setup configuration
+type appAuth struct {
+	ID             string `json:"id"`
+	InstallationID string `json:"installation_id"`
+	AuthPemFile    string `json:"pem_file"`
+}
+
+type githubConfig struct {
+	BaseURL      *string    `json:"base_url,omitempty"`
+	Owner        *string    `json:"owner,omitempty"`
+	Token        *string    `json:"token,omitempty"`
+	AppAuth      *[]appAuth `json:"app_auth,omitempty"`
+	WriteDelayMs *int       `json:"write_delay_ms,omitempty"`
+	ReadDelayMs  *int       `json:"read_delay_ms,omitempty"`
+}
+
+func terraformProviderConfigurationBuilder(creds githubConfig) (terraform.ProviderConfiguration, error) {
+
+	cnf := terraform.ProviderConfiguration{}
+
+	if creds.BaseURL != nil {
+		cnf[keyBaseURL] = *creds.BaseURL
+	}
+
+	if creds.Owner != nil {
+		cnf[keyOwner] = *creds.Owner
+	}
+
+	if creds.Token != nil {
+		cnf[keyToken] = *creds.Token
+	}
+
+	if creds.AppAuth != nil {
+		if creds.Owner == nil {
+			return cnf, errors.Errorf(errTerraformProviderMissingOwner)
+		}
+
+		aaList := []map[string]any{}
+
+		aa := map[string]any{
+			keyAppAuthID:             (*creds.AppAuth)[0].ID,
+			keyAppAuthInstallationID: (*creds.AppAuth)[0].InstallationID,
+			keyAppAuthPemFile:        (*creds.AppAuth)[0].AuthPemFile,
+		}
+
+		aaList = append(aaList, aa)
+		cnf[keyAppAuth] = aaList
+	}
+
+	if creds.WriteDelayMs != nil {
+		cnf[keyWriteDelayMs] = *creds.WriteDelayMs
+	}
+
+	if creds.ReadDelayMs != nil {
+		cnf[keyReadDelayMs] = *creds.ReadDelayMs
+	}
+
+	return cnf, nil
+
+}
+
+// TerraformSetupBuilder builds Terraform a terraform.SetupFn function which returns Terraform provider setup configuration
 func TerraformSetupBuilder(version, providerSource, providerVersion string) terraform.SetupFn {
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
 		ps := terraform.Setup{
@@ -48,6 +115,7 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		if configRef == nil {
 			return ps, errors.New(errNoProviderConfig)
 		}
+
 		pc := &v1beta1.ProviderConfig{}
 		if err := client.Get(ctx, types.NamespacedName{Name: configRef.Name}, pc); err != nil {
 			return ps, errors.Wrap(err, errGetProviderConfig)
@@ -62,22 +130,17 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		if err != nil {
 			return ps, errors.Wrap(err, errExtractCredentials)
 		}
-		creds := map[string]string{}
+
+		creds := githubConfig{}
 		if err := json.Unmarshal(data, &creds); err != nil {
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
 
-		// set provider configuration
-		ps.Configuration = map[string]any{}
-		if v, ok := creds[keyBaseURL]; ok {
-			ps.Configuration[keyBaseURL] = v
+		ps.Configuration, err = terraformProviderConfigurationBuilder(creds)
+		if err != nil {
+			return ps, errors.Wrap(err, errProviderConfigurationBuilder)
 		}
-		if v, ok := creds[keyOwner]; ok {
-			ps.Configuration[keyOwner] = v
-		}
-		if v, ok := creds[keyToken]; ok {
-			ps.Configuration[keyToken] = v
-		}
+
 		return ps, nil
 
 	}
