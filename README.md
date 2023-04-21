@@ -30,9 +30,12 @@ You can see the API reference [here](https://doc.crds.dev/github.com/coopnorge/p
 
 Add this to configure the provider. Reference on how to configure this
 can be found at the terraform provider documentation
-https://registry.terraform.io/providers/integrations/github/latest/docs 
+https://registry.terraform.io/providers/integrations/github/latest/docs
+
+#### Provider config example with personal access token
 
 ```yaml
+---
 apiVersion: v1
 kind: Secret
 metadata:
@@ -41,6 +44,7 @@ metadata:
 type: Opaque
 stringData:
   credentials: "{\"token\":\"${GH_TOKEN}\",\"owner\":\"${GH_OWNER}\"}"
+
 ---
 apiVersion: github.upbound.io/v1beta1
 kind: ProviderConfig
@@ -56,6 +60,35 @@ spec:
 
 ```
 
+#### Provider config example with Github application based authentication
+
+Note that the PEM certificate needs to be wrapped in a non-multiline string, with the characters "\n"
+as newline. See Terraform provider doc for more information.
+```yaml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: provider-secret
+  namespace: upbound-system
+type: Opaque
+stringData:
+  credentials: "{\"app_auth\": [ \"id\": \"${APP_ID}\", \"installation_id\": \"${APP_INSTALLATION_ID}\", \"pem_file\": \"${APP_PEM_FILE}\" ] ,\"owner\":\"${GH_OWNER}\"}"
+
+---
+apiVersion: github.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: default
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      name: provider-secret
+      namespace: upbound-system
+      key: credentials
+
+```
 
 ## Supported resources
 
@@ -68,18 +101,18 @@ spec:
 | `RepositoryFile` | `repo` | `github_repository_file` | |
 | `PullRequest` | `repo` | `github_repository_pull_request` | |
 | `DeployKey` | `repo` | `github_repository_deploy_key` | |
-| `Team` | `team` | `github_team` | | 
+| `Team` | `team` | `github_team` | |
 | `TeamRepository` | `team` | `github_team_repository` | |
-| ActionsSecrets | actions | github_actions_secret | | 
+| ActionsSecrets | actions | github_actions_secret | |
 
 
 ## Adding resources
 
 * Find the resource to add here: https://registry.terraform.io/providers/integrations/github/latest/docs
 * 1 resource per PR prefered
-* Write a test case 
+* Write a test case
 
-Check this reference PR: https://github.com/coopnorge/provider-github/pull/4 
+Check this reference PR: https://github.com/coopnorge/provider-github/pull/4
 
 An example diff for human generated files
 
@@ -93,9 +126,9 @@ index 06704c1..7adefad 100644
  | `DefaultBranch` | `repo` | `github_branch_default` | name change |
  | `BranchProtection` | `repo` | `github_branch_protection` | |
 +| `RepositoryFile` | `repo` | `github_repository_file` | |
- | `Team` | `team` | `github_team` | | 
+ | `Team` | `team` | `github_team` | |
  | `TeamRepository` | `team` | `github_team_repository` | |
- 
+
 diff --git a/config/external_name.go b/config/external_name.go
 index 505fa1c..50440d4 100644
 --- a/config/external_name.go
@@ -147,7 +180,7 @@ index 0000000..5684451
 +		// this resource, which would be "github"
 +		r.Kind = "RepositoryFile"
 +		r.ShortGroup = "repo"
-+		
++
 +    r.References["repository"] = config.Reference{
 +			Type: "Repository",
 +		}
