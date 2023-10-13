@@ -1,6 +1,6 @@
 module github.com/coopnorge/provider-github
 
-go 1.19
+go 1.20
 
 require (
 	github.com/crossplane/crossplane-runtime v0.19.0-rc.0.0.20221012013934-bce61005a175
