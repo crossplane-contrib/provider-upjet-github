@@ -181,6 +181,10 @@ type RepositoryParameters struct {
 	// +kubebuilder:validation:Optional
 	MergeCommitTitle *string `json:"mergeCommitTitle,omitempty" tf:"merge_commit_title,omitempty"`
 
+	// The name of the repository.
+	// +kubebuilder:validation:Required
+	Name *string `json:"name" tf:"name,omitempty"`
+
 	// The repository's GitHub Pages configuration. See GitHub Pages Configuration below for details.
 	// +kubebuilder:validation:Optional
 	Pages []PagesParameters `json:"pages,omitempty" tf:"pages,omitempty"`

@@ -1479,6 +1479,11 @@ func (in *RepositoryParameters) DeepCopyInto(out *RepositoryParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
 	if in.Pages != nil {
 		in, out := &in.Pages, &out.Pages
 		*out = make([]PagesParameters, len(*in))

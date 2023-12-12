@@ -27,7 +27,8 @@ metadata:
     testing.upbound.io/example-name: some_repo
   name: some-repo
 spec:
-  forProvider: {}
+  forProvider:
+    name: some-repo
 
 ---
 

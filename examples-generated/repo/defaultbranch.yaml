@@ -42,6 +42,7 @@ spec:
   forProvider:
     autoInit: true
     description: My awesome codebase
+    name: example
 
 ---
 

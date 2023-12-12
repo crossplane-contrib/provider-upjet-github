@@ -9,6 +9,7 @@ metadata:
 spec:
   forProvider:
     description: My awesome codebase
+    name: example
     template:
     - includeAllBranches: true
       owner: github
