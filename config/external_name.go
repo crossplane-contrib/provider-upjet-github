@@ -10,7 +10,7 @@ import "github.com/upbound/upjet/pkg/config"
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
 	// Imported by using the following format: {{name}}
-	"github_repository": config.NameAsIdentifier,
+	"github_repository": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository }}:{{ name }}:{{ source branch }}
 	"github_branch": config.TemplatedStringAsIdentifier("branch", "{{ .parameters.repository }}:{{ .external_name }}:{{ .parameters.source_branch }}"),
 	// Imported by using the following format: {{ repository }}

@@ -34,6 +34,7 @@ metadata:
 spec:
   forProvider:
     autoInit: true
+    name: tf-acc-test-%s
 
 ---
 

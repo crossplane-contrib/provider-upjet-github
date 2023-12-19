@@ -161,6 +161,9 @@ spec:
                     description: Can be PR_TITLE or MERGE_MESSAGE for a default merge
                       commit title.
                     type: string
+                  name:
+                    description: The name of the repository.
+                    type: string
                   pages:
                     description: The repository's GitHub Pages configuration. See
                       GitHub Pages Configuration below for details.
@@ -310,6 +313,8 @@ spec:
                       alerts have not been successfully tested on any GitHub Enterprise
                       instance and may be unavailable in those settings.'
                     type: boolean
+                required:
+                - name
                 type: object
               providerConfigRef:
                 default:
