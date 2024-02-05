@@ -1,0 +1,14 @@
+apiVersion: organization.github.upbound.io/v1alpha1
+kind: Organization
+metadata:
+  name: hello-provider-github
+spec:
+  forProvider:
+    name: hello-provider-github
+    adminLogins: 
+      - janedoe
+    billingEmail: foo@bar.com
+    enterpriseId: E_xyz
+    description: "Hello GitHub Provider"
+  providerConfigRef:
+    name: default
