@@ -1,4 +1,4 @@
-apiVersion: repo.github.upbound.io/v1alpha1
+apiVersion: repo.template.upbound.io/v1alpha1
 kind: DefaultBranch
 metadata:
   annotations:
@@ -14,7 +14,7 @@ spec:
 
 ---
 
-apiVersion: repo.github.upbound.io/v1alpha1
+apiVersion: repo.template.upbound.io/v1alpha1
 kind: Branch
 metadata:
   annotations:
@@ -30,7 +30,7 @@ spec:
 
 ---
 
-apiVersion: repo.github.upbound.io/v1alpha1
+apiVersion: repo.template.upbound.io/v1alpha1
 kind: Repository
 metadata:
   annotations:
@@ -43,6 +43,3 @@ spec:
     autoInit: true
     description: My awesome codebase
     name: example
-
----
-

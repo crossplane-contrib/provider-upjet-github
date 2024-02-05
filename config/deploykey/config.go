@@ -1,6 +1,6 @@
 package deploykey
 
-import "github.com/upbound/upjet/pkg/config"
+import "github.com/crossplane/upjet/pkg/config"
 
 // Configure github_branch resource.
 func Configure(p *config.Provider) {

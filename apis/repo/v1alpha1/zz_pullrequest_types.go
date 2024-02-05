@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,13 +17,43 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type PullRequestInitParameters struct {
+
+	// Name of the branch serving as the base of the Pull Request.
+	BaseRef *string `json:"baseRef,omitempty" tf:"base_ref,omitempty"`
+
+	// Body of the Pull Request.
+	Body *string `json:"body,omitempty" tf:"body,omitempty"`
+
+	// Controls whether the base repository maintainers can modify the Pull Request. Default: false.
+	MaintainerCanModify *bool `json:"maintainerCanModify,omitempty" tf:"maintainer_can_modify,omitempty"`
+
+	// Owner of the repository. If not provided, the provider's default owner is used.
+	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
+
+	// The title of the Pull Request.
+	Title *string `json:"title,omitempty" tf:"title,omitempty"`
+}
+
 type PullRequestObservation struct {
+
+	// Name of the branch serving as the base of the Pull Request.
+	BaseRef *string `json:"baseRef,omitempty" tf:"base_ref,omitempty"`
+
+	// Name of the base repository to retrieve the Pull Requests from.
+	BaseRepository *string `json:"baseRepository,omitempty" tf:"base_repository,omitempty"`
 
 	// Head commit SHA of the Pull Request base.
 	BaseSha *string `json:"baseSha,omitempty" tf:"base_sha,omitempty"`
 
+	// Body of the Pull Request.
+	Body *string `json:"body,omitempty" tf:"body,omitempty"`
+
 	// Indicates Whether this Pull Request is a draft.
 	Draft *bool `json:"draft,omitempty" tf:"draft,omitempty"`
+
+	// Name of the branch serving as the head of the Pull Request.
+	HeadRef *string `json:"headRef,omitempty" tf:"head_ref,omitempty"`
 
 	// Head commit SHA of the Pull Request head.
 	HeadSha *string `json:"headSha,omitempty" tf:"head_sha,omitempty"`
@@ -29,6 +63,9 @@ type PullRequestObservation struct {
 	// List of label names set on the Pull Request.
 	// List of names of labels on the PR
 	Labels []*string `json:"labels,omitempty" tf:"labels,omitempty"`
+
+	// Controls whether the base repository maintainers can modify the Pull Request. Default: false.
+	MaintainerCanModify *bool `json:"maintainerCanModify,omitempty" tf:"maintainer_can_modify,omitempty"`
 
 	// The number of the Pull Request within the repository.
 	Number *float64 `json:"number,omitempty" tf:"number,omitempty"`
@@ -40,8 +77,14 @@ type PullRequestObservation struct {
 	// Username of the PR creator
 	OpenedBy *string `json:"openedBy,omitempty" tf:"opened_by,omitempty"`
 
+	// Owner of the repository. If not provided, the provider's default owner is used.
+	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
+
 	// the current Pull Request state - can be "open", "closed" or "merged".
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
+
+	// The title of the Pull Request.
+	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 
 	// The timestamp of the last Pull Request update.
 	UpdatedAt *float64 `json:"updatedAt,omitempty" tf:"updated_at,omitempty"`
@@ -50,8 +93,8 @@ type PullRequestObservation struct {
 type PullRequestParameters struct {
 
 	// Name of the branch serving as the base of the Pull Request.
-	// +kubebuilder:validation:Required
-	BaseRef *string `json:"baseRef" tf:"base_ref,omitempty"`
+	// +kubebuilder:validation:Optional
+	BaseRef *string `json:"baseRef,omitempty" tf:"base_ref,omitempty"`
 
 	// Name of the base repository to retrieve the Pull Requests from.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
@@ -92,14 +135,25 @@ type PullRequestParameters struct {
 	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
 
 	// The title of the Pull Request.
-	// +kubebuilder:validation:Required
-	Title *string `json:"title" tf:"title,omitempty"`
+	// +kubebuilder:validation:Optional
+	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 }
 
 // PullRequestSpec defines the desired state of PullRequest
 type PullRequestSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     PullRequestParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider PullRequestInitParameters `json:"initProvider,omitempty"`
 }
 
 // PullRequestStatus defines the observed state of PullRequest.
@@ -120,8 +174,10 @@ type PullRequestStatus struct {
 type PullRequest struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              PullRequestSpec   `json:"spec"`
-	Status            PullRequestStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.baseRef) || (has(self.initProvider) && has(self.initProvider.baseRef))",message="spec.forProvider.baseRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.title) || (has(self.initProvider) && has(self.initProvider.title))",message="spec.forProvider.title is a required parameter"
+	Spec   PullRequestSpec   `json:"spec"`
+	Status PullRequestStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

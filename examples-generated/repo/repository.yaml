@@ -1,4 +1,4 @@
-apiVersion: repo.github.upbound.io/v1alpha1
+apiVersion: repo.template.upbound.io/v1alpha1
 kind: Repository
 metadata:
   annotations:
@@ -15,6 +15,3 @@ spec:
       owner: github
       repository: terraform-template-module
     visibility: public
-
----
-

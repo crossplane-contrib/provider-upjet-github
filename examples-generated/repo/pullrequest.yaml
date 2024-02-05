@@ -1,4 +1,4 @@
-apiVersion: repo.github.upbound.io/v1alpha1
+apiVersion: repo.template.upbound.io/v1alpha1
 kind: PullRequest
 metadata:
   annotations:
@@ -17,6 +17,3 @@ spec:
       matchLabels:
         testing.upbound.io/example-name: example
     title: My newest feature
-
----
-

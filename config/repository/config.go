@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/upbound/upjet/pkg/config"
+import "github.com/crossplane/upjet/pkg/config"
 
 // Configure github_repository resource.
 func Configure(p *config.Provider) {

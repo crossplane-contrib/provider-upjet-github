@@ -1,6 +1,6 @@
 package defaultbranch
 
-import "github.com/upbound/upjet/pkg/config"
+import "github.com/crossplane/upjet/pkg/config"
 
 // Configure github_branch_default resource.
 func Configure(p *config.Provider) {
