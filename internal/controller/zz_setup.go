@@ -10,6 +10,7 @@ import (
 	"github.com/crossplane/upjet/pkg/controller"
 
 	actionssecret "github.com/coopnorge/provider-github/internal/controller/actions/actionssecret"
+	organization "github.com/coopnorge/provider-github/internal/controller/organization/organization"
 	providerconfig "github.com/coopnorge/provider-github/internal/controller/providerconfig"
 	branch "github.com/coopnorge/provider-github/internal/controller/repo/branch"
 	branchprotection "github.com/coopnorge/provider-github/internal/controller/repo/branchprotection"
@@ -27,6 +28,7 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		actionssecret.Setup,
+		organization.Setup,
 		providerconfig.Setup,
 		branch.Setup,
 		branchprotection.Setup,

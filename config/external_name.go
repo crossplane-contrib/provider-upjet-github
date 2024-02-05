@@ -29,10 +29,11 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	// The id in the state needs to use the numberic id of the team. Cannot make external_name nice
 	"github_team": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ team_id/slug }}:{{ repository }}
-	// The id in the state needs to use the numberic id of the team plus the repository. Cannot make external_name nice
+	// The id in the state needs to use the numeric id of the team plus the repository. Cannot make external_name nice
 	"github_team_repository": config.IdentifierFromProvider,
 	// This cannot be imported.
-	"github_actions_secret": config.IdentifierFromProvider,
+	"github_actions_secret":          config.IdentifierFromProvider,
+	"github_enterprise_organization": config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

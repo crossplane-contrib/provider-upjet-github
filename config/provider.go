@@ -13,6 +13,7 @@ import (
 	"github.com/coopnorge/provider-github/config/branchprotection"
 	"github.com/coopnorge/provider-github/config/defaultbranch"
 	"github.com/coopnorge/provider-github/config/deploykey"
+	"github.com/coopnorge/provider-github/config/enterpriseorganization"
 	"github.com/coopnorge/provider-github/config/pullrequest"
 	"github.com/coopnorge/provider-github/config/repository"
 	"github.com/coopnorge/provider-github/config/repositoryfile"
@@ -55,6 +56,7 @@ func GetProvider() *ujconfig.Provider {
 		branchprotection.Configure,
 		repositoryfile.Configure,
 		actionssecret.Configure,
+		enterpriseorganization.Configure,
 	} {
 		configure(pc)
 	}
