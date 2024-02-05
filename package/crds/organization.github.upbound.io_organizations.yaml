@@ -53,12 +53,13 @@ spec:
             description: OrganizationSpec defines the desired state of Organization
             properties:
               deletionPolicy:
-                default: Orphan
+                default: Delete
                 description: DeletionPolicy specifies what will happen to the underlying
-                  external when this managed resource is deleted - only "Orphan" is supported 
-                  by now because GitHub does not allow to delete organizations programatically.
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource.
                 enum:
                 - Orphan
+                - Delete
                 type: string
               forProvider:
                 properties:
