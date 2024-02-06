@@ -3,20 +3,19 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
-  creationTimestamp: null
-  name: teamrepositories.team.github.upbound.io
+    controller-gen.kubebuilder.io/version: v0.13.0
+  name: pullrequests.repo.template.upbound.io
 spec:
-  group: team.github.upbound.io
+  group: repo.template.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - github
-    kind: TeamRepository
-    listKind: TeamRepositoryList
-    plural: teamrepositories
-    singular: teamrepository
+    kind: PullRequest
+    listKind: PullRequestList
+    plural: pullrequests
+    singular: pullrequest
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: TeamRepository is the Schema for the TeamRepositorys API. Manages
-          the associations between teams and repositories.
+        description: PullRequest is the Schema for the PullRequests API. Get information
+          on a single GitHub Pull Request.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -51,30 +50,33 @@ spec:
           metadata:
             type: object
           spec:
-            description: TeamRepositorySpec defines the desired state of TeamRepository
+            description: PullRequestSpec defines the desired state of PullRequest
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
+                description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                  or "Orphan" the external resource. This field is planned to be deprecated
+                  in favor of the ManagementPolicies field in a future release. Currently,
+                  both could be set independently and non-default values would be
+                  honored if the feature flag is enabled. See the design doc for more
+                  information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
                 enum:
                 - Orphan
                 - Delete
                 type: string
               forProvider:
                 properties:
-                  permission:
-                    description: The permissions of team members regarding the repository.
-                      Must be one of pull, triage, push, maintain, admin or the name
-                      of an existing custom repository role within the organisation.
-                      Defaults to pull.
+                  baseRef:
+                    description: Name of the branch serving as the base of the Pull
+                      Request.
                     type: string
-                  repository:
-                    description: The repository to add to the team.
+                  baseRepository:
+                    description: Name of the base repository to retrieve the Pull
+                      Requests from.
                     type: string
-                  repositoryRef:
-                    description: Reference to a Repository in repo to populate repository.
+                  baseRepositoryRef:
+                    description: Reference to a Repository in repo to populate baseRepository.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -107,8 +109,8 @@ spec:
                     required:
                     - name
                     type: object
-                  repositorySelector:
-                    description: Selector for a Repository in repo to populate repository.
+                  baseRepositorySelector:
+                    description: Selector for a Repository in repo to populate baseRepository.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -146,12 +148,15 @@ spec:
                             type: string
                         type: object
                     type: object
-                  teamId:
-                    description: The GitHub team id or the GitHub team slug ID or
-                      slug of team
+                  body:
+                    description: Body of the Pull Request.
                     type: string
-                  teamIdRef:
-                    description: Reference to a Team in team to populate teamId.
+                  headRef:
+                    description: Name of the branch serving as the head of the Pull
+                      Request.
+                    type: string
+                  headRefRef:
+                    description: Reference to a Branch in repo to populate headRef.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -184,8 +189,8 @@ spec:
                     required:
                     - name
                     type: object
-                  teamIdSelector:
-                    description: Selector for a Team in team to populate teamId.
+                  headRefSelector:
+                    description: Selector for a Branch in repo to populate headRef.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -223,49 +228,234 @@ spec:
                             type: string
                         type: object
                     type: object
+                  maintainerCanModify:
+                    description: 'Controls whether the base repository maintainers
+                      can modify the Pull Request. Default: false.'
+                    type: boolean
+                  owner:
+                    description: Owner of the repository. If not provided, the provider's
+                      default owner is used.
+                    type: string
+                  title:
+                    description: The title of the Pull Request.
+                    type: string
                 type: object
+              initProvider:
+                description: THIS IS A BETA FIELD. It will be honored unless the Management
+                  Policies feature flag is disabled. InitProvider holds the same fields
+                  as ForProvider, with the exception of Identifier and other resource
+                  reference fields. The fields that are in InitProvider are merged
+                  into ForProvider when the resource is created. The same fields are
+                  also added to the terraform ignore_changes hook, to avoid updating
+                  them after creation. This is useful for fields that are required
+                  on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them,
+                  like an autoscaler.
+                properties:
+                  baseRef:
+                    description: Name of the branch serving as the base of the Pull
+                      Request.
+                    type: string
+                  baseRepository:
+                    description: Name of the base repository to retrieve the Pull
+                      Requests from.
+                    type: string
+                  baseRepositoryRef:
+                    description: Reference to a Repository in repo to populate baseRepository.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  baseRepositorySelector:
+                    description: Selector for a Repository in repo to populate baseRepository.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  body:
+                    description: Body of the Pull Request.
+                    type: string
+                  headRef:
+                    description: Name of the branch serving as the head of the Pull
+                      Request.
+                    type: string
+                  headRefRef:
+                    description: Reference to a Branch in repo to populate headRef.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  headRefSelector:
+                    description: Selector for a Branch in repo to populate headRef.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  maintainerCanModify:
+                    description: 'Controls whether the base repository maintainers
+                      can modify the Pull Request. Default: false.'
+                    type: boolean
+                  owner:
+                    description: Owner of the repository. If not provided, the provider's
+                      default owner is used.
+                    type: string
+                  title:
+                    description: The title of the Pull Request.
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: 'THIS IS A BETA FIELD. It is on by default but can be
+                  opted out through a Crossplane feature flag. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
                 description: ProviderConfigReference specifies how the provider that
                   will be used to create, observe, update, and delete this managed
                   resource should be configured.
-                properties:
-                  name:
-                    description: Name of the referenced object.
-                    type: string
-                  policy:
-                    description: Policies for referencing.
-                    properties:
-                      resolution:
-                        default: Required
-                        description: Resolution specifies whether resolution of this
-                          reference is required. The default is 'Required', which
-                          means the reconcile will fail if the reference cannot be
-                          resolved. 'Optional' means this reference will be a no-op
-                          if it cannot be resolved.
-                        enum:
-                        - Required
-                        - Optional
-                        type: string
-                      resolve:
-                        description: Resolve specifies when this reference should
-                          be resolved. The default is 'IfNotPresent', which will attempt
-                          to resolve the reference only when the corresponding field
-                          is not present. Use 'Always' to resolve the reference on
-                          every reconcile.
-                        enum:
-                        - Always
-                        - IfNotPresent
-                        type: string
-                    type: object
-                required:
-                - name
-                type: object
-              providerRef:
-                description: 'ProviderReference specifies the provider that will be
-                  used to create, observe, update, and delete this managed resource.
-                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
                 properties:
                   name:
                     description: Name of the referenced object.
@@ -395,15 +585,81 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.baseRef is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.baseRef)
+                || (has(self.initProvider) && has(self.initProvider.baseRef))'
+            - message: spec.forProvider.title is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.title)
+                || (has(self.initProvider) && has(self.initProvider.title))'
           status:
-            description: TeamRepositoryStatus defines the observed state of TeamRepository.
+            description: PullRequestStatus defines the observed state of PullRequest.
             properties:
               atProvider:
                 properties:
-                  etag:
+                  baseRef:
+                    description: Name of the branch serving as the base of the Pull
+                      Request.
+                    type: string
+                  baseRepository:
+                    description: Name of the base repository to retrieve the Pull
+                      Requests from.
+                    type: string
+                  baseSha:
+                    description: Head commit SHA of the Pull Request base.
+                    type: string
+                  body:
+                    description: Body of the Pull Request.
+                    type: string
+                  draft:
+                    description: Indicates Whether this Pull Request is a draft.
+                    type: boolean
+                  headRef:
+                    description: Name of the branch serving as the head of the Pull
+                      Request.
+                    type: string
+                  headSha:
+                    description: Head commit SHA of the Pull Request head.
                     type: string
                   id:
                     type: string
+                  labels:
+                    description: List of label names set on the Pull Request. List
+                      of names of labels on the PR
+                    items:
+                      type: string
+                    type: array
+                  maintainerCanModify:
+                    description: 'Controls whether the base repository maintainers
+                      can modify the Pull Request. Default: false.'
+                    type: boolean
+                  number:
+                    description: The number of the Pull Request within the repository.
+                    type: number
+                  openedAt:
+                    description: Unix timestamp indicating the Pull Request creation
+                      time.
+                    type: number
+                  openedBy:
+                    description: GitHub login of the user who opened the Pull Request.
+                      Username of the PR creator
+                    type: string
+                  owner:
+                    description: Owner of the repository. If not provided, the provider's
+                      default owner is used.
+                    type: string
+                  state:
+                    description: the current Pull Request state - can be "open", "closed"
+                      or "merged".
+                    type: string
+                  title:
+                    description: The title of the Pull Request.
+                    type: string
+                  updatedAt:
+                    description: The timestamp of the last Pull Request update.
+                    type: number
                 type: object
               conditions:
                 description: Conditions of the resource.
@@ -438,6 +694,9 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
             type: object
         required:
         - spec
@@ -446,9 +705,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

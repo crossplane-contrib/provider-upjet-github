@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
+//
+// SPDX-License-Identifier: Apache-2.0
+
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -13,16 +17,58 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type TeamInitParameters struct {
+
+	// Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
+	CreateDefaultMaintainer *bool `json:"createDefaultMaintainer,omitempty" tf:"create_default_maintainer,omitempty"`
+
+	// A description of the team.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
+	LdapDn *string `json:"ldapDn,omitempty" tf:"ldap_dn,omitempty"`
+
+	// The name of the team.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The ID of the parent team, if this is a nested team.
+	ParentTeamID *float64 `json:"parentTeamId,omitempty" tf:"parent_team_id,omitempty"`
+
+	// The level of privacy for the team. Must be one of secret or closed.
+	// Defaults to secret.
+	Privacy *string `json:"privacy,omitempty" tf:"privacy,omitempty"`
+}
+
 type TeamObservation struct {
+
+	// Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
+	CreateDefaultMaintainer *bool `json:"createDefaultMaintainer,omitempty" tf:"create_default_maintainer,omitempty"`
+
+	// A description of the team.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
 
 	// The ID of the created team.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
+	LdapDn *string `json:"ldapDn,omitempty" tf:"ldap_dn,omitempty"`
+
 	MembersCount *float64 `json:"membersCount,omitempty" tf:"members_count,omitempty"`
+
+	// The name of the team.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The Node ID of the created team.
 	NodeID *string `json:"nodeId,omitempty" tf:"node_id,omitempty"`
+
+	// The ID of the parent team, if this is a nested team.
+	ParentTeamID *float64 `json:"parentTeamId,omitempty" tf:"parent_team_id,omitempty"`
+
+	// The level of privacy for the team. Must be one of secret or closed.
+	// Defaults to secret.
+	Privacy *string `json:"privacy,omitempty" tf:"privacy,omitempty"`
 
 	// The slug of the created team, which may or may not differ from name,
 	// depending on whether name contains "URL-unsafe" characters.
@@ -45,8 +91,8 @@ type TeamParameters struct {
 	LdapDn *string `json:"ldapDn,omitempty" tf:"ldap_dn,omitempty"`
 
 	// The name of the team.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The ID of the parent team, if this is a nested team.
 	// +kubebuilder:validation:Optional
@@ -62,6 +108,17 @@ type TeamParameters struct {
 type TeamSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     TeamParameters `json:"forProvider"`
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider TeamInitParameters `json:"initProvider,omitempty"`
 }
 
 // TeamStatus defines the observed state of Team.
@@ -71,19 +128,21 @@ type TeamStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Team is the Schema for the Teams API. Provides a GitHub team resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}
 type Team struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              TeamSpec   `json:"spec"`
-	Status            TeamStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	Spec   TeamSpec   `json:"spec"`
+	Status TeamStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -1,4 +1,4 @@
-apiVersion: team.github.upbound.io/v1alpha1
+apiVersion: team.template.upbound.io/v1alpha1
 kind: Team
 metadata:
   annotations:
@@ -11,6 +11,3 @@ spec:
     description: Some cool team
     name: some-team
     privacy: closed
-
----
-

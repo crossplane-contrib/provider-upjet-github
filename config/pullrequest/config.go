@@ -1,6 +1,6 @@
 package pullrequest
 
-import "github.com/upbound/upjet/pkg/config"
+import "github.com/crossplane/upjet/pkg/config"
 
 // Configure github_repository_pull_request resource.
 func Configure(p *config.Provider) {

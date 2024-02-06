@@ -1,6 +1,6 @@
 package branchprotection
 
-import "github.com/upbound/upjet/pkg/config"
+import "github.com/crossplane/upjet/pkg/config"
 
 // Configure github_branch_protection resource
 func Configure(p *config.Provider) {

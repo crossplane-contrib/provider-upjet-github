@@ -17,17 +17,14 @@ func (mg *ActionsSecret) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this ActionsSecret.
+func (mg *ActionsSecret) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this ActionsSecret.
 func (mg *ActionsSecret) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
-}
-
-/*
-GetProviderReference of this ActionsSecret.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *ActionsSecret) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
 }
 
 // GetPublishConnectionDetailsTo of this ActionsSecret.
@@ -50,17 +47,14 @@ func (mg *ActionsSecret) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
+// SetManagementPolicies of this ActionsSecret.
+func (mg *ActionsSecret) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
 // SetProviderConfigReference of this ActionsSecret.
 func (mg *ActionsSecret) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this ActionsSecret.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *ActionsSecret) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this ActionsSecret.
