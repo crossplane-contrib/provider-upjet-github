@@ -38,7 +38,21 @@ type BranchProtectionInitParameters struct {
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 
 	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// +listType=set
 	PushRestrictions []*string `json:"pushRestrictions,omitempty" tf:"push_restrictions,omitempty"`
+
+	// The name or node ID of the repository associated with this branch protection rule.
+	// Node ID or name of repository
+	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	RepositoryID *string `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+
+	// Reference to a Repository in repo to populate repositoryId.
+	// +kubebuilder:validation:Optional
+	RepositoryIDRef *v1.Reference `json:"repositoryIdRef,omitempty" tf:"-"`
+
+	// Selector for a Repository in repo to populate repositoryId.
+	// +kubebuilder:validation:Optional
+	RepositoryIDSelector *v1.Selector `json:"repositoryIdSelector,omitempty" tf:"-"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
 	RequireConversationResolution *bool `json:"requireConversationResolution,omitempty" tf:"require_conversation_resolution,omitempty"`
@@ -79,6 +93,7 @@ type BranchProtectionObservation struct {
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 
 	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// +listType=set
 	PushRestrictions []*string `json:"pushRestrictions,omitempty" tf:"push_restrictions,omitempty"`
 
 	// The name or node ID of the repository associated with this branch protection rule.
@@ -129,6 +144,7 @@ type BranchProtectionParameters struct {
 
 	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	PushRestrictions []*string `json:"pushRestrictions,omitempty" tf:"push_restrictions,omitempty"`
 
 	// The name or node ID of the repository associated with this branch protection rule.
@@ -172,9 +188,11 @@ type RequiredPullRequestReviewsInitParameters struct {
 	DismissStaleReviews *bool `json:"dismissStaleReviews,omitempty" tf:"dismiss_stale_reviews,omitempty"`
 
 	// :  The list of actor Names/IDs with dismissal access. If not empty, restrict_dismissals is ignored. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// +listType=set
 	DismissalRestrictions []*string `json:"dismissalRestrictions,omitempty" tf:"dismissal_restrictions,omitempty"`
 
 	// :  The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// +listType=set
 	PullRequestBypassers []*string `json:"pullRequestBypassers,omitempty" tf:"pull_request_bypassers,omitempty"`
 
 	// :  Require an approved review in pull requests including files with a designated code owner. Defaults to false.
@@ -197,9 +215,11 @@ type RequiredPullRequestReviewsObservation struct {
 	DismissStaleReviews *bool `json:"dismissStaleReviews,omitempty" tf:"dismiss_stale_reviews,omitempty"`
 
 	// :  The list of actor Names/IDs with dismissal access. If not empty, restrict_dismissals is ignored. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// +listType=set
 	DismissalRestrictions []*string `json:"dismissalRestrictions,omitempty" tf:"dismissal_restrictions,omitempty"`
 
 	// :  The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// +listType=set
 	PullRequestBypassers []*string `json:"pullRequestBypassers,omitempty" tf:"pull_request_bypassers,omitempty"`
 
 	// :  Require an approved review in pull requests including files with a designated code owner. Defaults to false.
@@ -224,10 +244,12 @@ type RequiredPullRequestReviewsParameters struct {
 
 	// :  The list of actor Names/IDs with dismissal access. If not empty, restrict_dismissals is ignored. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	DismissalRestrictions []*string `json:"dismissalRestrictions,omitempty" tf:"dismissal_restrictions,omitempty"`
 
 	// :  The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	PullRequestBypassers []*string `json:"pullRequestBypassers,omitempty" tf:"pull_request_bypassers,omitempty"`
 
 	// :  Require an approved review in pull requests including files with a designated code owner. Defaults to false.
@@ -251,6 +273,7 @@ type RequiredPullRequestReviewsParameters struct {
 type RequiredStatusChecksInitParameters struct {
 
 	// :  The list of status checks to require in order to merge into this branch. No status checks are required by default.
+	// +listType=set
 	Contexts []*string `json:"contexts,omitempty" tf:"contexts,omitempty"`
 
 	// :  Require branches to be up to date before merging. Defaults to false.
@@ -260,6 +283,7 @@ type RequiredStatusChecksInitParameters struct {
 type RequiredStatusChecksObservation struct {
 
 	// :  The list of status checks to require in order to merge into this branch. No status checks are required by default.
+	// +listType=set
 	Contexts []*string `json:"contexts,omitempty" tf:"contexts,omitempty"`
 
 	// :  Require branches to be up to date before merging. Defaults to false.
@@ -270,6 +294,7 @@ type RequiredStatusChecksParameters struct {
 
 	// :  The list of status checks to require in order to merge into this branch. No status checks are required by default.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Contexts []*string `json:"contexts,omitempty" tf:"contexts,omitempty"`
 
 	// :  Require branches to be up to date before merging. Defaults to false.
@@ -301,13 +326,14 @@ type BranchProtectionStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // BranchProtection is the Schema for the BranchProtections API. Protects a GitHub branch.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}
 type BranchProtection struct {
 	metav1.TypeMeta   `json:",inline"`

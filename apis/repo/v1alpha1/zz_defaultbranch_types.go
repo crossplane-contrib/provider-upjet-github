@@ -18,6 +18,18 @@ import (
 )
 
 type DefaultBranchInitParameters struct {
+
+	// The branch (e.g. main)
+	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
+	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
+
+	// Reference to a Branch in repo to populate branch.
+	// +kubebuilder:validation:Optional
+	BranchRef *v1.Reference `json:"branchRef,omitempty" tf:"-"`
+
+	// Selector for a Branch in repo to populate branch.
+	// +kubebuilder:validation:Optional
+	BranchSelector *v1.Selector `json:"branchSelector,omitempty" tf:"-"`
 }
 
 type DefaultBranchObservation struct {
@@ -68,13 +80,14 @@ type DefaultBranchStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // DefaultBranch is the Schema for the DefaultBranchs API. Provides a GitHub branch default for a given repository.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}
 type DefaultBranch struct {
 	metav1.TypeMeta   `json:",inline"`

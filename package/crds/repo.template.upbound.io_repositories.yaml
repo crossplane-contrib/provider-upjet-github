@@ -287,6 +287,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   visibility:
                     description: Can be public or private. If your organization is
                       associated with an enterprise account using GitHub Enterprise
@@ -536,6 +537,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   visibility:
                     description: Can be public or private. If your organization is
                       associated with an enterprise account using GitHub Enterprise
@@ -991,6 +993,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   visibility:
                     description: Can be public or private. If your organization is
                       associated with an enterprise account using GitHub Enterprise

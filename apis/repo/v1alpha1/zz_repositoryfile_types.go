@@ -19,6 +19,20 @@ import (
 
 type RepositoryFileInitParameters struct {
 
+	// Git branch (defaults to main).
+	// The branch must already exist, it will not be created if it does not already exist.
+	// The branch name, defaults to "main"
+	// +crossplane:generate:reference:type=Branch
+	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
+
+	// Reference to a Branch to populate branch.
+	// +kubebuilder:validation:Optional
+	BranchRef *v1.Reference `json:"branchRef,omitempty" tf:"-"`
+
+	// Selector for a Branch to populate branch.
+	// +kubebuilder:validation:Optional
+	BranchSelector *v1.Selector `json:"branchSelector,omitempty" tf:"-"`
+
 	// Committer author name to use. NOTE: GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App. This maybe useful when a branch protection rule requires signed commits.
 	// The commit author name, defaults to the authenticated user's name. GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App.
 	CommitAuthor *string `json:"commitAuthor,omitempty" tf:"commit_author,omitempty"`
@@ -42,6 +56,19 @@ type RepositoryFileInitParameters struct {
 	// Enable overwriting existing files
 	// Enable overwriting existing files, defaults to "false"
 	OverwriteOnCreate *bool `json:"overwriteOnCreate,omitempty" tf:"overwrite_on_create,omitempty"`
+
+	// The repository to create the file in.
+	// The repository name
+	// +crossplane:generate:reference:type=Repository
+	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// Reference to a Repository to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+
+	// Selector for a Repository to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 }
 
 type RepositoryFileObservation struct {
@@ -176,13 +203,14 @@ type RepositoryFileStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // RepositoryFile is the Schema for the RepositoryFiles API. Creates and manages files within a GitHub repository
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}
 type RepositoryFile struct {
 	metav1.TypeMeta   `json:",inline"`

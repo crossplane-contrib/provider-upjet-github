@@ -21,6 +21,7 @@ import (
 	tjcontroller "github.com/crossplane/upjet/pkg/controller"
 	"github.com/crossplane/upjet/pkg/controller/handler"
 	"github.com/crossplane/upjet/pkg/terraform"
+	"github.com/pkg/errors"
 	ctrl "sigs.k8s.io/controller-runtime"
 
 	v1alpha1 "github.com/coopnorge/provider-github/apis/repo/v1alpha1"
@@ -56,6 +57,17 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 	if o.Features.Enabled(features.EnableBetaManagementPolicies) {
 		opts = append(opts, managed.WithManagementPolicies())
 	}
+
+	// register webhooks for the kind v1alpha1.Branch
+	// if they're enabled.
+	if o.StartWebhooks {
+		if err := ctrl.NewWebhookManagedBy(mgr).
+			For(&v1alpha1.Branch{}).
+			Complete(); err != nil {
+			return errors.Wrap(err, "cannot register webhook for the kind v1alpha1.Branch")
+		}
+	}
+
 	r := managed.NewReconciler(mgr, xpresource.ManagedKind(v1alpha1.Branch_GroupVersionKind), opts...)
 
 	return ctrl.NewControllerManagedBy(mgr).

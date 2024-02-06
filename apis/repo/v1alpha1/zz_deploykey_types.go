@@ -25,6 +25,18 @@ type DeployKeyInitParameters struct {
 	// A boolean qualifying the key to be either read only or read/write.
 	ReadOnly *bool `json:"readOnly,omitempty" tf:"read_only,omitempty"`
 
+	// Name of the GitHub repository.
+	// +crossplane:generate:reference:type=Repository
+	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// Reference to a Repository to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+
+	// Selector for a Repository to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+
 	// A title.
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 }
@@ -99,13 +111,14 @@ type DeployKeyStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // DeployKey is the Schema for the DeployKeys API. Provides a GitHub repository deploy key resource.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}
 type DeployKey struct {
 	metav1.TypeMeta   `json:",inline"`

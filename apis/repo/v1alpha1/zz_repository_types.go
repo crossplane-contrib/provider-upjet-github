@@ -176,6 +176,7 @@ type RepositoryInitParameters struct {
 	Template []TemplateInitParameters `json:"template,omitempty" tf:"template,omitempty"`
 
 	// The list of topics of the repository.
+	// +listType=set
 	Topics []*string `json:"topics,omitempty" tf:"topics,omitempty"`
 
 	// Can be public or private. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be internal. The visibility parameter overrides the private parameter.
@@ -313,6 +314,7 @@ type RepositoryObservation struct {
 	Template []TemplateObservation `json:"template,omitempty" tf:"template,omitempty"`
 
 	// The list of topics of the repository.
+	// +listType=set
 	Topics []*string `json:"topics,omitempty" tf:"topics,omitempty"`
 
 	// Can be public or private. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be internal. The visibility parameter overrides the private parameter.
@@ -453,6 +455,7 @@ type RepositoryParameters struct {
 
 	// The list of topics of the repository.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Topics []*string `json:"topics,omitempty" tf:"topics,omitempty"`
 
 	// Can be public or private. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be internal. The visibility parameter overrides the private parameter.
@@ -633,13 +636,14 @@ type RepositoryStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Repository is the Schema for the Repositorys API. Creates and manages repositories within GitHub organizations or personal accounts
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}
 type Repository struct {
 	metav1.TypeMeta   `json:",inline"`
