@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: actionssecrets.actions.template.upbound.io
+  name: teams.team.github.upbound.io
 spec:
-  group: actions.template.upbound.io
+  group: team.github.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - github
-    kind: ActionsSecret
-    listKind: ActionsSecretList
-    plural: actionssecrets
-    singular: actionssecret
+    kind: Team
+    listKind: TeamList
+    plural: teams
+    singular: team
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ActionsSecret is the Schema for the ActionsSecrets API. Creates
-          and manages an Action Secret within a GitHub repository
+        description: Team is the Schema for the Teams API. Provides a GitHub team
+          resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: ActionsSecretSpec defines the desired state of ActionsSecret
+            description: TeamSpec defines the desired state of Team
             properties:
               deletionPolicy:
                 default: Delete
@@ -67,119 +67,26 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  encryptedValueSecretRef:
-                    description: Encrypted value of the secret using the GitHub public
-                      key in Base64 format.
-                    properties:
-                      key:
-                        description: The key to select.
-                        type: string
-                      name:
-                        description: Name of the secret.
-                        type: string
-                      namespace:
-                        description: Namespace of the secret.
-                        type: string
-                    required:
-                    - key
-                    - name
-                    - namespace
-                    type: object
-                  plaintextValueSecretRef:
-                    description: Plaintext value of the secret to be encrypted
-                    properties:
-                      key:
-                        description: The key to select.
-                        type: string
-                      name:
-                        description: Name of the secret.
-                        type: string
-                      namespace:
-                        description: Namespace of the secret.
-                        type: string
-                    required:
-                    - key
-                    - name
-                    - namespace
-                    type: object
-                  repository:
-                    description: Name of the repository
+                  createDefaultMaintainer:
+                    description: Adds a default maintainer to the team. Defaults to
+                      false and adds the creating user to the team when true.
+                    type: boolean
+                  description:
+                    description: A description of the team.
                     type: string
-                  repositoryRef:
-                    description: Reference to a Repository in repo to populate repository.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
-                    type: object
-                  repositorySelector:
-                    description: Selector for a Repository in repo to populate repository.
-                    properties:
-                      matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
-                        type: boolean
-                      matchLabels:
-                        additionalProperties:
-                          type: string
-                        description: MatchLabels ensures an object with matching labels
-                          is selected.
-                        type: object
-                      policy:
-                        description: Policies for selection.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    type: object
-                  secretName:
-                    description: Name of the secret
+                  ldapDn:
+                    description: The LDAP Distinguished Name of the group where membership
+                      will be synchronized. Only available in GitHub Enterprise Server.
+                    type: string
+                  name:
+                    description: The name of the team.
+                    type: string
+                  parentTeamId:
+                    description: The ID of the parent team, if this is a nested team.
+                    type: number
+                  privacy:
+                    description: The level of privacy for the team. Must be one of
+                      secret or closed. Defaults to secret.
                     type: string
                 type: object
               initProvider:
@@ -194,84 +101,26 @@ spec:
                   for example because of an external controller is managing them,
                   like an autoscaler.
                 properties:
-                  repository:
-                    description: Name of the repository
+                  createDefaultMaintainer:
+                    description: Adds a default maintainer to the team. Defaults to
+                      false and adds the creating user to the team when true.
+                    type: boolean
+                  description:
+                    description: A description of the team.
                     type: string
-                  repositoryRef:
-                    description: Reference to a Repository in repo to populate repository.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
-                    type: object
-                  repositorySelector:
-                    description: Selector for a Repository in repo to populate repository.
-                    properties:
-                      matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
-                        type: boolean
-                      matchLabels:
-                        additionalProperties:
-                          type: string
-                        description: MatchLabels ensures an object with matching labels
-                          is selected.
-                        type: object
-                      policy:
-                        description: Policies for selection.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    type: object
-                  secretName:
-                    description: Name of the secret
+                  ldapDn:
+                    description: The LDAP Distinguished Name of the group where membership
+                      will be synchronized. Only available in GitHub Enterprise Server.
+                    type: string
+                  name:
+                    description: The name of the team.
+                    type: string
+                  parentTeamId:
+                    description: The ID of the parent team, if this is a nested team.
+                    type: number
+                  privacy:
+                    description: The level of privacy for the team. Must be one of
+                      secret or closed. Defaults to secret.
                     type: string
                 type: object
               managementPolicies:
@@ -435,28 +284,50 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: spec.forProvider.secretName is a required parameter
+            - message: spec.forProvider.name is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.secretName)
-                || (has(self.initProvider) && has(self.initProvider.secretName))'
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
           status:
-            description: ActionsSecretStatus defines the observed state of ActionsSecret.
+            description: TeamStatus defines the observed state of Team.
             properties:
               atProvider:
                 properties:
-                  createdAt:
-                    description: Date of actions_secret creation.
+                  createDefaultMaintainer:
+                    description: Adds a default maintainer to the team. Defaults to
+                      false and adds the creating user to the team when true.
+                    type: boolean
+                  description:
+                    description: A description of the team.
+                    type: string
+                  etag:
                     type: string
                   id:
+                    description: The ID of the created team.
                     type: string
-                  repository:
-                    description: Name of the repository
+                  ldapDn:
+                    description: The LDAP Distinguished Name of the group where membership
+                      will be synchronized. Only available in GitHub Enterprise Server.
                     type: string
-                  secretName:
-                    description: Name of the secret
+                  membersCount:
+                    type: number
+                  name:
+                    description: The name of the team.
                     type: string
-                  updatedAt:
-                    description: Date of actions_secret update.
+                  nodeId:
+                    description: The Node ID of the created team.
+                    type: string
+                  parentTeamId:
+                    description: The ID of the parent team, if this is a nested team.
+                    type: number
+                  privacy:
+                    description: The level of privacy for the team. Must be one of
+                      secret or closed. Defaults to secret.
+                    type: string
+                  slug:
+                    description: The slug of the created team, which may or may not
+                      differ from name, depending on whether name contains "URL-unsafe"
+                      characters. Useful when referencing the team in github_branch_protection.
                     type: string
                 type: object
               conditions:

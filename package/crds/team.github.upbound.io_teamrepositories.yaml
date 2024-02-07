@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: pullrequests.repo.template.upbound.io
+  name: teamrepositories.team.github.upbound.io
 spec:
-  group: repo.template.upbound.io
+  group: team.github.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - github
-    kind: PullRequest
-    listKind: PullRequestList
-    plural: pullrequests
-    singular: pullrequest
+    kind: TeamRepository
+    listKind: TeamRepositoryList
+    plural: teamrepositories
+    singular: teamrepository
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: PullRequest is the Schema for the PullRequests API. Get information
-          on a single GitHub Pull Request.
+        description: TeamRepository is the Schema for the TeamRepositorys API. Manages
+          the associations between teams and repositories.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: PullRequestSpec defines the desired state of PullRequest
+            description: TeamRepositorySpec defines the desired state of TeamRepository
             properties:
               deletionPolicy:
                 default: Delete
@@ -67,16 +67,17 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  baseRef:
-                    description: Name of the branch serving as the base of the Pull
-                      Request.
+                  permission:
+                    description: The permissions of team members regarding the repository.
+                      Must be one of pull, triage, push, maintain, admin or the name
+                      of an existing custom repository role within the organisation.
+                      Defaults to pull.
                     type: string
-                  baseRepository:
-                    description: Name of the base repository to retrieve the Pull
-                      Requests from.
+                  repository:
+                    description: The repository to add to the team.
                     type: string
-                  baseRepositoryRef:
-                    description: Reference to a Repository in repo to populate baseRepository.
+                  repositoryRef:
+                    description: Reference to a Repository in repo to populate repository.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -109,8 +110,8 @@ spec:
                     required:
                     - name
                     type: object
-                  baseRepositorySelector:
-                    description: Selector for a Repository in repo to populate baseRepository.
+                  repositorySelector:
+                    description: Selector for a Repository in repo to populate repository.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -148,15 +149,12 @@ spec:
                             type: string
                         type: object
                     type: object
-                  body:
-                    description: Body of the Pull Request.
+                  teamId:
+                    description: The GitHub team id or the GitHub team slug ID or
+                      slug of team
                     type: string
-                  headRef:
-                    description: Name of the branch serving as the head of the Pull
-                      Request.
-                    type: string
-                  headRefRef:
-                    description: Reference to a Branch in repo to populate headRef.
+                  teamIdRef:
+                    description: Reference to a Team in team to populate teamId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -189,8 +187,8 @@ spec:
                     required:
                     - name
                     type: object
-                  headRefSelector:
-                    description: Selector for a Branch in repo to populate headRef.
+                  teamIdSelector:
+                    description: Selector for a Team in team to populate teamId.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -228,17 +226,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  maintainerCanModify:
-                    description: 'Controls whether the base repository maintainers
-                      can modify the Pull Request. Default: false.'
-                    type: boolean
-                  owner:
-                    description: Owner of the repository. If not provided, the provider's
-                      default owner is used.
-                    type: string
-                  title:
-                    description: The title of the Pull Request.
-                    type: string
                 type: object
               initProvider:
                 description: THIS IS A BETA FIELD. It will be honored unless the Management
@@ -252,16 +239,17 @@ spec:
                   for example because of an external controller is managing them,
                   like an autoscaler.
                 properties:
-                  baseRef:
-                    description: Name of the branch serving as the base of the Pull
-                      Request.
+                  permission:
+                    description: The permissions of team members regarding the repository.
+                      Must be one of pull, triage, push, maintain, admin or the name
+                      of an existing custom repository role within the organisation.
+                      Defaults to pull.
                     type: string
-                  baseRepository:
-                    description: Name of the base repository to retrieve the Pull
-                      Requests from.
+                  repository:
+                    description: The repository to add to the team.
                     type: string
-                  baseRepositoryRef:
-                    description: Reference to a Repository in repo to populate baseRepository.
+                  repositoryRef:
+                    description: Reference to a Repository in repo to populate repository.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -294,8 +282,8 @@ spec:
                     required:
                     - name
                     type: object
-                  baseRepositorySelector:
-                    description: Selector for a Repository in repo to populate baseRepository.
+                  repositorySelector:
+                    description: Selector for a Repository in repo to populate repository.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -333,15 +321,12 @@ spec:
                             type: string
                         type: object
                     type: object
-                  body:
-                    description: Body of the Pull Request.
+                  teamId:
+                    description: The GitHub team id or the GitHub team slug ID or
+                      slug of team
                     type: string
-                  headRef:
-                    description: Name of the branch serving as the head of the Pull
-                      Request.
-                    type: string
-                  headRefRef:
-                    description: Reference to a Branch in repo to populate headRef.
+                  teamIdRef:
+                    description: Reference to a Team in team to populate teamId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -374,8 +359,8 @@ spec:
                     required:
                     - name
                     type: object
-                  headRefSelector:
-                    description: Selector for a Branch in repo to populate headRef.
+                  teamIdSelector:
+                    description: Selector for a Team in team to populate teamId.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -413,17 +398,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  maintainerCanModify:
-                    description: 'Controls whether the base repository maintainers
-                      can modify the Pull Request. Default: false.'
-                    type: boolean
-                  owner:
-                    description: Owner of the repository. If not provided, the provider's
-                      default owner is used.
-                    type: string
-                  title:
-                    description: The title of the Pull Request.
-                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -585,81 +559,28 @@ spec:
             required:
             - forProvider
             type: object
-            x-kubernetes-validations:
-            - message: spec.forProvider.baseRef is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.baseRef)
-                || (has(self.initProvider) && has(self.initProvider.baseRef))'
-            - message: spec.forProvider.title is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.title)
-                || (has(self.initProvider) && has(self.initProvider.title))'
           status:
-            description: PullRequestStatus defines the observed state of PullRequest.
+            description: TeamRepositoryStatus defines the observed state of TeamRepository.
             properties:
               atProvider:
                 properties:
-                  baseRef:
-                    description: Name of the branch serving as the base of the Pull
-                      Request.
-                    type: string
-                  baseRepository:
-                    description: Name of the base repository to retrieve the Pull
-                      Requests from.
-                    type: string
-                  baseSha:
-                    description: Head commit SHA of the Pull Request base.
-                    type: string
-                  body:
-                    description: Body of the Pull Request.
-                    type: string
-                  draft:
-                    description: Indicates Whether this Pull Request is a draft.
-                    type: boolean
-                  headRef:
-                    description: Name of the branch serving as the head of the Pull
-                      Request.
-                    type: string
-                  headSha:
-                    description: Head commit SHA of the Pull Request head.
+                  etag:
                     type: string
                   id:
                     type: string
-                  labels:
-                    description: List of label names set on the Pull Request. List
-                      of names of labels on the PR
-                    items:
-                      type: string
-                    type: array
-                  maintainerCanModify:
-                    description: 'Controls whether the base repository maintainers
-                      can modify the Pull Request. Default: false.'
-                    type: boolean
-                  number:
-                    description: The number of the Pull Request within the repository.
-                    type: number
-                  openedAt:
-                    description: Unix timestamp indicating the Pull Request creation
-                      time.
-                    type: number
-                  openedBy:
-                    description: GitHub login of the user who opened the Pull Request.
-                      Username of the PR creator
+                  permission:
+                    description: The permissions of team members regarding the repository.
+                      Must be one of pull, triage, push, maintain, admin or the name
+                      of an existing custom repository role within the organisation.
+                      Defaults to pull.
                     type: string
-                  owner:
-                    description: Owner of the repository. If not provided, the provider's
-                      default owner is used.
+                  repository:
+                    description: The repository to add to the team.
                     type: string
-                  state:
-                    description: the current Pull Request state - can be "open", "closed"
-                      or "merged".
+                  teamId:
+                    description: The GitHub team id or the GitHub team slug ID or
+                      slug of team
                     type: string
-                  title:
-                    description: The title of the Pull Request.
-                    type: string
-                  updatedAt:
-                    description: The timestamp of the last Pull Request update.
-                    type: number
                 type: object
               conditions:
                 description: Conditions of the resource.

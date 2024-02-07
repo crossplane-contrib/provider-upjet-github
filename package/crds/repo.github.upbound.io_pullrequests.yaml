@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: branchprotections.repo.template.upbound.io
+  name: pullrequests.repo.github.upbound.io
 spec:
-  group: repo.template.upbound.io
+  group: repo.github.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - github
-    kind: BranchProtection
-    listKind: BranchProtectionList
-    plural: branchprotections
-    singular: branchprotection
+    kind: PullRequest
+    listKind: PullRequestList
+    plural: pullrequests
+    singular: pullrequest
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: BranchProtection is the Schema for the BranchProtections API.
-          Protects a GitHub branch.
+        description: PullRequest is the Schema for the PullRequests API. Get information
+          on a single GitHub Pull Request.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: BranchProtectionSpec defines the desired state of BranchProtection
+            description: PullRequestSpec defines the desired state of PullRequest
             properties:
               deletionPolicy:
                 default: Delete
@@ -67,43 +67,16 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  allowsDeletions:
-                    description: Boolean, setting this to true to allow the branch
-                      to be deleted.
-                    type: boolean
-                  allowsForcePushes:
-                    description: Boolean, setting this to true to allow force pushes
-                      on the branch.
-                    type: boolean
-                  blocksCreations:
-                    description: Boolean, setting this to true to block creating the
-                      branch.
-                    type: boolean
-                  enforceAdmins:
-                    description: Boolean, setting this to true enforces status checks
-                      for repository administrators.
-                    type: boolean
-                  lockBranch:
-                    description: Boolean, Setting this to true will make the branch
-                      read-only and preventing any pushes to it. Defaults to false
-                    type: boolean
-                  pattern:
-                    description: Identifies the protection rule pattern.
+                  baseRef:
+                    description: Name of the branch serving as the base of the Pull
+                      Request.
                     type: string
-                  pushRestrictions:
-                    description: The list of actor Names/IDs that may push to the
-                      branch. Actor names must either begin with a "/" for users or
-                      the organization name followed by a "/" for teams.
-                    items:
-                      type: string
-                    type: array
-                    x-kubernetes-list-type: set
-                  repositoryId:
-                    description: The name or node ID of the repository associated
-                      with this branch protection rule. Node ID or name of repository
+                  baseRepository:
+                    description: Name of the base repository to retrieve the Pull
+                      Requests from.
                     type: string
-                  repositoryIdRef:
-                    description: Reference to a Repository in repo to populate repositoryId.
+                  baseRepositoryRef:
+                    description: Reference to a Repository in repo to populate baseRepository.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -136,8 +109,8 @@ spec:
                     required:
                     - name
                     type: object
-                  repositoryIdSelector:
-                    description: Selector for a Repository in repo to populate repositoryId.
+                  baseRepositorySelector:
+                    description: Selector for a Repository in repo to populate baseRepository.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -175,85 +148,97 @@ spec:
                             type: string
                         type: object
                     type: object
-                  requireConversationResolution:
-                    description: Boolean, setting this to true requires all conversations
-                      on code must be resolved before a pull request can be merged.
-                    type: boolean
-                  requireSignedCommits:
-                    description: Boolean, setting this to true requires all commits
-                      to be signed with GPG.
-                    type: boolean
-                  requiredLinearHistory:
-                    description: Boolean, setting this to true enforces a linear commit
-                      Git history, which prevents anyone from pushing merge commits
-                      to a branch
-                    type: boolean
-                  requiredPullRequestReviews:
-                    description: Enforce restrictions for pull request reviews. See
-                      Required Pull Request Reviews below for details.
-                    items:
-                      properties:
-                        dismissStaleReviews:
-                          description: ':  Dismiss approved reviews automatically
-                            when a new commit is pushed. Defaults to false.'
-                          type: boolean
-                        dismissalRestrictions:
-                          description: ':  The list of actor Names/IDs with dismissal
-                            access. If not empty, restrict_dismissals is ignored.
-                            Actor names must either begin with a "/" for users or
-                            the organization name followed by a "/" for teams.'
-                          items:
+                  body:
+                    description: Body of the Pull Request.
+                    type: string
+                  headRef:
+                    description: Name of the branch serving as the head of the Pull
+                      Request.
+                    type: string
+                  headRefRef:
+                    description: Reference to a Branch in repo to populate headRef.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
                             type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        pullRequestBypassers:
-                          description: ':  The list of actor Names/IDs that are allowed
-                            to bypass pull request requirements. Actor names must
-                            either begin with a "/" for users or the organization
-                            name followed by a "/" for teams.'
-                          items:
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
                             type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        requireCodeOwnerReviews:
-                          description: ':  Require an approved review in pull requests
-                            including files with a designated code owner. Defaults
-                            to false.'
-                          type: boolean
-                        requireLastPushApproval:
-                          description: ':  Require that The most recent push must
-                            be approved by someone other than the last pusher.  Defaults
-                            to false'
-                          type: boolean
-                        requiredApprovingReviewCount:
-                          description: 6. This requirement matches GitHub's API, see
-                            the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1)
-                            for more information.
-                          type: number
-                        restrictDismissals:
-                          description: ':  Restrict pull request review dismissals.'
-                          type: boolean
-                      type: object
-                    type: array
-                  requiredStatusChecks:
-                    description: Enforce restrictions for required status checks.
-                      See Required Status Checks below for details.
-                    items:
-                      properties:
-                        contexts:
-                          description: ':  The list of status checks to require in
-                            order to merge into this branch. No status checks are
-                            required by default.'
-                          items:
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  headRefSelector:
+                    description: Selector for a Branch in repo to populate headRef.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
                             type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        strict:
-                          description: ':  Require branches to be up to date before
-                            merging. Defaults to false.'
-                          type: boolean
-                      type: object
-                    type: array
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  maintainerCanModify:
+                    description: 'Controls whether the base repository maintainers
+                      can modify the Pull Request. Default: false.'
+                    type: boolean
+                  owner:
+                    description: Owner of the repository. If not provided, the provider's
+                      default owner is used.
+                    type: string
+                  title:
+                    description: The title of the Pull Request.
+                    type: string
                 type: object
               initProvider:
                 description: THIS IS A BETA FIELD. It will be honored unless the Management
@@ -267,43 +252,16 @@ spec:
                   for example because of an external controller is managing them,
                   like an autoscaler.
                 properties:
-                  allowsDeletions:
-                    description: Boolean, setting this to true to allow the branch
-                      to be deleted.
-                    type: boolean
-                  allowsForcePushes:
-                    description: Boolean, setting this to true to allow force pushes
-                      on the branch.
-                    type: boolean
-                  blocksCreations:
-                    description: Boolean, setting this to true to block creating the
-                      branch.
-                    type: boolean
-                  enforceAdmins:
-                    description: Boolean, setting this to true enforces status checks
-                      for repository administrators.
-                    type: boolean
-                  lockBranch:
-                    description: Boolean, Setting this to true will make the branch
-                      read-only and preventing any pushes to it. Defaults to false
-                    type: boolean
-                  pattern:
-                    description: Identifies the protection rule pattern.
+                  baseRef:
+                    description: Name of the branch serving as the base of the Pull
+                      Request.
                     type: string
-                  pushRestrictions:
-                    description: The list of actor Names/IDs that may push to the
-                      branch. Actor names must either begin with a "/" for users or
-                      the organization name followed by a "/" for teams.
-                    items:
-                      type: string
-                    type: array
-                    x-kubernetes-list-type: set
-                  repositoryId:
-                    description: The name or node ID of the repository associated
-                      with this branch protection rule. Node ID or name of repository
+                  baseRepository:
+                    description: Name of the base repository to retrieve the Pull
+                      Requests from.
                     type: string
-                  repositoryIdRef:
-                    description: Reference to a Repository in repo to populate repositoryId.
+                  baseRepositoryRef:
+                    description: Reference to a Repository in repo to populate baseRepository.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -336,8 +294,8 @@ spec:
                     required:
                     - name
                     type: object
-                  repositoryIdSelector:
-                    description: Selector for a Repository in repo to populate repositoryId.
+                  baseRepositorySelector:
+                    description: Selector for a Repository in repo to populate baseRepository.
                     properties:
                       matchControllerRef:
                         description: MatchControllerRef ensures an object with the
@@ -375,85 +333,97 @@ spec:
                             type: string
                         type: object
                     type: object
-                  requireConversationResolution:
-                    description: Boolean, setting this to true requires all conversations
-                      on code must be resolved before a pull request can be merged.
-                    type: boolean
-                  requireSignedCommits:
-                    description: Boolean, setting this to true requires all commits
-                      to be signed with GPG.
-                    type: boolean
-                  requiredLinearHistory:
-                    description: Boolean, setting this to true enforces a linear commit
-                      Git history, which prevents anyone from pushing merge commits
-                      to a branch
-                    type: boolean
-                  requiredPullRequestReviews:
-                    description: Enforce restrictions for pull request reviews. See
-                      Required Pull Request Reviews below for details.
-                    items:
-                      properties:
-                        dismissStaleReviews:
-                          description: ':  Dismiss approved reviews automatically
-                            when a new commit is pushed. Defaults to false.'
-                          type: boolean
-                        dismissalRestrictions:
-                          description: ':  The list of actor Names/IDs with dismissal
-                            access. If not empty, restrict_dismissals is ignored.
-                            Actor names must either begin with a "/" for users or
-                            the organization name followed by a "/" for teams.'
-                          items:
+                  body:
+                    description: Body of the Pull Request.
+                    type: string
+                  headRef:
+                    description: Name of the branch serving as the head of the Pull
+                      Request.
+                    type: string
+                  headRefRef:
+                    description: Reference to a Branch in repo to populate headRef.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
                             type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        pullRequestBypassers:
-                          description: ':  The list of actor Names/IDs that are allowed
-                            to bypass pull request requirements. Actor names must
-                            either begin with a "/" for users or the organization
-                            name followed by a "/" for teams.'
-                          items:
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
                             type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        requireCodeOwnerReviews:
-                          description: ':  Require an approved review in pull requests
-                            including files with a designated code owner. Defaults
-                            to false.'
-                          type: boolean
-                        requireLastPushApproval:
-                          description: ':  Require that The most recent push must
-                            be approved by someone other than the last pusher.  Defaults
-                            to false'
-                          type: boolean
-                        requiredApprovingReviewCount:
-                          description: 6. This requirement matches GitHub's API, see
-                            the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1)
-                            for more information.
-                          type: number
-                        restrictDismissals:
-                          description: ':  Restrict pull request review dismissals.'
-                          type: boolean
-                      type: object
-                    type: array
-                  requiredStatusChecks:
-                    description: Enforce restrictions for required status checks.
-                      See Required Status Checks below for details.
-                    items:
-                      properties:
-                        contexts:
-                          description: ':  The list of status checks to require in
-                            order to merge into this branch. No status checks are
-                            required by default.'
-                          items:
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  headRefSelector:
+                    description: Selector for a Branch in repo to populate headRef.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
                             type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        strict:
-                          description: ':  Require branches to be up to date before
-                            merging. Defaults to false.'
-                          type: boolean
-                      type: object
-                    type: array
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  maintainerCanModify:
+                    description: 'Controls whether the base repository maintainers
+                      can modify the Pull Request. Default: false.'
+                    type: boolean
+                  owner:
+                    description: Owner of the repository. If not provided, the provider's
+                      default owner is used.
+                    type: string
+                  title:
+                    description: The title of the Pull Request.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -616,131 +586,80 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: spec.forProvider.pattern is a required parameter
+            - message: spec.forProvider.baseRef is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.pattern)
-                || (has(self.initProvider) && has(self.initProvider.pattern))'
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.baseRef)
+                || (has(self.initProvider) && has(self.initProvider.baseRef))'
+            - message: spec.forProvider.title is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.title)
+                || (has(self.initProvider) && has(self.initProvider.title))'
           status:
-            description: BranchProtectionStatus defines the observed state of BranchProtection.
+            description: PullRequestStatus defines the observed state of PullRequest.
             properties:
               atProvider:
                 properties:
-                  allowsDeletions:
-                    description: Boolean, setting this to true to allow the branch
-                      to be deleted.
+                  baseRef:
+                    description: Name of the branch serving as the base of the Pull
+                      Request.
+                    type: string
+                  baseRepository:
+                    description: Name of the base repository to retrieve the Pull
+                      Requests from.
+                    type: string
+                  baseSha:
+                    description: Head commit SHA of the Pull Request base.
+                    type: string
+                  body:
+                    description: Body of the Pull Request.
+                    type: string
+                  draft:
+                    description: Indicates Whether this Pull Request is a draft.
                     type: boolean
-                  allowsForcePushes:
-                    description: Boolean, setting this to true to allow force pushes
-                      on the branch.
-                    type: boolean
-                  blocksCreations:
-                    description: Boolean, setting this to true to block creating the
-                      branch.
-                    type: boolean
-                  enforceAdmins:
-                    description: Boolean, setting this to true enforces status checks
-                      for repository administrators.
-                    type: boolean
+                  headRef:
+                    description: Name of the branch serving as the head of the Pull
+                      Request.
+                    type: string
+                  headSha:
+                    description: Head commit SHA of the Pull Request head.
+                    type: string
                   id:
                     type: string
-                  lockBranch:
-                    description: Boolean, Setting this to true will make the branch
-                      read-only and preventing any pushes to it. Defaults to false
-                    type: boolean
-                  pattern:
-                    description: Identifies the protection rule pattern.
-                    type: string
-                  pushRestrictions:
-                    description: The list of actor Names/IDs that may push to the
-                      branch. Actor names must either begin with a "/" for users or
-                      the organization name followed by a "/" for teams.
+                  labels:
+                    description: List of label names set on the Pull Request. List
+                      of names of labels on the PR
                     items:
                       type: string
                     type: array
-                    x-kubernetes-list-type: set
-                  repositoryId:
-                    description: The name or node ID of the repository associated
-                      with this branch protection rule. Node ID or name of repository
+                  maintainerCanModify:
+                    description: 'Controls whether the base repository maintainers
+                      can modify the Pull Request. Default: false.'
+                    type: boolean
+                  number:
+                    description: The number of the Pull Request within the repository.
+                    type: number
+                  openedAt:
+                    description: Unix timestamp indicating the Pull Request creation
+                      time.
+                    type: number
+                  openedBy:
+                    description: GitHub login of the user who opened the Pull Request.
+                      Username of the PR creator
                     type: string
-                  requireConversationResolution:
-                    description: Boolean, setting this to true requires all conversations
-                      on code must be resolved before a pull request can be merged.
-                    type: boolean
-                  requireSignedCommits:
-                    description: Boolean, setting this to true requires all commits
-                      to be signed with GPG.
-                    type: boolean
-                  requiredLinearHistory:
-                    description: Boolean, setting this to true enforces a linear commit
-                      Git history, which prevents anyone from pushing merge commits
-                      to a branch
-                    type: boolean
-                  requiredPullRequestReviews:
-                    description: Enforce restrictions for pull request reviews. See
-                      Required Pull Request Reviews below for details.
-                    items:
-                      properties:
-                        dismissStaleReviews:
-                          description: ':  Dismiss approved reviews automatically
-                            when a new commit is pushed. Defaults to false.'
-                          type: boolean
-                        dismissalRestrictions:
-                          description: ':  The list of actor Names/IDs with dismissal
-                            access. If not empty, restrict_dismissals is ignored.
-                            Actor names must either begin with a "/" for users or
-                            the organization name followed by a "/" for teams.'
-                          items:
-                            type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        pullRequestBypassers:
-                          description: ':  The list of actor Names/IDs that are allowed
-                            to bypass pull request requirements. Actor names must
-                            either begin with a "/" for users or the organization
-                            name followed by a "/" for teams.'
-                          items:
-                            type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        requireCodeOwnerReviews:
-                          description: ':  Require an approved review in pull requests
-                            including files with a designated code owner. Defaults
-                            to false.'
-                          type: boolean
-                        requireLastPushApproval:
-                          description: ':  Require that The most recent push must
-                            be approved by someone other than the last pusher.  Defaults
-                            to false'
-                          type: boolean
-                        requiredApprovingReviewCount:
-                          description: 6. This requirement matches GitHub's API, see
-                            the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1)
-                            for more information.
-                          type: number
-                        restrictDismissals:
-                          description: ':  Restrict pull request review dismissals.'
-                          type: boolean
-                      type: object
-                    type: array
-                  requiredStatusChecks:
-                    description: Enforce restrictions for required status checks.
-                      See Required Status Checks below for details.
-                    items:
-                      properties:
-                        contexts:
-                          description: ':  The list of status checks to require in
-                            order to merge into this branch. No status checks are
-                            required by default.'
-                          items:
-                            type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        strict:
-                          description: ':  Require branches to be up to date before
-                            merging. Defaults to false.'
-                          type: boolean
-                      type: object
-                    type: array
+                  owner:
+                    description: Owner of the repository. If not provided, the provider's
+                      default owner is used.
+                    type: string
+                  state:
+                    description: the current Pull Request state - can be "open", "closed"
+                      or "merged".
+                    type: string
+                  title:
+                    description: The title of the Pull Request.
+                    type: string
+                  updatedAt:
+                    description: The timestamp of the last Pull Request update.
+                    type: number
                 type: object
               conditions:
                 description: Conditions of the resource.

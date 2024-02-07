@@ -1,4 +1,4 @@
-apiVersion: repo.template.upbound.io/v1alpha1
+apiVersion: repo.github.upbound.io/v1alpha1
 kind: RepositoryFile
 metadata:
   annotations:
@@ -23,7 +23,7 @@ spec:
 
 ---
 
-apiVersion: repo.template.upbound.io/v1alpha1
+apiVersion: repo.github.upbound.io/v1alpha1
 kind: Repository
 metadata:
   annotations:

@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: repositoryfiles.repo.template.upbound.io
+  name: deploykeys.repo.github.upbound.io
 spec:
-  group: repo.template.upbound.io
+  group: repo.github.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - github
-    kind: RepositoryFile
-    listKind: RepositoryFileList
-    plural: repositoryfiles
-    singular: repositoryfile
+    kind: DeployKey
+    listKind: DeployKeyList
+    plural: deploykeys
+    singular: deploykey
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: RepositoryFile is the Schema for the RepositoryFiles API. Creates
-          and manages files within a GitHub repository
+        description: DeployKey is the Schema for the DeployKeys API. Provides a GitHub
+          repository deploy key resource.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: RepositoryFileSpec defines the desired state of RepositoryFile
+            description: DeployKeySpec defines the desired state of DeployKey
             properties:
               deletionPolicy:
                 default: Delete
@@ -67,121 +67,15 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  branch:
-                    description: Git branch (defaults to main). The branch must already
-                      exist, it will not be created if it does not already exist.
-                      The branch name, defaults to "main"
+                  key:
+                    description: A SSH key.
                     type: string
-                  branchRef:
-                    description: Reference to a Branch to populate branch.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
-                    type: object
-                  branchSelector:
-                    description: Selector for a Branch to populate branch.
-                    properties:
-                      matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
-                        type: boolean
-                      matchLabels:
-                        additionalProperties:
-                          type: string
-                        description: MatchLabels ensures an object with matching labels
-                          is selected.
-                        type: object
-                      policy:
-                        description: Policies for selection.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    type: object
-                  commitAuthor:
-                    description: 'Committer author name to use. NOTE: GitHub app users
-                      may omit author and email information so GitHub can verify commits
-                      as the GitHub App. This maybe useful when a branch protection
-                      rule requires signed commits. The commit author name, defaults
-                      to the authenticated user''s name. GitHub app users may omit
-                      author and email information so GitHub can verify commits as
-                      the GitHub App.'
-                    type: string
-                  commitEmail:
-                    description: 'Committer email address to use. NOTE: GitHub app
-                      users may omit author and email information so GitHub can verify
-                      commits as the GitHub App. This may be useful when a branch
-                      protection rule requires signed commits. The commit author email
-                      address, defaults to the authenticated user''s email address.
-                      GitHub app users may omit author and email information so GitHub
-                      can verify commits as the GitHub App.'
-                    type: string
-                  commitMessage:
-                    description: Commit message when adding or updating the managed
-                      file. The commit message when creating, updating or deleting
-                      the file
-                    type: string
-                  content:
-                    description: The file content. The file's content
-                    type: string
-                  file:
-                    description: The path of the file to manage. The file path to
-                      manage
-                    type: string
-                  overwriteOnCreate:
-                    description: Enable overwriting existing files Enable overwriting
-                      existing files, defaults to "false"
+                  readOnly:
+                    description: A boolean qualifying the key to be either read only
+                      or read/write.
                     type: boolean
                   repository:
-                    description: The repository to create the file in. The repository
-                      name
+                    description: Name of the GitHub repository.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository to populate repository.
@@ -256,6 +150,9 @@ spec:
                             type: string
                         type: object
                     type: object
+                  title:
+                    description: A title.
+                    type: string
                 type: object
               initProvider:
                 description: THIS IS A BETA FIELD. It will be honored unless the Management
@@ -269,121 +166,15 @@ spec:
                   for example because of an external controller is managing them,
                   like an autoscaler.
                 properties:
-                  branch:
-                    description: Git branch (defaults to main). The branch must already
-                      exist, it will not be created if it does not already exist.
-                      The branch name, defaults to "main"
+                  key:
+                    description: A SSH key.
                     type: string
-                  branchRef:
-                    description: Reference to a Branch to populate branch.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
-                    type: object
-                  branchSelector:
-                    description: Selector for a Branch to populate branch.
-                    properties:
-                      matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
-                        type: boolean
-                      matchLabels:
-                        additionalProperties:
-                          type: string
-                        description: MatchLabels ensures an object with matching labels
-                          is selected.
-                        type: object
-                      policy:
-                        description: Policies for selection.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    type: object
-                  commitAuthor:
-                    description: 'Committer author name to use. NOTE: GitHub app users
-                      may omit author and email information so GitHub can verify commits
-                      as the GitHub App. This maybe useful when a branch protection
-                      rule requires signed commits. The commit author name, defaults
-                      to the authenticated user''s name. GitHub app users may omit
-                      author and email information so GitHub can verify commits as
-                      the GitHub App.'
-                    type: string
-                  commitEmail:
-                    description: 'Committer email address to use. NOTE: GitHub app
-                      users may omit author and email information so GitHub can verify
-                      commits as the GitHub App. This may be useful when a branch
-                      protection rule requires signed commits. The commit author email
-                      address, defaults to the authenticated user''s email address.
-                      GitHub app users may omit author and email information so GitHub
-                      can verify commits as the GitHub App.'
-                    type: string
-                  commitMessage:
-                    description: Commit message when adding or updating the managed
-                      file. The commit message when creating, updating or deleting
-                      the file
-                    type: string
-                  content:
-                    description: The file content. The file's content
-                    type: string
-                  file:
-                    description: The path of the file to manage. The file path to
-                      manage
-                    type: string
-                  overwriteOnCreate:
-                    description: Enable overwriting existing files Enable overwriting
-                      existing files, defaults to "false"
+                  readOnly:
+                    description: A boolean qualifying the key to be either read only
+                      or read/write.
                     type: boolean
                   repository:
-                    description: The repository to create the file in. The repository
-                      name
+                    description: Name of the GitHub repository.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository to populate repository.
@@ -458,6 +249,9 @@ spec:
                             type: string
                         type: object
                     type: object
+                  title:
+                    description: A title.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -620,70 +414,35 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: spec.forProvider.content is a required parameter
+            - message: spec.forProvider.key is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.content)
-                || (has(self.initProvider) && has(self.initProvider.content))'
-            - message: spec.forProvider.file is a required parameter
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.key)
+                || (has(self.initProvider) && has(self.initProvider.key))'
+            - message: spec.forProvider.title is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.file)
-                || (has(self.initProvider) && has(self.initProvider.file))'
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.title)
+                || (has(self.initProvider) && has(self.initProvider.title))'
           status:
-            description: RepositoryFileStatus defines the observed state of RepositoryFile.
+            description: DeployKeyStatus defines the observed state of DeployKey.
             properties:
               atProvider:
                 properties:
-                  branch:
-                    description: Git branch (defaults to main). The branch must already
-                      exist, it will not be created if it does not already exist.
-                      The branch name, defaults to "main"
-                    type: string
-                  commitAuthor:
-                    description: 'Committer author name to use. NOTE: GitHub app users
-                      may omit author and email information so GitHub can verify commits
-                      as the GitHub App. This maybe useful when a branch protection
-                      rule requires signed commits. The commit author name, defaults
-                      to the authenticated user''s name. GitHub app users may omit
-                      author and email information so GitHub can verify commits as
-                      the GitHub App.'
-                    type: string
-                  commitEmail:
-                    description: 'Committer email address to use. NOTE: GitHub app
-                      users may omit author and email information so GitHub can verify
-                      commits as the GitHub App. This may be useful when a branch
-                      protection rule requires signed commits. The commit author email
-                      address, defaults to the authenticated user''s email address.
-                      GitHub app users may omit author and email information so GitHub
-                      can verify commits as the GitHub App.'
-                    type: string
-                  commitMessage:
-                    description: Commit message when adding or updating the managed
-                      file. The commit message when creating, updating or deleting
-                      the file
-                    type: string
-                  commitSha:
-                    description: The SHA of the commit that modified the file. The
-                      SHA of the commit that modified the file
-                    type: string
-                  content:
-                    description: The file content. The file's content
-                    type: string
-                  file:
-                    description: The path of the file to manage. The file path to
-                      manage
+                  etag:
                     type: string
                   id:
                     type: string
-                  overwriteOnCreate:
-                    description: Enable overwriting existing files Enable overwriting
-                      existing files, defaults to "false"
+                  key:
+                    description: A SSH key.
+                    type: string
+                  readOnly:
+                    description: A boolean qualifying the key to be either read only
+                      or read/write.
                     type: boolean
                   repository:
-                    description: The repository to create the file in. The repository
-                      name
+                    description: Name of the GitHub repository.
                     type: string
-                  sha:
-                    description: The SHA blob of the file. The blob SHA of the file
+                  title:
+                    description: A title.
                     type: string
                 type: object
               conditions:
