@@ -8,7 +8,6 @@ require (
 	github.com/crossplane/crossplane-tools v0.0.0-20230925130601-628280f8bf79
 	github.com/crossplane/upjet v1.1.0
 	github.com/pkg/errors v0.9.1
-	github.com/upbound/upjet-provider-template v0.0.0-20231113134727-64563d507d1a
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	k8s.io/apimachinery v0.28.3
 	k8s.io/client-go v0.28.3
