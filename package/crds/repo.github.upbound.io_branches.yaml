@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: teamrepositories.team.template.upbound.io
+  name: branches.repo.github.upbound.io
 spec:
-  group: team.template.upbound.io
+  group: repo.github.upbound.io
   names:
     categories:
     - crossplane
     - managed
     - github
-    kind: TeamRepository
-    listKind: TeamRepositoryList
-    plural: teamrepositories
-    singular: teamrepository
+    kind: Branch
+    listKind: BranchList
+    plural: branches
+    singular: branch
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: TeamRepository is the Schema for the TeamRepositorys API. Manages
-          the associations between teams and repositories.
+        description: Branch is the Schema for the Branchs API. Creates and manages
+          branches within GitHub repositories.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: TeamRepositorySpec defines the desired state of TeamRepository
+            description: BranchSpec defines the desired state of Branch
             properties:
               deletionPolicy:
                 default: Delete
@@ -67,14 +67,8 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  permission:
-                    description: The permissions of team members regarding the repository.
-                      Must be one of pull, triage, push, maintain, admin or the name
-                      of an existing custom repository role within the organisation.
-                      Defaults to pull.
-                    type: string
                   repository:
-                    description: The repository to add to the team.
+                    description: The GitHub repository name.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -149,83 +143,13 @@ spec:
                             type: string
                         type: object
                     type: object
-                  teamId:
-                    description: The GitHub team id or the GitHub team slug ID or
-                      slug of team
+                  sourceBranch:
+                    description: The branch name to start from. Defaults to main.
                     type: string
-                  teamIdRef:
-                    description: Reference to a Team in team to populate teamId.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
-                    type: object
-                  teamIdSelector:
-                    description: Selector for a Team in team to populate teamId.
-                    properties:
-                      matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
-                        type: boolean
-                      matchLabels:
-                        additionalProperties:
-                          type: string
-                        description: MatchLabels ensures an object with matching labels
-                          is selected.
-                        type: object
-                      policy:
-                        description: Policies for selection.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    type: object
+                  sourceSha:
+                    description: The commit hash to start from. Defaults to the tip
+                      of source_branch. If provided, source_branch is ignored.
+                    type: string
                 type: object
               initProvider:
                 description: THIS IS A BETA FIELD. It will be honored unless the Management
@@ -239,165 +163,10 @@ spec:
                   for example because of an external controller is managing them,
                   like an autoscaler.
                 properties:
-                  permission:
-                    description: The permissions of team members regarding the repository.
-                      Must be one of pull, triage, push, maintain, admin or the name
-                      of an existing custom repository role within the organisation.
-                      Defaults to pull.
+                  sourceSha:
+                    description: The commit hash to start from. Defaults to the tip
+                      of source_branch. If provided, source_branch is ignored.
                     type: string
-                  repository:
-                    description: The repository to add to the team.
-                    type: string
-                  repositoryRef:
-                    description: Reference to a Repository in repo to populate repository.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
-                    type: object
-                  repositorySelector:
-                    description: Selector for a Repository in repo to populate repository.
-                    properties:
-                      matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
-                        type: boolean
-                      matchLabels:
-                        additionalProperties:
-                          type: string
-                        description: MatchLabels ensures an object with matching labels
-                          is selected.
-                        type: object
-                      policy:
-                        description: Policies for selection.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    type: object
-                  teamId:
-                    description: The GitHub team id or the GitHub team slug ID or
-                      slug of team
-                    type: string
-                  teamIdRef:
-                    description: Reference to a Team in team to populate teamId.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
-                    type: object
-                  teamIdSelector:
-                    description: Selector for a Team in team to populate teamId.
-                    properties:
-                      matchControllerRef:
-                        description: MatchControllerRef ensures an object with the
-                          same controller reference as the selecting object is selected.
-                        type: boolean
-                      matchLabels:
-                        additionalProperties:
-                          type: string
-                        description: MatchLabels ensures an object with matching labels
-                          is selected.
-                        type: object
-                      policy:
-                        description: Policies for selection.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: Resolution specifies whether resolution of
-                              this reference is required. The default is 'Required',
-                              which means the reconcile will fail if the reference
-                              cannot be resolved. 'Optional' means this reference
-                              will be a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: Resolve specifies when this reference should
-                              be resolved. The default is 'IfNotPresent', which will
-                              attempt to resolve the reference only when the corresponding
-                              field is not present. Use 'Always' to resolve the reference
-                              on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    type: object
                 type: object
               managementPolicies:
                 default:
@@ -560,26 +329,31 @@ spec:
             - forProvider
             type: object
           status:
-            description: TeamRepositoryStatus defines the observed state of TeamRepository.
+            description: BranchStatus defines the observed state of Branch.
             properties:
               atProvider:
                 properties:
                   etag:
+                    description: An etag representing the Branch object.
                     type: string
                   id:
                     type: string
-                  permission:
-                    description: The permissions of team members regarding the repository.
-                      Must be one of pull, triage, push, maintain, admin or the name
-                      of an existing custom repository role within the organisation.
-                      Defaults to pull.
+                  ref:
+                    description: A string representing a branch reference, in the
+                      form of refs/heads/<branch>.
                     type: string
                   repository:
-                    description: The repository to add to the team.
+                    description: The GitHub repository name.
                     type: string
-                  teamId:
-                    description: The GitHub team id or the GitHub team slug ID or
-                      slug of team
+                  sha:
+                    description: A string storing the reference's HEAD commit's SHA1.
+                    type: string
+                  sourceBranch:
+                    description: The branch name to start from. Defaults to main.
+                    type: string
+                  sourceSha:
+                    description: The commit hash to start from. Defaults to the tip
+                      of source_branch. If provided, source_branch is ignored.
                     type: string
                 type: object
               conditions:

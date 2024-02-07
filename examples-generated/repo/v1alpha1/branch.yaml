@@ -1,4 +1,4 @@
-apiVersion: repo.template.upbound.io/v1alpha1
+apiVersion: repo.github.upbound.io/v1alpha1
 kind: Branch
 metadata:
   annotations:
