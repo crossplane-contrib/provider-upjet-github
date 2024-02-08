@@ -35,6 +35,22 @@ func (mg *Branch) ResolveReferences(ctx context.Context, c client.Reader) error 
 	mg.Spec.ForProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.RepositoryRef = rsp.ResolvedReference
 
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Repository),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.RepositoryRef,
+		Selector:     mg.Spec.InitProvider.RepositorySelector,
+		To: reference.To{
+			List:    &RepositoryList{},
+			Managed: &Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Repository")
+	}
+	mg.Spec.InitProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RepositoryRef = rsp.ResolvedReference
+
 	return nil
 }
 
