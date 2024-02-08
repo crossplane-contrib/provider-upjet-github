@@ -103,8 +103,8 @@ spec:
 | `DeployKey` | `repo` | `github_repository_deploy_key` | |
 | `Team` | `team` | `github_team` | |
 | `TeamRepository` | `team` | `github_team_repository` | |
-| ActionsSecrets | actions | github_actions_secret | |
-
+| `ActionsSecrets` | `actions` | `github_actions_secret` | |
+| `Organization` | `enterprise` | `github_enterprise_organization` | Works only with PAT based authentication using a token with at least `admin:enterprise` scope.<br/>The following *GraphQL* query can be used to obtain the required `enterprise_id`:<br/> `gh api graphql -f query='query ($slug: String!) { enterprise(slug: $slug) { id } }' -F slug='<slug>' --jq '.data.enterprise.id'` |
 
 ## Adding resources
 
