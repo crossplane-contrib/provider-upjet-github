@@ -19,11 +19,32 @@ import (
 
 type BranchInitParameters struct {
 
+	// The repository branch to create.
+	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
+
+	// The GitHub repository name.
+	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// Reference to a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+
+	// Selector for a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+
+	// The branch name to start from. Defaults to main.
+	SourceBranch *string `json:"sourceBranch,omitempty" tf:"source_branch,omitempty"`
+
 	// The commit hash to start from. Defaults to the tip of source_branch. If provided, source_branch is ignored.
 	SourceSha *string `json:"sourceSha,omitempty" tf:"source_sha,omitempty"`
 }
 
 type BranchObservation struct {
+
+	// The repository branch to create.
+	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
 	// An etag representing the Branch object.
 	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
@@ -47,6 +68,10 @@ type BranchObservation struct {
 }
 
 type BranchParameters struct {
+
+	// The repository branch to create.
+	// +kubebuilder:validation:Optional
+	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
 	// The GitHub repository name.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
@@ -106,8 +131,9 @@ type BranchStatus struct {
 type Branch struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              BranchSpec   `json:"spec"`
-	Status            BranchStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.branch) || (has(self.initProvider) && has(self.initProvider.branch))",message="spec.forProvider.branch is a required parameter"
+	Spec   BranchSpec   `json:"spec"`
+	Status BranchStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

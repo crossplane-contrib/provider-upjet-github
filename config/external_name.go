@@ -11,8 +11,9 @@ import "github.com/crossplane/upjet/pkg/config"
 var ExternalNameConfigs = map[string]config.ExternalName{
 	// Imported by using the following format: {{name}}
 	"github_repository": config.IdentifierFromProvider,
-	// Imported by using the following format: {{ repository }}:{{ name }}:{{ source branch }}
-	"github_branch": config.TemplatedStringAsIdentifier("branch", "{{ .parameters.repository }}:{{ .external_name }}:{{ .parameters.source_branch }}"),
+	// Imported by using the following format: {{ repository }}:{{ name }}:{{ source branch }}. Using this a id makes
+	// the branch field unavailable. This causes the name of the k8s object to be leading and will cause naming conflict.
+	"github_branch": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository }}
 	"github_branch_default": config.TemplatedStringAsIdentifier("repository", "{{ .external_name }}"),
 	// Imported by using the following format: {{ repository }}:{{ (key_id, fetchable from api) }}
