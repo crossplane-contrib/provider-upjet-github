@@ -20,29 +20,41 @@ import (
 type BranchProtectionInitParameters struct {
 
 	// Boolean, setting this to true to allow the branch to be deleted.
+	// Setting this to 'true' to allow the branch to be deleted.
 	AllowsDeletions *bool `json:"allowsDeletions,omitempty" tf:"allows_deletions,omitempty"`
 
 	// Boolean, setting this to true to allow force pushes on the branch.
+	// Setting this to 'true' to allow force pushes on the branch.
 	AllowsForcePushes *bool `json:"allowsForcePushes,omitempty" tf:"allows_force_pushes,omitempty"`
 
 	// Boolean, setting this to true to block creating the branch.
+	// Setting this to 'true' to block creating the branch.
 	BlocksCreations *bool `json:"blocksCreations,omitempty" tf:"blocks_creations,omitempty"`
 
 	// Boolean, setting this to true enforces status checks for repository administrators.
+	// Setting this to 'true' enforces status checks for repository administrators.
 	EnforceAdmins *bool `json:"enforceAdmins,omitempty" tf:"enforce_admins,omitempty"`
 
+	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
+	// +listType=set
+	ForcePushBypassers []*string `json:"forcePushBypassers,omitempty" tf:"force_push_bypassers,omitempty"`
+
 	// Boolean, Setting this to true will make the branch read-only and preventing any pushes to it. Defaults to false
+	// Setting this to 'true' will make the branch read-only and preventing any pushes to it.
 	LockBranch *bool `json:"lockBranch,omitempty" tf:"lock_branch,omitempty"`
 
+	// Identifies the protection rule pattern.
 	// Identifies the protection rule pattern.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 
 	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
 	// +listType=set
 	PushRestrictions []*string `json:"pushRestrictions,omitempty" tf:"push_restrictions,omitempty"`
 
 	// The name or node ID of the repository associated with this branch protection rule.
-	// Node ID or name of repository
+	// The name or node ID of the repository associated with this branch protection rule.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	RepositoryID *string `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 
@@ -55,100 +67,135 @@ type BranchProtectionInitParameters struct {
 	RepositoryIDSelector *v1.Selector `json:"repositoryIdSelector,omitempty" tf:"-"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
+	// Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
 	RequireConversationResolution *bool `json:"requireConversationResolution,omitempty" tf:"require_conversation_resolution,omitempty"`
 
 	// Boolean, setting this to true requires all commits to be signed with GPG.
+	// Setting this to 'true' requires all commits to be signed with GPG.
 	RequireSignedCommits *bool `json:"requireSignedCommits,omitempty" tf:"require_signed_commits,omitempty"`
 
 	// Boolean, setting this to true enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch
+	// Setting this to 'true' enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch.
 	RequiredLinearHistory *bool `json:"requiredLinearHistory,omitempty" tf:"required_linear_history,omitempty"`
 
 	// Enforce restrictions for pull request reviews. See Required Pull Request Reviews below for details.
+	// Enforce restrictions for pull request reviews.
 	RequiredPullRequestReviews []RequiredPullRequestReviewsInitParameters `json:"requiredPullRequestReviews,omitempty" tf:"required_pull_request_reviews,omitempty"`
 
 	// Enforce restrictions for required status checks. See Required Status Checks below for details.
+	// Enforce restrictions for required status checks.
 	RequiredStatusChecks []RequiredStatusChecksInitParameters `json:"requiredStatusChecks,omitempty" tf:"required_status_checks,omitempty"`
 }
 
 type BranchProtectionObservation struct {
 
 	// Boolean, setting this to true to allow the branch to be deleted.
+	// Setting this to 'true' to allow the branch to be deleted.
 	AllowsDeletions *bool `json:"allowsDeletions,omitempty" tf:"allows_deletions,omitempty"`
 
 	// Boolean, setting this to true to allow force pushes on the branch.
+	// Setting this to 'true' to allow force pushes on the branch.
 	AllowsForcePushes *bool `json:"allowsForcePushes,omitempty" tf:"allows_force_pushes,omitempty"`
 
 	// Boolean, setting this to true to block creating the branch.
+	// Setting this to 'true' to block creating the branch.
 	BlocksCreations *bool `json:"blocksCreations,omitempty" tf:"blocks_creations,omitempty"`
 
 	// Boolean, setting this to true enforces status checks for repository administrators.
+	// Setting this to 'true' enforces status checks for repository administrators.
 	EnforceAdmins *bool `json:"enforceAdmins,omitempty" tf:"enforce_admins,omitempty"`
+
+	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
+	// +listType=set
+	ForcePushBypassers []*string `json:"forcePushBypassers,omitempty" tf:"force_push_bypassers,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Boolean, Setting this to true will make the branch read-only and preventing any pushes to it. Defaults to false
+	// Setting this to 'true' will make the branch read-only and preventing any pushes to it.
 	LockBranch *bool `json:"lockBranch,omitempty" tf:"lock_branch,omitempty"`
 
+	// Identifies the protection rule pattern.
 	// Identifies the protection rule pattern.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 
 	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
 	// +listType=set
 	PushRestrictions []*string `json:"pushRestrictions,omitempty" tf:"push_restrictions,omitempty"`
 
 	// The name or node ID of the repository associated with this branch protection rule.
-	// Node ID or name of repository
+	// The name or node ID of the repository associated with this branch protection rule.
 	RepositoryID *string `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
+	// Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
 	RequireConversationResolution *bool `json:"requireConversationResolution,omitempty" tf:"require_conversation_resolution,omitempty"`
 
 	// Boolean, setting this to true requires all commits to be signed with GPG.
+	// Setting this to 'true' requires all commits to be signed with GPG.
 	RequireSignedCommits *bool `json:"requireSignedCommits,omitempty" tf:"require_signed_commits,omitempty"`
 
 	// Boolean, setting this to true enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch
+	// Setting this to 'true' enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch.
 	RequiredLinearHistory *bool `json:"requiredLinearHistory,omitempty" tf:"required_linear_history,omitempty"`
 
 	// Enforce restrictions for pull request reviews. See Required Pull Request Reviews below for details.
+	// Enforce restrictions for pull request reviews.
 	RequiredPullRequestReviews []RequiredPullRequestReviewsObservation `json:"requiredPullRequestReviews,omitempty" tf:"required_pull_request_reviews,omitempty"`
 
 	// Enforce restrictions for required status checks. See Required Status Checks below for details.
+	// Enforce restrictions for required status checks.
 	RequiredStatusChecks []RequiredStatusChecksObservation `json:"requiredStatusChecks,omitempty" tf:"required_status_checks,omitempty"`
 }
 
 type BranchProtectionParameters struct {
 
 	// Boolean, setting this to true to allow the branch to be deleted.
+	// Setting this to 'true' to allow the branch to be deleted.
 	// +kubebuilder:validation:Optional
 	AllowsDeletions *bool `json:"allowsDeletions,omitempty" tf:"allows_deletions,omitempty"`
 
 	// Boolean, setting this to true to allow force pushes on the branch.
+	// Setting this to 'true' to allow force pushes on the branch.
 	// +kubebuilder:validation:Optional
 	AllowsForcePushes *bool `json:"allowsForcePushes,omitempty" tf:"allows_force_pushes,omitempty"`
 
 	// Boolean, setting this to true to block creating the branch.
+	// Setting this to 'true' to block creating the branch.
 	// +kubebuilder:validation:Optional
 	BlocksCreations *bool `json:"blocksCreations,omitempty" tf:"blocks_creations,omitempty"`
 
 	// Boolean, setting this to true enforces status checks for repository administrators.
+	// Setting this to 'true' enforces status checks for repository administrators.
 	// +kubebuilder:validation:Optional
 	EnforceAdmins *bool `json:"enforceAdmins,omitempty" tf:"enforce_admins,omitempty"`
 
+	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	ForcePushBypassers []*string `json:"forcePushBypassers,omitempty" tf:"force_push_bypassers,omitempty"`
+
 	// Boolean, Setting this to true will make the branch read-only and preventing any pushes to it. Defaults to false
+	// Setting this to 'true' will make the branch read-only and preventing any pushes to it.
 	// +kubebuilder:validation:Optional
 	LockBranch *bool `json:"lockBranch,omitempty" tf:"lock_branch,omitempty"`
 
+	// Identifies the protection rule pattern.
 	// Identifies the protection rule pattern.
 	// +kubebuilder:validation:Optional
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 
 	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	PushRestrictions []*string `json:"pushRestrictions,omitempty" tf:"push_restrictions,omitempty"`
 
 	// The name or node ID of the repository associated with this branch protection rule.
-	// Node ID or name of repository
+	// The name or node ID of the repository associated with this branch protection rule.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	RepositoryID *string `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
@@ -162,22 +209,27 @@ type BranchProtectionParameters struct {
 	RepositoryIDSelector *v1.Selector `json:"repositoryIdSelector,omitempty" tf:"-"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
+	// Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
 	// +kubebuilder:validation:Optional
 	RequireConversationResolution *bool `json:"requireConversationResolution,omitempty" tf:"require_conversation_resolution,omitempty"`
 
 	// Boolean, setting this to true requires all commits to be signed with GPG.
+	// Setting this to 'true' requires all commits to be signed with GPG.
 	// +kubebuilder:validation:Optional
 	RequireSignedCommits *bool `json:"requireSignedCommits,omitempty" tf:"require_signed_commits,omitempty"`
 
 	// Boolean, setting this to true enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch
+	// Setting this to 'true' enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch.
 	// +kubebuilder:validation:Optional
 	RequiredLinearHistory *bool `json:"requiredLinearHistory,omitempty" tf:"required_linear_history,omitempty"`
 
 	// Enforce restrictions for pull request reviews. See Required Pull Request Reviews below for details.
+	// Enforce restrictions for pull request reviews.
 	// +kubebuilder:validation:Optional
 	RequiredPullRequestReviews []RequiredPullRequestReviewsParameters `json:"requiredPullRequestReviews,omitempty" tf:"required_pull_request_reviews,omitempty"`
 
 	// Enforce restrictions for required status checks. See Required Status Checks below for details.
+	// Enforce restrictions for required status checks.
 	// +kubebuilder:validation:Optional
 	RequiredStatusChecks []RequiredStatusChecksParameters `json:"requiredStatusChecks,omitempty" tf:"required_status_checks,omitempty"`
 }
@@ -185,87 +237,108 @@ type BranchProtectionParameters struct {
 type RequiredPullRequestReviewsInitParameters struct {
 
 	// :  Dismiss approved reviews automatically when a new commit is pushed. Defaults to false.
+	// Dismiss approved reviews automatically when a new commit is pushed.
 	DismissStaleReviews *bool `json:"dismissStaleReviews,omitempty" tf:"dismiss_stale_reviews,omitempty"`
 
 	// :  The list of actor Names/IDs with dismissal access. If not empty, restrict_dismissals is ignored. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs with dismissal access. If not empty, 'restrict_dismissals' is ignored. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
 	// +listType=set
 	DismissalRestrictions []*string `json:"dismissalRestrictions,omitempty" tf:"dismissal_restrictions,omitempty"`
 
 	// :  The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
 	// +listType=set
 	PullRequestBypassers []*string `json:"pullRequestBypassers,omitempty" tf:"pull_request_bypassers,omitempty"`
 
 	// :  Require an approved review in pull requests including files with a designated code owner. Defaults to false.
+	// Require an approved review in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews *bool `json:"requireCodeOwnerReviews,omitempty" tf:"require_code_owner_reviews,omitempty"`
 
 	// :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+	// Require that The most recent push must be approved by someone other than the last pusher.
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
 	// 6. This requirement matches GitHub's API, see the upstream documentation for more information.
 	// (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+	// Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
 	RequiredApprovingReviewCount *float64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
 	// :  Restrict pull request review dismissals.
+	// Restrict pull request review dismissals.
 	RestrictDismissals *bool `json:"restrictDismissals,omitempty" tf:"restrict_dismissals,omitempty"`
 }
 
 type RequiredPullRequestReviewsObservation struct {
 
 	// :  Dismiss approved reviews automatically when a new commit is pushed. Defaults to false.
+	// Dismiss approved reviews automatically when a new commit is pushed.
 	DismissStaleReviews *bool `json:"dismissStaleReviews,omitempty" tf:"dismiss_stale_reviews,omitempty"`
 
 	// :  The list of actor Names/IDs with dismissal access. If not empty, restrict_dismissals is ignored. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs with dismissal access. If not empty, 'restrict_dismissals' is ignored. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
 	// +listType=set
 	DismissalRestrictions []*string `json:"dismissalRestrictions,omitempty" tf:"dismissal_restrictions,omitempty"`
 
 	// :  The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
 	// +listType=set
 	PullRequestBypassers []*string `json:"pullRequestBypassers,omitempty" tf:"pull_request_bypassers,omitempty"`
 
 	// :  Require an approved review in pull requests including files with a designated code owner. Defaults to false.
+	// Require an approved review in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews *bool `json:"requireCodeOwnerReviews,omitempty" tf:"require_code_owner_reviews,omitempty"`
 
 	// :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+	// Require that The most recent push must be approved by someone other than the last pusher.
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
 	// 6. This requirement matches GitHub's API, see the upstream documentation for more information.
 	// (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+	// Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
 	RequiredApprovingReviewCount *float64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
 	// :  Restrict pull request review dismissals.
+	// Restrict pull request review dismissals.
 	RestrictDismissals *bool `json:"restrictDismissals,omitempty" tf:"restrict_dismissals,omitempty"`
 }
 
 type RequiredPullRequestReviewsParameters struct {
 
 	// :  Dismiss approved reviews automatically when a new commit is pushed. Defaults to false.
+	// Dismiss approved reviews automatically when a new commit is pushed.
 	// +kubebuilder:validation:Optional
 	DismissStaleReviews *bool `json:"dismissStaleReviews,omitempty" tf:"dismiss_stale_reviews,omitempty"`
 
 	// :  The list of actor Names/IDs with dismissal access. If not empty, restrict_dismissals is ignored. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs with dismissal access. If not empty, 'restrict_dismissals' is ignored. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	DismissalRestrictions []*string `json:"dismissalRestrictions,omitempty" tf:"dismissal_restrictions,omitempty"`
 
 	// :  The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	PullRequestBypassers []*string `json:"pullRequestBypassers,omitempty" tf:"pull_request_bypassers,omitempty"`
 
 	// :  Require an approved review in pull requests including files with a designated code owner. Defaults to false.
+	// Require an approved review in pull requests including files with a designated code owner.
 	// +kubebuilder:validation:Optional
 	RequireCodeOwnerReviews *bool `json:"requireCodeOwnerReviews,omitempty" tf:"require_code_owner_reviews,omitempty"`
 
 	// :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+	// Require that The most recent push must be approved by someone other than the last pusher.
 	// +kubebuilder:validation:Optional
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
 	// 6. This requirement matches GitHub's API, see the upstream documentation for more information.
 	// (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+	// Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
 	// +kubebuilder:validation:Optional
 	RequiredApprovingReviewCount *float64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
 	// :  Restrict pull request review dismissals.
+	// Restrict pull request review dismissals.
 	// +kubebuilder:validation:Optional
 	RestrictDismissals *bool `json:"restrictDismissals,omitempty" tf:"restrict_dismissals,omitempty"`
 }
@@ -273,31 +346,37 @@ type RequiredPullRequestReviewsParameters struct {
 type RequiredStatusChecksInitParameters struct {
 
 	// :  The list of status checks to require in order to merge into this branch. No status checks are required by default.
+	// The list of status checks to require in order to merge into this branch. No status checks are required by default.
 	// +listType=set
 	Contexts []*string `json:"contexts,omitempty" tf:"contexts,omitempty"`
 
 	// :  Require branches to be up to date before merging. Defaults to false.
+	// Require branches to be up to date before merging.
 	Strict *bool `json:"strict,omitempty" tf:"strict,omitempty"`
 }
 
 type RequiredStatusChecksObservation struct {
 
 	// :  The list of status checks to require in order to merge into this branch. No status checks are required by default.
+	// The list of status checks to require in order to merge into this branch. No status checks are required by default.
 	// +listType=set
 	Contexts []*string `json:"contexts,omitempty" tf:"contexts,omitempty"`
 
 	// :  Require branches to be up to date before merging. Defaults to false.
+	// Require branches to be up to date before merging.
 	Strict *bool `json:"strict,omitempty" tf:"strict,omitempty"`
 }
 
 type RequiredStatusChecksParameters struct {
 
 	// :  The list of status checks to require in order to merge into this branch. No status checks are required by default.
+	// The list of status checks to require in order to merge into this branch. No status checks are required by default.
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	Contexts []*string `json:"contexts,omitempty" tf:"contexts,omitempty"`
 
 	// :  Require branches to be up to date before merging. Defaults to false.
+	// Require branches to be up to date before merging.
 	// +kubebuilder:validation:Optional
 	Strict *bool `json:"strict,omitempty" tf:"strict,omitempty"`
 }

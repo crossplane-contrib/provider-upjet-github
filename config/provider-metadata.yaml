@@ -50,6 +50,44 @@ resources:
             secret_name: '- (Required) Name of the secret.'
             updated_at: '- Date of actions_environment_secret update.'
         importStatements: []
+    github_actions_environment_variable:
+        subCategory: ""
+        description: Creates and manages an Action variable within a GitHub repository environment
+        name: github_actions_environment_variable
+        title: github_actions_environment_variable
+        examples:
+            - name: example_variable
+              manifest: |-
+                {
+                  "environment": "example_environment",
+                  "value": "example_variable_value",
+                  "variable_name": "example_variable_name"
+                }
+            - name: example_variable
+              manifest: |-
+                {
+                  "environment": "${github_repository_environment.repo_environment.environment}",
+                  "repository": "${data.github_repository.repo.name}",
+                  "value": "example_variable_value",
+                  "variable_name": "example_variable_name"
+                }
+              references:
+                environment: github_repository_environment.repo_environment.environment
+                repository: data.github_repository.repo.name
+              dependencies:
+                github_repository_environment.repo_environment: |-
+                    {
+                      "environment": "example_environment",
+                      "repository": "${data.github_repository.repo.name}"
+                    }
+        argumentDocs:
+            created_at: '- Date of actions_environment_secret creation.'
+            environment: '- (Required) Name of the environment.'
+            repository: '- (Required) Name of the repository.'
+            updated_at: '- Date of actions_environment_secret update.'
+            value: '- (Required) Value of the variable'
+            variable_name: '- (Required) Name of the variable.'
+        importStatements: []
     github_actions_organization_oidc_subject_claim_customization_template:
         subCategory: ""
         description: Creates and manages an OpenID Connect subject claim customization template for an organization
@@ -189,6 +227,39 @@ resources:
             secret_name: '- (Required) Name of the existing secret'
             selected_repository_ids: '- (Required) An array of repository ids that can access the organization secret.'
         importStatements: []
+    github_actions_organization_variable:
+        subCategory: ""
+        description: Creates and manages an Action variable within a GitHub organization
+        name: github_actions_organization_variable
+        title: github_actions_organization_variable
+        examples:
+            - name: example_variable
+              manifest: |-
+                {
+                  "value": "example_variable_value",
+                  "variable_name": "example_variable_name",
+                  "visibility": "private"
+                }
+            - name: example_variable
+              manifest: |-
+                {
+                  "selected_repository_ids": [
+                    "${data.github_repository.repo.repo_id}"
+                  ],
+                  "value": "example_variable_value",
+                  "variable_name": "example_variable_name",
+                  "visibility": "selected"
+                }
+        argumentDocs:
+            created_at: '- Date of actions_variable creation.'
+            selected_repository_ids: '- (Optional) An array of repository ids that can access the organization variable.'
+            updated_at: '- Date of actions_variable update.'
+            value: '- (Required) Value of the variable'
+            variable_name: '- (Required) Name of the variable'
+            visibility: |-
+                - (Required) Configures the access that repositories have to the organization variable.
+                Must be one of all, private, selected. selected_repository_ids is required if set to selected.
+        importStatements: []
     github_actions_repository_access_level:
         subCategory: ""
         description: Manages Actions and Reusable Workflow access for a GitHub repository
@@ -304,16 +375,16 @@ resources:
                       "name": "my-repository"
                     }
         argumentDocs:
-            allows_public_repositories: '- Whether public repositories can be added to the runner group'
+            allows_public_repositories: '- (Optional) Whether public repositories can be added to the runner group. Defaults to false.'
             default: '- Whether this is the default runner group'
             etag: '- An etag representing the runner group object'
             inherited: '- Whether the runner group is inherited from the enterprise level'
             name: '- (Required) Name of the runner group'
-            restricted_to_workflows: '- If true, the runner group will be restricted to running only the workflows specified in the selected_workflows array. Defaults to false.'
+            restricted_to_workflows: '- (Optional) If true, the runner group will be restricted to running only the workflows specified in the selected_workflows array. Defaults to false.'
             runners_url: '- The GitHub API URL for the runner group''s runners'
             selected_repositories_url: '- GitHub API URL for the runner group''s repositories'
             selected_repository_ids: '- (Optional) IDs of the repositories which should be added to the runner group'
-            selected_workflows: '- List of workflows the runner group should be allowed to run. This setting will be ignored unless restricted_to_workflows is set to true.'
+            selected_workflows: '- (Optional) List of workflows the runner group should be allowed to run. This setting will be ignored unless restricted_to_workflows is set to true.'
             visibility: '- (Optional) Visibility of a runner group. Whether the runner group can include all, selected, or private repositories. A value of private is not currently supported due to limitations in the GitHub API.'
         importStatements: []
     github_actions_secret:
@@ -347,6 +418,26 @@ resources:
             repository: '- (Required) Name of the repository'
             secret_name: '- (Required) Name of the secret'
             updated_at: '- Date of actions_secret update.'
+        importStatements: []
+    github_actions_variable:
+        subCategory: ""
+        description: Creates and manages an Action variable within a GitHub repository
+        name: github_actions_variable
+        title: github_actions_variable
+        examples:
+            - name: example_variable
+              manifest: |-
+                {
+                  "repository": "example_repository",
+                  "value": "example_variable_value",
+                  "variable_name": "example_variable_name"
+                }
+        argumentDocs:
+            created_at: '- Date of actions_variable creation.'
+            repository: '- (Required) Name of the repository'
+            updated_at: '- Date of actions_variable update.'
+            value: '- (Required) Value of the variable'
+            variable_name: '- (Required) Name of the variable'
         importStatements: []
     github_app_installation_repository:
         subCategory: ""
@@ -417,8 +508,25 @@ resources:
                       "description": "My awesome codebase",
                       "name": "example"
                     }
+            - name: default
+              manifest: |-
+                {
+                  "branch": "development",
+                  "rename": true,
+                  "repository": "${github_repository.example.name}"
+                }
+              references:
+                repository: github_repository.example.name
+              dependencies:
+                github_repository.example: |-
+                    {
+                      "auto_init": true,
+                      "description": "My awesome codebase",
+                      "name": "example"
+                    }
         argumentDocs:
             branch: '- (Required) The branch (e.g. main)'
+            rename: '- (Optional) Indicate if it should rename the branch rather than use an existing branch. Defaults to false.'
             repository: '- (Required) The GitHub repository'
         importStatements: []
     github_branch_protection:
@@ -432,6 +540,11 @@ resources:
                 {
                   "allows_deletions": true,
                   "enforce_admins": true,
+                  "force_push_bypassers": [
+                    "${data.github_user.example.node_id}",
+                    "/exampleuser",
+                    "exampleorganization/exampleteam"
+                  ],
                   "pattern": "main",
                   "push_restrictions": [
                     "${data.github_user.example.node_id}",
@@ -485,6 +598,7 @@ resources:
             dismiss_stale_reviews: ': (Optional) Dismiss approved reviews automatically when a new commit is pushed. Defaults to false.'
             dismissal_restrictions: ': (Optional) The list of actor Names/IDs with dismissal access. If not empty, restrict_dismissals is ignored. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.'
             enforce_admins: '- (Optional) Boolean, setting this to true enforces status checks for repository administrators.'
+            force_push_bypassers: '- (Optional) The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.'
             lock_branch: '- (Optional) Boolean, Setting this to true will make the branch read-only and preventing any pushes to it. Defaults to false'
             pattern: '- (Required) Identifies the protection rule pattern.'
             pull_request_bypassers: ': (Optional) The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.'
@@ -533,6 +647,9 @@ resources:
                   "required_pull_request_reviews": [
                     {
                       "dismiss_stale_reviews": true,
+                      "dismissal_app": [
+                        "foo-app]"
+                      ],
                       "dismissal_teams": [
                         "${github_team.example.slug}"
                       ],
@@ -543,48 +660,23 @@ resources:
                   ],
                   "required_status_checks": [
                     {
-                      "contexts": [
-                        "ci/travis"
+                      "checks": [
+                        "ci/check:824642007264"
                       ],
                       "strict": false
-                    }
-                  ],
-                  "restrictions": [
-                    {
-                      "apps": [
-                        "foo-app"
-                      ],
-                      "teams": [
-                        "${github_team.example.slug}"
-                      ],
-                      "users": [
-                        "foo-user"
-                      ]
                     }
                   ]
                 }
               references:
                 repository: github_repository.example.name
-              dependencies:
-                github_repository.example: |-
-                    {
-                      "name": "example"
-                    }
-                github_team.example: |-
-                    {
-                      "name": "Example Name"
-                    }
-                github_team_repository.example: |-
-                    {
-                      "permission": "pull",
-                      "repository": "${github_repository.example.name}",
-                      "team_id": "${github_team.example.id}"
-                    }
         argumentDocs:
             apps: ': (Optional) The list of app slugs with push access.'
             branch: '- (Required) The Git branch to protect.'
-            contexts: ': (Optional) The list of status checks to require in order to merge into this branch. No status checks are required by default.'
+            bypass_pull_request_allowances: ': (Optional) Allow specific users, teams, or apps to bypass pull request requirements. See Bypass Pull Request Allowances below for details.'
+            checks: ': (Optional) The list of status checks to require in order to merge into this branch. No status checks are required by default. Checks should be strings containing the context and app_id like so "context:app_id".'
+            contexts: ': [DEPRECATED] (Optional) The list of status checks to require in order to merge into this branch. No status checks are required by default.'
             dismiss_stale_reviews: ': (Optional) Dismiss approved reviews automatically when a new commit is pushed. Defaults to false.'
+            dismissal_apps: ': (Optional) The list of app slugs with dismissal access.'
             dismissal_teams: |-
                 : (Optional) The list of team slugs with dismissal access.
                 Always use slug of the team, not its name. Each team already has to have access to the repository.
@@ -603,6 +695,151 @@ resources:
                 : (Optional) The list of team slugs with push access.
                 Always use slug of the team, not its name. Each team already has to have access to the repository.
             users: ': (Optional) The list of user logins with push access.'
+        importStatements: []
+    github_codespaces_organization_secret:
+        subCategory: ""
+        description: Creates and manages an Codespaces Secret within a GitHub organization
+        name: github_codespaces_organization_secret
+        title: github_codespaces_organization_secret
+        examples:
+            - name: example_secret
+              manifest: |-
+                {
+                  "plaintext_value": "${var.some_secret_string}",
+                  "secret_name": "example_secret_name",
+                  "visibility": "private"
+                }
+              references:
+                plaintext_value: var.some_secret_string
+            - name: example_secret
+              manifest: |-
+                {
+                  "encrypted_value": "${var.some_encrypted_secret_string}",
+                  "secret_name": "example_secret_name",
+                  "visibility": "private"
+                }
+              references:
+                encrypted_value: var.some_encrypted_secret_string
+            - name: example_secret
+              manifest: |-
+                {
+                  "plaintext_value": "${var.some_secret_string}",
+                  "secret_name": "example_secret_name",
+                  "selected_repository_ids": [
+                    "${data.github_repository.repo.repo_id}"
+                  ],
+                  "visibility": "selected"
+                }
+              references:
+                plaintext_value: var.some_secret_string
+            - name: example_secret
+              manifest: |-
+                {
+                  "encrypted_value": "${var.some_encrypted_secret_string}",
+                  "secret_name": "example_secret_name",
+                  "selected_repository_ids": [
+                    "${data.github_repository.repo.repo_id}"
+                  ],
+                  "visibility": "selected"
+                }
+              references:
+                encrypted_value: var.some_encrypted_secret_string
+        argumentDocs:
+            created_at: '- Date of codespaces_secret creation.'
+            encrypted_value: '- (Optional) Encrypted value of the secret using the GitHub public key in Base64 format.'
+            plaintext_value: '- (Optional) Plaintext value of the secret to be encrypted'
+            secret_name: '- (Required) Name of the secret'
+            selected_repository_ids: '- (Optional) An array of repository ids that can access the organization secret.'
+            updated_at: '- Date of codespaces_secret update.'
+            visibility: |-
+                - (Required) Configures the access that repositories have to the organization secret.
+                Must be one of all, private, selected. selected_repository_ids is required if set to selected.
+        importStatements: []
+    github_codespaces_organization_secret_repositories:
+        subCategory: ""
+        description: Manages repository allow list for a Codespaces Secret within a GitHub organization
+        name: github_codespaces_organization_secret_repositories
+        title: github_codespaces_organization_secret_repositories
+        examples:
+            - name: org_secret_repos
+              manifest: |-
+                {
+                  "secret_name": "existing_secret_name",
+                  "selected_repository_ids": [
+                    "${data.github_repository.repo.repo_id}"
+                  ]
+                }
+        argumentDocs:
+            secret_name: '- (Required) Name of the existing secret'
+            selected_repository_ids: '- (Required) An array of repository ids that can access the organization secret.'
+        importStatements: []
+    github_codespaces_secret:
+        subCategory: ""
+        description: Creates and manages an Codespaces Secret within a GitHub repository
+        name: github_codespaces_secret
+        title: github_codespaces_secret
+        examples:
+            - name: example_secret
+              manifest: |-
+                {
+                  "plaintext_value": "${var.some_secret_string}",
+                  "repository": "example_repository",
+                  "secret_name": "example_secret_name"
+                }
+              references:
+                plaintext_value: var.some_secret_string
+            - name: example_secret
+              manifest: |-
+                {
+                  "encrypted_value": "${var.some_encrypted_secret_string}",
+                  "repository": "example_repository",
+                  "secret_name": "example_secret_name"
+                }
+              references:
+                encrypted_value: var.some_encrypted_secret_string
+        argumentDocs:
+            created_at: '- Date of codespaces_secret creation.'
+            encrypted_value: '- (Optional) Encrypted value of the secret using the GitHub public key in Base64 format.'
+            plaintext_value: '- (Optional) Plaintext value of the secret to be encrypted'
+            repository: '- (Required) Name of the repository'
+            secret_name: '- (Required) Name of the secret'
+            updated_at: '- Date of codespaces_secret update.'
+        importStatements: []
+    github_codespaces_user_secret:
+        subCategory: ""
+        description: Creates and manages an Codespaces Secret within a GitHub user
+        name: github_codespaces_user_secret
+        title: github_codespaces_user_secret
+        examples:
+            - name: example_secret
+              manifest: |-
+                {
+                  "plaintext_value": "${var.some_secret_string}",
+                  "secret_name": "example_secret_name",
+                  "selected_repository_ids": [
+                    "${data.github_repository.repo.repo_id}"
+                  ]
+                }
+              references:
+                plaintext_value: var.some_secret_string
+            - name: example_secret
+              manifest: |-
+                {
+                  "encrypted_value": "${var.some_encrypted_secret_string}",
+                  "secret_name": "example_secret_name",
+                  "selected_repository_ids": [
+                    "${data.github_repository.repo.repo_id}"
+                  ]
+                }
+              references:
+                encrypted_value: var.some_encrypted_secret_string
+        argumentDocs:
+            created_at: '- Date of codespaces_secret creation.'
+            encrypted_value: '- (Optional) Encrypted value of the secret using the GitHub public key in Base64 format.'
+            plaintext_value: '- (Optional) Plaintext value of the secret to be encrypted'
+            secret_name: '- (Required) Name of the secret'
+            selected_repository_ids: '- (Optional) An array of repository ids that can access the user secret.'
+            updated_at: '- Date of codespaces_secret update.'
         importStatements: []
     github_dependabot_organization_secret:
         subCategory: ""
@@ -715,12 +952,12 @@ resources:
               references:
                 encrypted_value: var.some_encrypted_secret_string
         argumentDocs:
-            created_at: '- Date of actions_secret creation.'
+            created_at: '- Date of dependabot_secret creation.'
             encrypted_value: '- (Optional) Encrypted value of the secret using the GitHub public key in Base64 format.'
             plaintext_value: '- (Optional) Plaintext value of the secret to be encrypted'
             repository: '- (Required) Name of the repository'
             secret_name: '- (Required) Name of the secret'
-            updated_at: '- Date of actions_secret update.'
+            updated_at: '- Date of dependabot_secret update.'
         importStatements: []
     github_emu_group_mapping:
         subCategory: ""
@@ -737,6 +974,20 @@ resources:
         argumentDocs:
             group_id: '- (Required) Integer corresponding to the external group ID to be linked'
             team_slug: '- (Required) Slug of the GitHub team'
+        importStatements: []
+    github_enterprise_organization:
+        subCategory: ""
+        description: Create and manages a GitHub enterprise organization.
+        name: github_enterprise_organization
+        title: github_enterprise_organization
+        argumentDocs:
+            admin_logins: '- (Required) List of organization owner usernames.'
+            billing_email: '- (Required) The billing email address.'
+            description: '- (Optional) The description of the organization.'
+            display_name: '- (Optional) The display name of the organization.'
+            enterprise_id: '- (Required) The ID of the enterprise.'
+            id: '- The ID of the organization.'
+            name: '- (Required) The name of the organization.'
         importStatements: []
     github_issue:
         subCategory: ""
@@ -801,7 +1052,6 @@ resources:
             labels: '- (Optional) List of labels to attach to the issue'
             milestone_number: '- (Optional) Milestone number to assign to the issue'
             number: '- (Computed) - The issue number'
-            owner: '- (Required) Owner of the repository the issue belongs to'
             repository: '- (Required) The GitHub repository name'
             title: '- (Required) Title of the issue'
         importStatements: []
@@ -825,6 +1075,34 @@ resources:
             repository: '- (Required) The GitHub repository'
             url: '- (Computed) The URL to the issue label'
         importStatements: []
+    github_issue_labels:
+        subCategory: ""
+        description: Provides GitHub issue labels resource.
+        name: github_issue_labels
+        title: github_issue_labels
+        examples:
+            - name: test_repo
+              manifest: |-
+                {
+                  "label": [
+                    {
+                      "color": "FF0000",
+                      "name": "Urgent"
+                    },
+                    {
+                      "color": "FF0000",
+                      "name": "Critical"
+                    }
+                  ],
+                  "repository": "test-repo"
+                }
+        argumentDocs:
+            color: '- (Required) A 6 character hex code, without the leading #, identifying the color of the label.'
+            description: '- (Optional) A short description of the label.'
+            name: '- (Required) The name of the label.'
+            repository: '- (Required) The GitHub repository'
+            url: '- (Computed) The URL to the issue label'
+        importStatements: []
     github_membership:
         subCategory: ""
         description: Provides a GitHub membership resource.
@@ -838,9 +1116,15 @@ resources:
                   "username": "SomeUser"
                 }
         argumentDocs:
+            downgrade_on_destroy: |-
+                - (Optional) Defaults to false. If set to true,
+                when this resource is destroyed, the member will not be removed
+                from the organization. Instead, the member's role will be
+                downgraded to 'member'.
             role: |-
                 - (Optional) The role of the user within the organization.
                 Must be one of member or admin. Defaults to member.
+                admin role represents the owner role available via GitHub UI.
             username: '- (Required) The user to add to the organization.'
         importStatements: []
     github_organization_block:
@@ -856,6 +1140,47 @@ resources:
                 }
         argumentDocs:
             username: '- (Required) The name of the user to block.'
+        importStatements: []
+    github_organization_custom_role:
+        subCategory: ""
+        description: Creates and manages a custom role in a GitHub Organization for use in repositories.
+        name: github_organization_custom_role
+        title: github_organization_custom_role
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "base_role": "read",
+                  "description": "Example custom role that uses the read role as its base",
+                  "name": "example",
+                  "permissions": [
+                    "add_assignee",
+                    "add_label",
+                    "bypass_branch_protection",
+                    "close_issue",
+                    "close_pull_request",
+                    "mark_as_duplicate",
+                    "create_tag",
+                    "delete_issue",
+                    "delete_tag",
+                    "manage_deploy_keys",
+                    "push_protected_branch",
+                    "read_code_scanning",
+                    "reopen_issue",
+                    "reopen_pull_request",
+                    "request_pr_review",
+                    "resolve_dependabot_alerts",
+                    "resolve_secret_scanning_alerts",
+                    "view_secret_scanning_alerts",
+                    "write_code_scanning"
+                  ]
+                }
+        argumentDocs:
+            base_role: '- (Required) The system role from which the role inherits permissions. Can be one of: read, triage, write, or maintain.'
+            description: '- (Optional) The description for the custom role.'
+            id: '- The ID of the custom role.'
+            name: '- (Required) The name of the custom role.'
+            permissions: '- (Required) A list of additional permissions included in this role. Must have a minimum of 1 additional permission. The list of available permissions can be found using the list repository fine-grained permissions for an organization API.'
         importStatements: []
     github_organization_project:
         subCategory: ""
@@ -873,6 +1198,84 @@ resources:
             body: '- (Optional) The body of the project.'
             name: '- (Required) The name of the project.'
             url: '- URL of the project'
+        importStatements: []
+    github_organization_ruleset Resource - terraform-provider-github:
+        subCategory: ""
+        description: Creates a GitHub organization ruleset.
+        name: github_organization_ruleset Resource - terraform-provider-github
+        title: github_organization_ruleset Resource - terraform-provider-github
+        argumentDocs:
+            admin: -> 5
+            bypass_actors: '- (Optional) (Block List) The actors that can bypass the rules in this ruleset. (see below for nested schema)'
+            bypass_actors.OrganizationAdmin: -> 1
+            bypass_actors.RepositoryRole: (This is the actor type, the following are the base repository roles and their associated IDs.)
+            bypass_actors.actor_id: '- (Required) (Number) The ID of the actor that can bypass a ruleset.'
+            bypass_actors.actor_type: '(String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.'
+            bypass_actors.bypass_mode: '- (Optional) (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.'
+            conditions: '- (Optional) (Block List, Max: 1) Parameters for an organization ruleset condition. ref_name is required alongside one of repository_name or repository_id. (see below for nested schema)'
+            conditions.ref_name: '- (Required) (Block List, Min: 1, Max: 1) (see below for nested schema)'
+            conditions.ref_name.exclude: '- (Required) (List of String) Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.'
+            conditions.ref_name.include: '- (Required) (List of String) Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~DEFAULT_BRANCH to include the default branch or ~ALL to include all branches.'
+            conditions.repository_id: (Optional) (List of Number) The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass. Conflicts with repository_name.
+            conditions.repository_name: '(Optional) (Block List, Max: 1) Conflicts with repository_id. (see below for nested schema)'
+            conditions.repository_name.exclude: '- (Required) (List of String) Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.'
+            conditions.repository_name.include: '- (Required) (List of String) Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~ALL to include all repositories.'
+            context: '- (Required) (String) The status check context name that must be present on the commit.'
+            enforcement: '- (Required) (String) Possible values for Enforcement are disabled, active, evaluate. Note: evaluate is currently only supported for owners of type organization.'
+            etag: (String)
+            integration_id: '- (Optional) (Number) The optional integration ID that this status check must originate from.'
+            maintain: -> 2
+            name: '- (Required) (String) The name of the ruleset.'
+            node_id: (String) GraphQL global node id for use with v4 API.
+            rules: '- (Required) (Block List, Min: 1, Max: 1) Rules within the ruleset. (see below for nested schema)'
+            rules.branch_name_pattern: '- (Optional) (Block List, Max: 1) Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with tag_name_pattern as it only applies to rulesets with target branch. (see below for nested schema)'
+            rules.branch_name_pattern.name: '- (Optional) (String) How this rule will appear to users.'
+            rules.branch_name_pattern.negate: '- (Optional) (Boolean) If true, the rule will fail if the pattern matches.'
+            rules.branch_name_pattern.operator: '- (Required) (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.'
+            rules.branch_name_pattern.pattern: '- (Required) (String) The pattern to match with.'
+            rules.commit_author_email_pattern: '- (Optional) (Block List, Max: 1) Parameters to be used for the commit_author_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)'
+            rules.commit_author_email_pattern.name: '- (Optional) (String) How this rule will appear to users.'
+            rules.commit_author_email_pattern.negate: '- (Optional) (Boolean) If true, the rule will fail if the pattern matches.'
+            rules.commit_author_email_pattern.operator: '- (Required) (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.'
+            rules.commit_author_email_pattern.pattern: '- (Required) (String) The pattern to match with.'
+            rules.commit_message_pattern: '- (Optional) (Block List, Max: 1) Parameters to be used for the commit_message_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)'
+            rules.commit_message_pattern.name: '- (Optional) (String) How this rule will appear to users.'
+            rules.commit_message_pattern.negate: '- (Optional) (Boolean) If true, the rule will fail if the pattern matches.'
+            rules.commit_message_pattern.operator: '- (Required) (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.'
+            rules.commit_message_pattern.pattern: '- (Required) (String) The pattern to match with.'
+            rules.committer_email_pattern: '- (Optional) (Block List, Max: 1) Parameters to be used for the committer_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)'
+            rules.committer_email_pattern.name: '- (Optional) (String) How this rule will appear to users.'
+            rules.committer_email_pattern.negate: '- (Optional) (Boolean) If true, the rule will fail if the pattern matches.'
+            rules.committer_email_pattern.operator: '- (Required) (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.'
+            rules.committer_email_pattern.pattern: '- (Required) (String) The pattern to match with.'
+            rules.creation: '- (Optional) (Boolean) Only allow users with bypass permission to create matching refs.'
+            rules.deletion: '- (Optional) (Boolean) Only allow users with bypass permissions to delete matching refs.'
+            rules.non_fast_forward: '- (Optional) (Boolean) Prevent users with push access from force pushing to branches.'
+            rules.pull_request: '- (Optional) (Block List, Max: 1) Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. (see below for nested schema)'
+            rules.pull_request.dismiss_stale_reviews_on_push: '- (Optional) (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.'
+            rules.pull_request.require_code_owner_review: '- (Optional) (Boolean) Require an approving review in pull requests that modify files that have a designated code owner. Defaults to false.'
+            rules.pull_request.require_last_push_approval: '- (Optional) (Boolean) Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to false.'
+            rules.pull_request.required_approving_review_count: '- (Optional) (Number) The number of approving reviews that are required before a pull request can be merged. Defaults to 0.'
+            rules.pull_request.required_review_thread_resolution: '- (Optional) (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.'
+            rules.required_linear_history: '- (Optional) (Boolean) Prevent merge commits from being pushed to matching branches.'
+            rules.required_signatures: '- (Optional) (Boolean) Commits pushed to matching branches must have verified signatures.'
+            rules.required_status_checks: '- (Optional) (Block List, Max: 1) Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed. (see below for nested schema)'
+            rules.required_status_checks.required_check: '- (Required) (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)'
+            rules.required_status_checks.strict_required_status_checks_policy: '- (Optional) (Boolean) Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to false.'
+            rules.required_workflows: '- (Optional) (Block List, Max: 1) Define which Actions workflows must pass before changes can be merged into a branch matching the rule. Multiple workflows can be specified. (see below for nested schema)'
+            rules.required_workflows.required_workflow: '- (Required) (Block Set, Min: 1) Actions workflows that are required. Multiple can be defined. (see below for nested schema)'
+            rules.required_workflows.required_workflow.path: '- (Required) (String) The path to the YAML definition file of the workflow.'
+            rules.required_workflows.required_workflow.ref: '- (Optional) (String) The optional ref from which to fetch the workflow. Defaults to master.'
+            rules.required_workflows.required_workflow.repository_id: '- (Required) (Number) The ID of the repository. Names, full names and repository URLs are not supported.'
+            rules.tag_name_pattern: '- (Optional) (Block List, Max: 1) Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with branch_name_pattern as it only applies to rulesets with target tag. (see below for nested schema)'
+            rules.tag_name_pattern.name: '- (Optional) (String) How this rule will appear to users.'
+            rules.tag_name_pattern.negate: '- (Optional) (Boolean) If true, the rule will fail if the pattern matches.'
+            rules.tag_name_pattern.operator: '- (Required) (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.'
+            rules.tag_name_pattern.pattern: '- (Required) (String) The pattern to match with.'
+            rules.update: '- (Optional) (Boolean) Only allow users with bypass permission to update matching refs.'
+            ruleset_id: (Number) GitHub ID for the ruleset.
+            target: '- (Required) (String) Possible values are branch and tag.'
+            write: -> 4
         importStatements: []
     github_organization_security_manager:
         subCategory: ""
@@ -1214,14 +1617,16 @@ resources:
             include_all_branches: ': Whether the new repository should include all the branches from the template repository (defaults to false, which includes only the default branch from the template).'
             is_template: '- (Optional) Set to true to tell GitHub that this is a template repository.'
             license_template: '- (Optional) Use the name of the template without the extension. For example, "mit" or "mpl-2.0".'
-            merge_commit_message: '- Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message.'
-            merge_commit_title: '- Can be PR_TITLE or MERGE_MESSAGE for a default merge commit title.'
+            merge_commit_message: '- Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message. Applicable only if allow_merge_commit is true.'
+            merge_commit_title: '- Can be PR_TITLE or MERGE_MESSAGE for a default merge commit title. Applicable only if allow_merge_commit is true.'
             name: '- (Required) The name of the repository.'
             node_id: '- GraphQL global node id for use with v4 API'
             owner: ': The GitHub organization or user the template repository is owned by.'
             pages: '- (Optional) The repository''s GitHub Pages configuration. See GitHub Pages Configuration below for details.'
+            pages.build_type: '- (Optional) The type of GitHub Pages site to build. Can be legacy or workflow. If you use legacy as build type you need to set the option source.'
             pages.cname: '- (Optional) The custom domain for the repository. This can only be set after the repository has been created.'
-            pages.source: '- (Required) The source branch and directory for the rendered Pages site. See GitHub Pages Source below for details.'
+            pages.source: '- (Optional) The source branch and directory for the rendered Pages site. See GitHub Pages Source below for details.'
+            primary_language: '- The primary language used in the repository.'
             private: |-
                 - (Optional) Set to true to create a private repository.
                 Repositories are created as public (e.g. open source) by default.
@@ -1229,12 +1634,12 @@ resources:
             repository: ': The name of the template repository.'
             security_and_analysis: '- (Optional) The repository''s security and analysis configuration. See Security and Analysis Configuration below for details.'
             security_and_analysis.advanced_security: '- (Optional) The advanced security configuration for the repository. See Advanced Security Configuration below for details. If a repository''s visibility is public, advanced security is always enabled and cannot be changed, so this setting cannot be supplied.'
-            security_and_analysis.secret_scanning: '- (Required) The secret scanning configuration for the repository. See Secret Scanning Configuration below for details.'
-            security_and_analysis.secret_scanning_push_protection: '- (Required) The secret scanning push protection configuration for the repository. See Secret Scanning Push Protection Configuration below for details.'
+            security_and_analysis.secret_scanning: '- (Optional) The secret scanning configuration for the repository. See Secret Scanning Configuration below for details.'
+            security_and_analysis.secret_scanning_push_protection: '- (Optional) The secret scanning push protection configuration for the repository. See Secret Scanning Push Protection Configuration below for details.'
             source.branch: '- (Required) The repository branch used to publish the site''s source files. (i.e. main or gh-pages.'
             source.path: '- (Optional) The repository directory from which the site publishes (Default: /).'
-            squash_merge_commit_message: '- (Optional) Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message.'
-            squash_merge_commit_title: '- (Optional) Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title.'
+            squash_merge_commit_message: '- (Optional) Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message. Applicable only if allow_squash_merge is true.'
+            squash_merge_commit_title: '- (Optional) Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title. Applicable only if allow_squash_merge is true.'
             ssh_clone_url: '- URL that can be provided to git clone to clone the repository via SSH.'
             status: '- (Required) Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository''s visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.'
             svn_url: '- URL that can be provided to svn checkout to check out the repository via GitHub''s Subversion protocol emulation.'
@@ -1242,6 +1647,7 @@ resources:
             topics: '- (Optional) The list of topics of the repository.'
             visibility: '- (Optional) Can be public or private. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be internal. The visibility parameter overrides the private parameter.'
             vulnerability_alerts: '(Optional) - Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default.) See GitHub Documentation for details. Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.'
+            web_commit_signoff_required: '- (Optional) Require contributors to sign off on web-based commits. See more here. Defaults to false.'
         importStatements: []
     github_repository_autolink_reference:
         subCategory: ""
@@ -1295,6 +1701,86 @@ resources:
             repository: '- (Required) The GitHub repository'
             username: '- (Required) The user to add to the repository as a collaborator.'
         importStatements: []
+    github_repository_collaborators:
+        subCategory: ""
+        description: Provides a GitHub repository collaborators resource.
+        name: github_repository_collaborators
+        title: github_repository_collaborators
+        examples:
+            - name: some_repo_collaborators
+              manifest: |-
+                {
+                  "repository": "${github_repository.some_repo.name}",
+                  "team": [
+                    {
+                      "permission": "pull",
+                      "team_id": "${github_team.some_team.slug}"
+                    }
+                  ],
+                  "user": [
+                    {
+                      "permission": "admin",
+                      "username": "SomeUser"
+                    }
+                  ]
+                }
+              references:
+                repository: github_repository.some_repo.name
+                team.team_id: github_team.some_team.slug
+              dependencies:
+                github_repository.some_repo: |-
+                    {
+                      "name": "some-repo"
+                    }
+                github_team.some_team: |-
+                    {
+                      "description": "Some cool team",
+                      "name": "SomeTeam"
+                    }
+        argumentDocs:
+            invitation_ids: |-
+                - Map of usernames to invitation ID for any users added as part of creation of this resource to
+                be used in github_user_invitation_accepter.
+            repository: '- (Required) The GitHub repository'
+            team: '- (Optional) List of teams'
+            team.permission: |-
+                - (Optional) The permission of the outside collaborators for the repository.
+                Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+                Must be push for personal repositories. Defaults to push.
+            team.team_id: '- (Required) The GitHub team id or the GitHub team slug'
+            user: '- (Optional) List of users'
+            user.permission: |-
+                - (Optional) The permission of the outside collaborators for the repository.
+                Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories.
+                Must be push for personal repositories. Defaults to push.
+            user.username: '- (Required) The user to add to the repository as a collaborator.'
+        importStatements: []
+    github_repository_dependabot_security_updates:
+        subCategory: ""
+        description: Manages automated security fixes for a single repository
+        name: github_repository_dependabot_security_updates
+        title: github_repository_dependabot_security_updates
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "enabled": true,
+                  "repository": "${github_repository.test.id}"
+                }
+              references:
+                repository: github_repository.test.id
+              dependencies:
+                github_repository.repo: |-
+                    {
+                      "description": "GitHub repo managed by Terraform",
+                      "name": "my-repo",
+                      "private": false,
+                      "vulnerability_alerts": true
+                    }
+        argumentDocs:
+            enabled: '- (Required) The state of the automated security fixes.'
+            repository: '- (Required) The repository to manage.'
+        importStatements: []
     github_repository_deploy_key:
         subCategory: ""
         description: Provides a GitHub repository deploy key resource.
@@ -1314,6 +1800,40 @@ resources:
             read_only: '- (Required) A boolean qualifying the key to be either read only or read/write.'
             repository: '- (Required) Name of the GitHub repository.'
             title: '- (Required) A title.'
+        importStatements: []
+    github_repository_deployment_branch_policy:
+        subCategory: ""
+        description: Creates and manages deployment branch policies
+        name: github_repository_deployment_branch_policy
+        title: github_repository_deployment_branch_policy
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "depends_on": [
+                    "${github_repository_environment.env}"
+                  ],
+                  "environment_name": "my_env",
+                  "name": "foo",
+                  "repository": "my_repo"
+                }
+              dependencies:
+                github_repository_environment.env: |-
+                    {
+                      "deployment_branch_policy": [
+                        {
+                          "custom_branch_policies": true,
+                          "protected_branches": false
+                        }
+                      ],
+                      "environment": "my_env",
+                      "repository": "my_repo"
+                    }
+        argumentDocs:
+            environment_name: '- (Required) The name of the environment. This environment must have deployment_branch_policy.custom_branch_policies set to true or a 404 error will be thrown.'
+            id: '- The ID of the deployment branch policy.'
+            name: '- (Required) The name pattern that branches must match in order to deploy to the environment.'
+            repository: '- (Required) The repository to create the policy in.'
         importStatements: []
     github_repository_environment:
         subCategory: ""
@@ -1349,6 +1869,7 @@ resources:
                       "name": "A Repository Project"
                     }
         argumentDocs:
+            can_admins_bypass: '- (Optional) Can repository admins bypass the environment protections.  Defaults to true.'
             deployment_branch_policy.custom_branch_policies: '- (Required) Whether only branches that match the specified name patterns can deploy to this environment.'
             deployment_branch_policy.protected_branches: '- (Required) Whether only branches with branch protection rules can deploy to this environment.'
             environment: '- (Required) The name of the environment.'
@@ -1356,6 +1877,51 @@ resources:
             reviewers.teams: '- (Optional) Up to 6 IDs for teams who may review jobs that reference the environment. Reviewers must have at least read access to the repository. Only one of the required reviewers needs to approve the job for it to proceed.'
             reviewers.users: '- (Optional) Up to 6 IDs for users who may review jobs that reference the environment. Reviewers must have at least read access to the repository. Only one of the required reviewers needs to approve the job for it to proceed.'
             wait_timer: '- (Optional) Amount of time to delay a job after the job is initially triggered.'
+        importStatements: []
+    github_repository_environment_deployment_policy:
+        subCategory: ""
+        description: Creates and manages environment deployment branch policies for GitHub repositories
+        name: github_repository_environment_deployment_policy
+        title: github_repository_environment_deployment_policy
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "branch_pattern": "releases/*",
+                  "environment": "${github_repository_environment.test.environment}",
+                  "repository": "${github_repository.test.name}"
+                }
+              references:
+                environment: github_repository_environment.test.environment
+                repository: github_repository.test.name
+              dependencies:
+                github_repository.test: |-
+                    {
+                      "name": "tf-acc-test-%s"
+                    }
+                github_repository_environment.test: |-
+                    {
+                      "deployment_branch_policy": [
+                        {
+                          "custom_branch_policies": true,
+                          "protected_branches": false
+                        }
+                      ],
+                      "environment": "environment/test",
+                      "repository": "${github_repository.test.name}",
+                      "reviewers": [
+                        {
+                          "users": [
+                            "${data.github_user.current.id}"
+                          ]
+                        }
+                      ],
+                      "wait_timer": 10000
+                    }
+        argumentDocs:
+            branch_pattern: '- (Required) The name pattern that branches must match in order to deploy to the environment.'
+            environment: '- (Required) The name of the environment.'
+            repository: '- (Required) The repository of the environment.'
         importStatements: []
     github_repository_file:
         subCategory: ""
@@ -1385,7 +1951,7 @@ resources:
                     }
         argumentDocs:
             branch: |-
-                - (Optional) Git branch (defaults to main).
+                - (Optional) Git branch (defaults to the repository's default branch).
                 The branch must already exist, it will not be created if it does not already exist.
             commit_author: '- (Optional) Committer author name to use. NOTE: GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App. This maybe useful when a branch protection rule requires signed commits.'
             commit_email: '- (Optional) Committer email address to use. NOTE: GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App. This may be useful when a branch protection rule requires signed commits.'
@@ -1393,7 +1959,8 @@ resources:
             commit_sha: '- The SHA of the commit that modified the file.'
             content: '- (Required) The file content.'
             file: '- (Required) The path of the file to manage.'
-            overwrite_on_create: '- (Optional) Enable overwriting existing files'
+            overwrite_on_create: '- (Optional) Enable overwriting existing files. If set to true it will overwrite an existing file with the same name. If set to false it will fail if there is an existing file with the same name.'
+            ref: '- The name of the commit/branch/tag.'
             repository: '- (Required) The repository to create the file in.'
             sha: '- The SHA blob of the file.'
         importStatements: []
@@ -1478,6 +2045,79 @@ resources:
             title: '- (Optional) The title of the Pull Request.'
             updated_at: '- The timestamp of the last Pull Request update.'
         importStatements: []
+    github_repository_ruleset Resource - terraform-provider-github:
+        subCategory: ""
+        description: Creates a GitHub repository ruleset.
+        name: github_repository_ruleset Resource - terraform-provider-github
+        title: github_repository_ruleset Resource - terraform-provider-github
+        argumentDocs:
+            admin: -> 5
+            bypass_actors: '- (Optional) (Block List) The actors that can bypass the rules in this ruleset. (see below for nested schema)'
+            bypass_actors.OrganizationAdmin: -> 1
+            bypass_actors.RepositoryRole: (This is the actor type, the following are the base repository roles and their associated IDs.)
+            bypass_actors.actor_id: '- (Required) (Number) The ID of the actor that can bypass a ruleset.'
+            bypass_actors.actor_type: '(String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.'
+            bypass_actors.bypass_mode: '- (Optional) (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.'
+            conditions: '- (Optional) (Block List, Max: 1) Parameters for a repository ruleset ref name condition. (see below for nested schema)'
+            conditions.ref_name: '- (Required) (Block List, Min: 1, Max: 1) (see below for nested schema)'
+            conditions.ref_name.exclude: '- (Required) (List of String) Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.'
+            conditions.ref_name.include: '- (Required) (List of String) Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~DEFAULT_BRANCH to include the default branch or ~ALL to include all branches.'
+            enforcement: '- (Required) (String) Possible values for Enforcement are disabled, active, evaluate. Note: evaluate is currently only supported for owners of type organization.'
+            etag: (String)
+            maintain: -> 2
+            name: '- (Required) (String) The name of the ruleset.'
+            node_id: (String) GraphQL global node id for use with v4 API.
+            repository: '- (Optional) (String) Name of the repository to apply rulset to.'
+            rules: '- (Required) (Block List, Min: 1, Max: 1) Rules within the ruleset. (see below for nested schema)'
+            rules.branch_name_pattern: '- (Optional) (Block List, Max: 1) Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with tag_name_pattern as it only applied to rulesets with target branch. (see below for nested schema)'
+            rules.branch_name_pattern.name: '- (Optional) (String) How this rule will appear to users.'
+            rules.branch_name_pattern.negate: '- (Optional) (Boolean) If true, the rule will fail if the pattern matches.'
+            rules.branch_name_pattern.operator: '- (Required) (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.'
+            rules.branch_name_pattern.pattern: '- (Required) (String) The pattern to match with.'
+            rules.commit_author_email_pattern: '- (Optional) (Block List, Max: 1) Parameters to be used for the commit_author_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)'
+            rules.commit_author_email_pattern.name: '- (Optional) (String) How this rule will appear to users.'
+            rules.commit_author_email_pattern.negate: '- (Optional) (Boolean) If true, the rule will fail if the pattern matches.'
+            rules.commit_author_email_pattern.operator: '- (Required) (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.'
+            rules.commit_author_email_pattern.pattern: '- (Required) (String) The pattern to match with.'
+            rules.commit_message_pattern: '- (Optional) (Block List, Max: 1) Parameters to be used for the commit_message_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)'
+            rules.commit_message_pattern.name: '- (Optional) (String) How this rule will appear to users.'
+            rules.commit_message_pattern.negate: '- (Optional) (Boolean) If true, the rule will fail if the pattern matches.'
+            rules.commit_message_pattern.operator: '- (Required) (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.'
+            rules.commit_message_pattern.pattern: '- (Required) (String) The pattern to match with.'
+            rules.committer_email_pattern: '- (Optional) (Block List, Max: 1) Parameters to be used for the committer_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)'
+            rules.committer_email_pattern.name: '- (Optional) (String) How this rule will appear to users.'
+            rules.committer_email_pattern.negate: '- (Optional) (Boolean) If true, the rule will fail if the pattern matches.'
+            rules.committer_email_pattern.operator: '- (Required) (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.'
+            rules.committer_email_pattern.pattern: '- (Required) (String) The pattern to match with.'
+            rules.creation: '- (Optional) (Boolean) Only allow users with bypass permission to create matching refs.'
+            rules.deletion: '- (Optional) (Boolean) Only allow users with bypass permissions to delete matching refs.'
+            rules.non_fast_forward: '- (Optional) (Boolean) Prevent users with push access from force pushing to branches.'
+            rules.pull_request: '- (Optional) (Block List, Max: 1) Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. (see below for nested schema)'
+            rules.pull_request.dismiss_stale_reviews_on_push: '- (Optional) (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.'
+            rules.pull_request.require_code_owner_review: '- (Optional) (Boolean) Require an approving review in pull requests that modify files that have a designated code owner. Defaults to false.'
+            rules.pull_request.require_last_push_approval: '- (Optional) (Boolean) Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to false.'
+            rules.pull_request.required_approving_review_count: '- (Optional) (Number) The number of approving reviews that are required before a pull request can be merged. Defaults to 0.'
+            rules.pull_request.required_review_thread_resolution: '- (Optional) (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.'
+            rules.required_deployments: '- (Optional) (Block List, Max: 1) Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule. (see below for nested schema)'
+            rules.required_deployments.required_deployment_environments: '- (Required) (List of String) The environments that must be successfully deployed to before branches can be merged.'
+            rules.required_linear_history: '- (Optional) (Boolean) Prevent merge commits from being pushed to matching branches.'
+            rules.required_signatures: '- (Optional) (Boolean) Commits pushed to matching branches must have verified signatures.'
+            rules.required_status_checks: '- (Optional) (Block List, Max: 1) Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed. (see below for nested schema)'
+            rules.required_status_checks.required_check: '- (Required) (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)'
+            rules.required_status_checks.required_check.context: '- (Required) (String) The status check context name that must be present on the commit.'
+            rules.required_status_checks.required_check.integration_id: '- (Optional) (Number) The optional integration ID that this status check must originate from.'
+            rules.required_status_checks.strict_required_status_checks_policy: '- (Optional) (Boolean) Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to false.'
+            rules.tag_name_pattern: '- (Optional) (Block List, Max: 1) Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with branch_name_pattern as it only applied to rulesets with target tag. (see below for nested schema)'
+            rules.tag_name_pattern.name: '- (Optional) (String) How this rule will appear to users.'
+            rules.tag_name_pattern.negate: '- (Optional) (Boolean) If true, the rule will fail if the pattern matches.'
+            rules.tag_name_pattern.operator: '- (Required) (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.'
+            rules.tag_name_pattern.pattern: '- (Required) (String) The pattern to match with.'
+            rules.update: '- (Optional) (Boolean) Only allow users with bypass permission to update matching refs.'
+            rules.update_allows_fetch_and_merge: '- (Optional) (Boolean) Branch can pull changes from its upstream repository. This is only applicable to forked repositories. Requires update to be set to true. Note: behaviour is affected by a known bug on the GitHub side which may cause issues when using this parameter.'
+            ruleset_id: (Number) GitHub ID for the ruleset.
+            target: '- (Required) (String) Possible values are branch and tag.'
+            write: -> 4
+        importStatements: []
     github_repository_tag_protection:
         subCategory: ""
         description: Creates and manages repository tag protection within GitHub organizations or personal accounts
@@ -1494,6 +2134,27 @@ resources:
             id: '- The ID of the tag protection.'
             pattern: '- (Required) The pattern of the tag to protect.'
             repository: '- (Required) Name of the repository to add the tag protection to.'
+        importStatements: []
+    github_repository_topics:
+        subCategory: ""
+        description: Creates and manages the topics on a repository
+        name: github_repository_topics
+        title: github_repository_topics
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "repository": "${github_repository.test.name}",
+                  "topics": [
+                    "topic-1",
+                    "topic-2"
+                  ]
+                }
+              references:
+                repository: github_repository.test.name
+        argumentDocs:
+            repository: '- (Required) The repository name.'
+            topics: '- (Required) A list of topics to add to the repository.'
         importStatements: []
     github_repository_webhook:
         subCategory: ""
@@ -1515,7 +2176,6 @@ resources:
                   "events": [
                     "issues"
                   ],
-                  "name": "web",
                   "repository": "${github_repository.repo.name}"
                 }
               references:
@@ -1526,7 +2186,7 @@ resources:
                       "description": "Terraform acceptance tests",
                       "homepage_url": "http://example.com/",
                       "name": "foo",
-                      "private": false
+                      "visibility": "public"
                     }
         argumentDocs:
             active: '- (Optional) Indicate if the webhook should receive events. Defaults to true.'
@@ -1536,7 +2196,6 @@ resources:
             configuration.secret: '- (Optional) The shared secret for the webhook. See API documentation.'
             configuration.url: '- (Required) The URL of the webhook.'
             events: '- (Required) A list of events which should trigger the webhook. See a list of available events.'
-            name: '- (Optional) The type of the webhook. web is the default and the only option.'
             repository: '- (Required) The repository of the webhook.'
             url: '- URL of the webhook.  This is a sensitive attribute because it may include basic auth credentials.'
         importStatements: []
@@ -1560,7 +2219,7 @@ resources:
             ldap_dn: '- (Optional) The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.'
             name: '- (Required) The name of the team.'
             node_id: '- The Node ID of the created team.'
-            parent_team_id: '- (Optional) The ID of the parent team, if this is a nested team.'
+            parent_team_id: '- (Optional) The ID or slug of the parent team, if this is a nested team.'
             privacy: |-
                 - (Optional) The level of privacy for the team. Must be one of secret or closed.
                 Defaults to secret.
@@ -1613,7 +2272,7 @@ resources:
             role: |-
                 - (Optional) The role of the user within the team.
                 Must be one of member or maintainer. Defaults to member.
-            team_id: '- (Required) The GitHub team id'
+            team_id: '- (Required) The team id or the team slug'
             username: '- (Required) The user to add to the team.'
         importStatements: []
     github_team_membership:
@@ -1646,7 +2305,7 @@ resources:
             role: |-
                 - (Optional) The role of the user within the team.
                 Must be one of member or maintainer. Defaults to member.
-            team_id: '- (Required) The GitHub team id'
+            team_id: '- (Required) The GitHub team id or the GitHub team slug'
             username: '- (Required) The user to add to the team.'
         importStatements: []
     github_team_repository:
@@ -1795,7 +2454,8 @@ resources:
                       "username": "example-username"
                     }
         argumentDocs:
-            invitation_id: '- (Required) ID of the invitation to accept'
+            allow_empty_id: '- (Optional) Allow the ID to be unset. This will result in the resource being skipped when the ID is not set instead of returning an error.'
+            invitation_id: '- (Optional) ID of the invitation to accept. Must be set when allow_empty_id is false.'
         importStatements: []
     github_user_ssh_key:
         subCategory: ""

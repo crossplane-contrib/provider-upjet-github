@@ -10,6 +10,10 @@ spec:
   forProvider:
     allowsDeletions: true
     enforceAdmins: true
+    forcePushBypassers:
+    - ${data.github_user.example.node_id}
+    - /exampleuser
+    - exampleorganization/exampleteam
     pattern: main
     pushRestrictions:
     - ${data.github_user.example.node_id}

@@ -21,8 +21,10 @@ type TeamRepositoryInitParameters struct {
 
 	// The permissions of team members regarding the repository.
 	// Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+	// The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
+	// The repository to add to the team.
 	// The repository to add to the team.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
@@ -56,8 +58,10 @@ type TeamRepositoryObservation struct {
 
 	// The permissions of team members regarding the repository.
 	// Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+	// The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
+	// The repository to add to the team.
 	// The repository to add to the team.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
@@ -70,9 +74,11 @@ type TeamRepositoryParameters struct {
 
 	// The permissions of team members regarding the repository.
 	// Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+	// The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
 	// +kubebuilder:validation:Optional
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
+	// The repository to add to the team.
 	// The repository to add to the team.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
