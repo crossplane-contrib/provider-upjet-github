@@ -74,10 +74,14 @@ spec:
               forProvider:
                 properties:
                   branch:
-                    description: The repository branch to create.
+                    description: |-
+                      The repository branch to create.
+                      The repository branch to create.
                     type: string
                   repository:
-                    description: The GitHub repository name.
+                    description: |-
+                      The GitHub repository name.
+                      The GitHub repository name.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -154,11 +158,14 @@ spec:
                         type: object
                     type: object
                   sourceBranch:
-                    description: The branch name to start from. Defaults to main.
+                    description: |-
+                      The branch name to start from. Defaults to main.
+                      The branch name to start from. Defaults to 'main'.
                     type: string
                   sourceSha:
-                    description: The commit hash to start from. Defaults to the tip
-                      of source_branch. If provided, source_branch is ignored.
+                    description: |-
+                      The commit hash to start from. Defaults to the tip of source_branch. If provided, source_branch is ignored.
+                      The commit hash to start from. Defaults to the tip of 'source_branch'. If provided, 'source_branch' is ignored.
                     type: string
                 type: object
               initProvider:
@@ -175,10 +182,14 @@ spec:
                   autoscaler.
                 properties:
                   branch:
-                    description: The repository branch to create.
+                    description: |-
+                      The repository branch to create.
+                      The repository branch to create.
                     type: string
                   repository:
-                    description: The GitHub repository name.
+                    description: |-
+                      The GitHub repository name.
+                      The GitHub repository name.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -255,11 +266,14 @@ spec:
                         type: object
                     type: object
                   sourceBranch:
-                    description: The branch name to start from. Defaults to main.
+                    description: |-
+                      The branch name to start from. Defaults to main.
+                      The branch name to start from. Defaults to 'main'.
                     type: string
                   sourceSha:
-                    description: The commit hash to start from. Defaults to the tip
-                      of source_branch. If provided, source_branch is ignored.
+                    description: |-
+                      The commit hash to start from. Defaults to the tip of source_branch. If provided, source_branch is ignored.
+                      The commit hash to start from. Defaults to the tip of 'source_branch'. If provided, 'source_branch' is ignored.
                     type: string
                 type: object
               managementPolicies:
@@ -440,29 +454,41 @@ spec:
               atProvider:
                 properties:
                   branch:
-                    description: The repository branch to create.
+                    description: |-
+                      The repository branch to create.
+                      The repository branch to create.
                     type: string
                   etag:
-                    description: An etag representing the Branch object.
+                    description: |-
+                      An etag representing the Branch object.
+                      An etag representing the Branch object.
                     type: string
                   id:
                     type: string
                   ref:
-                    description: A string representing a branch reference, in the
-                      form of refs/heads/<branch>.
+                    description: |-
+                      A string representing a branch reference, in the form of refs/heads/<branch>.
+                      A string representing a branch reference, in the form of 'refs/heads/<branch>'.
                     type: string
                   repository:
-                    description: The GitHub repository name.
+                    description: |-
+                      The GitHub repository name.
+                      The GitHub repository name.
                     type: string
                   sha:
-                    description: A string storing the reference's HEAD commit's SHA1.
+                    description: |-
+                      A string storing the reference's HEAD commit's SHA1.
+                      A string storing the reference's HEAD commit's SHA1.
                     type: string
                   sourceBranch:
-                    description: The branch name to start from. Defaults to main.
+                    description: |-
+                      The branch name to start from. Defaults to main.
+                      The branch name to start from. Defaults to 'main'.
                     type: string
                   sourceSha:
-                    description: The commit hash to start from. Defaults to the tip
-                      of source_branch. If provided, source_branch is ignored.
+                    description: |-
+                      The commit hash to start from. Defaults to the tip of source_branch. If provided, source_branch is ignored.
+                      The commit hash to start from. Defaults to the tip of 'source_branch'. If provided, 'source_branch' is ignored.
                     type: string
                 type: object
               conditions:

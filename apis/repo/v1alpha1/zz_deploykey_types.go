@@ -20,11 +20,14 @@ import (
 type DeployKeyInitParameters struct {
 
 	// A SSH key.
+	// A SSH key.
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
 	// A boolean qualifying the key to be either read only or read/write.
+	// A boolean qualifying the key to be either read only or read/write.
 	ReadOnly *bool `json:"readOnly,omitempty" tf:"read_only,omitempty"`
 
+	// Name of the GitHub repository.
 	// Name of the GitHub repository.
 	// +crossplane:generate:reference:type=Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
@@ -37,6 +40,7 @@ type DeployKeyInitParameters struct {
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
+	// A title.
 	// A title.
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 }
@@ -47,14 +51,18 @@ type DeployKeyObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// A SSH key.
+	// A SSH key.
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
+	// A boolean qualifying the key to be either read only or read/write.
 	// A boolean qualifying the key to be either read only or read/write.
 	ReadOnly *bool `json:"readOnly,omitempty" tf:"read_only,omitempty"`
 
 	// Name of the GitHub repository.
+	// Name of the GitHub repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
+	// A title.
 	// A title.
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 }
@@ -62,13 +70,16 @@ type DeployKeyObservation struct {
 type DeployKeyParameters struct {
 
 	// A SSH key.
+	// A SSH key.
 	// +kubebuilder:validation:Optional
 	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
 	// A boolean qualifying the key to be either read only or read/write.
+	// A boolean qualifying the key to be either read only or read/write.
 	// +kubebuilder:validation:Optional
 	ReadOnly *bool `json:"readOnly,omitempty" tf:"read_only,omitempty"`
 
+	// Name of the GitHub repository.
 	// Name of the GitHub repository.
 	// +crossplane:generate:reference:type=Repository
 	// +kubebuilder:validation:Optional
@@ -82,6 +93,7 @@ type DeployKeyParameters struct {
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
+	// A title.
 	// A title.
 	// +kubebuilder:validation:Optional
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`

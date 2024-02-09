@@ -20,8 +20,10 @@ import (
 type PullRequestInitParameters struct {
 
 	// Name of the branch serving as the base of the Pull Request.
+	// Name of the branch serving as the base of the Pull Request.
 	BaseRef *string `json:"baseRef,omitempty" tf:"base_ref,omitempty"`
 
+	// Name of the base repository to retrieve the Pull Requests from.
 	// Name of the base repository to retrieve the Pull Requests from.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	BaseRepository *string `json:"baseRepository,omitempty" tf:"base_repository,omitempty"`
@@ -35,8 +37,10 @@ type PullRequestInitParameters struct {
 	BaseRepositorySelector *v1.Selector `json:"baseRepositorySelector,omitempty" tf:"-"`
 
 	// Body of the Pull Request.
+	// Body of the Pull Request.
 	Body *string `json:"body,omitempty" tf:"body,omitempty"`
 
+	// Name of the branch serving as the head of the Pull Request.
 	// Name of the branch serving as the head of the Pull Request.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
 	HeadRef *string `json:"headRef,omitempty" tf:"head_ref,omitempty"`
@@ -50,11 +54,14 @@ type PullRequestInitParameters struct {
 	HeadRefSelector *v1.Selector `json:"headRefSelector,omitempty" tf:"-"`
 
 	// Controls whether the base repository maintainers can modify the Pull Request. Default: false.
+	// Controls whether the base repository maintainers can modify the Pull Request. Default: 'false'.
 	MaintainerCanModify *bool `json:"maintainerCanModify,omitempty" tf:"maintainer_can_modify,omitempty"`
 
 	// Owner of the repository. If not provided, the provider's default owner is used.
+	// Owner of the repository. If not provided, the provider's default owner is used.
 	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
 
+	// The title of the Pull Request.
 	// The title of the Pull Request.
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 }
@@ -62,23 +69,30 @@ type PullRequestInitParameters struct {
 type PullRequestObservation struct {
 
 	// Name of the branch serving as the base of the Pull Request.
+	// Name of the branch serving as the base of the Pull Request.
 	BaseRef *string `json:"baseRef,omitempty" tf:"base_ref,omitempty"`
 
+	// Name of the base repository to retrieve the Pull Requests from.
 	// Name of the base repository to retrieve the Pull Requests from.
 	BaseRepository *string `json:"baseRepository,omitempty" tf:"base_repository,omitempty"`
 
 	// Head commit SHA of the Pull Request base.
+	// Head commit SHA of the Pull Request base.
 	BaseSha *string `json:"baseSha,omitempty" tf:"base_sha,omitempty"`
 
+	// Body of the Pull Request.
 	// Body of the Pull Request.
 	Body *string `json:"body,omitempty" tf:"body,omitempty"`
 
 	// Indicates Whether this Pull Request is a draft.
+	// Indicates Whether this Pull Request is a draft.
 	Draft *bool `json:"draft,omitempty" tf:"draft,omitempty"`
 
 	// Name of the branch serving as the head of the Pull Request.
+	// Name of the branch serving as the head of the Pull Request.
 	HeadRef *string `json:"headRef,omitempty" tf:"head_ref,omitempty"`
 
+	// Head commit SHA of the Pull Request head.
 	// Head commit SHA of the Pull Request head.
 	HeadSha *string `json:"headSha,omitempty" tf:"head_sha,omitempty"`
 
@@ -89,11 +103,14 @@ type PullRequestObservation struct {
 	Labels []*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// Controls whether the base repository maintainers can modify the Pull Request. Default: false.
+	// Controls whether the base repository maintainers can modify the Pull Request. Default: 'false'.
 	MaintainerCanModify *bool `json:"maintainerCanModify,omitempty" tf:"maintainer_can_modify,omitempty"`
 
 	// The number of the Pull Request within the repository.
+	// The number of the Pull Request within the repository.
 	Number *float64 `json:"number,omitempty" tf:"number,omitempty"`
 
+	// Unix timestamp indicating the Pull Request creation time.
 	// Unix timestamp indicating the Pull Request creation time.
 	OpenedAt *float64 `json:"openedAt,omitempty" tf:"opened_at,omitempty"`
 
@@ -102,14 +119,18 @@ type PullRequestObservation struct {
 	OpenedBy *string `json:"openedBy,omitempty" tf:"opened_by,omitempty"`
 
 	// Owner of the repository. If not provided, the provider's default owner is used.
+	// Owner of the repository. If not provided, the provider's default owner is used.
 	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
 
 	// the current Pull Request state - can be "open", "closed" or "merged".
+	// The current Pull Request state - can be 'open', 'closed' or 'merged'.
 	State *string `json:"state,omitempty" tf:"state,omitempty"`
 
 	// The title of the Pull Request.
+	// The title of the Pull Request.
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`
 
+	// The timestamp of the last Pull Request update.
 	// The timestamp of the last Pull Request update.
 	UpdatedAt *float64 `json:"updatedAt,omitempty" tf:"updated_at,omitempty"`
 }
@@ -117,9 +138,11 @@ type PullRequestObservation struct {
 type PullRequestParameters struct {
 
 	// Name of the branch serving as the base of the Pull Request.
+	// Name of the branch serving as the base of the Pull Request.
 	// +kubebuilder:validation:Optional
 	BaseRef *string `json:"baseRef,omitempty" tf:"base_ref,omitempty"`
 
+	// Name of the base repository to retrieve the Pull Requests from.
 	// Name of the base repository to retrieve the Pull Requests from.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
@@ -134,9 +157,11 @@ type PullRequestParameters struct {
 	BaseRepositorySelector *v1.Selector `json:"baseRepositorySelector,omitempty" tf:"-"`
 
 	// Body of the Pull Request.
+	// Body of the Pull Request.
 	// +kubebuilder:validation:Optional
 	Body *string `json:"body,omitempty" tf:"body,omitempty"`
 
+	// Name of the branch serving as the head of the Pull Request.
 	// Name of the branch serving as the head of the Pull Request.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
 	// +kubebuilder:validation:Optional
@@ -151,13 +176,16 @@ type PullRequestParameters struct {
 	HeadRefSelector *v1.Selector `json:"headRefSelector,omitempty" tf:"-"`
 
 	// Controls whether the base repository maintainers can modify the Pull Request. Default: false.
+	// Controls whether the base repository maintainers can modify the Pull Request. Default: 'false'.
 	// +kubebuilder:validation:Optional
 	MaintainerCanModify *bool `json:"maintainerCanModify,omitempty" tf:"maintainer_can_modify,omitempty"`
 
 	// Owner of the repository. If not provided, the provider's default owner is used.
+	// Owner of the repository. If not provided, the provider's default owner is used.
 	// +kubebuilder:validation:Optional
 	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
 
+	// The title of the Pull Request.
 	// The title of the Pull Request.
 	// +kubebuilder:validation:Optional
 	Title *string `json:"title,omitempty" tf:"title,omitempty"`

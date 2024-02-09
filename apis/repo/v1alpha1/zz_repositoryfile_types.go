@@ -19,9 +19,9 @@ import (
 
 type RepositoryFileInitParameters struct {
 
-	// Git branch (defaults to main).
+	// Git branch (defaults to the repository's default branch).
 	// The branch must already exist, it will not be created if it does not already exist.
-	// The branch name, defaults to "main"
+	// The branch name, defaults to the repository's default branch
 	// +crossplane:generate:reference:type=Branch
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
@@ -53,7 +53,7 @@ type RepositoryFileInitParameters struct {
 	// The file path to manage
 	File *string `json:"file,omitempty" tf:"file,omitempty"`
 
-	// Enable overwriting existing files
+	// Enable overwriting existing files. If set to true it will overwrite an existing file with the same name. If set to false it will fail if there is an existing file with the same name.
 	// Enable overwriting existing files, defaults to "false"
 	OverwriteOnCreate *bool `json:"overwriteOnCreate,omitempty" tf:"overwrite_on_create,omitempty"`
 
@@ -73,9 +73,9 @@ type RepositoryFileInitParameters struct {
 
 type RepositoryFileObservation struct {
 
-	// Git branch (defaults to main).
+	// Git branch (defaults to the repository's default branch).
 	// The branch must already exist, it will not be created if it does not already exist.
-	// The branch name, defaults to "main"
+	// The branch name, defaults to the repository's default branch
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
 	// Committer author name to use. NOTE: GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App. This maybe useful when a branch protection rule requires signed commits.
@@ -104,9 +104,13 @@ type RepositoryFileObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Enable overwriting existing files
+	// Enable overwriting existing files. If set to true it will overwrite an existing file with the same name. If set to false it will fail if there is an existing file with the same name.
 	// Enable overwriting existing files, defaults to "false"
 	OverwriteOnCreate *bool `json:"overwriteOnCreate,omitempty" tf:"overwrite_on_create,omitempty"`
+
+	// The name of the commit/branch/tag.
+	// The name of the commit/branch/tag
+	Ref *string `json:"ref,omitempty" tf:"ref,omitempty"`
 
 	// The repository to create the file in.
 	// The repository name
@@ -119,9 +123,9 @@ type RepositoryFileObservation struct {
 
 type RepositoryFileParameters struct {
 
-	// Git branch (defaults to main).
+	// Git branch (defaults to the repository's default branch).
 	// The branch must already exist, it will not be created if it does not already exist.
-	// The branch name, defaults to "main"
+	// The branch name, defaults to the repository's default branch
 	// +crossplane:generate:reference:type=Branch
 	// +kubebuilder:validation:Optional
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
@@ -159,7 +163,7 @@ type RepositoryFileParameters struct {
 	// +kubebuilder:validation:Optional
 	File *string `json:"file,omitempty" tf:"file,omitempty"`
 
-	// Enable overwriting existing files
+	// Enable overwriting existing files. If set to true it will overwrite an existing file with the same name. If set to false it will fail if there is an existing file with the same name.
 	// Enable overwriting existing files, defaults to "false"
 	// +kubebuilder:validation:Optional
 	OverwriteOnCreate *bool `json:"overwriteOnCreate,omitempty" tf:"overwrite_on_create,omitempty"`

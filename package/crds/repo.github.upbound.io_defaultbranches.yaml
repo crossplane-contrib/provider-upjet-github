@@ -74,7 +74,9 @@ spec:
               forProvider:
                 properties:
                   branch:
-                    description: The branch (e.g. main)
+                    description: |-
+                      The branch (e.g. main)
+                      The branch (e.g. 'main').
                     type: string
                   branchRef:
                     description: Reference to a Branch in repo to populate branch.
@@ -150,6 +152,11 @@ spec:
                             type: string
                         type: object
                     type: object
+                  rename:
+                    description: |-
+                      Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
+                      Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
+                    type: boolean
                 type: object
               initProvider:
                 description: |-
@@ -165,7 +172,9 @@ spec:
                   autoscaler.
                 properties:
                   branch:
-                    description: The branch (e.g. main)
+                    description: |-
+                      The branch (e.g. main)
+                      The branch (e.g. 'main').
                     type: string
                   branchRef:
                     description: Reference to a Branch in repo to populate branch.
@@ -241,6 +250,11 @@ spec:
                             type: string
                         type: object
                     type: object
+                  rename:
+                    description: |-
+                      Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
+                      Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -415,10 +429,19 @@ spec:
               atProvider:
                 properties:
                   branch:
-                    description: The branch (e.g. main)
+                    description: |-
+                      The branch (e.g. main)
+                      The branch (e.g. 'main').
+                    type: string
+                  etag:
                     type: string
                   id:
                     type: string
+                  rename:
+                    description: |-
+                      Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
+                      Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
+                    type: boolean
                 type: object
               conditions:
                 description: Conditions of the resource.

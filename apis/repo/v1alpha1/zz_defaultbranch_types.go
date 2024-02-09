@@ -20,6 +20,7 @@ import (
 type DefaultBranchInitParameters struct {
 
 	// The branch (e.g. main)
+	// The branch (e.g. 'main').
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
@@ -30,19 +31,31 @@ type DefaultBranchInitParameters struct {
 	// Selector for a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
 	BranchSelector *v1.Selector `json:"branchSelector,omitempty" tf:"-"`
+
+	// Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
+	// Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
+	Rename *bool `json:"rename,omitempty" tf:"rename,omitempty"`
 }
 
 type DefaultBranchObservation struct {
 
 	// The branch (e.g. main)
+	// The branch (e.g. 'main').
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
+	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
+	// Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
+	Rename *bool `json:"rename,omitempty" tf:"rename,omitempty"`
 }
 
 type DefaultBranchParameters struct {
 
 	// The branch (e.g. main)
+	// The branch (e.g. 'main').
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
 	// +kubebuilder:validation:Optional
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
@@ -54,6 +67,11 @@ type DefaultBranchParameters struct {
 	// Selector for a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
 	BranchSelector *v1.Selector `json:"branchSelector,omitempty" tf:"-"`
+
+	// Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
+	// Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
+	// +kubebuilder:validation:Optional
+	Rename *bool `json:"rename,omitempty" tf:"rename,omitempty"`
 }
 
 // DefaultBranchSpec defines the desired state of DefaultBranch

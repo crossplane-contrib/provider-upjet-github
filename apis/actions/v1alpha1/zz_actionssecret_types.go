@@ -20,6 +20,7 @@ import (
 type ActionsSecretInitParameters struct {
 
 	// Name of the repository
+	// Name of the repository.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
@@ -32,37 +33,45 @@ type ActionsSecretInitParameters struct {
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Name of the secret
+	// Name of the secret.
 	SecretName *string `json:"secretName,omitempty" tf:"secret_name,omitempty"`
 }
 
 type ActionsSecretObservation struct {
 
 	// Date of actions_secret creation.
+	// Date of 'actions_secret' creation.
 	CreatedAt *string `json:"createdAt,omitempty" tf:"created_at,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Name of the repository
+	// Name of the repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
 	// Name of the secret
+	// Name of the secret.
 	SecretName *string `json:"secretName,omitempty" tf:"secret_name,omitempty"`
 
 	// Date of actions_secret update.
+	// Date of 'actions_secret' update.
 	UpdatedAt *string `json:"updatedAt,omitempty" tf:"updated_at,omitempty"`
 }
 
 type ActionsSecretParameters struct {
 
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
+	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	// +kubebuilder:validation:Optional
 	EncryptedValueSecretRef *v1.SecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
 
 	// Plaintext value of the secret to be encrypted
+	// Plaintext value of the secret to be encrypted.
 	// +kubebuilder:validation:Optional
 	PlaintextValueSecretRef *v1.SecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
 
 	// Name of the repository
+	// Name of the repository.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
@@ -76,6 +85,7 @@ type ActionsSecretParameters struct {
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Name of the secret
+	// Name of the secret.
 	// +kubebuilder:validation:Optional
 	SecretName *string `json:"secretName,omitempty" tf:"secret_name,omitempty"`
 }

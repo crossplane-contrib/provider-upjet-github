@@ -77,9 +77,12 @@ spec:
                     description: |-
                       The permissions of team members regarding the repository.
                       Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+                      The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
                     type: string
                   repository:
-                    description: The repository to add to the team.
+                    description: |-
+                      The repository to add to the team.
+                      The repository to add to the team.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -252,9 +255,12 @@ spec:
                     description: |-
                       The permissions of team members regarding the repository.
                       Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+                      The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
                     type: string
                   repository:
-                    description: The repository to add to the team.
+                    description: |-
+                      The repository to add to the team.
+                      The repository to add to the team.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -590,9 +596,12 @@ spec:
                     description: |-
                       The permissions of team members regarding the repository.
                       Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+                      The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
                     type: string
                   repository:
-                    description: The repository to add to the team.
+                    description: |-
+                      The repository to add to the team.
+                      The repository to add to the team.
                     type: string
                   teamId:
                     description: |-

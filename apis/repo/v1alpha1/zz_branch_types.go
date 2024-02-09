@@ -20,8 +20,10 @@ import (
 type BranchInitParameters struct {
 
 	// The repository branch to create.
+	// The repository branch to create.
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
+	// The GitHub repository name.
 	// The GitHub repository name.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
@@ -35,44 +37,55 @@ type BranchInitParameters struct {
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The branch name to start from. Defaults to main.
+	// The branch name to start from. Defaults to 'main'.
 	SourceBranch *string `json:"sourceBranch,omitempty" tf:"source_branch,omitempty"`
 
 	// The commit hash to start from. Defaults to the tip of source_branch. If provided, source_branch is ignored.
+	// The commit hash to start from. Defaults to the tip of 'source_branch'. If provided, 'source_branch' is ignored.
 	SourceSha *string `json:"sourceSha,omitempty" tf:"source_sha,omitempty"`
 }
 
 type BranchObservation struct {
 
 	// The repository branch to create.
+	// The repository branch to create.
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
+	// An etag representing the Branch object.
 	// An etag representing the Branch object.
 	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// A string representing a branch reference, in the form of refs/heads/<branch>.
+	// A string representing a branch reference, in the form of 'refs/heads/<branch>'.
 	Ref *string `json:"ref,omitempty" tf:"ref,omitempty"`
 
+	// The GitHub repository name.
 	// The GitHub repository name.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
 	// A string storing the reference's HEAD commit's SHA1.
+	// A string storing the reference's HEAD commit's SHA1.
 	Sha *string `json:"sha,omitempty" tf:"sha,omitempty"`
 
 	// The branch name to start from. Defaults to main.
+	// The branch name to start from. Defaults to 'main'.
 	SourceBranch *string `json:"sourceBranch,omitempty" tf:"source_branch,omitempty"`
 
 	// The commit hash to start from. Defaults to the tip of source_branch. If provided, source_branch is ignored.
+	// The commit hash to start from. Defaults to the tip of 'source_branch'. If provided, 'source_branch' is ignored.
 	SourceSha *string `json:"sourceSha,omitempty" tf:"source_sha,omitempty"`
 }
 
 type BranchParameters struct {
 
 	// The repository branch to create.
+	// The repository branch to create.
 	// +kubebuilder:validation:Optional
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
+	// The GitHub repository name.
 	// The GitHub repository name.
 	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
@@ -87,10 +100,12 @@ type BranchParameters struct {
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The branch name to start from. Defaults to main.
+	// The branch name to start from. Defaults to 'main'.
 	// +kubebuilder:validation:Optional
 	SourceBranch *string `json:"sourceBranch,omitempty" tf:"source_branch,omitempty"`
 
 	// The commit hash to start from. Defaults to the tip of source_branch. If provided, source_branch is ignored.
+	// The commit hash to start from. Defaults to the tip of 'source_branch'. If provided, 'source_branch' is ignored.
 	// +kubebuilder:validation:Optional
 	SourceSha *string `json:"sourceSha,omitempty" tf:"source_sha,omitempty"`
 }

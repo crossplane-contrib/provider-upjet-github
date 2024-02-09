@@ -74,26 +74,47 @@ spec:
               forProvider:
                 properties:
                   createDefaultMaintainer:
-                    description: Adds a default maintainer to the team. Defaults to
-                      false and adds the creating user to the team when true.
+                    description: |-
+                      Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
+                      Adds a default maintainer to the team. Adds the creating user to the team when 'true'.
                     type: boolean
                   description:
-                    description: A description of the team.
+                    description: |-
+                      A description of the team.
+                      A description of the team.
                     type: string
                   ldapDn:
-                    description: The LDAP Distinguished Name of the group where membership
-                      will be synchronized. Only available in GitHub Enterprise Server.
+                    description: |-
+                      The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
+                      The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
                     type: string
                   name:
-                    description: The name of the team.
+                    description: |-
+                      The name of the team.
+                      The name of the team.
                     type: string
                   parentTeamId:
-                    description: The ID of the parent team, if this is a nested team.
-                    type: number
+                    description: |-
+                      The ID or slug of the parent team, if this is a nested team.
+                      The ID or slug of the parent team, if this is a nested team.
+                    type: string
+                  parentTeamReadId:
+                    description: |-
+                      The ID of the created team.
+                      The id of the parent team read in Github.
+                    type: string
+                  parentTeamReadSlug:
+                    description: |-
+                      The slug of the created team, which may or may not differ from name,
+                      depending on whether name contains "URL-unsafe" characters.
+                      Useful when referencing the team in github_branch_protection.
+                      The id of the parent team read in Github.
+                    type: string
                   privacy:
                     description: |-
                       The level of privacy for the team. Must be one of secret or closed.
                       Defaults to secret.
+                      The level of privacy for the team. Must be one of 'secret' or 'closed'.
                     type: string
                 type: object
               initProvider:
@@ -110,26 +131,47 @@ spec:
                   autoscaler.
                 properties:
                   createDefaultMaintainer:
-                    description: Adds a default maintainer to the team. Defaults to
-                      false and adds the creating user to the team when true.
+                    description: |-
+                      Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
+                      Adds a default maintainer to the team. Adds the creating user to the team when 'true'.
                     type: boolean
                   description:
-                    description: A description of the team.
+                    description: |-
+                      A description of the team.
+                      A description of the team.
                     type: string
                   ldapDn:
-                    description: The LDAP Distinguished Name of the group where membership
-                      will be synchronized. Only available in GitHub Enterprise Server.
+                    description: |-
+                      The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
+                      The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
                     type: string
                   name:
-                    description: The name of the team.
+                    description: |-
+                      The name of the team.
+                      The name of the team.
                     type: string
                   parentTeamId:
-                    description: The ID of the parent team, if this is a nested team.
-                    type: number
+                    description: |-
+                      The ID or slug of the parent team, if this is a nested team.
+                      The ID or slug of the parent team, if this is a nested team.
+                    type: string
+                  parentTeamReadId:
+                    description: |-
+                      The ID of the created team.
+                      The id of the parent team read in Github.
+                    type: string
+                  parentTeamReadSlug:
+                    description: |-
+                      The slug of the created team, which may or may not differ from name,
+                      depending on whether name contains "URL-unsafe" characters.
+                      Useful when referencing the team in github_branch_protection.
+                      The id of the parent team read in Github.
+                    type: string
                   privacy:
                     description: |-
                       The level of privacy for the team. Must be one of secret or closed.
                       Defaults to secret.
+                      The level of privacy for the team. Must be one of 'secret' or 'closed'.
                     type: string
                 type: object
               managementPolicies:
@@ -310,11 +352,14 @@ spec:
               atProvider:
                 properties:
                   createDefaultMaintainer:
-                    description: Adds a default maintainer to the team. Defaults to
-                      false and adds the creating user to the team when true.
+                    description: |-
+                      Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
+                      Adds a default maintainer to the team. Adds the creating user to the team when 'true'.
                     type: boolean
                   description:
-                    description: A description of the team.
+                    description: |-
+                      A description of the team.
+                      A description of the team.
                     type: string
                   etag:
                     type: string
@@ -322,30 +367,51 @@ spec:
                     description: The ID of the created team.
                     type: string
                   ldapDn:
-                    description: The LDAP Distinguished Name of the group where membership
-                      will be synchronized. Only available in GitHub Enterprise Server.
+                    description: |-
+                      The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
+                      The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
                     type: string
                   membersCount:
                     type: number
                   name:
-                    description: The name of the team.
+                    description: |-
+                      The name of the team.
+                      The name of the team.
                     type: string
                   nodeId:
-                    description: The Node ID of the created team.
+                    description: |-
+                      The Node ID of the created team.
+                      The Node ID of the created team.
                     type: string
                   parentTeamId:
-                    description: The ID of the parent team, if this is a nested team.
-                    type: number
+                    description: |-
+                      The ID or slug of the parent team, if this is a nested team.
+                      The ID or slug of the parent team, if this is a nested team.
+                    type: string
+                  parentTeamReadId:
+                    description: |-
+                      The ID of the created team.
+                      The id of the parent team read in Github.
+                    type: string
+                  parentTeamReadSlug:
+                    description: |-
+                      The slug of the created team, which may or may not differ from name,
+                      depending on whether name contains "URL-unsafe" characters.
+                      Useful when referencing the team in github_branch_protection.
+                      The id of the parent team read in Github.
+                    type: string
                   privacy:
                     description: |-
                       The level of privacy for the team. Must be one of secret or closed.
                       Defaults to secret.
+                      The level of privacy for the team. Must be one of 'secret' or 'closed'.
                     type: string
                   slug:
                     description: |-
                       The slug of the created team, which may or may not differ from name,
                       depending on whether name contains "URL-unsafe" characters.
                       Useful when referencing the team in github_branch_protection.
+                      The slug of the created team.
                     type: string
                 type: object
               conditions:

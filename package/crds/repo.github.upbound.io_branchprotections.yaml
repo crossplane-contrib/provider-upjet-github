@@ -74,32 +74,47 @@ spec:
               forProvider:
                 properties:
                   allowsDeletions:
-                    description: Boolean, setting this to true to allow the branch
-                      to be deleted.
+                    description: |-
+                      Boolean, setting this to true to allow the branch to be deleted.
+                      Setting this to 'true' to allow the branch to be deleted.
                     type: boolean
                   allowsForcePushes:
-                    description: Boolean, setting this to true to allow force pushes
-                      on the branch.
+                    description: |-
+                      Boolean, setting this to true to allow force pushes on the branch.
+                      Setting this to 'true' to allow force pushes on the branch.
                     type: boolean
                   blocksCreations:
-                    description: Boolean, setting this to true to block creating the
-                      branch.
+                    description: |-
+                      Boolean, setting this to true to block creating the branch.
+                      Setting this to 'true' to block creating the branch.
                     type: boolean
                   enforceAdmins:
-                    description: Boolean, setting this to true enforces status checks
-                      for repository administrators.
+                    description: |-
+                      Boolean, setting this to true enforces status checks for repository administrators.
+                      Setting this to 'true' enforces status checks for repository administrators.
                     type: boolean
+                  forcePushBypassers:
+                    description: |-
+                      The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                      The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   lockBranch:
-                    description: Boolean, Setting this to true will make the branch
-                      read-only and preventing any pushes to it. Defaults to false
+                    description: |-
+                      Boolean, Setting this to true will make the branch read-only and preventing any pushes to it. Defaults to false
+                      Setting this to 'true' will make the branch read-only and preventing any pushes to it.
                     type: boolean
                   pattern:
-                    description: Identifies the protection rule pattern.
+                    description: |-
+                      Identifies the protection rule pattern.
+                      Identifies the protection rule pattern.
                     type: string
                   pushRestrictions:
-                    description: The list of actor Names/IDs that may push to the
-                      branch. Actor names must either begin with a "/" for users or
-                      the organization name followed by a "/" for teams.
+                    description: |-
+                      The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                      The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
                     items:
                       type: string
                     type: array
@@ -107,7 +122,7 @@ spec:
                   repositoryId:
                     description: |-
                       The name or node ID of the repository associated with this branch protection rule.
-                      Node ID or name of repository
+                      The name or node ID of the repository associated with this branch protection rule.
                     type: string
                   repositoryIdRef:
                     description: Reference to a Repository in repo to populate repositoryId.
@@ -184,81 +199,88 @@ spec:
                         type: object
                     type: object
                   requireConversationResolution:
-                    description: Boolean, setting this to true requires all conversations
-                      on code must be resolved before a pull request can be merged.
+                    description: |-
+                      Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
+                      Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
                     type: boolean
                   requireSignedCommits:
-                    description: Boolean, setting this to true requires all commits
-                      to be signed with GPG.
+                    description: |-
+                      Boolean, setting this to true requires all commits to be signed with GPG.
+                      Setting this to 'true' requires all commits to be signed with GPG.
                     type: boolean
                   requiredLinearHistory:
-                    description: Boolean, setting this to true enforces a linear commit
-                      Git history, which prevents anyone from pushing merge commits
-                      to a branch
+                    description: |-
+                      Boolean, setting this to true enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch
+                      Setting this to 'true' enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch.
                     type: boolean
                   requiredPullRequestReviews:
-                    description: Enforce restrictions for pull request reviews. See
-                      Required Pull Request Reviews below for details.
+                    description: |-
+                      Enforce restrictions for pull request reviews. See Required Pull Request Reviews below for details.
+                      Enforce restrictions for pull request reviews.
                     items:
                       properties:
                         dismissStaleReviews:
-                          description: ':  Dismiss approved reviews automatically
-                            when a new commit is pushed. Defaults to false.'
+                          description: |-
+                            :  Dismiss approved reviews automatically when a new commit is pushed. Defaults to false.
+                            Dismiss approved reviews automatically when a new commit is pushed.
                           type: boolean
                         dismissalRestrictions:
-                          description: ':  The list of actor Names/IDs with dismissal
-                            access. If not empty, restrict_dismissals is ignored.
-                            Actor names must either begin with a "/" for users or
-                            the organization name followed by a "/" for teams.'
+                          description: |-
+                            :  The list of actor Names/IDs with dismissal access. If not empty, restrict_dismissals is ignored. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                            The list of actor Names/IDs with dismissal access. If not empty, 'restrict_dismissals' is ignored. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
                           items:
                             type: string
                           type: array
                           x-kubernetes-list-type: set
                         pullRequestBypassers:
-                          description: ':  The list of actor Names/IDs that are allowed
-                            to bypass pull request requirements. Actor names must
-                            either begin with a "/" for users or the organization
-                            name followed by a "/" for teams.'
+                          description: |-
+                            :  The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                            The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
                           items:
                             type: string
                           type: array
                           x-kubernetes-list-type: set
                         requireCodeOwnerReviews:
-                          description: ':  Require an approved review in pull requests
-                            including files with a designated code owner. Defaults
-                            to false.'
+                          description: |-
+                            :  Require an approved review in pull requests including files with a designated code owner. Defaults to false.
+                            Require an approved review in pull requests including files with a designated code owner.
                           type: boolean
                         requireLastPushApproval:
-                          description: ':  Require that The most recent push must
-                            be approved by someone other than the last pusher.  Defaults
-                            to false'
+                          description: |-
+                            :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+                            Require that The most recent push must be approved by someone other than the last pusher.
                           type: boolean
                         requiredApprovingReviewCount:
                           description: |-
                             6. This requirement matches GitHub's API, see the upstream documentation for more information.
                             (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+                            Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
                           type: number
                         restrictDismissals:
-                          description: ':  Restrict pull request review dismissals.'
+                          description: |-
+                            :  Restrict pull request review dismissals.
+                            Restrict pull request review dismissals.
                           type: boolean
                       type: object
                     type: array
                   requiredStatusChecks:
-                    description: Enforce restrictions for required status checks.
-                      See Required Status Checks below for details.
+                    description: |-
+                      Enforce restrictions for required status checks. See Required Status Checks below for details.
+                      Enforce restrictions for required status checks.
                     items:
                       properties:
                         contexts:
-                          description: ':  The list of status checks to require in
-                            order to merge into this branch. No status checks are
-                            required by default.'
+                          description: |-
+                            :  The list of status checks to require in order to merge into this branch. No status checks are required by default.
+                            The list of status checks to require in order to merge into this branch. No status checks are required by default.
                           items:
                             type: string
                           type: array
                           x-kubernetes-list-type: set
                         strict:
-                          description: ':  Require branches to be up to date before
-                            merging. Defaults to false.'
+                          description: |-
+                            :  Require branches to be up to date before merging. Defaults to false.
+                            Require branches to be up to date before merging.
                           type: boolean
                       type: object
                     type: array
@@ -277,32 +299,47 @@ spec:
                   autoscaler.
                 properties:
                   allowsDeletions:
-                    description: Boolean, setting this to true to allow the branch
-                      to be deleted.
+                    description: |-
+                      Boolean, setting this to true to allow the branch to be deleted.
+                      Setting this to 'true' to allow the branch to be deleted.
                     type: boolean
                   allowsForcePushes:
-                    description: Boolean, setting this to true to allow force pushes
-                      on the branch.
+                    description: |-
+                      Boolean, setting this to true to allow force pushes on the branch.
+                      Setting this to 'true' to allow force pushes on the branch.
                     type: boolean
                   blocksCreations:
-                    description: Boolean, setting this to true to block creating the
-                      branch.
+                    description: |-
+                      Boolean, setting this to true to block creating the branch.
+                      Setting this to 'true' to block creating the branch.
                     type: boolean
                   enforceAdmins:
-                    description: Boolean, setting this to true enforces status checks
-                      for repository administrators.
+                    description: |-
+                      Boolean, setting this to true enforces status checks for repository administrators.
+                      Setting this to 'true' enforces status checks for repository administrators.
                     type: boolean
+                  forcePushBypassers:
+                    description: |-
+                      The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                      The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   lockBranch:
-                    description: Boolean, Setting this to true will make the branch
-                      read-only and preventing any pushes to it. Defaults to false
+                    description: |-
+                      Boolean, Setting this to true will make the branch read-only and preventing any pushes to it. Defaults to false
+                      Setting this to 'true' will make the branch read-only and preventing any pushes to it.
                     type: boolean
                   pattern:
-                    description: Identifies the protection rule pattern.
+                    description: |-
+                      Identifies the protection rule pattern.
+                      Identifies the protection rule pattern.
                     type: string
                   pushRestrictions:
-                    description: The list of actor Names/IDs that may push to the
-                      branch. Actor names must either begin with a "/" for users or
-                      the organization name followed by a "/" for teams.
+                    description: |-
+                      The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                      The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
                     items:
                       type: string
                     type: array
@@ -310,7 +347,7 @@ spec:
                   repositoryId:
                     description: |-
                       The name or node ID of the repository associated with this branch protection rule.
-                      Node ID or name of repository
+                      The name or node ID of the repository associated with this branch protection rule.
                     type: string
                   repositoryIdRef:
                     description: Reference to a Repository in repo to populate repositoryId.
@@ -387,81 +424,88 @@ spec:
                         type: object
                     type: object
                   requireConversationResolution:
-                    description: Boolean, setting this to true requires all conversations
-                      on code must be resolved before a pull request can be merged.
+                    description: |-
+                      Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
+                      Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
                     type: boolean
                   requireSignedCommits:
-                    description: Boolean, setting this to true requires all commits
-                      to be signed with GPG.
+                    description: |-
+                      Boolean, setting this to true requires all commits to be signed with GPG.
+                      Setting this to 'true' requires all commits to be signed with GPG.
                     type: boolean
                   requiredLinearHistory:
-                    description: Boolean, setting this to true enforces a linear commit
-                      Git history, which prevents anyone from pushing merge commits
-                      to a branch
+                    description: |-
+                      Boolean, setting this to true enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch
+                      Setting this to 'true' enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch.
                     type: boolean
                   requiredPullRequestReviews:
-                    description: Enforce restrictions for pull request reviews. See
-                      Required Pull Request Reviews below for details.
+                    description: |-
+                      Enforce restrictions for pull request reviews. See Required Pull Request Reviews below for details.
+                      Enforce restrictions for pull request reviews.
                     items:
                       properties:
                         dismissStaleReviews:
-                          description: ':  Dismiss approved reviews automatically
-                            when a new commit is pushed. Defaults to false.'
+                          description: |-
+                            :  Dismiss approved reviews automatically when a new commit is pushed. Defaults to false.
+                            Dismiss approved reviews automatically when a new commit is pushed.
                           type: boolean
                         dismissalRestrictions:
-                          description: ':  The list of actor Names/IDs with dismissal
-                            access. If not empty, restrict_dismissals is ignored.
-                            Actor names must either begin with a "/" for users or
-                            the organization name followed by a "/" for teams.'
+                          description: |-
+                            :  The list of actor Names/IDs with dismissal access. If not empty, restrict_dismissals is ignored. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                            The list of actor Names/IDs with dismissal access. If not empty, 'restrict_dismissals' is ignored. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
                           items:
                             type: string
                           type: array
                           x-kubernetes-list-type: set
                         pullRequestBypassers:
-                          description: ':  The list of actor Names/IDs that are allowed
-                            to bypass pull request requirements. Actor names must
-                            either begin with a "/" for users or the organization
-                            name followed by a "/" for teams.'
+                          description: |-
+                            :  The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                            The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
                           items:
                             type: string
                           type: array
                           x-kubernetes-list-type: set
                         requireCodeOwnerReviews:
-                          description: ':  Require an approved review in pull requests
-                            including files with a designated code owner. Defaults
-                            to false.'
+                          description: |-
+                            :  Require an approved review in pull requests including files with a designated code owner. Defaults to false.
+                            Require an approved review in pull requests including files with a designated code owner.
                           type: boolean
                         requireLastPushApproval:
-                          description: ':  Require that The most recent push must
-                            be approved by someone other than the last pusher.  Defaults
-                            to false'
+                          description: |-
+                            :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+                            Require that The most recent push must be approved by someone other than the last pusher.
                           type: boolean
                         requiredApprovingReviewCount:
                           description: |-
                             6. This requirement matches GitHub's API, see the upstream documentation for more information.
                             (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+                            Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
                           type: number
                         restrictDismissals:
-                          description: ':  Restrict pull request review dismissals.'
+                          description: |-
+                            :  Restrict pull request review dismissals.
+                            Restrict pull request review dismissals.
                           type: boolean
                       type: object
                     type: array
                   requiredStatusChecks:
-                    description: Enforce restrictions for required status checks.
-                      See Required Status Checks below for details.
+                    description: |-
+                      Enforce restrictions for required status checks. See Required Status Checks below for details.
+                      Enforce restrictions for required status checks.
                     items:
                       properties:
                         contexts:
-                          description: ':  The list of status checks to require in
-                            order to merge into this branch. No status checks are
-                            required by default.'
+                          description: |-
+                            :  The list of status checks to require in order to merge into this branch. No status checks are required by default.
+                            The list of status checks to require in order to merge into this branch. No status checks are required by default.
                           items:
                             type: string
                           type: array
                           x-kubernetes-list-type: set
                         strict:
-                          description: ':  Require branches to be up to date before
-                            merging. Defaults to false.'
+                          description: |-
+                            :  Require branches to be up to date before merging. Defaults to false.
+                            Require branches to be up to date before merging.
                           type: boolean
                       type: object
                     type: array
@@ -644,34 +688,49 @@ spec:
               atProvider:
                 properties:
                   allowsDeletions:
-                    description: Boolean, setting this to true to allow the branch
-                      to be deleted.
+                    description: |-
+                      Boolean, setting this to true to allow the branch to be deleted.
+                      Setting this to 'true' to allow the branch to be deleted.
                     type: boolean
                   allowsForcePushes:
-                    description: Boolean, setting this to true to allow force pushes
-                      on the branch.
+                    description: |-
+                      Boolean, setting this to true to allow force pushes on the branch.
+                      Setting this to 'true' to allow force pushes on the branch.
                     type: boolean
                   blocksCreations:
-                    description: Boolean, setting this to true to block creating the
-                      branch.
+                    description: |-
+                      Boolean, setting this to true to block creating the branch.
+                      Setting this to 'true' to block creating the branch.
                     type: boolean
                   enforceAdmins:
-                    description: Boolean, setting this to true enforces status checks
-                      for repository administrators.
+                    description: |-
+                      Boolean, setting this to true enforces status checks for repository administrators.
+                      Setting this to 'true' enforces status checks for repository administrators.
                     type: boolean
+                  forcePushBypassers:
+                    description: |-
+                      The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                      The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   id:
                     type: string
                   lockBranch:
-                    description: Boolean, Setting this to true will make the branch
-                      read-only and preventing any pushes to it. Defaults to false
+                    description: |-
+                      Boolean, Setting this to true will make the branch read-only and preventing any pushes to it. Defaults to false
+                      Setting this to 'true' will make the branch read-only and preventing any pushes to it.
                     type: boolean
                   pattern:
-                    description: Identifies the protection rule pattern.
+                    description: |-
+                      Identifies the protection rule pattern.
+                      Identifies the protection rule pattern.
                     type: string
                   pushRestrictions:
-                    description: The list of actor Names/IDs that may push to the
-                      branch. Actor names must either begin with a "/" for users or
-                      the organization name followed by a "/" for teams.
+                    description: |-
+                      The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                      The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
                     items:
                       type: string
                     type: array
@@ -679,84 +738,91 @@ spec:
                   repositoryId:
                     description: |-
                       The name or node ID of the repository associated with this branch protection rule.
-                      Node ID or name of repository
+                      The name or node ID of the repository associated with this branch protection rule.
                     type: string
                   requireConversationResolution:
-                    description: Boolean, setting this to true requires all conversations
-                      on code must be resolved before a pull request can be merged.
+                    description: |-
+                      Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
+                      Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
                     type: boolean
                   requireSignedCommits:
-                    description: Boolean, setting this to true requires all commits
-                      to be signed with GPG.
+                    description: |-
+                      Boolean, setting this to true requires all commits to be signed with GPG.
+                      Setting this to 'true' requires all commits to be signed with GPG.
                     type: boolean
                   requiredLinearHistory:
-                    description: Boolean, setting this to true enforces a linear commit
-                      Git history, which prevents anyone from pushing merge commits
-                      to a branch
+                    description: |-
+                      Boolean, setting this to true enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch
+                      Setting this to 'true' enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch.
                     type: boolean
                   requiredPullRequestReviews:
-                    description: Enforce restrictions for pull request reviews. See
-                      Required Pull Request Reviews below for details.
+                    description: |-
+                      Enforce restrictions for pull request reviews. See Required Pull Request Reviews below for details.
+                      Enforce restrictions for pull request reviews.
                     items:
                       properties:
                         dismissStaleReviews:
-                          description: ':  Dismiss approved reviews automatically
-                            when a new commit is pushed. Defaults to false.'
+                          description: |-
+                            :  Dismiss approved reviews automatically when a new commit is pushed. Defaults to false.
+                            Dismiss approved reviews automatically when a new commit is pushed.
                           type: boolean
                         dismissalRestrictions:
-                          description: ':  The list of actor Names/IDs with dismissal
-                            access. If not empty, restrict_dismissals is ignored.
-                            Actor names must either begin with a "/" for users or
-                            the organization name followed by a "/" for teams.'
+                          description: |-
+                            :  The list of actor Names/IDs with dismissal access. If not empty, restrict_dismissals is ignored. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                            The list of actor Names/IDs with dismissal access. If not empty, 'restrict_dismissals' is ignored. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
                           items:
                             type: string
                           type: array
                           x-kubernetes-list-type: set
                         pullRequestBypassers:
-                          description: ':  The list of actor Names/IDs that are allowed
-                            to bypass pull request requirements. Actor names must
-                            either begin with a "/" for users or the organization
-                            name followed by a "/" for teams.'
+                          description: |-
+                            :  The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                            The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
                           items:
                             type: string
                           type: array
                           x-kubernetes-list-type: set
                         requireCodeOwnerReviews:
-                          description: ':  Require an approved review in pull requests
-                            including files with a designated code owner. Defaults
-                            to false.'
+                          description: |-
+                            :  Require an approved review in pull requests including files with a designated code owner. Defaults to false.
+                            Require an approved review in pull requests including files with a designated code owner.
                           type: boolean
                         requireLastPushApproval:
-                          description: ':  Require that The most recent push must
-                            be approved by someone other than the last pusher.  Defaults
-                            to false'
+                          description: |-
+                            :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+                            Require that The most recent push must be approved by someone other than the last pusher.
                           type: boolean
                         requiredApprovingReviewCount:
                           description: |-
                             6. This requirement matches GitHub's API, see the upstream documentation for more information.
                             (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+                            Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
                           type: number
                         restrictDismissals:
-                          description: ':  Restrict pull request review dismissals.'
+                          description: |-
+                            :  Restrict pull request review dismissals.
+                            Restrict pull request review dismissals.
                           type: boolean
                       type: object
                     type: array
                   requiredStatusChecks:
-                    description: Enforce restrictions for required status checks.
-                      See Required Status Checks below for details.
+                    description: |-
+                      Enforce restrictions for required status checks. See Required Status Checks below for details.
+                      Enforce restrictions for required status checks.
                     items:
                       properties:
                         contexts:
-                          description: ':  The list of status checks to require in
-                            order to merge into this branch. No status checks are
-                            required by default.'
+                          description: |-
+                            :  The list of status checks to require in order to merge into this branch. No status checks are required by default.
+                            The list of status checks to require in order to merge into this branch. No status checks are required by default.
                           items:
                             type: string
                           type: array
                           x-kubernetes-list-type: set
                         strict:
-                          description: ':  Require branches to be up to date before
-                            merging. Defaults to false.'
+                          description: |-
+                            :  Require branches to be up to date before merging. Defaults to false.
+                            Require branches to be up to date before merging.
                           type: boolean
                       type: object
                     type: array

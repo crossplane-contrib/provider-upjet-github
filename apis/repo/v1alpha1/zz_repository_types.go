@@ -20,46 +20,64 @@ import (
 type AdvancedSecurityInitParameters struct {
 
 	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+	// Set to 'enabled' to enable advanced security features on the repository. Can be 'enabled' or 'disabled'.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type AdvancedSecurityObservation struct {
 
 	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+	// Set to 'enabled' to enable advanced security features on the repository. Can be 'enabled' or 'disabled'.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type AdvancedSecurityParameters struct {
 
 	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+	// Set to 'enabled' to enable advanced security features on the repository. Can be 'enabled' or 'disabled'.
 	// +kubebuilder:validation:Optional
 	Status *string `json:"status" tf:"status,omitempty"`
 }
 
 type PagesInitParameters struct {
 
+	// The type of GitHub Pages site to build. Can be legacy or workflow. If you use legacy as build type you need to set the option source.
+	// The type the page should be sourced.
+	BuildType *string `json:"buildType,omitempty" tf:"build_type,omitempty"`
+
+	// The custom domain for the repository. This can only be set after the repository has been created.
 	// The custom domain for the repository. This can only be set after the repository has been created.
 	Cname *string `json:"cname,omitempty" tf:"cname,omitempty"`
 
 	// The source branch and directory for the rendered Pages site. See GitHub Pages Source below for details.
+	// The source branch and directory for the rendered Pages site.
 	Source []SourceInitParameters `json:"source,omitempty" tf:"source,omitempty"`
 }
 
 type PagesObservation struct {
 
+	// The type of GitHub Pages site to build. Can be legacy or workflow. If you use legacy as build type you need to set the option source.
+	// The type the page should be sourced.
+	BuildType *string `json:"buildType,omitempty" tf:"build_type,omitempty"`
+
+	// The custom domain for the repository. This can only be set after the repository has been created.
 	// The custom domain for the repository. This can only be set after the repository has been created.
 	Cname *string `json:"cname,omitempty" tf:"cname,omitempty"`
 
 	// Whether the rendered GitHub Pages site has a custom 404 page.
+	// Whether the rendered GitHub Pages site has a custom 404 page
 	Custom404 *bool `json:"custom404,omitempty" tf:"custom_404,omitempty"`
 
+	// URL to the repository on the web.
 	// URL to the repository on the web.
 	HTMLURL *string `json:"htmlUrl,omitempty" tf:"html_url,omitempty"`
 
 	// The source branch and directory for the rendered Pages site. See GitHub Pages Source below for details.
+	// The source branch and directory for the rendered Pages site.
 	Source []SourceObservation `json:"source,omitempty" tf:"source,omitempty"`
 
 	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+	// The GitHub Pages site's build status e.g. building or built.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
@@ -67,39 +85,54 @@ type PagesObservation struct {
 
 type PagesParameters struct {
 
+	// The type of GitHub Pages site to build. Can be legacy or workflow. If you use legacy as build type you need to set the option source.
+	// The type the page should be sourced.
+	// +kubebuilder:validation:Optional
+	BuildType *string `json:"buildType,omitempty" tf:"build_type,omitempty"`
+
+	// The custom domain for the repository. This can only be set after the repository has been created.
 	// The custom domain for the repository. This can only be set after the repository has been created.
 	// +kubebuilder:validation:Optional
 	Cname *string `json:"cname,omitempty" tf:"cname,omitempty"`
 
 	// The source branch and directory for the rendered Pages site. See GitHub Pages Source below for details.
+	// The source branch and directory for the rendered Pages site.
 	// +kubebuilder:validation:Optional
-	Source []SourceParameters `json:"source" tf:"source,omitempty"`
+	Source []SourceParameters `json:"source,omitempty" tf:"source,omitempty"`
 }
 
 type RepositoryInitParameters struct {
 
 	// Set to true to allow auto-merging pull requests on the repository.
+	// Set to 'true' to allow auto-merging pull requests on the repository.
 	AllowAutoMerge *bool `json:"allowAutoMerge,omitempty" tf:"allow_auto_merge,omitempty"`
 
 	// Set to false to disable merge commits on the repository.
+	// Set to 'false' to disable merge commits on the repository.
 	AllowMergeCommit *bool `json:"allowMergeCommit,omitempty" tf:"allow_merge_commit,omitempty"`
 
 	// Set to false to disable rebase merges on the repository.
+	// Set to 'false' to disable rebase merges on the repository.
 	AllowRebaseMerge *bool `json:"allowRebaseMerge,omitempty" tf:"allow_rebase_merge,omitempty"`
 
 	// Set to false to disable squash merges on the repository.
+	// Set to 'false' to disable squash merges on the repository.
 	AllowSquashMerge *bool `json:"allowSquashMerge,omitempty" tf:"allow_squash_merge,omitempty"`
 
 	// Set to true to always suggest updating pull request branches.
+	// Set to 'true' to always suggest updating pull request branches.
 	AllowUpdateBranch *bool `json:"allowUpdateBranch,omitempty" tf:"allow_update_branch,omitempty"`
 
 	// Set to true to archive the repository instead of deleting on destroy.
+	// Set to 'true' to archive the repository instead of deleting on destroy.
 	ArchiveOnDestroy *bool `json:"archiveOnDestroy,omitempty" tf:"archive_on_destroy,omitempty"`
 
 	// Specifies if the repository should be archived. Defaults to false. NOTE Currently, the API does not support unarchiving.
+	// Specifies if the repository should be archived. Defaults to 'false'. NOTE Currently, the API does not support unarchiving.
 	Archived *bool `json:"archived,omitempty" tf:"archived,omitempty"`
 
 	// Set to true to produce an initial commit in the repository.
+	// Set to 'true' to produce an initial commit in the repository.
 	AutoInit *bool `json:"autoInit,omitempty" tf:"auto_init,omitempty"`
 
 	// (Deprecated: Use github_branch_default resource instead) The name of the default branch of the repository. NOTE: This can only be set after a repository has already been created,
@@ -109,53 +142,69 @@ type RepositoryInitParameters struct {
 	DefaultBranch *string `json:"defaultBranch,omitempty" tf:"default_branch,omitempty"`
 
 	// Automatically delete head branch after a pull request is merged. Defaults to false.
+	// Automatically delete head branch after a pull request is merged. Defaults to 'false'.
 	DeleteBranchOnMerge *bool `json:"deleteBranchOnMerge,omitempty" tf:"delete_branch_on_merge,omitempty"`
 
+	// A description of the repository.
 	// A description of the repository.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// Use the name of the template without the extension. For example, "Haskell".
+	// Use the name of the template without the extension. For example, 'Haskell'.
 	GitignoreTemplate *string `json:"gitignoreTemplate,omitempty" tf:"gitignore_template,omitempty"`
 
 	// Set to true to enable GitHub Discussions on the repository. Defaults to false.
+	// Set to 'true' to enable GitHub Discussions on the repository. Defaults to 'false'.
 	HasDiscussions *bool `json:"hasDiscussions,omitempty" tf:"has_discussions,omitempty"`
 
 	// Set to true to enable the (deprecated) downloads features on the repository.
+	// Set to 'true' to enable the (deprecated) downloads features on the repository.
 	HasDownloads *bool `json:"hasDownloads,omitempty" tf:"has_downloads,omitempty"`
 
 	// Set to true to enable the GitHub Issues features
 	// on the repository.
+	// Set to 'true' to enable the GitHub Issues features on the repository
 	HasIssues *bool `json:"hasIssues,omitempty" tf:"has_issues,omitempty"`
 
 	// Set to true to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to false and will otherwise default to true. If you specify true when it has been disabled it will return an error.
+	// Set to 'true' to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to 'false' and will otherwise default to 'true'. If you specify 'true' when it has been disabled it will return an error.
 	HasProjects *bool `json:"hasProjects,omitempty" tf:"has_projects,omitempty"`
 
 	// Set to true to enable the GitHub Wiki features on
 	// the repository.
+	// Set to 'true' to enable the GitHub Wiki features on the repository.
 	HasWiki *bool `json:"hasWiki,omitempty" tf:"has_wiki,omitempty"`
 
+	// URL of a page describing the project.
 	// URL of a page describing the project.
 	HomepageURL *string `json:"homepageUrl,omitempty" tf:"homepage_url,omitempty"`
 
 	// Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
+	// Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
 	IgnoreVulnerabilityAlertsDuringRead *bool `json:"ignoreVulnerabilityAlertsDuringRead,omitempty" tf:"ignore_vulnerability_alerts_during_read,omitempty"`
 
 	// Set to true to tell GitHub that this is a template repository.
+	// Set to 'true' to tell GitHub that this is a template repository.
 	IsTemplate *bool `json:"isTemplate,omitempty" tf:"is_template,omitempty"`
 
 	// Use the name of the template without the extension. For example, "mit" or "mpl-2.0".
+	// Use the name of the template without the extension. For example, 'mit' or 'mpl-2.0'.
 	LicenseTemplate *string `json:"licenseTemplate,omitempty" tf:"license_template,omitempty"`
 
-	// Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message.
+	// Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message. Applicable only if allow_merge_commit is true.
+	// Can be 'PR_BODY', 'PR_TITLE', or 'BLANK' for a default merge commit message.
 	MergeCommitMessage *string `json:"mergeCommitMessage,omitempty" tf:"merge_commit_message,omitempty"`
 
-	// Can be PR_TITLE or MERGE_MESSAGE for a default merge commit title.
+	// Can be PR_TITLE or MERGE_MESSAGE for a default merge commit title. Applicable only if allow_merge_commit is true.
+	// Can be 'PR_TITLE' or 'MERGE_MESSAGE' for a default merge commit title.
 	MergeCommitTitle *string `json:"mergeCommitTitle,omitempty" tf:"merge_commit_title,omitempty"`
 
+	// The name of the repository.
 	// The name of the repository.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The repository's GitHub Pages configuration. See GitHub Pages Configuration below for details.
+	// The repository's GitHub Pages configuration
 	Pages []PagesInitParameters `json:"pages,omitempty" tf:"pages,omitempty"`
 
 	// Set to true to create a private repository.
@@ -166,50 +215,68 @@ type RepositoryInitParameters struct {
 	// Security and analysis settings for the repository. To use this parameter you must have admin permissions for the repository or be an owner or security manager for the organization that owns the repository.
 	SecurityAndAnalysis []SecurityAndAnalysisInitParameters `json:"securityAndAnalysis,omitempty" tf:"security_and_analysis,omitempty"`
 
-	// Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message.
+	// Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message. Applicable only if allow_squash_merge is true.
+	// Can be 'PR_BODY', 'COMMIT_MESSAGES', or 'BLANK' for a default squash merge commit message.
 	SquashMergeCommitMessage *string `json:"squashMergeCommitMessage,omitempty" tf:"squash_merge_commit_message,omitempty"`
 
-	// Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title.
+	// Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title. Applicable only if allow_squash_merge is true.
+	// Can be 'PR_TITLE' or 'COMMIT_OR_PR_TITLE' for a default squash merge commit title.
 	SquashMergeCommitTitle *string `json:"squashMergeCommitTitle,omitempty" tf:"squash_merge_commit_title,omitempty"`
 
 	// Use a template repository to create this resource. See Template Repositories below for details.
+	// Use a template repository to create this resource.
 	Template []TemplateInitParameters `json:"template,omitempty" tf:"template,omitempty"`
 
+	// The list of topics of the repository.
 	// The list of topics of the repository.
 	// +listType=set
 	Topics []*string `json:"topics,omitempty" tf:"topics,omitempty"`
 
 	// Can be public or private. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be internal. The visibility parameter overrides the private parameter.
+	// Can be 'public' or 'private'. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be 'internal'.
 	Visibility *string `json:"visibility,omitempty" tf:"visibility,omitempty"`
 
 	// Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default.) See GitHub Documentation for details. Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
+	// Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
 	VulnerabilityAlerts *bool `json:"vulnerabilityAlerts,omitempty" tf:"vulnerability_alerts,omitempty"`
+
+	// Require contributors to sign off on web-based commits. See more here. Defaults to false.
+	// Require contributors to sign off on web-based commits. Defaults to 'false'.
+	WebCommitSignoffRequired *bool `json:"webCommitSignoffRequired,omitempty" tf:"web_commit_signoff_required,omitempty"`
 }
 
 type RepositoryObservation struct {
 
 	// Set to true to allow auto-merging pull requests on the repository.
+	// Set to 'true' to allow auto-merging pull requests on the repository.
 	AllowAutoMerge *bool `json:"allowAutoMerge,omitempty" tf:"allow_auto_merge,omitempty"`
 
 	// Set to false to disable merge commits on the repository.
+	// Set to 'false' to disable merge commits on the repository.
 	AllowMergeCommit *bool `json:"allowMergeCommit,omitempty" tf:"allow_merge_commit,omitempty"`
 
 	// Set to false to disable rebase merges on the repository.
+	// Set to 'false' to disable rebase merges on the repository.
 	AllowRebaseMerge *bool `json:"allowRebaseMerge,omitempty" tf:"allow_rebase_merge,omitempty"`
 
 	// Set to false to disable squash merges on the repository.
+	// Set to 'false' to disable squash merges on the repository.
 	AllowSquashMerge *bool `json:"allowSquashMerge,omitempty" tf:"allow_squash_merge,omitempty"`
 
 	// Set to true to always suggest updating pull request branches.
+	// Set to 'true' to always suggest updating pull request branches.
 	AllowUpdateBranch *bool `json:"allowUpdateBranch,omitempty" tf:"allow_update_branch,omitempty"`
 
 	// Set to true to archive the repository instead of deleting on destroy.
+	// Set to 'true' to archive the repository instead of deleting on destroy.
 	ArchiveOnDestroy *bool `json:"archiveOnDestroy,omitempty" tf:"archive_on_destroy,omitempty"`
 
 	// Specifies if the repository should be archived. Defaults to false. NOTE Currently, the API does not support unarchiving.
+	// Specifies if the repository should be archived. Defaults to 'false'. NOTE Currently, the API does not support unarchiving.
 	Archived *bool `json:"archived,omitempty" tf:"archived,omitempty"`
 
 	// Set to true to produce an initial commit in the repository.
+	// Set to 'true' to produce an initial commit in the repository.
 	AutoInit *bool `json:"autoInit,omitempty" tf:"auto_init,omitempty"`
 
 	// (Deprecated: Use github_branch_default resource instead) The name of the default branch of the repository. NOTE: This can only be set after a repository has already been created,
@@ -219,142 +286,187 @@ type RepositoryObservation struct {
 	DefaultBranch *string `json:"defaultBranch,omitempty" tf:"default_branch,omitempty"`
 
 	// Automatically delete head branch after a pull request is merged. Defaults to false.
+	// Automatically delete head branch after a pull request is merged. Defaults to 'false'.
 	DeleteBranchOnMerge *bool `json:"deleteBranchOnMerge,omitempty" tf:"delete_branch_on_merge,omitempty"`
 
+	// A description of the repository.
 	// A description of the repository.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
 
 	// A string of the form "orgname/reponame".
+	// A string of the form 'orgname/reponame'.
 	FullName *string `json:"fullName,omitempty" tf:"full_name,omitempty"`
 
 	// URL that can be provided to git clone to clone the repository anonymously via the git protocol.
+	// URL that can be provided to 'git clone' to clone the repository anonymously via the git protocol.
 	GitCloneURL *string `json:"gitCloneUrl,omitempty" tf:"git_clone_url,omitempty"`
 
 	// Use the name of the template without the extension. For example, "Haskell".
+	// Use the name of the template without the extension. For example, 'Haskell'.
 	GitignoreTemplate *string `json:"gitignoreTemplate,omitempty" tf:"gitignore_template,omitempty"`
 
+	// URL to the repository on the web.
 	// URL to the repository on the web.
 	HTMLURL *string `json:"htmlUrl,omitempty" tf:"html_url,omitempty"`
 
 	// URL that can be provided to git clone to clone the repository via HTTPS.
+	// URL that can be provided to 'git clone' to clone the repository via HTTPS.
 	HTTPCloneURL *string `json:"httpCloneUrl,omitempty" tf:"http_clone_url,omitempty"`
 
 	// Set to true to enable GitHub Discussions on the repository. Defaults to false.
+	// Set to 'true' to enable GitHub Discussions on the repository. Defaults to 'false'.
 	HasDiscussions *bool `json:"hasDiscussions,omitempty" tf:"has_discussions,omitempty"`
 
 	// Set to true to enable the (deprecated) downloads features on the repository.
+	// Set to 'true' to enable the (deprecated) downloads features on the repository.
 	HasDownloads *bool `json:"hasDownloads,omitempty" tf:"has_downloads,omitempty"`
 
 	// Set to true to enable the GitHub Issues features
 	// on the repository.
+	// Set to 'true' to enable the GitHub Issues features on the repository
 	HasIssues *bool `json:"hasIssues,omitempty" tf:"has_issues,omitempty"`
 
 	// Set to true to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to false and will otherwise default to true. If you specify true when it has been disabled it will return an error.
+	// Set to 'true' to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to 'false' and will otherwise default to 'true'. If you specify 'true' when it has been disabled it will return an error.
 	HasProjects *bool `json:"hasProjects,omitempty" tf:"has_projects,omitempty"`
 
 	// Set to true to enable the GitHub Wiki features on
 	// the repository.
+	// Set to 'true' to enable the GitHub Wiki features on the repository.
 	HasWiki *bool `json:"hasWiki,omitempty" tf:"has_wiki,omitempty"`
 
+	// URL of a page describing the project.
 	// URL of a page describing the project.
 	HomepageURL *string `json:"homepageUrl,omitempty" tf:"homepage_url,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
+	// Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
 	IgnoreVulnerabilityAlertsDuringRead *bool `json:"ignoreVulnerabilityAlertsDuringRead,omitempty" tf:"ignore_vulnerability_alerts_during_read,omitempty"`
 
 	// Set to true to tell GitHub that this is a template repository.
+	// Set to 'true' to tell GitHub that this is a template repository.
 	IsTemplate *bool `json:"isTemplate,omitempty" tf:"is_template,omitempty"`
 
 	// Use the name of the template without the extension. For example, "mit" or "mpl-2.0".
+	// Use the name of the template without the extension. For example, 'mit' or 'mpl-2.0'.
 	LicenseTemplate *string `json:"licenseTemplate,omitempty" tf:"license_template,omitempty"`
 
-	// Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message.
+	// Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message. Applicable only if allow_merge_commit is true.
+	// Can be 'PR_BODY', 'PR_TITLE', or 'BLANK' for a default merge commit message.
 	MergeCommitMessage *string `json:"mergeCommitMessage,omitempty" tf:"merge_commit_message,omitempty"`
 
-	// Can be PR_TITLE or MERGE_MESSAGE for a default merge commit title.
+	// Can be PR_TITLE or MERGE_MESSAGE for a default merge commit title. Applicable only if allow_merge_commit is true.
+	// Can be 'PR_TITLE' or 'MERGE_MESSAGE' for a default merge commit title.
 	MergeCommitTitle *string `json:"mergeCommitTitle,omitempty" tf:"merge_commit_title,omitempty"`
 
+	// The name of the repository.
 	// The name of the repository.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// GraphQL global node id for use with v4 API
+	// GraphQL global node id for use with v4 API.
 	NodeID *string `json:"nodeId,omitempty" tf:"node_id,omitempty"`
 
 	// The repository's GitHub Pages configuration. See GitHub Pages Configuration below for details.
+	// The repository's GitHub Pages configuration
 	Pages []PagesObservation `json:"pages,omitempty" tf:"pages,omitempty"`
+
+	// The primary language used in the repository.
+	PrimaryLanguage *string `json:"primaryLanguage,omitempty" tf:"primary_language,omitempty"`
 
 	// Set to true to create a private repository.
 	// Repositories are created as public (e.g. open source) by default.
 	Private *bool `json:"private,omitempty" tf:"private,omitempty"`
 
 	// GitHub ID for the repository
+	// GitHub ID for the repository.
 	RepoID *float64 `json:"repoId,omitempty" tf:"repo_id,omitempty"`
 
 	// URL that can be provided to git clone to clone the repository via SSH.
+	// URL that can be provided to 'git clone' to clone the repository via SSH.
 	SSHCloneURL *string `json:"sshCloneUrl,omitempty" tf:"ssh_clone_url,omitempty"`
 
 	// The repository's security and analysis configuration. See Security and Analysis Configuration below for details.
 	// Security and analysis settings for the repository. To use this parameter you must have admin permissions for the repository or be an owner or security manager for the organization that owns the repository.
 	SecurityAndAnalysis []SecurityAndAnalysisObservation `json:"securityAndAnalysis,omitempty" tf:"security_and_analysis,omitempty"`
 
-	// Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message.
+	// Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message. Applicable only if allow_squash_merge is true.
+	// Can be 'PR_BODY', 'COMMIT_MESSAGES', or 'BLANK' for a default squash merge commit message.
 	SquashMergeCommitMessage *string `json:"squashMergeCommitMessage,omitempty" tf:"squash_merge_commit_message,omitempty"`
 
-	// Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title.
+	// Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title. Applicable only if allow_squash_merge is true.
+	// Can be 'PR_TITLE' or 'COMMIT_OR_PR_TITLE' for a default squash merge commit title.
 	SquashMergeCommitTitle *string `json:"squashMergeCommitTitle,omitempty" tf:"squash_merge_commit_title,omitempty"`
 
 	// URL that can be provided to svn checkout to check out the repository via GitHub's Subversion protocol emulation.
+	// URL that can be provided to 'svn checkout' to check out the repository via GitHub's Subversion protocol emulation.
 	SvnURL *string `json:"svnUrl,omitempty" tf:"svn_url,omitempty"`
 
 	// Use a template repository to create this resource. See Template Repositories below for details.
+	// Use a template repository to create this resource.
 	Template []TemplateObservation `json:"template,omitempty" tf:"template,omitempty"`
 
+	// The list of topics of the repository.
 	// The list of topics of the repository.
 	// +listType=set
 	Topics []*string `json:"topics,omitempty" tf:"topics,omitempty"`
 
 	// Can be public or private. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be internal. The visibility parameter overrides the private parameter.
+	// Can be 'public' or 'private'. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be 'internal'.
 	Visibility *string `json:"visibility,omitempty" tf:"visibility,omitempty"`
 
 	// Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default.) See GitHub Documentation for details. Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
+	// Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
 	VulnerabilityAlerts *bool `json:"vulnerabilityAlerts,omitempty" tf:"vulnerability_alerts,omitempty"`
+
+	// Require contributors to sign off on web-based commits. See more here. Defaults to false.
+	// Require contributors to sign off on web-based commits. Defaults to 'false'.
+	WebCommitSignoffRequired *bool `json:"webCommitSignoffRequired,omitempty" tf:"web_commit_signoff_required,omitempty"`
 }
 
 type RepositoryParameters struct {
 
 	// Set to true to allow auto-merging pull requests on the repository.
+	// Set to 'true' to allow auto-merging pull requests on the repository.
 	// +kubebuilder:validation:Optional
 	AllowAutoMerge *bool `json:"allowAutoMerge,omitempty" tf:"allow_auto_merge,omitempty"`
 
 	// Set to false to disable merge commits on the repository.
+	// Set to 'false' to disable merge commits on the repository.
 	// +kubebuilder:validation:Optional
 	AllowMergeCommit *bool `json:"allowMergeCommit,omitempty" tf:"allow_merge_commit,omitempty"`
 
 	// Set to false to disable rebase merges on the repository.
+	// Set to 'false' to disable rebase merges on the repository.
 	// +kubebuilder:validation:Optional
 	AllowRebaseMerge *bool `json:"allowRebaseMerge,omitempty" tf:"allow_rebase_merge,omitempty"`
 
 	// Set to false to disable squash merges on the repository.
+	// Set to 'false' to disable squash merges on the repository.
 	// +kubebuilder:validation:Optional
 	AllowSquashMerge *bool `json:"allowSquashMerge,omitempty" tf:"allow_squash_merge,omitempty"`
 
 	// Set to true to always suggest updating pull request branches.
+	// Set to 'true' to always suggest updating pull request branches.
 	// +kubebuilder:validation:Optional
 	AllowUpdateBranch *bool `json:"allowUpdateBranch,omitempty" tf:"allow_update_branch,omitempty"`
 
 	// Set to true to archive the repository instead of deleting on destroy.
+	// Set to 'true' to archive the repository instead of deleting on destroy.
 	// +kubebuilder:validation:Optional
 	ArchiveOnDestroy *bool `json:"archiveOnDestroy,omitempty" tf:"archive_on_destroy,omitempty"`
 
 	// Specifies if the repository should be archived. Defaults to false. NOTE Currently, the API does not support unarchiving.
+	// Specifies if the repository should be archived. Defaults to 'false'. NOTE Currently, the API does not support unarchiving.
 	// +kubebuilder:validation:Optional
 	Archived *bool `json:"archived,omitempty" tf:"archived,omitempty"`
 
 	// Set to true to produce an initial commit in the repository.
+	// Set to 'true' to produce an initial commit in the repository.
 	// +kubebuilder:validation:Optional
 	AutoInit *bool `json:"autoInit,omitempty" tf:"auto_init,omitempty"`
 
@@ -366,68 +478,84 @@ type RepositoryParameters struct {
 	DefaultBranch *string `json:"defaultBranch,omitempty" tf:"default_branch,omitempty"`
 
 	// Automatically delete head branch after a pull request is merged. Defaults to false.
+	// Automatically delete head branch after a pull request is merged. Defaults to 'false'.
 	// +kubebuilder:validation:Optional
 	DeleteBranchOnMerge *bool `json:"deleteBranchOnMerge,omitempty" tf:"delete_branch_on_merge,omitempty"`
 
+	// A description of the repository.
 	// A description of the repository.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// Use the name of the template without the extension. For example, "Haskell".
+	// Use the name of the template without the extension. For example, 'Haskell'.
 	// +kubebuilder:validation:Optional
 	GitignoreTemplate *string `json:"gitignoreTemplate,omitempty" tf:"gitignore_template,omitempty"`
 
 	// Set to true to enable GitHub Discussions on the repository. Defaults to false.
+	// Set to 'true' to enable GitHub Discussions on the repository. Defaults to 'false'.
 	// +kubebuilder:validation:Optional
 	HasDiscussions *bool `json:"hasDiscussions,omitempty" tf:"has_discussions,omitempty"`
 
 	// Set to true to enable the (deprecated) downloads features on the repository.
+	// Set to 'true' to enable the (deprecated) downloads features on the repository.
 	// +kubebuilder:validation:Optional
 	HasDownloads *bool `json:"hasDownloads,omitempty" tf:"has_downloads,omitempty"`
 
 	// Set to true to enable the GitHub Issues features
 	// on the repository.
+	// Set to 'true' to enable the GitHub Issues features on the repository
 	// +kubebuilder:validation:Optional
 	HasIssues *bool `json:"hasIssues,omitempty" tf:"has_issues,omitempty"`
 
 	// Set to true to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to false and will otherwise default to true. If you specify true when it has been disabled it will return an error.
+	// Set to 'true' to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to 'false' and will otherwise default to 'true'. If you specify 'true' when it has been disabled it will return an error.
 	// +kubebuilder:validation:Optional
 	HasProjects *bool `json:"hasProjects,omitempty" tf:"has_projects,omitempty"`
 
 	// Set to true to enable the GitHub Wiki features on
 	// the repository.
+	// Set to 'true' to enable the GitHub Wiki features on the repository.
 	// +kubebuilder:validation:Optional
 	HasWiki *bool `json:"hasWiki,omitempty" tf:"has_wiki,omitempty"`
 
+	// URL of a page describing the project.
 	// URL of a page describing the project.
 	// +kubebuilder:validation:Optional
 	HomepageURL *string `json:"homepageUrl,omitempty" tf:"homepage_url,omitempty"`
 
 	// Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
+	// Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
 	// +kubebuilder:validation:Optional
 	IgnoreVulnerabilityAlertsDuringRead *bool `json:"ignoreVulnerabilityAlertsDuringRead,omitempty" tf:"ignore_vulnerability_alerts_during_read,omitempty"`
 
 	// Set to true to tell GitHub that this is a template repository.
+	// Set to 'true' to tell GitHub that this is a template repository.
 	// +kubebuilder:validation:Optional
 	IsTemplate *bool `json:"isTemplate,omitempty" tf:"is_template,omitempty"`
 
 	// Use the name of the template without the extension. For example, "mit" or "mpl-2.0".
+	// Use the name of the template without the extension. For example, 'mit' or 'mpl-2.0'.
 	// +kubebuilder:validation:Optional
 	LicenseTemplate *string `json:"licenseTemplate,omitempty" tf:"license_template,omitempty"`
 
-	// Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message.
+	// Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message. Applicable only if allow_merge_commit is true.
+	// Can be 'PR_BODY', 'PR_TITLE', or 'BLANK' for a default merge commit message.
 	// +kubebuilder:validation:Optional
 	MergeCommitMessage *string `json:"mergeCommitMessage,omitempty" tf:"merge_commit_message,omitempty"`
 
-	// Can be PR_TITLE or MERGE_MESSAGE for a default merge commit title.
+	// Can be PR_TITLE or MERGE_MESSAGE for a default merge commit title. Applicable only if allow_merge_commit is true.
+	// Can be 'PR_TITLE' or 'MERGE_MESSAGE' for a default merge commit title.
 	// +kubebuilder:validation:Optional
 	MergeCommitTitle *string `json:"mergeCommitTitle,omitempty" tf:"merge_commit_title,omitempty"`
 
+	// The name of the repository.
 	// The name of the repository.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The repository's GitHub Pages configuration. See GitHub Pages Configuration below for details.
+	// The repository's GitHub Pages configuration
 	// +kubebuilder:validation:Optional
 	Pages []PagesParameters `json:"pages,omitempty" tf:"pages,omitempty"`
 
@@ -441,47 +569,61 @@ type RepositoryParameters struct {
 	// +kubebuilder:validation:Optional
 	SecurityAndAnalysis []SecurityAndAnalysisParameters `json:"securityAndAnalysis,omitempty" tf:"security_and_analysis,omitempty"`
 
-	// Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message.
+	// Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message. Applicable only if allow_squash_merge is true.
+	// Can be 'PR_BODY', 'COMMIT_MESSAGES', or 'BLANK' for a default squash merge commit message.
 	// +kubebuilder:validation:Optional
 	SquashMergeCommitMessage *string `json:"squashMergeCommitMessage,omitempty" tf:"squash_merge_commit_message,omitempty"`
 
-	// Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title.
+	// Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title. Applicable only if allow_squash_merge is true.
+	// Can be 'PR_TITLE' or 'COMMIT_OR_PR_TITLE' for a default squash merge commit title.
 	// +kubebuilder:validation:Optional
 	SquashMergeCommitTitle *string `json:"squashMergeCommitTitle,omitempty" tf:"squash_merge_commit_title,omitempty"`
 
 	// Use a template repository to create this resource. See Template Repositories below for details.
+	// Use a template repository to create this resource.
 	// +kubebuilder:validation:Optional
 	Template []TemplateParameters `json:"template,omitempty" tf:"template,omitempty"`
 
+	// The list of topics of the repository.
 	// The list of topics of the repository.
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	Topics []*string `json:"topics,omitempty" tf:"topics,omitempty"`
 
 	// Can be public or private. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be internal. The visibility parameter overrides the private parameter.
+	// Can be 'public' or 'private'. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be 'internal'.
 	// +kubebuilder:validation:Optional
 	Visibility *string `json:"visibility,omitempty" tf:"visibility,omitempty"`
 
 	// Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default.) See GitHub Documentation for details. Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
+	// Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
 	// +kubebuilder:validation:Optional
 	VulnerabilityAlerts *bool `json:"vulnerabilityAlerts,omitempty" tf:"vulnerability_alerts,omitempty"`
+
+	// Require contributors to sign off on web-based commits. See more here. Defaults to false.
+	// Require contributors to sign off on web-based commits. Defaults to 'false'.
+	// +kubebuilder:validation:Optional
+	WebCommitSignoffRequired *bool `json:"webCommitSignoffRequired,omitempty" tf:"web_commit_signoff_required,omitempty"`
 }
 
 type SecretScanningInitParameters struct {
 
 	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+	// Set to 'enabled' to enable secret scanning on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type SecretScanningObservation struct {
 
 	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+	// Set to 'enabled' to enable secret scanning on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type SecretScanningParameters struct {
 
 	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+	// Set to 'enabled' to enable secret scanning on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
 	// +kubebuilder:validation:Optional
 	Status *string `json:"status" tf:"status,omitempty"`
 }
@@ -489,18 +631,21 @@ type SecretScanningParameters struct {
 type SecretScanningPushProtectionInitParameters struct {
 
 	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+	// Set to 'enabled' to enable secret scanning push protection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type SecretScanningPushProtectionObservation struct {
 
 	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+	// Set to 'enabled' to enable secret scanning push protection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type SecretScanningPushProtectionParameters struct {
 
 	// Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+	// Set to 'enabled' to enable secret scanning push protection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
 	// +kubebuilder:validation:Optional
 	Status *string `json:"status" tf:"status,omitempty"`
 }
@@ -508,38 +653,47 @@ type SecretScanningPushProtectionParameters struct {
 type SecurityAndAnalysisInitParameters struct {
 
 	// The advanced security configuration for the repository. See Advanced Security Configuration below for details. If a repository's visibility is public, advanced security is always enabled and cannot be changed, so this setting cannot be supplied.
+	// The advanced security configuration for the repository. If a repository's visibility is 'public', advanced security is always enabled and cannot be changed, so this setting cannot be supplied.
 	AdvancedSecurity []AdvancedSecurityInitParameters `json:"advancedSecurity,omitempty" tf:"advanced_security,omitempty"`
 
 	// The secret scanning configuration for the repository. See Secret Scanning Configuration below for details.
+	// The secret scanning configuration for the repository.
 	SecretScanning []SecretScanningInitParameters `json:"secretScanning,omitempty" tf:"secret_scanning,omitempty"`
 
 	// The secret scanning push protection configuration for the repository. See Secret Scanning Push Protection Configuration below for details.
+	// The secret scanning push protection configuration for the repository.
 	SecretScanningPushProtection []SecretScanningPushProtectionInitParameters `json:"secretScanningPushProtection,omitempty" tf:"secret_scanning_push_protection,omitempty"`
 }
 
 type SecurityAndAnalysisObservation struct {
 
 	// The advanced security configuration for the repository. See Advanced Security Configuration below for details. If a repository's visibility is public, advanced security is always enabled and cannot be changed, so this setting cannot be supplied.
+	// The advanced security configuration for the repository. If a repository's visibility is 'public', advanced security is always enabled and cannot be changed, so this setting cannot be supplied.
 	AdvancedSecurity []AdvancedSecurityObservation `json:"advancedSecurity,omitempty" tf:"advanced_security,omitempty"`
 
 	// The secret scanning configuration for the repository. See Secret Scanning Configuration below for details.
+	// The secret scanning configuration for the repository.
 	SecretScanning []SecretScanningObservation `json:"secretScanning,omitempty" tf:"secret_scanning,omitempty"`
 
 	// The secret scanning push protection configuration for the repository. See Secret Scanning Push Protection Configuration below for details.
+	// The secret scanning push protection configuration for the repository.
 	SecretScanningPushProtection []SecretScanningPushProtectionObservation `json:"secretScanningPushProtection,omitempty" tf:"secret_scanning_push_protection,omitempty"`
 }
 
 type SecurityAndAnalysisParameters struct {
 
 	// The advanced security configuration for the repository. See Advanced Security Configuration below for details. If a repository's visibility is public, advanced security is always enabled and cannot be changed, so this setting cannot be supplied.
+	// The advanced security configuration for the repository. If a repository's visibility is 'public', advanced security is always enabled and cannot be changed, so this setting cannot be supplied.
 	// +kubebuilder:validation:Optional
 	AdvancedSecurity []AdvancedSecurityParameters `json:"advancedSecurity,omitempty" tf:"advanced_security,omitempty"`
 
 	// The secret scanning configuration for the repository. See Secret Scanning Configuration below for details.
+	// The secret scanning configuration for the repository.
 	// +kubebuilder:validation:Optional
 	SecretScanning []SecretScanningParameters `json:"secretScanning,omitempty" tf:"secret_scanning,omitempty"`
 
 	// The secret scanning push protection configuration for the repository. See Secret Scanning Push Protection Configuration below for details.
+	// The secret scanning push protection configuration for the repository.
 	// +kubebuilder:validation:Optional
 	SecretScanningPushProtection []SecretScanningPushProtectionParameters `json:"secretScanningPushProtection,omitempty" tf:"secret_scanning_push_protection,omitempty"`
 }
@@ -547,28 +701,34 @@ type SecurityAndAnalysisParameters struct {
 type SourceInitParameters struct {
 
 	// The repository branch used to publish the site's source files. (i.e. main or gh-pages.
+	// The repository branch used to publish the site's source files. (i.e. 'main' or 'gh-pages')
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
 	// The repository directory from which the site publishes (Default: /).
+	// The repository directory from which the site publishes (Default: '/')
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 }
 
 type SourceObservation struct {
 
 	// The repository branch used to publish the site's source files. (i.e. main or gh-pages.
+	// The repository branch used to publish the site's source files. (i.e. 'main' or 'gh-pages')
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
 	// The repository directory from which the site publishes (Default: /).
+	// The repository directory from which the site publishes (Default: '/')
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 }
 
 type SourceParameters struct {
 
 	// The repository branch used to publish the site's source files. (i.e. main or gh-pages.
+	// The repository branch used to publish the site's source files. (i.e. 'main' or 'gh-pages')
 	// +kubebuilder:validation:Optional
 	Branch *string `json:"branch" tf:"branch,omitempty"`
 
 	// The repository directory from which the site publishes (Default: /).
+	// The repository directory from which the site publishes (Default: '/')
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 }
@@ -576,38 +736,47 @@ type SourceParameters struct {
 type TemplateInitParameters struct {
 
 	// : Whether the new repository should include all the branches from the template repository (defaults to false, which includes only the default branch from the template).
+	// Whether the new repository should include all the branches from the template repository (defaults to 'false', which includes only the default branch from the template).
 	IncludeAllBranches *bool `json:"includeAllBranches,omitempty" tf:"include_all_branches,omitempty"`
 
 	// : The GitHub organization or user the template repository is owned by.
+	// The GitHub organization or user the template repository is owned by.
 	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
 
 	// : The name of the template repository.
+	// The name of the template repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 }
 
 type TemplateObservation struct {
 
 	// : Whether the new repository should include all the branches from the template repository (defaults to false, which includes only the default branch from the template).
+	// Whether the new repository should include all the branches from the template repository (defaults to 'false', which includes only the default branch from the template).
 	IncludeAllBranches *bool `json:"includeAllBranches,omitempty" tf:"include_all_branches,omitempty"`
 
 	// : The GitHub organization or user the template repository is owned by.
+	// The GitHub organization or user the template repository is owned by.
 	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
 
 	// : The name of the template repository.
+	// The name of the template repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 }
 
 type TemplateParameters struct {
 
 	// : Whether the new repository should include all the branches from the template repository (defaults to false, which includes only the default branch from the template).
+	// Whether the new repository should include all the branches from the template repository (defaults to 'false', which includes only the default branch from the template).
 	// +kubebuilder:validation:Optional
 	IncludeAllBranches *bool `json:"includeAllBranches,omitempty" tf:"include_all_branches,omitempty"`
 
 	// : The GitHub organization or user the template repository is owned by.
+	// The GitHub organization or user the template repository is owned by.
 	// +kubebuilder:validation:Optional
 	Owner *string `json:"owner" tf:"owner,omitempty"`
 
 	// : The name of the template repository.
+	// The name of the template repository.
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository" tf:"repository,omitempty"`
 }

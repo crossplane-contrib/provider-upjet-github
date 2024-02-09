@@ -74,14 +74,19 @@ spec:
               forProvider:
                 properties:
                   key:
-                    description: A SSH key.
+                    description: |-
+                      A SSH key.
+                      A SSH key.
                     type: string
                   readOnly:
-                    description: A boolean qualifying the key to be either read only
-                      or read/write.
+                    description: |-
+                      A boolean qualifying the key to be either read only or read/write.
+                      A boolean qualifying the key to be either read only or read/write.
                     type: boolean
                   repository:
-                    description: Name of the GitHub repository.
+                    description: |-
+                      Name of the GitHub repository.
+                      Name of the GitHub repository.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository to populate repository.
@@ -158,7 +163,9 @@ spec:
                         type: object
                     type: object
                   title:
-                    description: A title.
+                    description: |-
+                      A title.
+                      A title.
                     type: string
                 type: object
               initProvider:
@@ -175,14 +182,19 @@ spec:
                   autoscaler.
                 properties:
                   key:
-                    description: A SSH key.
+                    description: |-
+                      A SSH key.
+                      A SSH key.
                     type: string
                   readOnly:
-                    description: A boolean qualifying the key to be either read only
-                      or read/write.
+                    description: |-
+                      A boolean qualifying the key to be either read only or read/write.
+                      A boolean qualifying the key to be either read only or read/write.
                     type: boolean
                   repository:
-                    description: Name of the GitHub repository.
+                    description: |-
+                      Name of the GitHub repository.
+                      Name of the GitHub repository.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository to populate repository.
@@ -259,7 +271,9 @@ spec:
                         type: object
                     type: object
                   title:
-                    description: A title.
+                    description: |-
+                      A title.
+                      A title.
                     type: string
                 type: object
               managementPolicies:
@@ -448,17 +462,24 @@ spec:
                   id:
                     type: string
                   key:
-                    description: A SSH key.
+                    description: |-
+                      A SSH key.
+                      A SSH key.
                     type: string
                   readOnly:
-                    description: A boolean qualifying the key to be either read only
-                      or read/write.
+                    description: |-
+                      A boolean qualifying the key to be either read only or read/write.
+                      A boolean qualifying the key to be either read only or read/write.
                     type: boolean
                   repository:
-                    description: Name of the GitHub repository.
+                    description: |-
+                      Name of the GitHub repository.
+                      Name of the GitHub repository.
                     type: string
                   title:
-                    description: A title.
+                    description: |-
+                      A title.
+                      A title.
                     type: string
                 type: object
               conditions:

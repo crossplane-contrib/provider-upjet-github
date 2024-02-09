@@ -20,30 +20,48 @@ import (
 type TeamInitParameters struct {
 
 	// Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
+	// Adds a default maintainer to the team. Adds the creating user to the team when 'true'.
 	CreateDefaultMaintainer *bool `json:"createDefaultMaintainer,omitempty" tf:"create_default_maintainer,omitempty"`
 
+	// A description of the team.
 	// A description of the team.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
+	// The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
 	LdapDn *string `json:"ldapDn,omitempty" tf:"ldap_dn,omitempty"`
 
 	// The name of the team.
+	// The name of the team.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// The ID of the parent team, if this is a nested team.
-	ParentTeamID *float64 `json:"parentTeamId,omitempty" tf:"parent_team_id,omitempty"`
+	// The ID or slug of the parent team, if this is a nested team.
+	// The ID or slug of the parent team, if this is a nested team.
+	ParentTeamID *string `json:"parentTeamId,omitempty" tf:"parent_team_id,omitempty"`
+
+	// The ID of the created team.
+	// The id of the parent team read in Github.
+	ParentTeamReadID *string `json:"parentTeamReadId,omitempty" tf:"parent_team_read_id,omitempty"`
+
+	// The slug of the created team, which may or may not differ from name,
+	// depending on whether name contains "URL-unsafe" characters.
+	// Useful when referencing the team in github_branch_protection.
+	// The id of the parent team read in Github.
+	ParentTeamReadSlug *string `json:"parentTeamReadSlug,omitempty" tf:"parent_team_read_slug,omitempty"`
 
 	// The level of privacy for the team. Must be one of secret or closed.
 	// Defaults to secret.
+	// The level of privacy for the team. Must be one of 'secret' or 'closed'.
 	Privacy *string `json:"privacy,omitempty" tf:"privacy,omitempty"`
 }
 
 type TeamObservation struct {
 
 	// Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
+	// Adds a default maintainer to the team. Adds the creating user to the team when 'true'.
 	CreateDefaultMaintainer *bool `json:"createDefaultMaintainer,omitempty" tf:"create_default_maintainer,omitempty"`
 
+	// A description of the team.
 	// A description of the team.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
@@ -53,53 +71,87 @@ type TeamObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
+	// The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
 	LdapDn *string `json:"ldapDn,omitempty" tf:"ldap_dn,omitempty"`
 
 	MembersCount *float64 `json:"membersCount,omitempty" tf:"members_count,omitempty"`
 
 	// The name of the team.
+	// The name of the team.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The Node ID of the created team.
+	// The Node ID of the created team.
 	NodeID *string `json:"nodeId,omitempty" tf:"node_id,omitempty"`
 
-	// The ID of the parent team, if this is a nested team.
-	ParentTeamID *float64 `json:"parentTeamId,omitempty" tf:"parent_team_id,omitempty"`
+	// The ID or slug of the parent team, if this is a nested team.
+	// The ID or slug of the parent team, if this is a nested team.
+	ParentTeamID *string `json:"parentTeamId,omitempty" tf:"parent_team_id,omitempty"`
+
+	// The ID of the created team.
+	// The id of the parent team read in Github.
+	ParentTeamReadID *string `json:"parentTeamReadId,omitempty" tf:"parent_team_read_id,omitempty"`
+
+	// The slug of the created team, which may or may not differ from name,
+	// depending on whether name contains "URL-unsafe" characters.
+	// Useful when referencing the team in github_branch_protection.
+	// The id of the parent team read in Github.
+	ParentTeamReadSlug *string `json:"parentTeamReadSlug,omitempty" tf:"parent_team_read_slug,omitempty"`
 
 	// The level of privacy for the team. Must be one of secret or closed.
 	// Defaults to secret.
+	// The level of privacy for the team. Must be one of 'secret' or 'closed'.
 	Privacy *string `json:"privacy,omitempty" tf:"privacy,omitempty"`
 
 	// The slug of the created team, which may or may not differ from name,
 	// depending on whether name contains "URL-unsafe" characters.
 	// Useful when referencing the team in github_branch_protection.
+	// The slug of the created team.
 	Slug *string `json:"slug,omitempty" tf:"slug,omitempty"`
 }
 
 type TeamParameters struct {
 
 	// Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
+	// Adds a default maintainer to the team. Adds the creating user to the team when 'true'.
 	// +kubebuilder:validation:Optional
 	CreateDefaultMaintainer *bool `json:"createDefaultMaintainer,omitempty" tf:"create_default_maintainer,omitempty"`
 
+	// A description of the team.
 	// A description of the team.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
+	// The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
 	// +kubebuilder:validation:Optional
 	LdapDn *string `json:"ldapDn,omitempty" tf:"ldap_dn,omitempty"`
 
 	// The name of the team.
+	// The name of the team.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// The ID of the parent team, if this is a nested team.
+	// The ID or slug of the parent team, if this is a nested team.
+	// The ID or slug of the parent team, if this is a nested team.
 	// +kubebuilder:validation:Optional
-	ParentTeamID *float64 `json:"parentTeamId,omitempty" tf:"parent_team_id,omitempty"`
+	ParentTeamID *string `json:"parentTeamId,omitempty" tf:"parent_team_id,omitempty"`
+
+	// The ID of the created team.
+	// The id of the parent team read in Github.
+	// +kubebuilder:validation:Optional
+	ParentTeamReadID *string `json:"parentTeamReadId,omitempty" tf:"parent_team_read_id,omitempty"`
+
+	// The slug of the created team, which may or may not differ from name,
+	// depending on whether name contains "URL-unsafe" characters.
+	// Useful when referencing the team in github_branch_protection.
+	// The id of the parent team read in Github.
+	// +kubebuilder:validation:Optional
+	ParentTeamReadSlug *string `json:"parentTeamReadSlug,omitempty" tf:"parent_team_read_slug,omitempty"`
 
 	// The level of privacy for the team. Must be one of secret or closed.
 	// Defaults to secret.
+	// The level of privacy for the team. Must be one of 'secret' or 'closed'.
 	// +kubebuilder:validation:Optional
 	Privacy *string `json:"privacy,omitempty" tf:"privacy,omitempty"`
 }

@@ -8,9 +8,9 @@ export TERRAFORM_VERSION := 1.3.6
 
 export TERRAFORM_PROVIDER_SOURCE := integrations/github
 export TERRAFORM_PROVIDER_REPO := https://github.com/integrations/terraform-provider-github
-export TERRAFORM_PROVIDER_VERSION := 5.15.0
+export TERRAFORM_PROVIDER_VERSION := 5.45.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-github
-export TERRAFORM_NATIVE_PROVIDER_BINARY := terraform-provider-github_v5.15.0_x5
+export TERRAFORM_NATIVE_PROVIDER_BINARY := terraform-provider-github_v5.45.0_x5
 export TERRAFORM_DOCS_PATH := website/docs/r
 
 PLATFORMS ?= linux_amd64 linux_arm64
