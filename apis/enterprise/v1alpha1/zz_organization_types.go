@@ -19,49 +19,93 @@ import (
 
 type OrganizationInitParameters struct {
 
+	// List of organization owner usernames.
+	// List of organization owner usernames.
 	// +listType=set
 	AdminLogins []*string `json:"adminLogins,omitempty" tf:"admin_logins,omitempty"`
 
+	// The billing email address.
+	// The billing email address.
 	BillingEmail *string `json:"billingEmail,omitempty" tf:"billing_email,omitempty"`
 
+	// The description of the organization.
+	// The description of the organization.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// The display name of the organization.
+	// The display name of the organization.
+	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
+
+	// The ID of the enterprise.
+	// The ID of the enterprise.
 	EnterpriseID *string `json:"enterpriseId,omitempty" tf:"enterprise_id,omitempty"`
 
+	// The name of the organization.
+	// The name of the organization.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type OrganizationObservation struct {
 
+	// List of organization owner usernames.
+	// List of organization owner usernames.
 	// +listType=set
 	AdminLogins []*string `json:"adminLogins,omitempty" tf:"admin_logins,omitempty"`
 
+	// The billing email address.
+	// The billing email address.
 	BillingEmail *string `json:"billingEmail,omitempty" tf:"billing_email,omitempty"`
 
+	// The description of the organization.
+	// The description of the organization.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// The display name of the organization.
+	// The display name of the organization.
+	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
+
+	// The ID of the enterprise.
+	// The ID of the enterprise.
 	EnterpriseID *string `json:"enterpriseId,omitempty" tf:"enterprise_id,omitempty"`
 
+	// The ID of the organization.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The name of the organization.
+	// The name of the organization.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type OrganizationParameters struct {
 
+	// List of organization owner usernames.
+	// List of organization owner usernames.
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	AdminLogins []*string `json:"adminLogins,omitempty" tf:"admin_logins,omitempty"`
 
+	// The billing email address.
+	// The billing email address.
 	// +kubebuilder:validation:Optional
 	BillingEmail *string `json:"billingEmail,omitempty" tf:"billing_email,omitempty"`
 
+	// The description of the organization.
+	// The description of the organization.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// The display name of the organization.
+	// The display name of the organization.
+	// +kubebuilder:validation:Optional
+	DisplayName *string `json:"displayName,omitempty" tf:"display_name,omitempty"`
+
+	// The ID of the enterprise.
+	// The ID of the enterprise.
 	// +kubebuilder:validation:Optional
 	EnterpriseID *string `json:"enterpriseId,omitempty" tf:"enterprise_id,omitempty"`
 
+	// The name of the organization.
+	// The name of the organization.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
@@ -93,7 +137,7 @@ type OrganizationStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// Organization is the Schema for the Organizations API. <no value>
+// Organization is the Schema for the Organizations API. Create and manages a GitHub enterprise organization.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

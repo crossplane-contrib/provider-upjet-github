@@ -63,6 +63,11 @@ func (in *OrganizationInitParameters) DeepCopyInto(out *OrganizationInitParamete
 		*out = new(string)
 		**out = **in
 	}
+	if in.DisplayName != nil {
+		in, out := &in.DisplayName, &out.DisplayName
+		*out = new(string)
+		**out = **in
+	}
 	if in.EnterpriseID != nil {
 		in, out := &in.EnterpriseID, &out.EnterpriseID
 		*out = new(string)
@@ -141,6 +146,11 @@ func (in *OrganizationObservation) DeepCopyInto(out *OrganizationObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.DisplayName != nil {
+		in, out := &in.DisplayName, &out.DisplayName
+		*out = new(string)
+		**out = **in
+	}
 	if in.EnterpriseID != nil {
 		in, out := &in.EnterpriseID, &out.EnterpriseID
 		*out = new(string)
@@ -189,6 +199,11 @@ func (in *OrganizationParameters) DeepCopyInto(out *OrganizationParameters) {
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
+		*out = new(string)
+		**out = **in
+	}
+	if in.DisplayName != nil {
+		in, out := &in.DisplayName, &out.DisplayName
 		*out = new(string)
 		**out = **in
 	}
