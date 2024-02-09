@@ -38,20 +38,22 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.20
-GOLANGCILINT_VERSION ?= 1.52.2
+GO_REQUIRED_VERSION ?= 1.21
+GOLANGCILINT_VERSION ?= 1.55.2
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
 GO_SUBDIRS += cmd internal apis
+GO111MODULE = on
+
 -include build/makelib/golang.mk
 
 # ====================================================================================
 # Setup Kubernetes tools
 
-KIND_VERSION = v0.15.0
-UP_VERSION = v0.18.0
+KIND_VERSION = v0.21.0
+UP_VERSION = v0.21.0
 UP_CHANNEL = stable
-UPTEST_VERSION = v0.5.0
+UPTEST_VERSION = v0.8.0
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
