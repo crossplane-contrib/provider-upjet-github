@@ -75,9 +75,9 @@ spec:
                 properties:
                   branch:
                     description: |-
-                      Git branch (defaults to main).
+                      Git branch (defaults to the repository's default branch).
                       The branch must already exist, it will not be created if it does not already exist.
-                      The branch name, defaults to "main"
+                      The branch name, defaults to the repository's default branch
                     type: string
                   branchRef:
                     description: Reference to a Branch to populate branch.
@@ -180,7 +180,7 @@ spec:
                     type: string
                   overwriteOnCreate:
                     description: |-
-                      Enable overwriting existing files
+                      Enable overwriting existing files. If set to true it will overwrite an existing file with the same name. If set to false it will fail if there is an existing file with the same name.
                       Enable overwriting existing files, defaults to "false"
                     type: boolean
                   repository:
@@ -278,9 +278,9 @@ spec:
                 properties:
                   branch:
                     description: |-
-                      Git branch (defaults to main).
+                      Git branch (defaults to the repository's default branch).
                       The branch must already exist, it will not be created if it does not already exist.
-                      The branch name, defaults to "main"
+                      The branch name, defaults to the repository's default branch
                     type: string
                   branchRef:
                     description: Reference to a Branch to populate branch.
@@ -383,7 +383,7 @@ spec:
                     type: string
                   overwriteOnCreate:
                     description: |-
-                      Enable overwriting existing files
+                      Enable overwriting existing files. If set to true it will overwrite an existing file with the same name. If set to false it will fail if there is an existing file with the same name.
                       Enable overwriting existing files, defaults to "false"
                     type: boolean
                   repository:
@@ -649,9 +649,9 @@ spec:
                 properties:
                   branch:
                     description: |-
-                      Git branch (defaults to main).
+                      Git branch (defaults to the repository's default branch).
                       The branch must already exist, it will not be created if it does not already exist.
-                      The branch name, defaults to "main"
+                      The branch name, defaults to the repository's default branch
                     type: string
                   commitAuthor:
                     description: |-
@@ -687,9 +687,14 @@ spec:
                     type: string
                   overwriteOnCreate:
                     description: |-
-                      Enable overwriting existing files
+                      Enable overwriting existing files. If set to true it will overwrite an existing file with the same name. If set to false it will fail if there is an existing file with the same name.
                       Enable overwriting existing files, defaults to "false"
                     type: boolean
+                  ref:
+                    description: |-
+                      The name of the commit/branch/tag.
+                      The name of the commit/branch/tag
+                    type: string
                   repository:
                     description: |-
                       The repository to create the file in.

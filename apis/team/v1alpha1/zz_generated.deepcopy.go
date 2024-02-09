@@ -65,7 +65,17 @@ func (in *TeamInitParameters) DeepCopyInto(out *TeamInitParameters) {
 	}
 	if in.ParentTeamID != nil {
 		in, out := &in.ParentTeamID, &out.ParentTeamID
-		*out = new(float64)
+		*out = new(string)
+		**out = **in
+	}
+	if in.ParentTeamReadID != nil {
+		in, out := &in.ParentTeamReadID, &out.ParentTeamReadID
+		*out = new(string)
+		**out = **in
+	}
+	if in.ParentTeamReadSlug != nil {
+		in, out := &in.ParentTeamReadSlug, &out.ParentTeamReadSlug
+		*out = new(string)
 		**out = **in
 	}
 	if in.Privacy != nil {
@@ -162,7 +172,17 @@ func (in *TeamObservation) DeepCopyInto(out *TeamObservation) {
 	}
 	if in.ParentTeamID != nil {
 		in, out := &in.ParentTeamID, &out.ParentTeamID
-		*out = new(float64)
+		*out = new(string)
+		**out = **in
+	}
+	if in.ParentTeamReadID != nil {
+		in, out := &in.ParentTeamReadID, &out.ParentTeamReadID
+		*out = new(string)
+		**out = **in
+	}
+	if in.ParentTeamReadSlug != nil {
+		in, out := &in.ParentTeamReadSlug, &out.ParentTeamReadSlug
+		*out = new(string)
 		**out = **in
 	}
 	if in.Privacy != nil {
@@ -212,7 +232,17 @@ func (in *TeamParameters) DeepCopyInto(out *TeamParameters) {
 	}
 	if in.ParentTeamID != nil {
 		in, out := &in.ParentTeamID, &out.ParentTeamID
-		*out = new(float64)
+		*out = new(string)
+		**out = **in
+	}
+	if in.ParentTeamReadID != nil {
+		in, out := &in.ParentTeamReadID, &out.ParentTeamReadID
+		*out = new(string)
+		**out = **in
+	}
+	if in.ParentTeamReadSlug != nil {
+		in, out := &in.ParentTeamReadSlug, &out.ParentTeamReadSlug
+		*out = new(string)
 		**out = **in
 	}
 	if in.Privacy != nil {

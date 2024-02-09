@@ -74,12 +74,14 @@ spec:
               forProvider:
                 properties:
                   baseRef:
-                    description: Name of the branch serving as the base of the Pull
-                      Request.
+                    description: |-
+                      Name of the branch serving as the base of the Pull Request.
+                      Name of the branch serving as the base of the Pull Request.
                     type: string
                   baseRepository:
-                    description: Name of the base repository to retrieve the Pull
-                      Requests from.
+                    description: |-
+                      Name of the base repository to retrieve the Pull Requests from.
+                      Name of the base repository to retrieve the Pull Requests from.
                     type: string
                   baseRepositoryRef:
                     description: Reference to a Repository in repo to populate baseRepository.
@@ -156,11 +158,14 @@ spec:
                         type: object
                     type: object
                   body:
-                    description: Body of the Pull Request.
+                    description: |-
+                      Body of the Pull Request.
+                      Body of the Pull Request.
                     type: string
                   headRef:
-                    description: Name of the branch serving as the head of the Pull
-                      Request.
+                    description: |-
+                      Name of the branch serving as the head of the Pull Request.
+                      Name of the branch serving as the head of the Pull Request.
                     type: string
                   headRefRef:
                     description: Reference to a Branch in repo to populate headRef.
@@ -237,15 +242,19 @@ spec:
                         type: object
                     type: object
                   maintainerCanModify:
-                    description: 'Controls whether the base repository maintainers
-                      can modify the Pull Request. Default: false.'
+                    description: |-
+                      Controls whether the base repository maintainers can modify the Pull Request. Default: false.
+                      Controls whether the base repository maintainers can modify the Pull Request. Default: 'false'.
                     type: boolean
                   owner:
-                    description: Owner of the repository. If not provided, the provider's
-                      default owner is used.
+                    description: |-
+                      Owner of the repository. If not provided, the provider's default owner is used.
+                      Owner of the repository. If not provided, the provider's default owner is used.
                     type: string
                   title:
-                    description: The title of the Pull Request.
+                    description: |-
+                      The title of the Pull Request.
+                      The title of the Pull Request.
                     type: string
                 type: object
               initProvider:
@@ -262,12 +271,14 @@ spec:
                   autoscaler.
                 properties:
                   baseRef:
-                    description: Name of the branch serving as the base of the Pull
-                      Request.
+                    description: |-
+                      Name of the branch serving as the base of the Pull Request.
+                      Name of the branch serving as the base of the Pull Request.
                     type: string
                   baseRepository:
-                    description: Name of the base repository to retrieve the Pull
-                      Requests from.
+                    description: |-
+                      Name of the base repository to retrieve the Pull Requests from.
+                      Name of the base repository to retrieve the Pull Requests from.
                     type: string
                   baseRepositoryRef:
                     description: Reference to a Repository in repo to populate baseRepository.
@@ -344,11 +355,14 @@ spec:
                         type: object
                     type: object
                   body:
-                    description: Body of the Pull Request.
+                    description: |-
+                      Body of the Pull Request.
+                      Body of the Pull Request.
                     type: string
                   headRef:
-                    description: Name of the branch serving as the head of the Pull
-                      Request.
+                    description: |-
+                      Name of the branch serving as the head of the Pull Request.
+                      Name of the branch serving as the head of the Pull Request.
                     type: string
                   headRefRef:
                     description: Reference to a Branch in repo to populate headRef.
@@ -425,15 +439,19 @@ spec:
                         type: object
                     type: object
                   maintainerCanModify:
-                    description: 'Controls whether the base repository maintainers
-                      can modify the Pull Request. Default: false.'
+                    description: |-
+                      Controls whether the base repository maintainers can modify the Pull Request. Default: false.
+                      Controls whether the base repository maintainers can modify the Pull Request. Default: 'false'.
                     type: boolean
                   owner:
-                    description: Owner of the repository. If not provided, the provider's
-                      default owner is used.
+                    description: |-
+                      Owner of the repository. If not provided, the provider's default owner is used.
+                      Owner of the repository. If not provided, the provider's default owner is used.
                     type: string
                   title:
-                    description: The title of the Pull Request.
+                    description: |-
+                      The title of the Pull Request.
+                      The title of the Pull Request.
                     type: string
                 type: object
               managementPolicies:
@@ -618,28 +636,39 @@ spec:
               atProvider:
                 properties:
                   baseRef:
-                    description: Name of the branch serving as the base of the Pull
-                      Request.
+                    description: |-
+                      Name of the branch serving as the base of the Pull Request.
+                      Name of the branch serving as the base of the Pull Request.
                     type: string
                   baseRepository:
-                    description: Name of the base repository to retrieve the Pull
-                      Requests from.
+                    description: |-
+                      Name of the base repository to retrieve the Pull Requests from.
+                      Name of the base repository to retrieve the Pull Requests from.
                     type: string
                   baseSha:
-                    description: Head commit SHA of the Pull Request base.
+                    description: |-
+                      Head commit SHA of the Pull Request base.
+                      Head commit SHA of the Pull Request base.
                     type: string
                   body:
-                    description: Body of the Pull Request.
+                    description: |-
+                      Body of the Pull Request.
+                      Body of the Pull Request.
                     type: string
                   draft:
-                    description: Indicates Whether this Pull Request is a draft.
+                    description: |-
+                      Indicates Whether this Pull Request is a draft.
+                      Indicates Whether this Pull Request is a draft.
                     type: boolean
                   headRef:
-                    description: Name of the branch serving as the head of the Pull
-                      Request.
+                    description: |-
+                      Name of the branch serving as the head of the Pull Request.
+                      Name of the branch serving as the head of the Pull Request.
                     type: string
                   headSha:
-                    description: Head commit SHA of the Pull Request head.
+                    description: |-
+                      Head commit SHA of the Pull Request head.
+                      Head commit SHA of the Pull Request head.
                     type: string
                   id:
                     type: string
@@ -651,15 +680,19 @@ spec:
                       type: string
                     type: array
                   maintainerCanModify:
-                    description: 'Controls whether the base repository maintainers
-                      can modify the Pull Request. Default: false.'
+                    description: |-
+                      Controls whether the base repository maintainers can modify the Pull Request. Default: false.
+                      Controls whether the base repository maintainers can modify the Pull Request. Default: 'false'.
                     type: boolean
                   number:
-                    description: The number of the Pull Request within the repository.
+                    description: |-
+                      The number of the Pull Request within the repository.
+                      The number of the Pull Request within the repository.
                     type: number
                   openedAt:
-                    description: Unix timestamp indicating the Pull Request creation
-                      time.
+                    description: |-
+                      Unix timestamp indicating the Pull Request creation time.
+                      Unix timestamp indicating the Pull Request creation time.
                     type: number
                   openedBy:
                     description: |-
@@ -667,18 +700,24 @@ spec:
                       Username of the PR creator
                     type: string
                   owner:
-                    description: Owner of the repository. If not provided, the provider's
-                      default owner is used.
+                    description: |-
+                      Owner of the repository. If not provided, the provider's default owner is used.
+                      Owner of the repository. If not provided, the provider's default owner is used.
                     type: string
                   state:
-                    description: the current Pull Request state - can be "open", "closed"
-                      or "merged".
+                    description: |-
+                      the current Pull Request state - can be "open", "closed" or "merged".
+                      The current Pull Request state - can be 'open', 'closed' or 'merged'.
                     type: string
                   title:
-                    description: The title of the Pull Request.
+                    description: |-
+                      The title of the Pull Request.
+                      The title of the Pull Request.
                     type: string
                   updatedAt:
-                    description: The timestamp of the last Pull Request update.
+                    description: |-
+                      The timestamp of the last Pull Request update.
+                      The timestamp of the last Pull Request update.
                     type: number
                 type: object
               conditions:
