@@ -34,6 +34,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"github_team_repository": config.IdentifierFromProvider,
 	// This cannot be imported.
 	"github_actions_secret":          config.IdentifierFromProvider,
+	"github_actions_variable":        config.IdentifierFromProvider,
 	"github_enterprise_organization": config.IdentifierFromProvider,
 }
 

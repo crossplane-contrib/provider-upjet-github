@@ -9,6 +9,7 @@ import (
 	_ "embed"
 
 	"github.com/coopnorge/provider-github/config/actionssecret"
+	"github.com/coopnorge/provider-github/config/actionsvariable"
 	"github.com/coopnorge/provider-github/config/branch"
 	"github.com/coopnorge/provider-github/config/branchprotection"
 	"github.com/coopnorge/provider-github/config/defaultbranch"
@@ -56,6 +57,7 @@ func GetProvider() *ujconfig.Provider {
 		branchprotection.Configure,
 		repositoryfile.Configure,
 		actionssecret.Configure,
+		actionsvariable.Configure,
 		organization.Configure,
 	} {
 		configure(pc)
