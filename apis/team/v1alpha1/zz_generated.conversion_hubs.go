@@ -14,4 +14,7 @@ package v1alpha1
 func (tr *Team) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *TeamMembership) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *TeamRepository) Hub() {}
