@@ -20,6 +20,7 @@ import (
 	pullrequest "github.com/coopnorge/provider-github/internal/controller/repo/pullrequest"
 	repository "github.com/coopnorge/provider-github/internal/controller/repo/repository"
 	repositoryfile "github.com/coopnorge/provider-github/internal/controller/repo/repositoryfile"
+	emugroupmapping "github.com/coopnorge/provider-github/internal/controller/team/emugroupmapping"
 	team "github.com/coopnorge/provider-github/internal/controller/team/team"
 	teammembership "github.com/coopnorge/provider-github/internal/controller/team/teammembership"
 	teamrepository "github.com/coopnorge/provider-github/internal/controller/team/teamrepository"
@@ -40,6 +41,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		pullrequest.Setup,
 		repository.Setup,
 		repositoryfile.Setup,
+		emugroupmapping.Setup,
 		team.Setup,
 		teammembership.Setup,
 		teamrepository.Setup,
