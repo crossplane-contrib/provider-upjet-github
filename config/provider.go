@@ -19,6 +19,7 @@ import (
 	"github.com/coopnorge/provider-github/config/repository"
 	"github.com/coopnorge/provider-github/config/repositoryfile"
 	"github.com/coopnorge/provider-github/config/team"
+	"github.com/coopnorge/provider-github/config/teammembership"
 	"github.com/coopnorge/provider-github/config/teamrepository"
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 )
@@ -59,6 +60,7 @@ func GetProvider() *ujconfig.Provider {
 		actionssecret.Configure,
 		actionsvariable.Configure,
 		organization.Configure,
+		teammembership.Configure,
 	} {
 		configure(pc)
 	}

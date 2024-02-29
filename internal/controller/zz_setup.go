@@ -21,6 +21,7 @@ import (
 	repository "github.com/coopnorge/provider-github/internal/controller/repo/repository"
 	repositoryfile "github.com/coopnorge/provider-github/internal/controller/repo/repositoryfile"
 	team "github.com/coopnorge/provider-github/internal/controller/team/team"
+	teammembership "github.com/coopnorge/provider-github/internal/controller/team/teammembership"
 	teamrepository "github.com/coopnorge/provider-github/internal/controller/team/teamrepository"
 )
 
@@ -40,6 +41,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		repository.Setup,
 		repositoryfile.Setup,
 		team.Setup,
+		teammembership.Setup,
 		teamrepository.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
