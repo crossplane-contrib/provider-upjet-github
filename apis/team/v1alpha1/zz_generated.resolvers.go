@@ -13,6 +13,48 @@ import (
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// ResolveReferences of this EmuGroupMapping.
+func (mg *EmuGroupMapping) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.TeamSlug),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.TeamSlugRef,
+		Selector:     mg.Spec.ForProvider.TeamSlugSelector,
+		To: reference.To{
+			List:    &TeamList{},
+			Managed: &Team{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.TeamSlug")
+	}
+	mg.Spec.ForProvider.TeamSlug = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.TeamSlugRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.TeamSlug),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.TeamSlugRef,
+		Selector:     mg.Spec.InitProvider.TeamSlugSelector,
+		To: reference.To{
+			List:    &TeamList{},
+			Managed: &Team{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.TeamSlug")
+	}
+	mg.Spec.InitProvider.TeamSlug = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.TeamSlugRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this TeamMembership.
 func (mg *TeamMembership) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)

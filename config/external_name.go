@@ -32,6 +32,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	// Imported by using the following format: {{ team_id/slug }}:{{ repository }}
 	// The id in the state needs to use the numberic id of the team plus the repository. Cannot make external_name nice
 	"github_team_repository": config.IdentifierFromProvider,
+	// EMU group mappings can be imported using the "group_id" attribute
+	"github_emu_group_mapping": config.IdentifierFromProvider,
 	// This cannot be imported.
 	"github_team_membership": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ team_id }}:{{ username }} or {{ team_name }}:{{ username }}
