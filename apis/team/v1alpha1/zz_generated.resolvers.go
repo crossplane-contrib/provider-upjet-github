@@ -9,6 +9,7 @@ import (
 	"context"
 	v1alpha1 "github.com/coopnorge/provider-github/apis/repo/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
+	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -22,7 +23,7 @@ func (mg *EmuGroupMapping) ResolveReferences(ctx context.Context, c client.Reade
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.TeamSlug),
-		Extract:      reference.ExternalName(),
+		Extract:      resource.ExtractParamPath("slug", true),
 		Reference:    mg.Spec.ForProvider.TeamSlugRef,
 		Selector:     mg.Spec.ForProvider.TeamSlugSelector,
 		To: reference.To{
@@ -38,7 +39,7 @@ func (mg *EmuGroupMapping) ResolveReferences(ctx context.Context, c client.Reade
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.TeamSlug),
-		Extract:      reference.ExternalName(),
+		Extract:      resource.ExtractParamPath("slug", true),
 		Reference:    mg.Spec.InitProvider.TeamSlugRef,
 		Selector:     mg.Spec.InitProvider.TeamSlugSelector,
 		To: reference.To{
