@@ -24,6 +24,7 @@ import (
 	team "github.com/coopnorge/provider-github/internal/controller/team/team"
 	teammembership "github.com/coopnorge/provider-github/internal/controller/team/teammembership"
 	teamrepository "github.com/coopnorge/provider-github/internal/controller/team/teamrepository"
+	membership "github.com/coopnorge/provider-github/internal/controller/user/membership"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
@@ -45,6 +46,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		team.Setup,
 		teammembership.Setup,
 		teamrepository.Setup,
+		membership.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err

@@ -37,6 +37,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	// Imported by using the following format: {{ team_id }}:{{ username }} or {{ team_name }}:{{ username }}
 	"github_team_membership": config.IdentifierFromProvider,
 	// This cannot be imported.
+	"github_membership": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ organization}}:{{username }}.
 	"github_actions_secret":          config.IdentifierFromProvider,
 	"github_actions_variable":        config.IdentifierFromProvider,
 	"github_enterprise_organization": config.IdentifierFromProvider,

@@ -15,6 +15,7 @@ import (
 	"github.com/coopnorge/provider-github/config/defaultbranch"
 	"github.com/coopnorge/provider-github/config/deploykey"
 	"github.com/coopnorge/provider-github/config/emugroupmapping"
+	"github.com/coopnorge/provider-github/config/membership"
 	"github.com/coopnorge/provider-github/config/organization"
 	"github.com/coopnorge/provider-github/config/pullrequest"
 	"github.com/coopnorge/provider-github/config/repository"
@@ -63,6 +64,7 @@ func GetProvider() *ujconfig.Provider {
 		actionssecret.Configure,
 		actionsvariable.Configure,
 		organization.Configure,
+		membership.Configure,
 	} {
 		configure(pc)
 	}
