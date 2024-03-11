@@ -1,0 +1,12 @@
+apiVersion: user.github.upbound.io/v1alpha1
+kind: Membership
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/membership
+  labels:
+    testing.upbound.io/example-name: test-user
+  name: membership-for-test-user
+spec:
+  forProvider:
+    role: member
+    username: TestUser

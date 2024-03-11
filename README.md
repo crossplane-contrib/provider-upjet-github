@@ -106,6 +106,7 @@ spec:
 | `TeamRepository` | `team` | `github_team_repository` | |
 | `EmuTeamMapping` | `team` | `github_emu_group_mapping` | |
 | `ActionsSecrets` | `actions` | `github_actions_secret` | |
+| `Membership` | `user` | `github_membership` | Works only with - GitHub App user access tokens - GitHub App installation access tokens - Fine-grained personal access tokens using a token with at least `members:read` |
 | `Organization` | `enterprise` | `github_enterprise_organization` | Works only with PAT based authentication using a token with at least `admin:enterprise` scope.<br/>The following *GraphQL* query can be used to obtain the required `enterprise_id`:<br/> `gh api graphql -f query='query ($slug: String!) { enterprise(slug: $slug) { id } }' -F slug='<slug>' --jq '.data.enterprise.id'` |
 
 ## Adding resources
