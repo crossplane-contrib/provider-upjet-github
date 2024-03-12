@@ -8,7 +8,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "repo"
 
 		r.LateInitializer = config.LateInitializer{
-			IgnoredFields: []string{"private", "default_branch"},
+			IgnoredFields: []string{"private", "default_branch","securityAndAnalysis"},
 		}
 	})
 }
