@@ -124,6 +124,7 @@ func (tr *Repository) LateInitialize(attrs []byte) (bool, error) {
 	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
 	opts = append(opts, resource.WithNameFilter("DefaultBranch"))
 	opts = append(opts, resource.WithNameFilter("Private"))
+	opts = append(opts, resource.WithNameFilter("SecurityAndAnalysis"))
 
 	li := resource.NewGenericLateInitializer(opts...)
 	return li.LateInitialize(&tr.Spec.ForProvider, params)
