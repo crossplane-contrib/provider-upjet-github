@@ -25,7 +25,7 @@ func (mg *DeployKey) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this DeployKey
 func (tr *DeployKey) GetConnectionDetailsMapping() map[string]string {
-	return nil
+	return map[string]string{"key": "spec.forProvider.keySecretRef"}
 }
 
 // GetObservation of this DeployKey

@@ -8,7 +8,10 @@ metadata:
   name: example-repository-deploy-key
 spec:
   forProvider:
-    key: ssh-rsa AAA...
+    keySecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
     readOnly: "false"
     repositorySelector:
       matchLabels:

@@ -19,10 +19,6 @@ import (
 
 type DeployKeyInitParameters struct {
 
-	// A SSH key.
-	// A SSH key.
-	Key *string `json:"key,omitempty" tf:"key,omitempty"`
-
 	// A boolean qualifying the key to be either read only or read/write.
 	// A boolean qualifying the key to be either read only or read/write.
 	ReadOnly *bool `json:"readOnly,omitempty" tf:"read_only,omitempty"`
@@ -50,10 +46,6 @@ type DeployKeyObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// A SSH key.
-	// A SSH key.
-	Key *string `json:"key,omitempty" tf:"key,omitempty"`
-
 	// A boolean qualifying the key to be either read only or read/write.
 	// A boolean qualifying the key to be either read only or read/write.
 	ReadOnly *bool `json:"readOnly,omitempty" tf:"read_only,omitempty"`
@@ -72,7 +64,7 @@ type DeployKeyParameters struct {
 	// A SSH key.
 	// A SSH key.
 	// +kubebuilder:validation:Optional
-	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+	KeySecretRef v1.SecretKeySelector `json:"keySecretRef" tf:"-"`
 
 	// A boolean qualifying the key to be either read only or read/write.
 	// A boolean qualifying the key to be either read only or read/write.
@@ -135,7 +127,7 @@ type DeployKeyStatus struct {
 type DeployKey struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.key) || (has(self.initProvider) && has(self.initProvider.key))",message="spec.forProvider.key is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.keySecretRef)",message="spec.forProvider.keySecretRef is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.title) || (has(self.initProvider) && has(self.initProvider.title))",message="spec.forProvider.title is a required parameter"
 	Spec   DeployKeySpec   `json:"spec"`
 	Status DeployKeyStatus `json:"status,omitempty"`
