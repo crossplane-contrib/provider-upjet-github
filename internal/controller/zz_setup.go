@@ -25,6 +25,7 @@ import (
 	teammembership "github.com/coopnorge/provider-github/internal/controller/team/teammembership"
 	teamrepository "github.com/coopnorge/provider-github/internal/controller/team/teamrepository"
 	teamsettings "github.com/coopnorge/provider-github/internal/controller/team/teamsettings"
+	teamsyncgroupmapping "github.com/coopnorge/provider-github/internal/controller/team/teamsyncgroupmapping"
 	membership "github.com/coopnorge/provider-github/internal/controller/user/membership"
 )
 
@@ -48,6 +49,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		teammembership.Setup,
 		teamrepository.Setup,
 		teamsettings.Setup,
+		teamsyncgroupmapping.Setup,
 		membership.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

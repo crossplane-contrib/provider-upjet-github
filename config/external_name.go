@@ -39,6 +39,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	// This is imported using Github Team ID or Team slug.
 	"github_team_settings": config.IdentifierFromProvider,
 	// This cannot be imported.
+	"github_team_sync_group_mapping": config.IdentifierFromProvider,
+	// This is imported using Github Team ID or Team slug
 	"github_membership": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ organization}}:{{username }}.
 	"github_actions_secret":          config.IdentifierFromProvider,

@@ -1,0 +1,17 @@
+apiVersion: team.github.upbound.io/v1alpha1
+kind: TeamSyncGroupMapping
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/teamsyncgroupmapping
+  labels:
+    testing.upbound.io/example-name: example_group_mapping
+  name: example-group-mapping
+spec:
+  forProvider:
+    group:
+    - groupDescription: "ABC groupDescription"
+      groupName: foo
+      groupId: "12345"
+    teamSlug: foo
+  providerConfigRef:
+    name: default

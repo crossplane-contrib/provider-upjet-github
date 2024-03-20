@@ -24,6 +24,7 @@ import (
 	"github.com/coopnorge/provider-github/config/teammembership"
 	"github.com/coopnorge/provider-github/config/teamrepository"
 	"github.com/coopnorge/provider-github/config/teamsettings"
+	"github.com/coopnorge/provider-github/config/teamsyncgroupmapping"
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 )
 
@@ -67,6 +68,7 @@ func GetProvider() *ujconfig.Provider {
 		organization.Configure,
 		membership.Configure,
 		teamsettings.Configure,
+		teamsyncgroupmapping.Configure,
 	} {
 		configure(pc)
 	}
