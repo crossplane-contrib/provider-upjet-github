@@ -104,6 +104,7 @@ spec:
 | `Team` | `team` | `github_team` | |
 | `TeamMembership` | `team` | `github_team_membership` | |
 | `TeamRepository` | `team` | `github_team_repository` | |
+| `TeamSettings` | `team` | `github_team_settings` | |
 | `EmuTeamMapping` | `team` | `github_emu_group_mapping` | |
 | `ActionsSecrets` | `actions` | `github_actions_secret` | |
 | `Membership` | `user` | `github_membership` | Works only with - GitHub App user access tokens - GitHub App installation access tokens - Fine-grained personal access tokens using a token with at least `members:read` |
@@ -176,7 +177,7 @@ index 0000000..5684451
 +
 +import "github.com/upbound/upjet/pkg/config"
 +
-+// Configure github_branch resource.
++// Configure github_repository_file resource.
 +func Configure(p *config.Provider) {
 +	p.AddResourceConfigurator("github_repository_file", func(r *config.Resource) {
 +		// We need to override the default group that upjet generated for

@@ -42,3 +42,12 @@ func (l *TeamRepositoryList) GetItems() []resource.Managed {
 	}
 	return items
 }
+
+// GetItems of this TeamSettingsList.
+func (l *TeamSettingsList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}

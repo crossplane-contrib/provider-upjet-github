@@ -18,18 +18,18 @@ import (
 	"github.com/crossplane/upjet/pkg/resource/json"
 )
 
-// GetTerraformResourceType returns Terraform resource type for this Repository
-func (mg *Repository) GetTerraformResourceType() string {
-	return "github_repository"
+// GetTerraformResourceType returns Terraform resource type for this TeamSettings
+func (mg *TeamSettings) GetTerraformResourceType() string {
+	return "github_team_settings"
 }
 
-// GetConnectionDetailsMapping for this Repository
-func (tr *Repository) GetConnectionDetailsMapping() map[string]string {
+// GetConnectionDetailsMapping for this TeamSettings
+func (tr *TeamSettings) GetConnectionDetailsMapping() map[string]string {
 	return nil
 }
 
-// GetObservation of this Repository
-func (tr *Repository) GetObservation() (map[string]any, error) {
+// GetObservation of this TeamSettings
+func (tr *TeamSettings) GetObservation() (map[string]any, error) {
 	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
 	if err != nil {
 		return nil, err
@@ -38,8 +38,8 @@ func (tr *Repository) GetObservation() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(o, &base)
 }
 
-// SetObservation for this Repository
-func (tr *Repository) SetObservation(obs map[string]any) error {
+// SetObservation for this TeamSettings
+func (tr *TeamSettings) SetObservation(obs map[string]any) error {
 	p, err := json.TFParser.Marshal(obs)
 	if err != nil {
 		return err
@@ -47,16 +47,16 @@ func (tr *Repository) SetObservation(obs map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
 }
 
-// GetID returns ID of underlying Terraform resource of this Repository
-func (tr *Repository) GetID() string {
+// GetID returns ID of underlying Terraform resource of this TeamSettings
+func (tr *TeamSettings) GetID() string {
 	if tr.Status.AtProvider.ID == nil {
 		return ""
 	}
 	return *tr.Status.AtProvider.ID
 }
 
-// GetParameters of this Repository
-func (tr *Repository) GetParameters() (map[string]any, error) {
+// GetParameters of this TeamSettings
+func (tr *TeamSettings) GetParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
 	if err != nil {
 		return nil, err
@@ -65,8 +65,8 @@ func (tr *Repository) GetParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// SetParameters for this Repository
-func (tr *Repository) SetParameters(params map[string]any) error {
+// SetParameters for this TeamSettings
+func (tr *TeamSettings) SetParameters(params map[string]any) error {
 	p, err := json.TFParser.Marshal(params)
 	if err != nil {
 		return err
@@ -74,8 +74,8 @@ func (tr *Repository) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
-// GetInitParameters of this Repository
-func (tr *Repository) GetInitParameters() (map[string]any, error) {
+// GetInitParameters of this TeamSettings
+func (tr *TeamSettings) GetInitParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
 	if err != nil {
 		return nil, err
@@ -84,8 +84,8 @@ func (tr *Repository) GetInitParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// GetInitParameters of this Repository
-func (tr *Repository) GetMergedParameters(shouldMergeInitProvider bool) (map[string]any, error) {
+// GetInitParameters of this TeamSettings
+func (tr *TeamSettings) GetMergedParameters(shouldMergeInitProvider bool) (map[string]any, error) {
 	params, err := tr.GetParameters()
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get parameters for resource '%q'", tr.GetName())
@@ -114,22 +114,20 @@ func (tr *Repository) GetMergedParameters(shouldMergeInitProvider bool) (map[str
 	return params, nil
 }
 
-// LateInitialize this Repository using its observed tfState.
+// LateInitialize this TeamSettings using its observed tfState.
 // returns True if there are any spec changes for the resource.
-func (tr *Repository) LateInitialize(attrs []byte) (bool, error) {
-	params := &RepositoryParameters{}
+func (tr *TeamSettings) LateInitialize(attrs []byte) (bool, error) {
+	params := &TeamSettingsParameters{}
 	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
 		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
 	}
 	opts := []resource.GenericLateInitializerOption{resource.WithZeroValueJSONOmitEmptyFilter(resource.CNameWildcard)}
-	opts = append(opts, resource.WithNameFilter("DefaultBranch"))
-	opts = append(opts, resource.WithNameFilter("Private"))
 
 	li := resource.NewGenericLateInitializer(opts...)
 	return li.LateInitialize(&tr.Spec.ForProvider, params)
 }
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
-func (tr *Repository) GetTerraformSchemaVersion() int {
-	return 1
+func (tr *TeamSettings) GetTerraformSchemaVersion() int {
+	return 0
 }

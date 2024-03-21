@@ -171,3 +171,45 @@ func (mg *TeamRepository) ResolveReferences(ctx context.Context, c client.Reader
 
 	return nil
 }
+
+// ResolveReferences of this TeamSettings.
+func (mg *TeamSettings) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.TeamID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.TeamIDRef,
+		Selector:     mg.Spec.ForProvider.TeamIDSelector,
+		To: reference.To{
+			List:    &TeamList{},
+			Managed: &Team{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.TeamID")
+	}
+	mg.Spec.ForProvider.TeamID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.TeamIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.TeamID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.TeamIDRef,
+		Selector:     mg.Spec.InitProvider.TeamIDSelector,
+		To: reference.To{
+			List:    &TeamList{},
+			Managed: &Team{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.TeamID")
+	}
+	mg.Spec.InitProvider.TeamID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.TeamIDRef = rsp.ResolvedReference
+
+	return nil
+}

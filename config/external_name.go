@@ -36,6 +36,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"github_emu_group_mapping": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ team_id }}:{{ username }} or {{ team_name }}:{{ username }}
 	"github_team_membership": config.IdentifierFromProvider,
+	// This is imported using Github Team ID or Team slug.
+	"github_team_settings": config.IdentifierFromProvider,
 	// This cannot be imported.
 	"github_membership": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ organization}}:{{username }}.
