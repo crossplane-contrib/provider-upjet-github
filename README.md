@@ -106,6 +106,7 @@ spec:
 | `TeamMembership` | `team` | `github_team_membership` | |
 | `TeamRepository` | `team` | `github_team_repository` | |
 | `TeamSettings` | `team` | `github_team_settings` | |
+| `TeamSyncGroupMapping` | `team` | `github_team_sync_group_mapping` | |
 | `EmuTeamMapping` | `team` | `github_emu_group_mapping` | |
 | `ActionsSecrets` | `actions` | `github_actions_secret` | |
 | `Membership` | `user` | `github_membership` | Works only with - GitHub App user access tokens - GitHub App installation access tokens - Fine-grained personal access tokens using a token with at least `members:read` |
