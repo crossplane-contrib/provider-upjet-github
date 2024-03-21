@@ -4,7 +4,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: deploykeys.repo.github.upbound.io
+  name: repositorywebhooks.repo.github.upbound.io
 spec:
   group: repo.github.upbound.io
   names:
@@ -12,10 +12,10 @@ spec:
     - crossplane
     - managed
     - github
-    kind: DeployKey
-    listKind: DeployKeyList
-    plural: deploykeys
-    singular: deploykey
+    kind: RepositoryWebhook
+    listKind: RepositoryWebhookList
+    plural: repositorywebhooks
+    singular: repositorywebhook
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,8 +34,9 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: DeployKey is the Schema for the DeployKeys API. Provides a GitHub
-          repository deploy key resource.
+        description: RepositoryWebhook is the Schema for the RepositoryWebhooks API.
+          Creates and manages repository webhooks within GitHub organizations or personal
+          accounts
         properties:
           apiVersion:
             description: |-
@@ -55,7 +56,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: DeployKeySpec defines the desired state of DeployKey
+            description: RepositoryWebhookSpec defines the desired state of RepositoryWebhook
             properties:
               deletionPolicy:
                 default: Delete
@@ -73,34 +74,83 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  keySecretRef:
+                  active:
                     description: |-
-                      A SSH key.
-                      A SSH key.
-                    properties:
-                      key:
-                        description: The key to select.
-                        type: string
-                      name:
-                        description: Name of the secret.
-                        type: string
-                      namespace:
-                        description: Namespace of the secret.
-                        type: string
-                    required:
-                    - key
-                    - name
-                    - namespace
-                    type: object
-                  readOnly:
-                    description: |-
-                      A boolean qualifying the key to be either read only or read/write.
-                      A boolean qualifying the key to be either read only or read/write.
+                      Indicate if the webhook should receive events. Defaults to true.
+                      Indicate if the webhook should receive events. Defaults to 'true'.
                     type: boolean
+                  configuration:
+                    description: |-
+                      Configuration block for the webhook. Detailed below.
+                      Configuration for the webhook.
+                    items:
+                      properties:
+                        contentType:
+                          description: |-
+                            The content type for the payload. Valid values are either form or json.
+                            The content type for the payload. Valid values are either 'form' or 'json'.
+                          type: string
+                        insecureSsl:
+                          description: |-
+                            Insecure SSL boolean toggle. Defaults to false.
+                            Insecure SSL boolean toggle. Defaults to 'false'.
+                          type: boolean
+                        secretSecretRef:
+                          description: |-
+                            The shared secret for the webhook. See API documentation.
+                            The shared secret for the webhook
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
+                        urlSecretRef:
+                          description: |-
+                            The URL of the webhook.
+                            The URL of the webhook.
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
+                      required:
+                      - urlSecretRef
+                      type: object
+                    type: array
+                  events:
+                    description: |-
+                      A list of events which should trigger the webhook. See a list of available events.
+                      A list of events which should trigger the webhook
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  name:
+                    type: string
                   repository:
                     description: |-
-                      Name of the GitHub repository.
-                      Name of the GitHub repository.
+                      The repository of the webhook.
+                      The repository of the webhook.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository to populate repository.
@@ -176,11 +226,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  title:
-                    description: |-
-                      A title.
-                      A title.
-                    type: string
                 type: object
               initProvider:
                 description: |-
@@ -195,15 +240,43 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
-                  readOnly:
+                  active:
                     description: |-
-                      A boolean qualifying the key to be either read only or read/write.
-                      A boolean qualifying the key to be either read only or read/write.
+                      Indicate if the webhook should receive events. Defaults to true.
+                      Indicate if the webhook should receive events. Defaults to 'true'.
                     type: boolean
+                  configuration:
+                    description: |-
+                      Configuration block for the webhook. Detailed below.
+                      Configuration for the webhook.
+                    items:
+                      properties:
+                        contentType:
+                          description: |-
+                            The content type for the payload. Valid values are either form or json.
+                            The content type for the payload. Valid values are either 'form' or 'json'.
+                          type: string
+                        insecureSsl:
+                          description: |-
+                            Insecure SSL boolean toggle. Defaults to false.
+                            Insecure SSL boolean toggle. Defaults to 'false'.
+                          type: boolean
+                      type: object
+                    type: array
+                  events:
+                    description: |-
+                      A list of events which should trigger the webhook. See a list of available events.
+                      A list of events which should trigger the webhook
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  name:
+                    type: string
                   repository:
                     description: |-
-                      Name of the GitHub repository.
-                      Name of the GitHub repository.
+                      The repository of the webhook.
+                      The repository of the webhook.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository to populate repository.
@@ -279,11 +352,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  title:
-                    description: |-
-                      A title.
-                      A title.
-                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -453,36 +521,61 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: spec.forProvider.keySecretRef is a required parameter
+            - message: spec.forProvider.events is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.keySecretRef)'
-            - message: spec.forProvider.title is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.title)
-                || (has(self.initProvider) && has(self.initProvider.title))'
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.events)
+                || (has(self.initProvider) && has(self.initProvider.events))'
           status:
-            description: DeployKeyStatus defines the observed state of DeployKey.
+            description: RepositoryWebhookStatus defines the observed state of RepositoryWebhook.
             properties:
               atProvider:
                 properties:
+                  active:
+                    description: |-
+                      Indicate if the webhook should receive events. Defaults to true.
+                      Indicate if the webhook should receive events. Defaults to 'true'.
+                    type: boolean
+                  configuration:
+                    description: |-
+                      Configuration block for the webhook. Detailed below.
+                      Configuration for the webhook.
+                    items:
+                      properties:
+                        contentType:
+                          description: |-
+                            The content type for the payload. Valid values are either form or json.
+                            The content type for the payload. Valid values are either 'form' or 'json'.
+                          type: string
+                        insecureSsl:
+                          description: |-
+                            Insecure SSL boolean toggle. Defaults to false.
+                            Insecure SSL boolean toggle. Defaults to 'false'.
+                          type: boolean
+                      type: object
+                    type: array
                   etag:
                     type: string
+                  events:
+                    description: |-
+                      A list of events which should trigger the webhook. See a list of available events.
+                      A list of events which should trigger the webhook
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
                   id:
                     type: string
-                  readOnly:
-                    description: |-
-                      A boolean qualifying the key to be either read only or read/write.
-                      A boolean qualifying the key to be either read only or read/write.
-                    type: boolean
+                  name:
+                    type: string
                   repository:
                     description: |-
-                      Name of the GitHub repository.
-                      Name of the GitHub repository.
+                      The repository of the webhook.
+                      The repository of the webhook.
                     type: string
-                  title:
+                  url:
                     description: |-
-                      A title.
-                      A title.
+                      URL of the webhook.  This is a sensitive attribute because it may include basic auth credentials.
+                      Configuration block for the webhook
                     type: string
                 type: object
               conditions:
