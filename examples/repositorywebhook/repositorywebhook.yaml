@@ -1,0 +1,44 @@
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  name: provider-webhook
+spec:
+  forProvider:
+    name: provider-webhook
+    visibility: public
+  providerConfigRef:
+    name: default
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hookurl
+  namespace: default
+type: Opaque
+data:
+  url: aHR0cHM6Ly9leGFtcGxlLmNvbQo= 
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: RepositoryWebhook
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositorywebhook
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    active: true
+    configuration:
+    - contentType: form
+      insecureSsl: false
+      urlSecretRef:
+        key: url
+        name: hookurl
+        namespace: default
+    events:
+    - issues
+    repositoryRef:
+      name: provider-webhook
+  providerConfigRef:
+    name: default

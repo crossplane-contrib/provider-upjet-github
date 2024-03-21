@@ -30,3 +30,6 @@ func (tr *RepositoryFile) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *PullRequest) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *RepositoryWebhook) Hub() {}
