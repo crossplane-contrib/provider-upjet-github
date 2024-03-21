@@ -73,11 +73,25 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  key:
+                  keySecretRef:
                     description: |-
                       A SSH key.
                       A SSH key.
-                    type: string
+                    properties:
+                      key:
+                        description: The key to select.
+                        type: string
+                      name:
+                        description: Name of the secret.
+                        type: string
+                      namespace:
+                        description: Namespace of the secret.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    - namespace
+                    type: object
                   readOnly:
                     description: |-
                       A boolean qualifying the key to be either read only or read/write.
@@ -181,11 +195,6 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
-                  key:
-                    description: |-
-                      A SSH key.
-                      A SSH key.
-                    type: string
                   readOnly:
                     description: |-
                       A boolean qualifying the key to be either read only or read/write.
@@ -444,10 +453,9 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: spec.forProvider.key is a required parameter
+            - message: spec.forProvider.keySecretRef is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.key)
-                || (has(self.initProvider) && has(self.initProvider.key))'
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.keySecretRef)'
             - message: spec.forProvider.title is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.title)
@@ -460,11 +468,6 @@ spec:
                   etag:
                     type: string
                   id:
-                    type: string
-                  key:
-                    description: |-
-                      A SSH key.
-                      A SSH key.
                     type: string
                   readOnly:
                     description: |-

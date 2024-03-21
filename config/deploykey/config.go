@@ -1,6 +1,8 @@
 package deploykey
 
-import "github.com/crossplane/upjet/pkg/config"
+import (
+	"github.com/crossplane/upjet/pkg/config"
+)
 
 // Configure github_branch resource.
 func Configure(p *config.Provider) {
@@ -16,5 +18,12 @@ func Configure(p *config.Provider) {
 		r.References["repository"] = config.Reference{
 			Type: "Repository",
 		}
+
+		r.TerraformResource.Schema["key"].Required = true
+		r.TerraformResource.Schema["read_only"].Required = true
+		r.TerraformResource.Schema["title"].Required = true
+
+		// Setting the field as sensitive to be able to pass the content from a k8s secret
+		r.TerraformResource.Schema["key"].Sensitive = true
 	})
 }
