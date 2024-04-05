@@ -29,7 +29,7 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: A ProviderConfig configures a Template provider.
+        description: ProviderConfig configures how the provider will connect to Github.
         properties:
           apiVersion:
             description: |-
