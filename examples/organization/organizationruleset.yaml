@@ -1,0 +1,30 @@
+apiVersion: enterprise.github.upbound.io/v1alpha1
+kind: OrganizationRuleset
+metadata:
+  name: example
+spec:
+  forProvider:
+    name: example
+    target: branch
+    enforcement: disabled
+    conditions:
+      refName:
+        include: ["~ALL"]
+        exclude: []
+    bypassActors:
+      - actorId: 13473
+        actorType: "Integration"
+        bypassMode: "always"
+    rules:
+      - creation: true
+        update: true
+        deletion: true
+        requiredLinearHistory: true
+        requiredSignatures: true
+        branchNamePattern:
+          - name: example
+            negate: false
+            operator: starts_with
+            pattern: ex
+  providerConfigRef:
+    name: github-provider
