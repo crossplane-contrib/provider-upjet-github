@@ -48,6 +48,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"github_actions_secret":          config.IdentifierFromProvider,
 	"github_actions_variable":        config.IdentifierFromProvider,
 	"github_enterprise_organization": config.IdentifierFromProvider,
+	"github_organization_ruleset":    config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

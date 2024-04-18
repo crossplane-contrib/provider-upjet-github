@@ -12,6 +12,7 @@ import (
 	actionssecret "github.com/coopnorge/provider-github/internal/controller/actions/actionssecret"
 	actionsvariable "github.com/coopnorge/provider-github/internal/controller/actions/actionsvariable"
 	organization "github.com/coopnorge/provider-github/internal/controller/enterprise/organization"
+	organizationruleset "github.com/coopnorge/provider-github/internal/controller/enterprise/organizationruleset"
 	providerconfig "github.com/coopnorge/provider-github/internal/controller/providerconfig"
 	branch "github.com/coopnorge/provider-github/internal/controller/repo/branch"
 	branchprotection "github.com/coopnorge/provider-github/internal/controller/repo/branchprotection"
@@ -37,6 +38,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		actionssecret.Setup,
 		actionsvariable.Setup,
 		organization.Setup,
+		organizationruleset.Setup,
 		providerconfig.Setup,
 		branch.Setup,
 		branchprotection.Setup,

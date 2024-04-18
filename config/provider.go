@@ -17,6 +17,7 @@ import (
 	"github.com/coopnorge/provider-github/config/emugroupmapping"
 	"github.com/coopnorge/provider-github/config/membership"
 	"github.com/coopnorge/provider-github/config/organization"
+	"github.com/coopnorge/provider-github/config/organizationruleset"
 	"github.com/coopnorge/provider-github/config/pullrequest"
 	"github.com/coopnorge/provider-github/config/repository"
 	"github.com/coopnorge/provider-github/config/repositoryfile"
@@ -67,6 +68,7 @@ func GetProvider() *ujconfig.Provider {
 		actionssecret.Configure,
 		actionsvariable.Configure,
 		organization.Configure,
+		organizationruleset.Configure,
 		membership.Configure,
 		teamsettings.Configure,
 		teamsyncgroupmapping.Configure,
