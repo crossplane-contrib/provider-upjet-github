@@ -73,7 +73,7 @@ metadata:
   namespace: upbound-system
 type: Opaque
 stringData:
-  credentials: "{\"app_auth\": [ \"id\": \"${APP_ID}\", \"installation_id\": \"${APP_INSTALLATION_ID}\", \"pem_file\": \"${APP_PEM_FILE}\" ] ,\"owner\":\"${GH_OWNER}\"}"
+  credentials: "{\"app_auth\": [{\"id\": \"${APP_ID}\", \"installation_id\": \"${APP_INSTALLATION_ID}\", \"pem_file\": \"${APP_PEM_FILE}\"}] ,\"owner\":\"${GH_OWNER}\"}"
 
 ---
 apiVersion: github.upbound.io/v1beta1
