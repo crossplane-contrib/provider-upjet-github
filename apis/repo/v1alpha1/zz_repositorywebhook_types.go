@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -26,6 +22,14 @@ type ConfigurationInitParameters struct {
 	// Insecure SSL boolean toggle. Defaults to false.
 	// Insecure SSL boolean toggle. Defaults to 'false'.
 	InsecureSSL *bool `json:"insecureSsl,omitempty" tf:"insecure_ssl,omitempty"`
+
+	// The shared secret for the webhook. See API documentation.
+	// The shared secret for the webhook
+	SecretSecretRef *v1.SecretKeySelector `json:"secretSecretRef,omitempty" tf:"-"`
+
+	// The URL of the webhook.
+	// The URL of the webhook.
+	URLSecretRef v1.SecretKeySelector `json:"urlSecretRef" tf:"-"`
 }
 
 type ConfigurationObservation struct {
@@ -58,7 +62,7 @@ type ConfigurationParameters struct {
 
 	// The URL of the webhook.
 	// The URL of the webhook.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	URLSecretRef v1.SecretKeySelector `json:"urlSecretRef" tf:"-"`
 }
 
@@ -76,8 +80,6 @@ type RepositoryWebhookInitParameters struct {
 	// A list of events which should trigger the webhook
 	// +listType=set
 	Events []*string `json:"events,omitempty" tf:"events,omitempty"`
-
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The repository of the webhook.
 	// The repository of the webhook.
@@ -112,8 +114,6 @@ type RepositoryWebhookObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
-
 	// The repository of the webhook.
 	// The repository of the webhook.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
@@ -140,9 +140,6 @@ type RepositoryWebhookParameters struct {
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	Events []*string `json:"events,omitempty" tf:"events,omitempty"`
-
-	// +kubebuilder:validation:Optional
-	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The repository of the webhook.
 	// The repository of the webhook.
@@ -187,8 +184,8 @@ type RepositoryWebhookStatus struct {
 // +kubebuilder:storageversion
 
 // RepositoryWebhook is the Schema for the RepositoryWebhooks API. Creates and manages repository webhooks within GitHub organizations or personal accounts
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}

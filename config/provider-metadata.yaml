@@ -546,11 +546,6 @@ resources:
                     "exampleorganization/exampleteam"
                   ],
                   "pattern": "main",
-                  "push_restrictions": [
-                    "${data.github_user.example.node_id}",
-                    "/exampleuser",
-                    "exampleorganization/exampleteam"
-                  ],
                   "repository_id": "${github_repository.example.node_id}",
                   "required_pull_request_reviews": [
                     {
@@ -570,6 +565,15 @@ resources:
                         "ci/travis"
                       ],
                       "strict": false
+                    }
+                  ],
+                  "restrict_pushes": [
+                    {
+                      "push_allowances": [
+                        "${data.github_user.example.node_id}",
+                        "/exampleuser",
+                        "exampleorganization/exampleteam"
+                      ]
                     }
                   ]
                 }
@@ -592,17 +596,17 @@ resources:
                     }
         argumentDocs:
             allows_deletions: '- (Optional) Boolean, setting this to true to allow the branch to be deleted.'
-            allows_force_pushes: '- (Optional) Boolean, setting this to true to allow force pushes on the branch.'
-            blocks_creations: '- (Optional) Boolean, setting this to true to block creating the branch.'
+            allows_force_pushes: '- (Optional) Boolean, setting this to true to allow force pushes on the branch to everyone. Set it to false if you specify force_push_bypassers.'
+            blocks_creations: '- (Optional) Boolean, setting this to false allows people, teams, or apps to create new branches matching this rule. Defaults to true.'
             contexts: ': (Optional) The list of status checks to require in order to merge into this branch. No status checks are required by default.'
             dismiss_stale_reviews: ': (Optional) Dismiss approved reviews automatically when a new commit is pushed. Defaults to false.'
             dismissal_restrictions: ': (Optional) The list of actor Names/IDs with dismissal access. If not empty, restrict_dismissals is ignored. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.'
             enforce_admins: '- (Optional) Boolean, setting this to true enforces status checks for repository administrators.'
-            force_push_bypassers: '- (Optional) The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.'
+            force_push_bypassers: '- (Optional) The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. If the list is not empty, allows_force_pushes should be set to false.'
             lock_branch: '- (Optional) Boolean, Setting this to true will make the branch read-only and preventing any pushes to it. Defaults to false'
             pattern: '- (Required) Identifies the protection rule pattern.'
             pull_request_bypassers: ': (Optional) The list of actor Names/IDs that are allowed to bypass pull request requirements. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.'
-            push_restrictions: '- (Optional) The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.'
+            push_allowances: '- (Optional) A list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. Organization administrators, repository administrators, and users with the Maintain role on the repository can always push when all other requirements have passed.'
             repository_id: '- (Required) The name or node ID of the repository associated with this branch protection rule.'
             require_code_owner_reviews: ': (Optional) Require an approved review in pull requests including files with a designated code owner. Defaults to false.'
             require_conversation_resolution: '- (Optional) Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.'
@@ -615,6 +619,7 @@ resources:
             required_pull_request_reviews: '- (Optional) Enforce restrictions for pull request reviews. See Required Pull Request Reviews below for details.'
             required_status_checks: '- (Optional) Enforce restrictions for required status checks. See Required Status Checks below for details.'
             restrict_dismissals: ': (Optional) Restrict pull request review dismissals.'
+            restrict_pushes: '- (Optional) Restrict pushes to matching branches. See Restrict Pushes below for details.'
             strict: ': (Optional) Require branches to be up to date before merging. Defaults to false.'
         importStatements: []
     github_branch_protection_v3:
@@ -646,9 +651,22 @@ resources:
                   "repository": "${github_repository.example.name}",
                   "required_pull_request_reviews": [
                     {
+                      "bypass_pull_request_allowances": [
+                        {
+                          "apps": [
+                            "foo-app"
+                          ],
+                          "teams": [
+                            "${github_team.example.slug}"
+                          ],
+                          "users": [
+                            "foo-user"
+                          ]
+                        }
+                      ],
                       "dismiss_stale_reviews": true,
                       "dismissal_app": [
-                        "foo-app]"
+                        "foo-app"
                       ],
                       "dismissal_teams": [
                         "${github_team.example.slug}"
@@ -665,10 +683,38 @@ resources:
                       ],
                       "strict": false
                     }
+                  ],
+                  "restrictions": [
+                    {
+                      "apps": [
+                        "foo-app"
+                      ],
+                      "teams": [
+                        "${github_team.example.slug}"
+                      ],
+                      "users": [
+                        "foo-user"
+                      ]
+                    }
                   ]
                 }
               references:
                 repository: github_repository.example.name
+              dependencies:
+                github_repository.example: |-
+                    {
+                      "name": "example"
+                    }
+                github_team.example: |-
+                    {
+                      "name": "Example Name"
+                    }
+                github_team_repository.example: |-
+                    {
+                      "permission": "pull",
+                      "repository": "${github_repository.example.name}",
+                      "team_id": "${github_team.example.id}"
+                    }
         argumentDocs:
             apps: ': (Optional) The list of app slugs with push access.'
             branch: '- (Required) The Git branch to protect.'
@@ -685,6 +731,7 @@ resources:
             repository: '- (Required) The GitHub repository name.'
             require_code_owner_reviews: ': (Optional) Require an approved review in pull requests including files with a designated code owner. Defaults to false.'
             require_conversation_resolution: '- (Optional) Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.'
+            require_last_push_approval: ': (Optional) Require that the most recent push must be approved by someone other than the last pusher.  Defaults to false'
             require_signed_commits: '- (Optional) Boolean, setting this to true requires all commits to be signed with GPG.'
             required_approving_review_count: ': (Optional) Require x number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6. This requirement matches GitHub''s API, see the upstream documentation for more information.'
             required_pull_request_reviews: '- (Optional) Enforce restrictions for pull request reviews. See Required Pull Request Reviews below for details.'
@@ -975,6 +1022,96 @@ resources:
             group_id: '- (Required) Integer corresponding to the external group ID to be linked'
             team_slug: '- (Required) Slug of the GitHub team'
         importStatements: []
+    github_enterprise_actions_permissions:
+        subCategory: ""
+        description: Creates and manages Actions permissions within a GitHub enterprise
+        name: github_enterprise_actions_permissions
+        title: github_enterprise_actions_permissions
+        examples:
+            - name: test
+              manifest: |-
+                {
+                  "allowed_actions": "selected",
+                  "allowed_actions_config": [
+                    {
+                      "github_owned_allowed": true,
+                      "patterns_allowed": [
+                        "actions/cache@*",
+                        "actions/checkout@*"
+                      ],
+                      "verified_allowed": true
+                    }
+                  ],
+                  "enabled_organizations": "selected",
+                  "enabled_organizations_config": [
+                    {
+                      "organization_ids": [
+                        "${data.github_organization.example-org.id}"
+                      ]
+                    }
+                  ],
+                  "enterprise_id": "${data.github_enterprise.example-enterprise.slug}"
+                }
+              references:
+                enterprise_id: data.github_enterprise.example-enterprise.slug
+        argumentDocs:
+            allowed_actions: '- (Optional) The permissions policy that controls the actions that are allowed to run. Can be one of: all, local_only, or selected.'
+            allowed_actions_config: '- (Optional) Sets the actions that are allowed in an enterprise. Only available when allowed_actions = selected. See Allowed Actions Config below for details.'
+            allowed_actions_config.github_owned_allowed: '- (Required) Whether GitHub-owned actions are allowed in the organization.'
+            allowed_actions_config.patterns_allowed: '- (Optional) Specifies a list of string-matching patterns to allow specific action(s). Wildcards, tags, and SHAs are allowed. For example, monalisa/octocat@, monalisa/octocat@v2, monalisa/."'
+            allowed_actions_config.verified_allowed: '- (Optional) Whether actions in GitHub Marketplace from verified creators are allowed. Set to true to allow all GitHub Marketplace actions by verified creators.'
+            enabled_organizations: '- (Required) The policy that controls the organizations in the enterprise that are allowed to run GitHub Actions. Can be one of: all, none, or selected.'
+            enabled_organizations_config: '- (Optional) Sets the list of selected organizations that are enabled for GitHub Actions in an enterprise. Only available when enabled_organizations = selected. See Enabled Organizations Config below for details.'
+            enabled_organizations_config.organization_ids: '- (Required) List of organization IDs to enable for GitHub Actions.'
+            enterprise_id: '- (Required) The ID of the enterprise.'
+        importStatements: []
+    github_enterprise_actions_runner_group:
+        subCategory: ""
+        description: Creates and manages an Actions Runner Group within a GitHub enterprise.
+        name: github_enterprise_actions_runner_group
+        title: github_enterprise_actions_runner_group
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "allows_public_repositories": true,
+                  "enterprise_slug": "${data.github_enterprise.enterprise.slug}",
+                  "name": "my-awesome-runner-group",
+                  "restricted_to_workflows": true,
+                  "selected_organization_ids": [
+                    "${github_enterprise_organization.enterprise_organization.database_id}"
+                  ],
+                  "selected_workflows": [
+                    "my-organization/my-repo/.github/workflows/cool-workflow.yaml@refs/tags/v1"
+                  ],
+                  "visibility": "selected"
+                }
+              references:
+                enterprise_slug: data.github_enterprise.enterprise.slug
+              dependencies:
+                github_enterprise_organization.enterprise_organization: |-
+                    {
+                      "admin_logins": [
+                        "octocat"
+                      ],
+                      "billing_email": "octocat@octo.cat",
+                      "enterprise_id": "${data.github_enterprise.enterprise.id}",
+                      "name": "my-organization"
+                    }
+        argumentDocs:
+            allows_public_repositories: '- (Optional) Whether public repositories can be added to the runner group. Defaults to false.'
+            default: '- Whether this is the default runner group'
+            enterprise_slug: '- (Required) The slug of the enterprise.'
+            etag: '- An etag representing the runner group object'
+            id: '- The ID of the runner group'
+            name: '- (Required) Name of the runner group'
+            restricted_to_workflows: '- (Optional) If true, the runner group will be restricted to running only the workflows specified in the selected_workflows array. Defaults to false.'
+            runners_url: '- The GitHub API URL for the runner group''s runners'
+            selected_organization_ids: '- (Optional) IDs of the organizations which should be added to the runner group'
+            selected_organizations_url: '- The GitHub API URL for the runner group''s selected organizations'
+            selected_workflows: '- (Optional) List of workflows the runner group should be allowed to run. This setting will be ignored unless restricted_to_workflows is set to true.'
+            visibility: '- (Optional) Visibility of a runner group to enterprise organizations. Whether the runner group can include all or selected'
+        importStatements: []
     github_enterprise_organization:
         subCategory: ""
         description: Create and manages a GitHub enterprise organization.
@@ -983,10 +1120,11 @@ resources:
         argumentDocs:
             admin_logins: '- (Required) List of organization owner usernames.'
             billing_email: '- (Required) The billing email address.'
+            database_id: '- The ID of the organization.'
             description: '- (Optional) The description of the organization.'
             display_name: '- (Optional) The display name of the organization.'
             enterprise_id: '- (Required) The ID of the enterprise.'
-            id: '- The ID of the organization.'
+            id: '- The node ID of the organization for use with the v4 API.'
             name: '- (Required) The name of the organization.'
         importStatements: []
     github_issue:
@@ -1584,9 +1722,9 @@ resources:
         argumentDocs:
             advanced_security.status: '- (Required) Set to enabled to enable advanced security features on the repository. Can be enabled or disabled.'
             allow_auto_merge: '- (Optional) Set to true to allow auto-merging pull requests on the repository.'
-            allow_merge_commit: '- (Optional) Set to false to disable merge commits on the repository.'
+            allow_merge_commit: (including the related merge_commit_title and merge_commit_message)
             allow_rebase_merge: '- (Optional) Set to false to disable rebase merges on the repository.'
-            allow_squash_merge: '- (Optional) Set to false to disable squash merges on the repository.'
+            allow_squash_merge: (including the related squash_merge_commit_title and squash_merge_commit_message)
             allow_update_branch: (Optional) - Set to true to always suggest updating pull request branches.
             archive_on_destroy: '- (Optional) Set to true to archive the repository instead of deleting on destroy.'
             archived: '- (Optional) Specifies if the repository should be archived. Defaults to false. NOTE Currently, the API does not support unarchiving.'
@@ -1790,11 +1928,18 @@ resources:
             - name: example_repository_deploy_key
               manifest: |-
                 {
-                  "key": "ssh-rsa AAA...",
-                  "read_only": "false",
+                  "key": "${tls_private_key.example_repository_deploy_key.public_key_openssh}",
+                  "read_only": true,
                   "repository": "test-repo",
                   "title": "Repository test key"
                 }
+              references:
+                key: tls_private_key.example_repository_deploy_key.public_key_openssh
+              dependencies:
+                tls_private_key.example_repository_deploy_key: |-
+                    {
+                      "algorithm": "ED25519"
+                    }
         argumentDocs:
             key: '- (Required) A SSH key.'
             read_only: '- (Required) A boolean qualifying the key to be either read only or read/write.'
@@ -1851,6 +1996,7 @@ resources:
                     }
                   ],
                   "environment": "example",
+                  "prevent_self_review": true,
                   "repository": "${github_repository.example.name}",
                   "reviewers": [
                     {
@@ -1873,6 +2019,7 @@ resources:
             deployment_branch_policy.custom_branch_policies: '- (Required) Whether only branches that match the specified name patterns can deploy to this environment.'
             deployment_branch_policy.protected_branches: '- (Required) Whether only branches with branch protection rules can deploy to this environment.'
             environment: '- (Required) The name of the environment.'
+            prevent_self_review: '- (Optional) Whether or not a user who created the job is prevented from approving their own job. Defaults to false.'
             repository: '- (Required) The repository of the environment.'
             reviewers.teams: '- (Optional) Up to 6 IDs for teams who may review jobs that reference the environment. Reviewers must have at least read access to the repository. Only one of the required reviewers needs to approve the job for it to proceed.'
             reviewers.users: '- (Optional) Up to 6 IDs for users who may review jobs that reference the environment. Reviewers must have at least read access to the repository. Only one of the required reviewers needs to approve the job for it to proceed.'
@@ -1955,7 +2102,7 @@ resources:
                 The branch must already exist, it will not be created if it does not already exist.
             commit_author: '- (Optional) Committer author name to use. NOTE: GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App. This maybe useful when a branch protection rule requires signed commits.'
             commit_email: '- (Optional) Committer email address to use. NOTE: GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App. This may be useful when a branch protection rule requires signed commits.'
-            commit_message: '- (Optional) Commit message when adding or updating the managed file.'
+            commit_message: '- (Optional) The commit message when creating, updating or deleting the managed file.'
             commit_sha: '- The SHA of the commit that modified the file.'
             content: '- (Required) The file content.'
             file: '- (Required) The path of the file to manage.'
@@ -2045,11 +2192,63 @@ resources:
             title: '- (Optional) The title of the Pull Request.'
             updated_at: '- The timestamp of the last Pull Request update.'
         importStatements: []
-    github_repository_ruleset Resource - terraform-provider-github:
+    github_repository_ruleset:
         subCategory: ""
         description: Creates a GitHub repository ruleset.
-        name: github_repository_ruleset Resource - terraform-provider-github
+        name: github_repository_ruleset
         title: github_repository_ruleset Resource - terraform-provider-github
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "bypass_actors": [
+                    {
+                      "actor_id": 13473,
+                      "actor_type": "Integration",
+                      "bypass_mode": "always"
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "ref_name": [
+                        {
+                          "exclude": [],
+                          "include": [
+                            "~ALL"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "enforcement": "active",
+                  "name": "example",
+                  "repository": "${github_repository.example.name}",
+                  "rules": [
+                    {
+                      "creation": true,
+                      "deletion": true,
+                      "required_deployments": [
+                        {
+                          "required_deployment_environments": [
+                            "test"
+                          ]
+                        }
+                      ],
+                      "required_linear_history": true,
+                      "required_signatures": true,
+                      "update": true
+                    }
+                  ],
+                  "target": "branch"
+                }
+              references:
+                repository: github_repository.example.name
+              dependencies:
+                github_repository.example: |-
+                    {
+                      "description": "Example repository",
+                      "name": "example"
+                    }
         argumentDocs:
             admin: -> 5
             bypass_actors: '- (Optional) (Block List) The actors that can bypass the rules in this ruleset. (see below for nested schema)'

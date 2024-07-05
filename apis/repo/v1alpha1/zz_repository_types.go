@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -107,7 +103,7 @@ type RepositoryInitParameters struct {
 	// Set to 'true' to allow auto-merging pull requests on the repository.
 	AllowAutoMerge *bool `json:"allowAutoMerge,omitempty" tf:"allow_auto_merge,omitempty"`
 
-	// Set to false to disable merge commits on the repository.
+	// (including the related merge_commit_title and merge_commit_message)
 	// Set to 'false' to disable merge commits on the repository.
 	AllowMergeCommit *bool `json:"allowMergeCommit,omitempty" tf:"allow_merge_commit,omitempty"`
 
@@ -115,7 +111,7 @@ type RepositoryInitParameters struct {
 	// Set to 'false' to disable rebase merges on the repository.
 	AllowRebaseMerge *bool `json:"allowRebaseMerge,omitempty" tf:"allow_rebase_merge,omitempty"`
 
-	// Set to false to disable squash merges on the repository.
+	// (including the related squash_merge_commit_title and squash_merge_commit_message)
 	// Set to 'false' to disable squash merges on the repository.
 	AllowSquashMerge *bool `json:"allowSquashMerge,omitempty" tf:"allow_squash_merge,omitempty"`
 
@@ -251,7 +247,7 @@ type RepositoryObservation struct {
 	// Set to 'true' to allow auto-merging pull requests on the repository.
 	AllowAutoMerge *bool `json:"allowAutoMerge,omitempty" tf:"allow_auto_merge,omitempty"`
 
-	// Set to false to disable merge commits on the repository.
+	// (including the related merge_commit_title and merge_commit_message)
 	// Set to 'false' to disable merge commits on the repository.
 	AllowMergeCommit *bool `json:"allowMergeCommit,omitempty" tf:"allow_merge_commit,omitempty"`
 
@@ -259,7 +255,7 @@ type RepositoryObservation struct {
 	// Set to 'false' to disable rebase merges on the repository.
 	AllowRebaseMerge *bool `json:"allowRebaseMerge,omitempty" tf:"allow_rebase_merge,omitempty"`
 
-	// Set to false to disable squash merges on the repository.
+	// (including the related squash_merge_commit_title and squash_merge_commit_message)
 	// Set to 'false' to disable squash merges on the repository.
 	AllowSquashMerge *bool `json:"allowSquashMerge,omitempty" tf:"allow_squash_merge,omitempty"`
 
@@ -384,7 +380,7 @@ type RepositoryObservation struct {
 
 	// GitHub ID for the repository
 	// GitHub ID for the repository.
-	RepoID *float64 `json:"repoId,omitempty" tf:"repo_id,omitempty"`
+	RepoID *int64 `json:"repoId,omitempty" tf:"repo_id,omitempty"`
 
 	// URL that can be provided to git clone to clone the repository via SSH.
 	// URL that can be provided to 'git clone' to clone the repository via SSH.
@@ -435,7 +431,7 @@ type RepositoryParameters struct {
 	// +kubebuilder:validation:Optional
 	AllowAutoMerge *bool `json:"allowAutoMerge,omitempty" tf:"allow_auto_merge,omitempty"`
 
-	// Set to false to disable merge commits on the repository.
+	// (including the related merge_commit_title and merge_commit_message)
 	// Set to 'false' to disable merge commits on the repository.
 	// +kubebuilder:validation:Optional
 	AllowMergeCommit *bool `json:"allowMergeCommit,omitempty" tf:"allow_merge_commit,omitempty"`
@@ -445,7 +441,7 @@ type RepositoryParameters struct {
 	// +kubebuilder:validation:Optional
 	AllowRebaseMerge *bool `json:"allowRebaseMerge,omitempty" tf:"allow_rebase_merge,omitempty"`
 
-	// Set to false to disable squash merges on the repository.
+	// (including the related squash_merge_commit_title and squash_merge_commit_message)
 	// Set to 'false' to disable squash merges on the repository.
 	// +kubebuilder:validation:Optional
 	AllowSquashMerge *bool `json:"allowSquashMerge,omitempty" tf:"allow_squash_merge,omitempty"`
@@ -809,8 +805,8 @@ type RepositoryStatus struct {
 // +kubebuilder:storageversion
 
 // Repository is the Schema for the Repositorys API. Creates and manages repositories within GitHub organizations or personal accounts
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}

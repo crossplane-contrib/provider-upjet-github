@@ -11,8 +11,8 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "team"
 
 		r.References["team_slug"] = config.Reference{
-			Type:      "Team",
-			Extractor: `github.com/crossplane/upjet/pkg/resource.ExtractParamPath("slug",true)`,
+			TerraformName: "github_team",
+			Extractor:     `github.com/crossplane/upjet/pkg/resource.ExtractParamPath("slug",true)`,
 		}
 	})
 }

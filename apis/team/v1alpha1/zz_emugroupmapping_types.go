@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -21,19 +17,19 @@ type EmuGroupMappingInitParameters struct {
 
 	// Integer corresponding to the external group ID to be linked
 	// Integer corresponding to the external group ID to be linked.
-	GroupID *float64 `json:"groupId,omitempty" tf:"group_id,omitempty"`
+	GroupID *int64 `json:"groupId,omitempty" tf:"group_id,omitempty"`
 
 	// Slug of the GitHub team
 	// Slug of the GitHub team.
-	// +crossplane:generate:reference:type=Team
+	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/team/v1alpha1.Team
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("slug",true)
 	TeamSlug *string `json:"teamSlug,omitempty" tf:"team_slug,omitempty"`
 
-	// Reference to a Team to populate teamSlug.
+	// Reference to a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
 	TeamSlugRef *v1.Reference `json:"teamSlugRef,omitempty" tf:"-"`
 
-	// Selector for a Team to populate teamSlug.
+	// Selector for a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
 	TeamSlugSelector *v1.Selector `json:"teamSlugSelector,omitempty" tf:"-"`
 }
@@ -43,7 +39,7 @@ type EmuGroupMappingObservation struct {
 
 	// Integer corresponding to the external group ID to be linked
 	// Integer corresponding to the external group ID to be linked.
-	GroupID *float64 `json:"groupId,omitempty" tf:"group_id,omitempty"`
+	GroupID *int64 `json:"groupId,omitempty" tf:"group_id,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -57,20 +53,20 @@ type EmuGroupMappingParameters struct {
 	// Integer corresponding to the external group ID to be linked
 	// Integer corresponding to the external group ID to be linked.
 	// +kubebuilder:validation:Optional
-	GroupID *float64 `json:"groupId,omitempty" tf:"group_id,omitempty"`
+	GroupID *int64 `json:"groupId,omitempty" tf:"group_id,omitempty"`
 
 	// Slug of the GitHub team
 	// Slug of the GitHub team.
-	// +crossplane:generate:reference:type=Team
+	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/team/v1alpha1.Team
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("slug",true)
 	// +kubebuilder:validation:Optional
 	TeamSlug *string `json:"teamSlug,omitempty" tf:"team_slug,omitempty"`
 
-	// Reference to a Team to populate teamSlug.
+	// Reference to a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
 	TeamSlugRef *v1.Reference `json:"teamSlugRef,omitempty" tf:"-"`
 
-	// Selector for a Team to populate teamSlug.
+	// Selector for a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
 	TeamSlugSelector *v1.Selector `json:"teamSlugSelector,omitempty" tf:"-"`
 }
@@ -103,8 +99,8 @@ type EmuGroupMappingStatus struct {
 // +kubebuilder:storageversion
 
 // EmuGroupMapping is the Schema for the EmuGroupMappings API. Manages mappings between external groups for enterprise managed users.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}

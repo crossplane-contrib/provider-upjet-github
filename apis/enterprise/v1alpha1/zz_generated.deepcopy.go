@@ -122,7 +122,7 @@ func (in *BypassActorsInitParameters) DeepCopyInto(out *BypassActorsInitParamete
 	*out = *in
 	if in.ActorID != nil {
 		in, out := &in.ActorID, &out.ActorID
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ActorType != nil {
@@ -152,7 +152,7 @@ func (in *BypassActorsObservation) DeepCopyInto(out *BypassActorsObservation) {
 	*out = *in
 	if in.ActorID != nil {
 		in, out := &in.ActorID, &out.ActorID
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ActorType != nil {
@@ -182,7 +182,7 @@ func (in *BypassActorsParameters) DeepCopyInto(out *BypassActorsParameters) {
 	*out = *in
 	if in.ActorID != nil {
 		in, out := &in.ActorID, &out.ActorID
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ActorType != nil {
@@ -534,11 +534,11 @@ func (in *ConditionsInitParameters) DeepCopyInto(out *ConditionsInitParameters) 
 	}
 	if in.RepositoryID != nil {
 		in, out := &in.RepositoryID, &out.RepositoryID
-		*out = make([]*float64, len(*in))
+		*out = make([]*int64, len(*in))
 		for i := range *in {
 			if (*in)[i] != nil {
 				in, out := &(*in)[i], &(*out)[i]
-				*out = new(float64)
+				*out = new(int64)
 				**out = **in
 			}
 		}
@@ -574,11 +574,11 @@ func (in *ConditionsObservation) DeepCopyInto(out *ConditionsObservation) {
 	}
 	if in.RepositoryID != nil {
 		in, out := &in.RepositoryID, &out.RepositoryID
-		*out = make([]*float64, len(*in))
+		*out = make([]*int64, len(*in))
 		for i := range *in {
 			if (*in)[i] != nil {
 				in, out := &(*in)[i], &(*out)[i]
-				*out = new(float64)
+				*out = new(int64)
 				**out = **in
 			}
 		}
@@ -614,11 +614,11 @@ func (in *ConditionsParameters) DeepCopyInto(out *ConditionsParameters) {
 	}
 	if in.RepositoryID != nil {
 		in, out := &in.RepositoryID, &out.RepositoryID
-		*out = make([]*float64, len(*in))
+		*out = make([]*int64, len(*in))
 		for i := range *in {
 			if (*in)[i] != nil {
 				in, out := &(*in)[i], &(*out)[i]
-				*out = new(float64)
+				*out = new(int64)
 				**out = **in
 			}
 		}
@@ -769,6 +769,11 @@ func (in *OrganizationObservation) DeepCopyInto(out *OrganizationObservation) {
 	if in.BillingEmail != nil {
 		in, out := &in.BillingEmail, &out.BillingEmail
 		*out = new(string)
+		**out = **in
+	}
+	if in.DatabaseID != nil {
+		in, out := &in.DatabaseID, &out.DatabaseID
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -1020,7 +1025,7 @@ func (in *OrganizationRulesetObservation) DeepCopyInto(out *OrganizationRulesetO
 	}
 	if in.RulesetID != nil {
 		in, out := &in.RulesetID, &out.RulesetID
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Target != nil {
@@ -1181,7 +1186,7 @@ func (in *PullRequestInitParameters) DeepCopyInto(out *PullRequestInitParameters
 	}
 	if in.RequiredApprovingReviewCount != nil {
 		in, out := &in.RequiredApprovingReviewCount, &out.RequiredApprovingReviewCount
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.RequiredReviewThreadResolution != nil {
@@ -1221,7 +1226,7 @@ func (in *PullRequestObservation) DeepCopyInto(out *PullRequestObservation) {
 	}
 	if in.RequiredApprovingReviewCount != nil {
 		in, out := &in.RequiredApprovingReviewCount, &out.RequiredApprovingReviewCount
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.RequiredReviewThreadResolution != nil {
@@ -1261,7 +1266,7 @@ func (in *PullRequestParameters) DeepCopyInto(out *PullRequestParameters) {
 	}
 	if in.RequiredApprovingReviewCount != nil {
 		in, out := &in.RequiredApprovingReviewCount, &out.RequiredApprovingReviewCount
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.RequiredReviewThreadResolution != nil {
@@ -1528,7 +1533,7 @@ func (in *RequiredCheckInitParameters) DeepCopyInto(out *RequiredCheckInitParame
 	}
 	if in.IntegrationID != nil {
 		in, out := &in.IntegrationID, &out.IntegrationID
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 }
@@ -1553,7 +1558,7 @@ func (in *RequiredCheckObservation) DeepCopyInto(out *RequiredCheckObservation) 
 	}
 	if in.IntegrationID != nil {
 		in, out := &in.IntegrationID, &out.IntegrationID
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 }
@@ -1578,7 +1583,7 @@ func (in *RequiredCheckParameters) DeepCopyInto(out *RequiredCheckParameters) {
 	}
 	if in.IntegrationID != nil {
 		in, out := &in.IntegrationID, &out.IntegrationID
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 }
@@ -1689,7 +1694,7 @@ func (in *RequiredWorkflowInitParameters) DeepCopyInto(out *RequiredWorkflowInit
 	}
 	if in.RepositoryID != nil {
 		in, out := &in.RepositoryID, &out.RepositoryID
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 }
@@ -1719,7 +1724,7 @@ func (in *RequiredWorkflowObservation) DeepCopyInto(out *RequiredWorkflowObserva
 	}
 	if in.RepositoryID != nil {
 		in, out := &in.RepositoryID, &out.RepositoryID
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 }
@@ -1749,7 +1754,7 @@ func (in *RequiredWorkflowParameters) DeepCopyInto(out *RequiredWorkflowParamete
 	}
 	if in.RepositoryID != nil {
 		in, out := &in.RepositoryID, &out.RepositoryID
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 }

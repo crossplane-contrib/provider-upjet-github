@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -69,7 +65,7 @@ type BranchNamePatternParameters struct {
 type BypassActorsInitParameters struct {
 
 	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
-	ActorID *float64 `json:"actorId,omitempty" tf:"actor_id,omitempty"`
+	ActorID *int64 `json:"actorId,omitempty" tf:"actor_id,omitempty"`
 
 	// The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
 	ActorType *string `json:"actorType,omitempty" tf:"actor_type,omitempty"`
@@ -81,7 +77,7 @@ type BypassActorsInitParameters struct {
 type BypassActorsObservation struct {
 
 	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
-	ActorID *float64 `json:"actorId,omitempty" tf:"actor_id,omitempty"`
+	ActorID *int64 `json:"actorId,omitempty" tf:"actor_id,omitempty"`
 
 	// The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
 	ActorType *string `json:"actorType,omitempty" tf:"actor_type,omitempty"`
@@ -94,7 +90,7 @@ type BypassActorsParameters struct {
 
 	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
 	// +kubebuilder:validation:Optional
-	ActorID *float64 `json:"actorId" tf:"actor_id,omitempty"`
+	ActorID *int64 `json:"actorId" tf:"actor_id,omitempty"`
 
 	// The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
 	// +kubebuilder:validation:Optional
@@ -256,7 +252,7 @@ type ConditionsInitParameters struct {
 	RefName []RefNameInitParameters `json:"refName,omitempty" tf:"ref_name,omitempty"`
 
 	// The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass.
-	RepositoryID []*float64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+	RepositoryID []*int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 
 	RepositoryName []RepositoryNameInitParameters `json:"repositoryName,omitempty" tf:"repository_name,omitempty"`
 }
@@ -265,7 +261,7 @@ type ConditionsObservation struct {
 	RefName []RefNameObservation `json:"refName,omitempty" tf:"ref_name,omitempty"`
 
 	// The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass.
-	RepositoryID []*float64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+	RepositoryID []*int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 
 	RepositoryName []RepositoryNameObservation `json:"repositoryName,omitempty" tf:"repository_name,omitempty"`
 }
@@ -277,7 +273,7 @@ type ConditionsParameters struct {
 
 	// The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass.
 	// +kubebuilder:validation:Optional
-	RepositoryID []*float64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+	RepositoryID []*int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	RepositoryName []RepositoryNameParameters `json:"repositoryName,omitempty" tf:"repository_name,omitempty"`
@@ -329,7 +325,7 @@ type OrganizationRulesetObservation struct {
 	Rules []RulesObservation `json:"rules,omitempty" tf:"rules,omitempty"`
 
 	// GitHub ID for the ruleset.
-	RulesetID *float64 `json:"rulesetId,omitempty" tf:"ruleset_id,omitempty"`
+	RulesetID *int64 `json:"rulesetId,omitempty" tf:"ruleset_id,omitempty"`
 
 	// Possible values are `branch` and `tag`.
 	Target *string `json:"target,omitempty" tf:"target,omitempty"`
@@ -374,7 +370,7 @@ type PullRequestInitParameters struct {
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
 	// The number of approving reviews that are required before a pull request can be merged. Defaults to `0`.
-	RequiredApprovingReviewCount *float64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
+	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
 	// All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
 	RequiredReviewThreadResolution *bool `json:"requiredReviewThreadResolution,omitempty" tf:"required_review_thread_resolution,omitempty"`
@@ -392,7 +388,7 @@ type PullRequestObservation struct {
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
 	// The number of approving reviews that are required before a pull request can be merged. Defaults to `0`.
-	RequiredApprovingReviewCount *float64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
+	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
 	// All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
 	RequiredReviewThreadResolution *bool `json:"requiredReviewThreadResolution,omitempty" tf:"required_review_thread_resolution,omitempty"`
@@ -414,7 +410,7 @@ type PullRequestParameters struct {
 
 	// The number of approving reviews that are required before a pull request can be merged. Defaults to `0`.
 	// +kubebuilder:validation:Optional
-	RequiredApprovingReviewCount *float64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
+	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
 	// All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
 	// +kubebuilder:validation:Optional
@@ -495,7 +491,7 @@ type RequiredCheckInitParameters struct {
 	Context *string `json:"context,omitempty" tf:"context,omitempty"`
 
 	// The optional integration ID that this status check must originate from.
-	IntegrationID *float64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
+	IntegrationID *int64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
 }
 
 type RequiredCheckObservation struct {
@@ -504,7 +500,7 @@ type RequiredCheckObservation struct {
 	Context *string `json:"context,omitempty" tf:"context,omitempty"`
 
 	// The optional integration ID that this status check must originate from.
-	IntegrationID *float64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
+	IntegrationID *int64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
 }
 
 type RequiredCheckParameters struct {
@@ -515,7 +511,7 @@ type RequiredCheckParameters struct {
 
 	// The optional integration ID that this status check must originate from.
 	// +kubebuilder:validation:Optional
-	IntegrationID *float64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
+	IntegrationID *int64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
 }
 
 type RequiredStatusChecksInitParameters struct {
@@ -556,7 +552,7 @@ type RequiredWorkflowInitParameters struct {
 	Ref *string `json:"ref,omitempty" tf:"ref,omitempty"`
 
 	// The repository in which the workflow is defined.
-	RepositoryID *float64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 }
 
 type RequiredWorkflowObservation struct {
@@ -568,7 +564,7 @@ type RequiredWorkflowObservation struct {
 	Ref *string `json:"ref,omitempty" tf:"ref,omitempty"`
 
 	// The repository in which the workflow is defined.
-	RepositoryID *float64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 }
 
 type RequiredWorkflowParameters struct {
@@ -583,7 +579,7 @@ type RequiredWorkflowParameters struct {
 
 	// The repository in which the workflow is defined.
 	// +kubebuilder:validation:Optional
-	RepositoryID *float64 `json:"repositoryId" tf:"repository_id,omitempty"`
+	RepositoryID *int64 `json:"repositoryId" tf:"repository_id,omitempty"`
 }
 
 type RequiredWorkflowsInitParameters struct {
@@ -831,8 +827,8 @@ type OrganizationRulesetStatus struct {
 // +kubebuilder:storageversion
 
 // OrganizationRuleset is the Schema for the OrganizationRulesets API. <no value>
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}

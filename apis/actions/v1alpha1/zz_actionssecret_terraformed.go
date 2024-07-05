@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -25,7 +21,7 @@ func (mg *ActionsSecret) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this ActionsSecret
 func (tr *ActionsSecret) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"encrypted_value": "spec.forProvider.encryptedValueSecretRef", "plaintext_value": "spec.forProvider.plaintextValueSecretRef"}
+	return map[string]string{"encrypted_value": "encryptedValueSecretRef", "plaintext_value": "plaintextValueSecretRef"}
 }
 
 // GetObservation of this ActionsSecret

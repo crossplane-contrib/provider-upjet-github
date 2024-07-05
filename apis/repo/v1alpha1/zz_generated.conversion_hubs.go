@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -14,22 +10,22 @@ package v1alpha1
 func (tr *Branch) Hub() {}
 
 // Hub marks this type as a conversion hub.
-func (tr *DefaultBranch) Hub() {}
-
-// Hub marks this type as a conversion hub.
 func (tr *BranchProtection) Hub() {}
 
 // Hub marks this type as a conversion hub.
-func (tr *Repository) Hub() {}
+func (tr *DefaultBranch) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *DeployKey) Hub() {}
 
 // Hub marks this type as a conversion hub.
-func (tr *RepositoryFile) Hub() {}
+func (tr *PullRequest) Hub() {}
 
 // Hub marks this type as a conversion hub.
-func (tr *PullRequest) Hub() {}
+func (tr *Repository) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *RepositoryFile) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *RepositoryWebhook) Hub() {}

@@ -14,7 +14,7 @@ func Configure(p *config.Provider) {
 		// object, we can build cross resource referencing. See
 		// repositoryRef in the example in the Testing section below.
 		r.References["repository"] = config.Reference{
-			Type: "github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository",
+			TerraformName: "github_repository",
 		}
 	})
 }

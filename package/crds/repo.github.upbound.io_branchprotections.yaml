@@ -19,11 +19,11 @@ spec:
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.conditions[?(@.type=='Ready')].status
-      name: READY
-      type: string
     - jsonPath: .status.conditions[?(@.type=='Synced')].status
       name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
       type: string
     - jsonPath: .metadata.annotations.crossplane\.io/external-name
       name: EXTERNAL-NAME
@@ -80,13 +80,8 @@ spec:
                     type: boolean
                   allowsForcePushes:
                     description: |-
-                      Boolean, setting this to true to allow force pushes on the branch.
+                      Boolean, setting this to true to allow force pushes on the branch to everyone. Set it to false if you specify force_push_bypassers.
                       Setting this to 'true' to allow force pushes on the branch.
-                    type: boolean
-                  blocksCreations:
-                    description: |-
-                      Boolean, setting this to true to block creating the branch.
-                      Setting this to 'true' to block creating the branch.
                     type: boolean
                   enforceAdmins:
                     description: |-
@@ -95,7 +90,7 @@ spec:
                     type: boolean
                   forcePushBypassers:
                     description: |-
-                      The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                      The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. If the list is not empty, allows_force_pushes should be set to false.
                       The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
                     items:
                       type: string
@@ -111,14 +106,6 @@ spec:
                       Identifies the protection rule pattern.
                       Identifies the protection rule pattern.
                     type: string
-                  pushRestrictions:
-                    description: |-
-                      The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
-                      The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
-                    items:
-                      type: string
-                    type: array
-                    x-kubernetes-list-type: set
                   repositoryId:
                     description: |-
                       The name or node ID of the repository associated with this branch protection rule.
@@ -255,7 +242,8 @@ spec:
                             6. This requirement matches GitHub's API, see the upstream documentation for more information.
                             (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
                             Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
-                          type: number
+                          format: int64
+                          type: integer
                         restrictDismissals:
                           description: |-
                             :  Restrict pull request review dismissals.
@@ -282,6 +270,27 @@ spec:
                             :  Require branches to be up to date before merging. Defaults to false.
                             Require branches to be up to date before merging.
                           type: boolean
+                      type: object
+                    type: array
+                  restrictPushes:
+                    description: |-
+                      Restrict pushes to matching branches. See Restrict Pushes below for details.
+                      Restrict who can push to matching branches.
+                    items:
+                      properties:
+                        blocksCreations:
+                          description: |-
+                            Boolean, setting this to false allows people, teams, or apps to create new branches matching this rule. Defaults to true.
+                            Restrict pushes that create matching branches.
+                          type: boolean
+                        pushAllowances:
+                          description: |-
+                            A list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. Organization administrators, repository administrators, and users with the Maintain role on the repository can always push when all other requirements have passed.
+                            The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
                       type: object
                     type: array
                 type: object
@@ -305,13 +314,8 @@ spec:
                     type: boolean
                   allowsForcePushes:
                     description: |-
-                      Boolean, setting this to true to allow force pushes on the branch.
+                      Boolean, setting this to true to allow force pushes on the branch to everyone. Set it to false if you specify force_push_bypassers.
                       Setting this to 'true' to allow force pushes on the branch.
-                    type: boolean
-                  blocksCreations:
-                    description: |-
-                      Boolean, setting this to true to block creating the branch.
-                      Setting this to 'true' to block creating the branch.
                     type: boolean
                   enforceAdmins:
                     description: |-
@@ -320,7 +324,7 @@ spec:
                     type: boolean
                   forcePushBypassers:
                     description: |-
-                      The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                      The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. If the list is not empty, allows_force_pushes should be set to false.
                       The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
                     items:
                       type: string
@@ -336,14 +340,6 @@ spec:
                       Identifies the protection rule pattern.
                       Identifies the protection rule pattern.
                     type: string
-                  pushRestrictions:
-                    description: |-
-                      The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
-                      The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
-                    items:
-                      type: string
-                    type: array
-                    x-kubernetes-list-type: set
                   repositoryId:
                     description: |-
                       The name or node ID of the repository associated with this branch protection rule.
@@ -480,7 +476,8 @@ spec:
                             6. This requirement matches GitHub's API, see the upstream documentation for more information.
                             (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
                             Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
-                          type: number
+                          format: int64
+                          type: integer
                         restrictDismissals:
                           description: |-
                             :  Restrict pull request review dismissals.
@@ -507,6 +504,27 @@ spec:
                             :  Require branches to be up to date before merging. Defaults to false.
                             Require branches to be up to date before merging.
                           type: boolean
+                      type: object
+                    type: array
+                  restrictPushes:
+                    description: |-
+                      Restrict pushes to matching branches. See Restrict Pushes below for details.
+                      Restrict who can push to matching branches.
+                    items:
+                      properties:
+                        blocksCreations:
+                          description: |-
+                            Boolean, setting this to false allows people, teams, or apps to create new branches matching this rule. Defaults to true.
+                            Restrict pushes that create matching branches.
+                          type: boolean
+                        pushAllowances:
+                          description: |-
+                            A list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. Organization administrators, repository administrators, and users with the Maintain role on the repository can always push when all other requirements have passed.
+                            The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
                       type: object
                     type: array
                 type: object
@@ -694,13 +712,8 @@ spec:
                     type: boolean
                   allowsForcePushes:
                     description: |-
-                      Boolean, setting this to true to allow force pushes on the branch.
+                      Boolean, setting this to true to allow force pushes on the branch to everyone. Set it to false if you specify force_push_bypassers.
                       Setting this to 'true' to allow force pushes on the branch.
-                    type: boolean
-                  blocksCreations:
-                    description: |-
-                      Boolean, setting this to true to block creating the branch.
-                      Setting this to 'true' to block creating the branch.
                     type: boolean
                   enforceAdmins:
                     description: |-
@@ -709,7 +722,7 @@ spec:
                     type: boolean
                   forcePushBypassers:
                     description: |-
-                      The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+                      The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. If the list is not empty, allows_force_pushes should be set to false.
                       The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
                     items:
                       type: string
@@ -727,14 +740,6 @@ spec:
                       Identifies the protection rule pattern.
                       Identifies the protection rule pattern.
                     type: string
-                  pushRestrictions:
-                    description: |-
-                      The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
-                      The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
-                    items:
-                      type: string
-                    type: array
-                    x-kubernetes-list-type: set
                   repositoryId:
                     description: |-
                       The name or node ID of the repository associated with this branch protection rule.
@@ -797,7 +802,8 @@ spec:
                             6. This requirement matches GitHub's API, see the upstream documentation for more information.
                             (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
                             Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
-                          type: number
+                          format: int64
+                          type: integer
                         restrictDismissals:
                           description: |-
                             :  Restrict pull request review dismissals.
@@ -826,6 +832,27 @@ spec:
                           type: boolean
                       type: object
                     type: array
+                  restrictPushes:
+                    description: |-
+                      Restrict pushes to matching branches. See Restrict Pushes below for details.
+                      Restrict who can push to matching branches.
+                    items:
+                      properties:
+                        blocksCreations:
+                          description: |-
+                            Boolean, setting this to false allows people, teams, or apps to create new branches matching this rule. Defaults to true.
+                            Restrict pushes that create matching branches.
+                          type: boolean
+                        pushAllowances:
+                          description: |-
+                            A list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. Organization administrators, repository administrators, and users with the Maintain role on the repository can always push when all other requirements have passed.
+                            The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                      type: object
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.
@@ -843,6 +870,13 @@ spec:
                         A Message containing details about this condition's last transition from
                         one status to another, if any.
                       type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
                     reason:
                       description: A Reason for this condition's last transition from
                         one status to another.
@@ -866,6 +900,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
             type: object
         required:
         - spec

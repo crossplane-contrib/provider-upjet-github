@@ -11,7 +11,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "repo"
 
 		r.References["repository"] = config.Reference{
-			Type: "Repository",
+			TerraformName: "github_repository",
 		}
 
 		r.TerraformResource.Schema["key"].Required = true

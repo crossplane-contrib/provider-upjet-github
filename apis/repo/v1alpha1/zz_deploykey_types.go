@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -19,20 +15,24 @@ import (
 
 type DeployKeyInitParameters struct {
 
+	// A SSH key.
+	// A SSH key.
+	KeySecretRef v1.SecretKeySelector `json:"keySecretRef" tf:"-"`
+
 	// A boolean qualifying the key to be either read only or read/write.
 	// A boolean qualifying the key to be either read only or read/write.
 	ReadOnly *bool `json:"readOnly,omitempty" tf:"read_only,omitempty"`
 
 	// Name of the GitHub repository.
 	// Name of the GitHub repository.
-	// +crossplane:generate:reference:type=Repository
+	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// Reference to a Repository to populate repository.
+	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
-	// Selector for a Repository to populate repository.
+	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
@@ -73,15 +73,15 @@ type DeployKeyParameters struct {
 
 	// Name of the GitHub repository.
 	// Name of the GitHub repository.
-	// +crossplane:generate:reference:type=Repository
+	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// Reference to a Repository to populate repository.
+	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
-	// Selector for a Repository to populate repository.
+	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
@@ -119,8 +119,8 @@ type DeployKeyStatus struct {
 // +kubebuilder:storageversion
 
 // DeployKey is the Schema for the DeployKeys API. Provides a GitHub repository deploy key resource.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}

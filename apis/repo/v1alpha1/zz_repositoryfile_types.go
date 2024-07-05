@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -22,14 +18,14 @@ type RepositoryFileInitParameters struct {
 	// Git branch (defaults to the repository's default branch).
 	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name, defaults to the repository's default branch
-	// +crossplane:generate:reference:type=Branch
+	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
-	// Reference to a Branch to populate branch.
+	// Reference to a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
 	BranchRef *v1.Reference `json:"branchRef,omitempty" tf:"-"`
 
-	// Selector for a Branch to populate branch.
+	// Selector for a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
 	BranchSelector *v1.Selector `json:"branchSelector,omitempty" tf:"-"`
 
@@ -41,7 +37,7 @@ type RepositoryFileInitParameters struct {
 	// The commit author email address, defaults to the authenticated user's email address. GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App.
 	CommitEmail *string `json:"commitEmail,omitempty" tf:"commit_email,omitempty"`
 
-	// Commit message when adding or updating the managed file.
+	// The commit message when creating, updating or deleting the managed file.
 	// The commit message when creating, updating or deleting the file
 	CommitMessage *string `json:"commitMessage,omitempty" tf:"commit_message,omitempty"`
 
@@ -59,14 +55,14 @@ type RepositoryFileInitParameters struct {
 
 	// The repository to create the file in.
 	// The repository name
-	// +crossplane:generate:reference:type=Repository
+	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// Reference to a Repository to populate repository.
+	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
-	// Selector for a Repository to populate repository.
+	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 }
@@ -86,7 +82,7 @@ type RepositoryFileObservation struct {
 	// The commit author email address, defaults to the authenticated user's email address. GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App.
 	CommitEmail *string `json:"commitEmail,omitempty" tf:"commit_email,omitempty"`
 
-	// Commit message when adding or updating the managed file.
+	// The commit message when creating, updating or deleting the managed file.
 	// The commit message when creating, updating or deleting the file
 	CommitMessage *string `json:"commitMessage,omitempty" tf:"commit_message,omitempty"`
 
@@ -126,15 +122,15 @@ type RepositoryFileParameters struct {
 	// Git branch (defaults to the repository's default branch).
 	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name, defaults to the repository's default branch
-	// +crossplane:generate:reference:type=Branch
+	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
 	// +kubebuilder:validation:Optional
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
-	// Reference to a Branch to populate branch.
+	// Reference to a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
 	BranchRef *v1.Reference `json:"branchRef,omitempty" tf:"-"`
 
-	// Selector for a Branch to populate branch.
+	// Selector for a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
 	BranchSelector *v1.Selector `json:"branchSelector,omitempty" tf:"-"`
 
@@ -148,7 +144,7 @@ type RepositoryFileParameters struct {
 	// +kubebuilder:validation:Optional
 	CommitEmail *string `json:"commitEmail,omitempty" tf:"commit_email,omitempty"`
 
-	// Commit message when adding or updating the managed file.
+	// The commit message when creating, updating or deleting the managed file.
 	// The commit message when creating, updating or deleting the file
 	// +kubebuilder:validation:Optional
 	CommitMessage *string `json:"commitMessage,omitempty" tf:"commit_message,omitempty"`
@@ -170,15 +166,15 @@ type RepositoryFileParameters struct {
 
 	// The repository to create the file in.
 	// The repository name
-	// +crossplane:generate:reference:type=Repository
+	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// Reference to a Repository to populate repository.
+	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
-	// Selector for a Repository to populate repository.
+	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 }
@@ -211,8 +207,8 @@ type RepositoryFileStatus struct {
 // +kubebuilder:storageversion
 
 // RepositoryFile is the Schema for the RepositoryFiles API. Creates and manages files within a GitHub repository
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}

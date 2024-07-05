@@ -1,19 +1,19 @@
 # ====================================================================================
 # Setup Project
 
-PROJECT_NAME := provider-github
+PROVIDER_NAME := github
+PROJECT_NAME := provider-$(PROVIDER_NAME)
 PROJECT_REPO := github.com/coopnorge/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION := 1.3.6
 
+export TERRAFORM_VERSION := 1.5.5
+export TERRAFORM_PROVIDER_VERSION := 6.2.2
 export TERRAFORM_PROVIDER_SOURCE := integrations/github
 export TERRAFORM_PROVIDER_REPO := https://github.com/integrations/terraform-provider-github
-export TERRAFORM_PROVIDER_VERSION := 5.45.0
-export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-github
-export TERRAFORM_NATIVE_PROVIDER_BINARY := terraform-provider-github_v5.45.0_x5
 export TERRAFORM_DOCS_PATH := website/docs/r
+export PROVIDER_NAME
 
-PLATFORMS ?= linux_amd64 linux_arm64
+PLATFORMS ?= linux_amd64
 
 # -include will silently skip missing files, which allows us
 # to load those files with a target in the Makefile. If only
@@ -39,7 +39,9 @@ NPROCS ?= 1
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
 GO_REQUIRED_VERSION ?= 1.21
-GOLANGCILINT_VERSION ?= 1.55.2
+# GOLANGCILINT_VERSION is inherited from build submodule by default.
+# Uncomment below if you need to override the version.
+# GOLANGCILINT_VERSION ?= 1.54.0
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
 GO_SUBDIRS += cmd internal apis
@@ -51,9 +53,9 @@ GO111MODULE = on
 # Setup Kubernetes tools
 
 KIND_VERSION = v0.21.0
-UP_VERSION = v0.21.0
+UP_VERSION = v0.31.0
 UP_CHANNEL = stable
-UPTEST_VERSION = v0.8.0
+UPTEST_VERSION = v0.11.1
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
@@ -104,7 +106,7 @@ TERRAFORM_PROVIDER_SCHEMA := config/schema.json
 $(TERRAFORM):
 	@$(INFO) installing terraform $(HOSTOS)-$(HOSTARCH)
 	@mkdir -p $(TOOLS_HOST_DIR)/tmp-terraform
-	@curl -fsSL https://releases.hashicorp.com/terraform/$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip
+	@curl -fsSL https://github.com/upbound/terraform/releases/download/v$(TERRAFORM_VERSION)/terraform_$(TERRAFORM_VERSION)_$(SAFEHOST_PLATFORM).zip -o $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip
 	@unzip $(TOOLS_HOST_DIR)/tmp-terraform/terraform.zip -d $(TOOLS_HOST_DIR)/tmp-terraform
 	@mv $(TOOLS_HOST_DIR)/tmp-terraform/terraform $(TERRAFORM)
 	@rm -fr $(TOOLS_HOST_DIR)/tmp-terraform
@@ -114,7 +116,7 @@ $(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM)
 	@$(INFO) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 	@mkdir -p $(TERRAFORM_WORKDIR)
 	@echo '{"terraform":[{"required_providers":[{"provider":{"source":"'"$(TERRAFORM_PROVIDER_SOURCE)"'","version":"'"$(TERRAFORM_PROVIDER_VERSION)"'"}}],"required_version":"'"$(TERRAFORM_VERSION)"'"}]}' > $(TERRAFORM_WORKDIR)/main.tf.json
-	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
+	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) init -upgrade > $(TERRAFORM_WORKDIR)/terraform-logs.txt 2>&1
 	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) providers schema -json=true > $(TERRAFORM_PROVIDER_SCHEMA) 2>> $(TERRAFORM_WORKDIR)/terraform-logs.txt
 	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 
@@ -139,6 +141,8 @@ generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 # its location in CI so that we cache between builds.
 go.cachedir:
 	@go env GOCACHE
+go.mod.cachedir:
+	@go env GOMODCACHE
 
 # Generate a coverage report for cobertura applying exclusions on
 # - generated file
