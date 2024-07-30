@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -108,11 +104,11 @@ type PullRequestObservation struct {
 
 	// The number of the Pull Request within the repository.
 	// The number of the Pull Request within the repository.
-	Number *float64 `json:"number,omitempty" tf:"number,omitempty"`
+	Number *int64 `json:"number,omitempty" tf:"number,omitempty"`
 
 	// Unix timestamp indicating the Pull Request creation time.
 	// Unix timestamp indicating the Pull Request creation time.
-	OpenedAt *float64 `json:"openedAt,omitempty" tf:"opened_at,omitempty"`
+	OpenedAt *int64 `json:"openedAt,omitempty" tf:"opened_at,omitempty"`
 
 	// GitHub login of the user who opened the Pull Request.
 	// Username of the PR creator
@@ -132,7 +128,7 @@ type PullRequestObservation struct {
 
 	// The timestamp of the last Pull Request update.
 	// The timestamp of the last Pull Request update.
-	UpdatedAt *float64 `json:"updatedAt,omitempty" tf:"updated_at,omitempty"`
+	UpdatedAt *int64 `json:"updatedAt,omitempty" tf:"updated_at,omitempty"`
 }
 
 type PullRequestParameters struct {
@@ -219,8 +215,8 @@ type PullRequestStatus struct {
 // +kubebuilder:storageversion
 
 // PullRequest is the Schema for the PullRequests API. Get information on a single GitHub Pull Request.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}

@@ -19,11 +19,11 @@ spec:
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.conditions[?(@.type=='Ready')].status
-      name: READY
-      type: string
     - jsonPath: .status.conditions[?(@.type=='Synced')].status
       name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
       type: string
     - jsonPath: .metadata.annotations.crossplane\.io/external-name
       name: EXTERNAL-NAME
@@ -80,7 +80,7 @@ spec:
                     type: boolean
                   allowMergeCommit:
                     description: |-
-                      Set to false to disable merge commits on the repository.
+                      (including the related merge_commit_title and merge_commit_message)
                       Set to 'false' to disable merge commits on the repository.
                     type: boolean
                   allowRebaseMerge:
@@ -90,7 +90,7 @@ spec:
                     type: boolean
                   allowSquashMerge:
                     description: |-
-                      Set to false to disable squash merges on the repository.
+                      (including the related squash_merge_commit_title and squash_merge_commit_message)
                       Set to 'false' to disable squash merges on the repository.
                     type: boolean
                   allowUpdateBranch:
@@ -362,7 +362,7 @@ spec:
                     type: boolean
                   allowMergeCommit:
                     description: |-
-                      Set to false to disable merge commits on the repository.
+                      (including the related merge_commit_title and merge_commit_message)
                       Set to 'false' to disable merge commits on the repository.
                     type: boolean
                   allowRebaseMerge:
@@ -372,7 +372,7 @@ spec:
                     type: boolean
                   allowSquashMerge:
                     description: |-
-                      Set to false to disable squash merges on the repository.
+                      (including the related squash_merge_commit_title and squash_merge_commit_message)
                       Set to 'false' to disable squash merges on the repository.
                     type: boolean
                   allowUpdateBranch:
@@ -808,7 +808,7 @@ spec:
                     type: boolean
                   allowMergeCommit:
                     description: |-
-                      Set to false to disable merge commits on the repository.
+                      (including the related merge_commit_title and merge_commit_message)
                       Set to 'false' to disable merge commits on the repository.
                     type: boolean
                   allowRebaseMerge:
@@ -818,7 +818,7 @@ spec:
                     type: boolean
                   allowSquashMerge:
                     description: |-
-                      Set to false to disable squash merges on the repository.
+                      (including the related squash_merge_commit_title and squash_merge_commit_message)
                       Set to 'false' to disable squash merges on the repository.
                     type: boolean
                   allowUpdateBranch:
@@ -1019,7 +1019,8 @@ spec:
                     description: |-
                       GitHub ID for the repository
                       GitHub ID for the repository.
-                    type: number
+                    format: int64
+                    type: integer
                   securityAndAnalysis:
                     description: |-
                       The repository's security and analysis configuration. See Security and Analysis Configuration below for details.
@@ -1150,6 +1151,13 @@ spec:
                         A Message containing details about this condition's last transition from
                         one status to another, if any.
                       type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
                     reason:
                       description: A Reason for this condition's last transition from
                         one status to another.
@@ -1173,6 +1181,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
             type: object
         required:
         - spec

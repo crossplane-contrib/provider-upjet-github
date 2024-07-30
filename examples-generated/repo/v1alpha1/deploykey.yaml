@@ -9,10 +9,10 @@ metadata:
 spec:
   forProvider:
     keySecretRef:
-      key: example-key
-      name: example-secret
+      key: attribute.public_key_openssh
+      name: example-private-key
       namespace: upbound-system
-    readOnly: "false"
+    readOnly: true
     repositorySelector:
       matchLabels:
         testing.upbound.io/example-name: example

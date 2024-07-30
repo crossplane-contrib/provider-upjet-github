@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -23,19 +19,15 @@ type BranchProtectionInitParameters struct {
 	// Setting this to 'true' to allow the branch to be deleted.
 	AllowsDeletions *bool `json:"allowsDeletions,omitempty" tf:"allows_deletions,omitempty"`
 
-	// Boolean, setting this to true to allow force pushes on the branch.
+	// Boolean, setting this to true to allow force pushes on the branch to everyone. Set it to false if you specify force_push_bypassers.
 	// Setting this to 'true' to allow force pushes on the branch.
 	AllowsForcePushes *bool `json:"allowsForcePushes,omitempty" tf:"allows_force_pushes,omitempty"`
-
-	// Boolean, setting this to true to block creating the branch.
-	// Setting this to 'true' to block creating the branch.
-	BlocksCreations *bool `json:"blocksCreations,omitempty" tf:"blocks_creations,omitempty"`
 
 	// Boolean, setting this to true enforces status checks for repository administrators.
 	// Setting this to 'true' enforces status checks for repository administrators.
 	EnforceAdmins *bool `json:"enforceAdmins,omitempty" tf:"enforce_admins,omitempty"`
 
-	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. If the list is not empty, allows_force_pushes should be set to false.
 	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
 	// +listType=set
 	ForcePushBypassers []*string `json:"forcePushBypassers,omitempty" tf:"force_push_bypassers,omitempty"`
@@ -47,11 +39,6 @@ type BranchProtectionInitParameters struct {
 	// Identifies the protection rule pattern.
 	// Identifies the protection rule pattern.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
-
-	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
-	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
-	// +listType=set
-	PushRestrictions []*string `json:"pushRestrictions,omitempty" tf:"push_restrictions,omitempty"`
 
 	// The name or node ID of the repository associated with this branch protection rule.
 	// The name or node ID of the repository associated with this branch protection rule.
@@ -85,6 +72,10 @@ type BranchProtectionInitParameters struct {
 	// Enforce restrictions for required status checks. See Required Status Checks below for details.
 	// Enforce restrictions for required status checks.
 	RequiredStatusChecks []RequiredStatusChecksInitParameters `json:"requiredStatusChecks,omitempty" tf:"required_status_checks,omitempty"`
+
+	// Restrict pushes to matching branches. See Restrict Pushes below for details.
+	// Restrict who can push to matching branches.
+	RestrictPushes []RestrictPushesInitParameters `json:"restrictPushes,omitempty" tf:"restrict_pushes,omitempty"`
 }
 
 type BranchProtectionObservation struct {
@@ -93,19 +84,15 @@ type BranchProtectionObservation struct {
 	// Setting this to 'true' to allow the branch to be deleted.
 	AllowsDeletions *bool `json:"allowsDeletions,omitempty" tf:"allows_deletions,omitempty"`
 
-	// Boolean, setting this to true to allow force pushes on the branch.
+	// Boolean, setting this to true to allow force pushes on the branch to everyone. Set it to false if you specify force_push_bypassers.
 	// Setting this to 'true' to allow force pushes on the branch.
 	AllowsForcePushes *bool `json:"allowsForcePushes,omitempty" tf:"allows_force_pushes,omitempty"`
-
-	// Boolean, setting this to true to block creating the branch.
-	// Setting this to 'true' to block creating the branch.
-	BlocksCreations *bool `json:"blocksCreations,omitempty" tf:"blocks_creations,omitempty"`
 
 	// Boolean, setting this to true enforces status checks for repository administrators.
 	// Setting this to 'true' enforces status checks for repository administrators.
 	EnforceAdmins *bool `json:"enforceAdmins,omitempty" tf:"enforce_admins,omitempty"`
 
-	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. If the list is not empty, allows_force_pushes should be set to false.
 	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
 	// +listType=set
 	ForcePushBypassers []*string `json:"forcePushBypassers,omitempty" tf:"force_push_bypassers,omitempty"`
@@ -119,11 +106,6 @@ type BranchProtectionObservation struct {
 	// Identifies the protection rule pattern.
 	// Identifies the protection rule pattern.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
-
-	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
-	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
-	// +listType=set
-	PushRestrictions []*string `json:"pushRestrictions,omitempty" tf:"push_restrictions,omitempty"`
 
 	// The name or node ID of the repository associated with this branch protection rule.
 	// The name or node ID of the repository associated with this branch protection rule.
@@ -148,6 +130,10 @@ type BranchProtectionObservation struct {
 	// Enforce restrictions for required status checks. See Required Status Checks below for details.
 	// Enforce restrictions for required status checks.
 	RequiredStatusChecks []RequiredStatusChecksObservation `json:"requiredStatusChecks,omitempty" tf:"required_status_checks,omitempty"`
+
+	// Restrict pushes to matching branches. See Restrict Pushes below for details.
+	// Restrict who can push to matching branches.
+	RestrictPushes []RestrictPushesObservation `json:"restrictPushes,omitempty" tf:"restrict_pushes,omitempty"`
 }
 
 type BranchProtectionParameters struct {
@@ -157,22 +143,17 @@ type BranchProtectionParameters struct {
 	// +kubebuilder:validation:Optional
 	AllowsDeletions *bool `json:"allowsDeletions,omitempty" tf:"allows_deletions,omitempty"`
 
-	// Boolean, setting this to true to allow force pushes on the branch.
+	// Boolean, setting this to true to allow force pushes on the branch to everyone. Set it to false if you specify force_push_bypassers.
 	// Setting this to 'true' to allow force pushes on the branch.
 	// +kubebuilder:validation:Optional
 	AllowsForcePushes *bool `json:"allowsForcePushes,omitempty" tf:"allows_force_pushes,omitempty"`
-
-	// Boolean, setting this to true to block creating the branch.
-	// Setting this to 'true' to block creating the branch.
-	// +kubebuilder:validation:Optional
-	BlocksCreations *bool `json:"blocksCreations,omitempty" tf:"blocks_creations,omitempty"`
 
 	// Boolean, setting this to true enforces status checks for repository administrators.
 	// Setting this to 'true' enforces status checks for repository administrators.
 	// +kubebuilder:validation:Optional
 	EnforceAdmins *bool `json:"enforceAdmins,omitempty" tf:"enforce_admins,omitempty"`
 
-	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
+	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. If the list is not empty, allows_force_pushes should be set to false.
 	// The list of actor Names/IDs that are allowed to bypass force push restrictions. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
 	// +kubebuilder:validation:Optional
 	// +listType=set
@@ -187,12 +168,6 @@ type BranchProtectionParameters struct {
 	// Identifies the protection rule pattern.
 	// +kubebuilder:validation:Optional
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
-
-	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams.
-	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
-	// +kubebuilder:validation:Optional
-	// +listType=set
-	PushRestrictions []*string `json:"pushRestrictions,omitempty" tf:"push_restrictions,omitempty"`
 
 	// The name or node ID of the repository associated with this branch protection rule.
 	// The name or node ID of the repository associated with this branch protection rule.
@@ -232,6 +207,11 @@ type BranchProtectionParameters struct {
 	// Enforce restrictions for required status checks.
 	// +kubebuilder:validation:Optional
 	RequiredStatusChecks []RequiredStatusChecksParameters `json:"requiredStatusChecks,omitempty" tf:"required_status_checks,omitempty"`
+
+	// Restrict pushes to matching branches. See Restrict Pushes below for details.
+	// Restrict who can push to matching branches.
+	// +kubebuilder:validation:Optional
+	RestrictPushes []RestrictPushesParameters `json:"restrictPushes,omitempty" tf:"restrict_pushes,omitempty"`
 }
 
 type RequiredPullRequestReviewsInitParameters struct {
@@ -261,7 +241,7 @@ type RequiredPullRequestReviewsInitParameters struct {
 	// 6. This requirement matches GitHub's API, see the upstream documentation for more information.
 	// (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
 	// Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
-	RequiredApprovingReviewCount *float64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
+	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
 	// :  Restrict pull request review dismissals.
 	// Restrict pull request review dismissals.
@@ -295,7 +275,7 @@ type RequiredPullRequestReviewsObservation struct {
 	// 6. This requirement matches GitHub's API, see the upstream documentation for more information.
 	// (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
 	// Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
-	RequiredApprovingReviewCount *float64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
+	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
 	// :  Restrict pull request review dismissals.
 	// Restrict pull request review dismissals.
@@ -335,7 +315,7 @@ type RequiredPullRequestReviewsParameters struct {
 	// (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
 	// Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
 	// +kubebuilder:validation:Optional
-	RequiredApprovingReviewCount *float64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
+	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
 	// :  Restrict pull request review dismissals.
 	// Restrict pull request review dismissals.
@@ -381,6 +361,44 @@ type RequiredStatusChecksParameters struct {
 	Strict *bool `json:"strict,omitempty" tf:"strict,omitempty"`
 }
 
+type RestrictPushesInitParameters struct {
+
+	// Boolean, setting this to false allows people, teams, or apps to create new branches matching this rule. Defaults to true.
+	// Restrict pushes that create matching branches.
+	BlocksCreations *bool `json:"blocksCreations,omitempty" tf:"blocks_creations,omitempty"`
+
+	// A list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. Organization administrators, repository administrators, and users with the Maintain role on the repository can always push when all other requirements have passed.
+	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
+	// +listType=set
+	PushAllowances []*string `json:"pushAllowances,omitempty" tf:"push_allowances,omitempty"`
+}
+
+type RestrictPushesObservation struct {
+
+	// Boolean, setting this to false allows people, teams, or apps to create new branches matching this rule. Defaults to true.
+	// Restrict pushes that create matching branches.
+	BlocksCreations *bool `json:"blocksCreations,omitempty" tf:"blocks_creations,omitempty"`
+
+	// A list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. Organization administrators, repository administrators, and users with the Maintain role on the repository can always push when all other requirements have passed.
+	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
+	// +listType=set
+	PushAllowances []*string `json:"pushAllowances,omitempty" tf:"push_allowances,omitempty"`
+}
+
+type RestrictPushesParameters struct {
+
+	// Boolean, setting this to false allows people, teams, or apps to create new branches matching this rule. Defaults to true.
+	// Restrict pushes that create matching branches.
+	// +kubebuilder:validation:Optional
+	BlocksCreations *bool `json:"blocksCreations,omitempty" tf:"blocks_creations,omitempty"`
+
+	// A list of actor Names/IDs that may push to the branch. Actor names must either begin with a "/" for users or the organization name followed by a "/" for teams. Organization administrators, repository administrators, and users with the Maintain role on the repository can always push when all other requirements have passed.
+	// The list of actor Names/IDs that may push to the branch. Actor names must either begin with a '/' for users or the organization name followed by a '/' for teams.
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	PushAllowances []*string `json:"pushAllowances,omitempty" tf:"push_allowances,omitempty"`
+}
+
 // BranchProtectionSpec defines the desired state of BranchProtection
 type BranchProtectionSpec struct {
 	v1.ResourceSpec `json:",inline"`
@@ -409,8 +427,8 @@ type BranchProtectionStatus struct {
 // +kubebuilder:storageversion
 
 // BranchProtection is the Schema for the BranchProtections API. Protects a GitHub branch.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}

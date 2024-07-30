@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -56,6 +52,10 @@ type OrganizationObservation struct {
 	// The billing email address.
 	BillingEmail *string `json:"billingEmail,omitempty" tf:"billing_email,omitempty"`
 
+	// The ID of the organization.
+	// The database ID of the organization.
+	DatabaseID *int64 `json:"databaseId,omitempty" tf:"database_id,omitempty"`
+
 	// The description of the organization.
 	// The description of the organization.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -68,7 +68,7 @@ type OrganizationObservation struct {
 	// The ID of the enterprise.
 	EnterpriseID *string `json:"enterpriseId,omitempty" tf:"enterprise_id,omitempty"`
 
-	// The ID of the organization.
+	// The node ID of the organization for use with the v4 API.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The name of the organization.
@@ -138,8 +138,8 @@ type OrganizationStatus struct {
 // +kubebuilder:storageversion
 
 // Organization is the Schema for the Organizations API. Create and manages a GitHub enterprise organization.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}

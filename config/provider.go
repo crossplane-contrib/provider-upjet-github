@@ -5,7 +5,8 @@ Copyright 2021 Upbound Inc.
 package config
 
 import (
-	// Note(turkenh): we are importing this to embed provider schema document
+	"context"
+	// Note(ezgidemirel): we are importing this to embed provider schema document
 	_ "embed"
 
 	"github.com/coopnorge/provider-github/config/actionssecret"
@@ -28,6 +29,8 @@ import (
 	"github.com/coopnorge/provider-github/config/teamsettings"
 	"github.com/coopnorge/provider-github/config/teamsyncgroupmapping"
 	ujconfig "github.com/crossplane/upjet/pkg/config"
+	"github.com/crossplane/upjet/pkg/registry/reference"
+	"github.com/integrations/terraform-provider-github/v6/github"
 )
 
 const (
@@ -42,13 +45,18 @@ var providerSchema string
 var providerMetadata string
 
 // GetProvider returns provider configuration
-func GetProvider() *ujconfig.Provider {
+func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
+
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
 		ujconfig.WithRootGroup("github.upbound.io"),
-		ujconfig.WithIncludeList(ExternalNameConfigured()),
+		ujconfig.WithShortName("github"),
+		ujconfig.WithIncludeList(resourceList(cliReconciledExternalNameConfigs)),
+		ujconfig.WithTerraformPluginSDKIncludeList(resourceList(terraformPluginSDKExternalNameConfigs)),
 		ujconfig.WithFeaturesPackage("internal/features"),
+		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
+		ujconfig.WithTerraformProvider(github.Provider()),
 		ujconfig.WithDefaultResourceOptions(
-			ExternalNameConfigurations(),
+			resourceConfigurator(),
 		))
 
 	for _, configure := range []func(provider *ujconfig.Provider){
@@ -77,5 +85,18 @@ func GetProvider() *ujconfig.Provider {
 	}
 
 	pc.ConfigureResources()
-	return pc
+	return pc, nil
+}
+
+// resourceList returns the list of resources that have external
+// name configured in the specified table.
+func resourceList(t map[string]ujconfig.ExternalName) []string {
+	l := make([]string, len(t))
+	i := 0
+	for n := range t {
+		// Expected format is regex and we'd like to have exact matches.
+		l[i] = n + "$"
+		i++
+	}
+	return l
 }

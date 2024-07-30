@@ -15,10 +15,6 @@ spec:
     - /exampleuser
     - exampleorganization/exampleteam
     pattern: main
-    pushRestrictions:
-    - ${data.github_user.example.node_id}
-    - /exampleuser
-    - exampleorganization/exampleteam
     repositoryIdSelector:
       matchLabels:
         testing.upbound.io/example-name: example
@@ -34,6 +30,11 @@ spec:
     - contexts:
       - ci/travis
       strict: false
+    restrictPushes:
+    - pushAllowances:
+      - ${data.github_user.example.node_id}
+      - /exampleuser
+      - exampleorganization/exampleteam
 
 ---
 

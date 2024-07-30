@@ -10,7 +10,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "actions"
 
 		r.References["repository"] = config.Reference{
-			Type: "github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository",
+			TerraformName: "github_repository",
 		}
 	})
 }

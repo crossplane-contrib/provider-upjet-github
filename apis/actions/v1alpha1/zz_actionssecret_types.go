@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -18,6 +14,14 @@ import (
 )
 
 type ActionsSecretInitParameters struct {
+
+	// Encrypted value of the secret using the GitHub public key in Base64 format.
+	// Encrypted value of the secret using the GitHub public key in Base64 format.
+	EncryptedValueSecretRef *v1.SecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
+
+	// Plaintext value of the secret to be encrypted
+	// Plaintext value of the secret to be encrypted.
+	PlaintextValueSecretRef *v1.SecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
 
 	// Name of the repository
 	// Name of the repository.
@@ -118,8 +122,8 @@ type ActionsSecretStatus struct {
 // +kubebuilder:storageversion
 
 // ActionsSecret is the Schema for the ActionsSecrets API. Creates and manages an Action Secret within a GitHub repository
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}

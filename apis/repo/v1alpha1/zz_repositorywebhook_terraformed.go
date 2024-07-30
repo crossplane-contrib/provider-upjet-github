@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -25,7 +21,7 @@ func (mg *RepositoryWebhook) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this RepositoryWebhook
 func (tr *RepositoryWebhook) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"configuration[*].secret": "spec.forProvider.configuration[*].secretSecretRef", "configuration[*].url": "spec.forProvider.configuration[*].urlSecretRef"}
+	return map[string]string{"configuration[*].secret": "configuration[*].secretSecretRef", "configuration[*].url": "configuration[*].urlSecretRef"}
 }
 
 // GetObservation of this RepositoryWebhook

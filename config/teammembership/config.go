@@ -9,7 +9,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "team"
 
 		r.References["team_id"] = config.Reference{
-			Type: "github.com/coopnorge/provider-github/apis/team/v1alpha1.Team",
+			TerraformName: "github_team",
 		}
 	})
 }

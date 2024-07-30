@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -74,7 +70,7 @@ type TeamObservation struct {
 	// The LDAP Distinguished Name of the group where membership will be synchronized. Only available in GitHub Enterprise Server.
 	LdapDn *string `json:"ldapDn,omitempty" tf:"ldap_dn,omitempty"`
 
-	MembersCount *float64 `json:"membersCount,omitempty" tf:"members_count,omitempty"`
+	MembersCount *int64 `json:"membersCount,omitempty" tf:"members_count,omitempty"`
 
 	// The name of the team.
 	// The name of the team.
@@ -184,8 +180,8 @@ type TeamStatus struct {
 // +kubebuilder:storageversion
 
 // Team is the Schema for the Teams API. Provides a GitHub team resource.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,github}

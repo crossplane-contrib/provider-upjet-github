@@ -45,7 +45,7 @@ func (in *EmuGroupMappingInitParameters) DeepCopyInto(out *EmuGroupMappingInitPa
 	*out = *in
 	if in.GroupID != nil {
 		in, out := &in.GroupID, &out.GroupID
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.TeamSlug != nil {
@@ -117,7 +117,7 @@ func (in *EmuGroupMappingObservation) DeepCopyInto(out *EmuGroupMappingObservati
 	}
 	if in.GroupID != nil {
 		in, out := &in.GroupID, &out.GroupID
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ID != nil {
@@ -147,7 +147,7 @@ func (in *EmuGroupMappingParameters) DeepCopyInto(out *EmuGroupMappingParameters
 	*out = *in
 	if in.GroupID != nil {
 		in, out := &in.GroupID, &out.GroupID
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.TeamSlug != nil {
@@ -312,7 +312,7 @@ func (in *ReviewRequestDelegationInitParameters) DeepCopyInto(out *ReviewRequest
 	}
 	if in.MemberCount != nil {
 		in, out := &in.MemberCount, &out.MemberCount
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Notify != nil {
@@ -342,7 +342,7 @@ func (in *ReviewRequestDelegationObservation) DeepCopyInto(out *ReviewRequestDel
 	}
 	if in.MemberCount != nil {
 		in, out := &in.MemberCount, &out.MemberCount
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Notify != nil {
@@ -372,7 +372,7 @@ func (in *ReviewRequestDelegationParameters) DeepCopyInto(out *ReviewRequestDele
 	}
 	if in.MemberCount != nil {
 		in, out := &in.MemberCount, &out.MemberCount
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Notify != nil {
@@ -750,7 +750,7 @@ func (in *TeamObservation) DeepCopyInto(out *TeamObservation) {
 	}
 	if in.MembersCount != nil {
 		in, out := &in.MembersCount, &out.MembersCount
-		*out = new(float64)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Name != nil {
