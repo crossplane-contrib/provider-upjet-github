@@ -20,6 +20,7 @@ import (
 	deploykey "github.com/coopnorge/provider-github/internal/controller/repo/deploykey"
 	pullrequest "github.com/coopnorge/provider-github/internal/controller/repo/pullrequest"
 	repository "github.com/coopnorge/provider-github/internal/controller/repo/repository"
+	repositoryautolinkreference "github.com/coopnorge/provider-github/internal/controller/repo/repositoryautolinkreference"
 	repositoryfile "github.com/coopnorge/provider-github/internal/controller/repo/repositoryfile"
 	repositorywebhook "github.com/coopnorge/provider-github/internal/controller/repo/repositorywebhook"
 	emugroupmapping "github.com/coopnorge/provider-github/internal/controller/team/emugroupmapping"
@@ -46,6 +47,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		deploykey.Setup,
 		pullrequest.Setup,
 		repository.Setup,
+		repositoryautolinkreference.Setup,
 		repositoryfile.Setup,
 		repositorywebhook.Setup,
 		emugroupmapping.Setup,
