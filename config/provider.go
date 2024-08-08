@@ -21,6 +21,7 @@ import (
 	"github.com/coopnorge/provider-github/config/organizationruleset"
 	"github.com/coopnorge/provider-github/config/pullrequest"
 	"github.com/coopnorge/provider-github/config/repository"
+	"github.com/coopnorge/provider-github/config/repositoryautolinkreference"
 	"github.com/coopnorge/provider-github/config/repositoryfile"
 	"github.com/coopnorge/provider-github/config/repositorywebhook"
 	"github.com/coopnorge/provider-github/config/team"
@@ -77,6 +78,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		actionsvariable.Configure,
 		organization.Configure,
 		organizationruleset.Configure,
+		repositoryautolinkreference.Configure,
 		membership.Configure,
 		teamsettings.Configure,
 		teamsyncgroupmapping.Configure,
