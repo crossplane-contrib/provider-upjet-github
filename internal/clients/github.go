@@ -63,14 +63,8 @@ type githubConfig struct {
 	RetryableErrors []int      `json:"retryable_errors,omitempty"`
 }
 
-func terraformProviderConfigurationBuilder(creds githubConfig) (terraform.ProviderConfiguration, error) {
-
-	cnf := terraform.ProviderConfiguration{}
-
-	if creds.BaseURL != nil {
-		cnf[keyBaseURL] = *creds.BaseURL
-	}
-
+// setCredentialConfigs will add credential type fields (Owner, Token, AppAuth) to terraform providerConfiguration
+func setCredentialConfigs(creds githubConfig, cnf terraform.ProviderConfiguration) (terraform.ProviderConfiguration, error) {
 	if creds.Owner != nil {
 		cnf[keyOwner] = *creds.Owner
 	}
@@ -96,6 +90,11 @@ func terraformProviderConfigurationBuilder(creds githubConfig) (terraform.Provid
 		cnf[keyAppAuth] = aaList
 	}
 
+	return cnf, nil
+}
+
+// setParameterConfigs will add configuration type fields (WriteDelayMs, ReadDelayMs, RetryDelayMs, MaxRetries, RetryableErrors) to terraform providerConfiguration
+func setParameterConfigs(creds githubConfig, cnf terraform.ProviderConfiguration) terraform.ProviderConfiguration {
 	if creds.WriteDelayMs != nil {
 		cnf[keyWriteDelayMs] = *creds.WriteDelayMs
 	}
@@ -115,6 +114,24 @@ func terraformProviderConfigurationBuilder(creds githubConfig) (terraform.Provid
 	if creds.RetryableErrors != nil {
 		cnf[keyRetryableErrors] = creds.RetryableErrors
 	}
+
+	return cnf
+}
+
+func terraformProviderConfigurationBuilder(creds githubConfig) (terraform.ProviderConfiguration, error) {
+
+	cnf := terraform.ProviderConfiguration{}
+
+	if creds.BaseURL != nil {
+		cnf[keyBaseURL] = *creds.BaseURL
+	}
+
+	cnf, err := setCredentialConfigs(creds, cnf)
+	if err != nil {
+		return cnf, errors.Errorf(errTerraformProviderMissingOwner)
+	}
+
+	cnf = setParameterConfigs(creds, cnf)
 
 	return cnf, nil
 
