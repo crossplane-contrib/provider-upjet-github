@@ -226,7 +226,7 @@ jobs:
           # builds by default. Specifying --load does so.
           BUILD_ARGS: "--load"
       - name: Upload Artifacts to GitHub
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: output
           path: _output/**
