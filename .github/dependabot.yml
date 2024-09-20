@@ -1,26 +1,12 @@
 ---
 version: 2
 
-registries:
-  coop-ghcr:
-    type: docker-registry
-    url: ghcr.io
-    username: CoopGithubServiceaccount
-    password: ${{ secrets.DEPENDABOT_GHCR_PULL }}
-  github-coopnorge:
-    type: git
-    url: https://github.com
-    username: x-access-token
-    password: ${{secrets.DEPENDABOT_GHCR_PULL}}
-
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
   - package-ecosystem: "gomod"
-    directory: "./"
+    directory: "/"
     schedule:
       interval: "daily"
-    registries:
-      - github-coopnorge
