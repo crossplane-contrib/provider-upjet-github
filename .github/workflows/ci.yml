@@ -177,7 +177,7 @@ jobs:
     if: needs.detect-noop.outputs.noop != 'true'
     steps:
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
         with:
           platforms: all
       - name: Setup Docker Buildx
