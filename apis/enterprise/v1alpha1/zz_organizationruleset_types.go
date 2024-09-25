@@ -296,7 +296,7 @@ type OrganizationRulesetInitParameters struct {
 	// Rules within the ruleset.
 	Rules []RulesInitParameters `json:"rules,omitempty" tf:"rules,omitempty"`
 
-	// Possible values are `branch` and `tag`.
+	// Possible values are `branch`, `tag` and `push`. Note: The `push` target is in beta and is subject to change.
 	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 }
 
@@ -327,7 +327,7 @@ type OrganizationRulesetObservation struct {
 	// GitHub ID for the ruleset.
 	RulesetID *int64 `json:"rulesetId,omitempty" tf:"ruleset_id,omitempty"`
 
-	// Possible values are `branch` and `tag`.
+	// Possible values are `branch`, `tag` and `push`. Note: The `push` target is in beta and is subject to change.
 	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 }
 
@@ -353,7 +353,7 @@ type OrganizationRulesetParameters struct {
 	// +kubebuilder:validation:Optional
 	Rules []RulesParameters `json:"rules,omitempty" tf:"rules,omitempty"`
 
-	// Possible values are `branch` and `tag`.
+	// Possible values are `branch`, `tag` and `push`. Note: The `push` target is in beta and is subject to change.
 	// +kubebuilder:validation:Optional
 	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 }
