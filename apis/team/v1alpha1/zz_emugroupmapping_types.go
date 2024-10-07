@@ -21,7 +21,7 @@ type EmuGroupMappingInitParameters struct {
 
 	// Slug of the GitHub team
 	// Slug of the GitHub team.
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/team/v1alpha1.Team
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/team/v1alpha1.Team
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("slug",true)
 	TeamSlug *string `json:"teamSlug,omitempty" tf:"team_slug,omitempty"`
 
@@ -57,7 +57,7 @@ type EmuGroupMappingParameters struct {
 
 	// Slug of the GitHub team
 	// Slug of the GitHub team.
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/team/v1alpha1.Team
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/team/v1alpha1.Team
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("slug",true)
 	// +kubebuilder:validation:Optional
 	TeamSlug *string `json:"teamSlug,omitempty" tf:"team_slug,omitempty"`

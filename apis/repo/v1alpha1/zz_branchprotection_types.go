@@ -42,7 +42,7 @@ type BranchProtectionInitParameters struct {
 
 	// The name or node ID of the repository associated with this branch protection rule.
 	// The name or node ID of the repository associated with this branch protection rule.
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	RepositoryID *string `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 
 	// Reference to a Repository in repo to populate repositoryId.
@@ -171,7 +171,7 @@ type BranchProtectionParameters struct {
 
 	// The name or node ID of the repository associated with this branch protection rule.
 	// The name or node ID of the repository associated with this branch protection rule.
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	RepositoryID *string `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 

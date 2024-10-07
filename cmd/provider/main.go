@@ -31,12 +31,12 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
 
-	"github.com/coopnorge/provider-github/apis"
-	"github.com/coopnorge/provider-github/apis/v1alpha1"
-	"github.com/coopnorge/provider-github/config"
-	"github.com/coopnorge/provider-github/internal/clients"
-	"github.com/coopnorge/provider-github/internal/controller"
-	"github.com/coopnorge/provider-github/internal/features"
+	"github.com/crossplane-contrib/provider-upjet-github/apis"
+	"github.com/crossplane-contrib/provider-upjet-github/apis/v1alpha1"
+	"github.com/crossplane-contrib/provider-upjet-github/config"
+	"github.com/crossplane-contrib/provider-upjet-github/internal/clients"
+	"github.com/crossplane-contrib/provider-upjet-github/internal/controller"
+	"github.com/crossplane-contrib/provider-upjet-github/internal/features"
 )
 
 func main() {
@@ -60,7 +60,7 @@ func main() {
 	ctrl.SetLogger(zap.New(zap.WriteTo(io.Discard)))
 
 	zl := zap.New(zap.UseDevMode(*debug))
-	logr := logging.NewLogrLogger(zl.WithName("provider-github"))
+	logr := logging.NewLogrLogger(zl.WithName("provider-upjet-sgithub"))
 	if *debug {
 		// The controller-runtime runs with a no-op logger by default. It is
 		// *very* verbose even at info level, so we only provide it a real
@@ -78,7 +78,7 @@ func main() {
 
 	mgr, err := ctrl.NewManager(cfg, ctrl.Options{
 		LeaderElection:   *leaderElection,
-		LeaderElectionID: "crossplane-leader-election-provider-github",
+		LeaderElectionID: "crossplane-leader-election-provider-upjet-github",
 		Cache: cache.Options{
 			SyncPeriod: syncPeriod,
 		},

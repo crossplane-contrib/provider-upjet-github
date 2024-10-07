@@ -10,13 +10,13 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/coopnorge/provider-github/apis/actions/v1alpha1"
-	v1alpha1enterprise "github.com/coopnorge/provider-github/apis/enterprise/v1alpha1"
-	v1alpha1repo "github.com/coopnorge/provider-github/apis/repo/v1alpha1"
-	v1alpha1team "github.com/coopnorge/provider-github/apis/team/v1alpha1"
-	v1alpha1user "github.com/coopnorge/provider-github/apis/user/v1alpha1"
-	v1alpha1apis "github.com/coopnorge/provider-github/apis/v1alpha1"
-	v1beta1 "github.com/coopnorge/provider-github/apis/v1beta1"
+	v1alpha1 "github.com/crossplane-contrib/provider-upjet-github/apis/actions/v1alpha1"
+	v1alpha1enterprise "github.com/crossplane-contrib/provider-upjet-github/apis/enterprise/v1alpha1"
+	v1alpha1repo "github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1"
+	v1alpha1team "github.com/crossplane-contrib/provider-upjet-github/apis/team/v1alpha1"
+	v1alpha1user "github.com/crossplane-contrib/provider-upjet-github/apis/user/v1alpha1"
+	v1alpha1apis "github.com/crossplane-contrib/provider-upjet-github/apis/v1alpha1"
+	v1beta1 "github.com/crossplane-contrib/provider-upjet-github/apis/v1beta1"
 )
 
 func init() {

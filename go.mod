@@ -1,4 +1,4 @@
-module github.com/coopnorge/provider-github
+module github.com/crossplane-contrib/provider-upjet-github
 
 go 1.22
 
