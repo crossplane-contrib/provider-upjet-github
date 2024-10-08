@@ -21,7 +21,7 @@ type BranchInitParameters struct {
 
 	// The GitHub repository name.
 	// The GitHub repository name.
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
 	// Reference to a Repository in repo to populate repository.
@@ -83,7 +83,7 @@ type BranchParameters struct {
 
 	// The GitHub repository name.
 	// The GitHub repository name.
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 

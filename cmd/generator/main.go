@@ -12,7 +12,7 @@ import (
 
 	"github.com/crossplane/upjet/pkg/pipeline"
 
-	"github.com/coopnorge/provider-github/config"
+	"github.com/crossplane-contrib/provider-upjet-github/config"
 )
 
 func main() {

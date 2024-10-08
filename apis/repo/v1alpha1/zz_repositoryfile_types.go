@@ -32,7 +32,7 @@ type RepositoryFileInitParameters struct {
 	// Git branch (defaults to the repository's default branch).
 	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name, defaults to the repository's default branch
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Branch
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
 	// Reference to a Branch in repo to populate branch.
@@ -69,7 +69,7 @@ type RepositoryFileInitParameters struct {
 
 	// The repository to create the file in.
 	// The repository name
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
 	// Reference to a Repository in repo to populate repository.
@@ -167,7 +167,7 @@ type RepositoryFileParameters struct {
 	// Git branch (defaults to the repository's default branch).
 	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name, defaults to the repository's default branch
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Branch
 	// +kubebuilder:validation:Optional
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
@@ -211,7 +211,7 @@ type RepositoryFileParameters struct {
 
 	// The repository to create the file in.
 	// The repository name
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 

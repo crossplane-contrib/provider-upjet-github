@@ -17,7 +17,7 @@ type DefaultBranchInitParameters struct {
 
 	// The branch (e.g. main)
 	// The branch (e.g. 'main').
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Branch
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
 	// Reference to a Branch in repo to populate branch.
@@ -52,7 +52,7 @@ type DefaultBranchParameters struct {
 
 	// The branch (e.g. main)
 	// The branch (e.g. 'main').
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Branch
 	// +kubebuilder:validation:Optional
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 

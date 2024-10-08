@@ -21,7 +21,7 @@ type PullRequestInitParameters struct {
 
 	// Name of the base repository to retrieve the Pull Requests from.
 	// Name of the base repository to retrieve the Pull Requests from.
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	BaseRepository *string `json:"baseRepository,omitempty" tf:"base_repository,omitempty"`
 
 	// Reference to a Repository in repo to populate baseRepository.
@@ -38,7 +38,7 @@ type PullRequestInitParameters struct {
 
 	// Name of the branch serving as the head of the Pull Request.
 	// Name of the branch serving as the head of the Pull Request.
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Branch
 	HeadRef *string `json:"headRef,omitempty" tf:"head_ref,omitempty"`
 
 	// Reference to a Branch in repo to populate headRef.
@@ -140,7 +140,7 @@ type PullRequestParameters struct {
 
 	// Name of the base repository to retrieve the Pull Requests from.
 	// Name of the base repository to retrieve the Pull Requests from.
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	BaseRepository *string `json:"baseRepository,omitempty" tf:"base_repository,omitempty"`
 
@@ -159,7 +159,7 @@ type PullRequestParameters struct {
 
 	// Name of the branch serving as the head of the Pull Request.
 	// Name of the branch serving as the head of the Pull Request.
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Branch
 	// +kubebuilder:validation:Optional
 	HeadRef *string `json:"headRef,omitempty" tf:"head_ref,omitempty"`
 
