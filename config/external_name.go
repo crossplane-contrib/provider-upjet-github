@@ -51,6 +51,8 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	"github_organization_ruleset":    config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}/{{ id }} or {{ key_prefix }}.
 	"github_repository_autolink_reference": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ repository }}:{{ username }}.
+	"github_repository_collaborator": config.IdentifierFromProvider,
 }
 
 // cliReconciledExternalNameConfigs contains all external name configurations
