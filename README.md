@@ -100,6 +100,7 @@ spec:
 | `BranchProtection` | `repo` | `github_branch_protection` | |
 | `RepositoryFile` | `repo` | `github_repository_file` | |
 | `RepositoryAutolinkReference` | `repo` | `github_repository_autolink_reference` | |
+| `RepositoryCollaborator` | `repo` | `github_repository_collaborator` | |
 | `RepositoryWebhook` | `repo` | `github_repository_webhook` | |
 | `PullRequest` | `repo` | `github_repository_pull_request` | |
 | `DeployKey` | `repo` | `github_repository_deploy_key` | |
