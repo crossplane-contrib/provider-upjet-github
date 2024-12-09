@@ -11,6 +11,7 @@ import (
 
 	actionssecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/actionssecret"
 	actionsvariable "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/actionsvariable"
+	runnergroup "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/runnergroup"
 	organization "github.com/crossplane-contrib/provider-upjet-github/internal/controller/enterprise/organization"
 	organizationruleset "github.com/crossplane-contrib/provider-upjet-github/internal/controller/enterprise/organizationruleset"
 	providerconfig "github.com/crossplane-contrib/provider-upjet-github/internal/controller/providerconfig"
@@ -40,6 +41,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		actionssecret.Setup,
 		actionsvariable.Setup,
+		runnergroup.Setup,
 		organization.Setup,
 		organizationruleset.Setup,
 		providerconfig.Setup,
