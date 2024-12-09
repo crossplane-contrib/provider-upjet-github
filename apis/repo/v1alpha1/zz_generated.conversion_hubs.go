@@ -28,6 +28,9 @@ func (tr *Repository) Hub() {}
 func (tr *RepositoryAutolinkReference) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *RepositoryCollaborator) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *RepositoryFile) Hub() {}
 
 // Hub marks this type as a conversion hub.
