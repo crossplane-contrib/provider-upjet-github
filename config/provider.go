@@ -22,6 +22,7 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/pullrequest"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repository"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryautolinkreference"
+	"github.com/crossplane-contrib/provider-upjet-github/config/repositorycollaborator"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryfile"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorywebhook"
 	"github.com/crossplane-contrib/provider-upjet-github/config/team"
@@ -79,6 +80,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		organization.Configure,
 		organizationruleset.Configure,
 		repositoryautolinkreference.Configure,
+		repositorycollaborator.Configure,
 		membership.Configure,
 		teamsettings.Configure,
 		teamsyncgroupmapping.Configure,
