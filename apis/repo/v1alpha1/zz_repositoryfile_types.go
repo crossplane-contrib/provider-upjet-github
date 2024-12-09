@@ -33,6 +33,7 @@ type RepositoryFileInitParameters struct {
 	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name, defaults to the repository's default branch
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Branch
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("branch",true)
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
 	// Reference to a Branch in repo to populate branch.
@@ -168,6 +169,7 @@ type RepositoryFileParameters struct {
 	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name, defaults to the repository's default branch
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Branch
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("branch",true)
 	// +kubebuilder:validation:Optional
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 

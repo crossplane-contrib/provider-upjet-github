@@ -8,6 +8,7 @@ package v1alpha1
 import (
 	"context"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
+	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -305,7 +306,7 @@ func (mg *RepositoryFile) ResolveReferences(ctx context.Context, c client.Reader
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Branch),
-		Extract:      reference.ExternalName(),
+		Extract:      resource.ExtractParamPath("branch", true),
 		Reference:    mg.Spec.ForProvider.BranchRef,
 		Selector:     mg.Spec.ForProvider.BranchSelector,
 		To: reference.To{
@@ -337,7 +338,7 @@ func (mg *RepositoryFile) ResolveReferences(ctx context.Context, c client.Reader
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Branch),
-		Extract:      reference.ExternalName(),
+		Extract:      resource.ExtractParamPath("branch", true),
 		Reference:    mg.Spec.InitProvider.BranchRef,
 		Selector:     mg.Spec.InitProvider.BranchSelector,
 		To: reference.To{
