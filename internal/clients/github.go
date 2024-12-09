@@ -17,7 +17,7 @@ import (
 
 	"github.com/crossplane/upjet/pkg/terraform"
 
-	"github.com/coopnorge/provider-github/apis/v1beta1"
+	"github.com/crossplane-contrib/provider-upjet-github/apis/v1beta1"
 )
 
 const (

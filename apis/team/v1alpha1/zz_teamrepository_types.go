@@ -22,7 +22,7 @@ type TeamRepositoryInitParameters struct {
 
 	// The repository to add to the team.
 	// The repository to add to the team.
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
 	// Reference to a Repository in repo to populate repository.
@@ -35,7 +35,7 @@ type TeamRepositoryInitParameters struct {
 
 	// The GitHub team id or the GitHub team slug
 	// ID or slug of team
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/team/v1alpha1.Team
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/team/v1alpha1.Team
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 
 	// Reference to a Team in team to populate teamId.
@@ -76,7 +76,7 @@ type TeamRepositoryParameters struct {
 
 	// The repository to add to the team.
 	// The repository to add to the team.
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
@@ -90,7 +90,7 @@ type TeamRepositoryParameters struct {
 
 	// The GitHub team id or the GitHub team slug
 	// ID or slug of team
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/team/v1alpha1.Team
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/team/v1alpha1.Team
 	// +kubebuilder:validation:Optional
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 

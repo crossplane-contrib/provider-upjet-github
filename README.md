@@ -1,6 +1,6 @@
 # Provider GitHub
 
-`provider-github` is a [Crossplane](https://crossplane.io/) provider that
+`provider-upjet-github` is a [Crossplane](https://crossplane.io/) provider that
 is built using [Upjet](https://github.com/upbound/upjet) code
 generation tools and exposes XRM-conformant managed resources for the
 GitHub API.
@@ -8,9 +8,9 @@ GitHub API.
 ## Getting Started
 
 Install the provider by using the following command after changing the image tag
-to the [latest release](https://marketplace.upbound.io/providers/coopnorge/provider-github):
+to the [latest release](https://marketplace.upbound.io/providers/crossplane-contrib/provider-upjet-github):
 ```
-up ctp provider install coopnorge/provider-github:v0.1.0
+up ctp provider install crossplane-contrib/provider-upjet-github:v0.1.0
 ```
 
 Alternatively, you can use declarative installation:
@@ -19,12 +19,12 @@ cat <<EOF | kubectl apply -f -
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: provider-github
+  name: provider-upjet-github
 spec:
-  package: coopnorge/provider-github:v0.1.0
+  package: crossplane-contrib/provider-upjet-github:v0.1.0
 EOF
 ```
-You can see the API reference [here](https://doc.crds.dev/github.com/coopnorge/provider-github).
+You can see the API reference [here](https://marketplace.upbound.io/providers/crossplane-contrib/provider-upjet-github).
 
 ### Adding provider config
 
@@ -120,7 +120,7 @@ spec:
 * 1 resource per PR prefered
 * Write a test case
 
-Check this reference PR: https://github.com/coopnorge/provider-github/pull/4
+Check this reference PR: https://github.com/crossplane-contrib/provider-upjet-github/pull/4
 
 An example diff for human generated files
 
@@ -129,7 +129,7 @@ diff --git a/README.md b/README.md
 index 06704c1..7adefad 100644
 --- a/README.md
 +++ b/README.md
-@@ -34,6 +34,7 @@ You can see the API reference [here](https://doc.crds.dev/github.com/coopnorge/p
+@@ -34,6 +34,7 @@ You can see the API reference [here](https://doc.crds.dev/github.com/crossplane-contrib/p
  | `Branch` | `repo` |  `github_branch`      |  |
  | `DefaultBranch` | `repo` | `github_branch_default` | name change |
  | `BranchProtection` | `repo` | `github_branch_protection` | |
@@ -156,12 +156,12 @@ index e2d81bf..093bdf8 100644
 --- a/config/provider.go
 +++ b/config/provider.go
 @@ -12,6 +12,7 @@ import (
- 	"github.com/coopnorge/provider-github/config/branchprotection"
- 	"github.com/coopnorge/provider-github/config/defaultbranch"
- 	"github.com/coopnorge/provider-github/config/repository"
-+	"github.com/coopnorge/provider-github/config/repositoryfile"
- 	"github.com/coopnorge/provider-github/config/team"
- 	"github.com/coopnorge/provider-github/config/teamrepository"
+ 	"github.com/crossplane-contrib/provider-upjet-github/config/branchprotection"
+ 	"github.com/crossplane-contrib/provider-upjet-github/config/defaultbranch"
+ 	"github.com/crossplane-contrib/provider-upjet-github/config/repository"
++	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryfile"
+ 	"github.com/crossplane-contrib/provider-upjet-github/config/team"
+ 	"github.com/crossplane-contrib/provider-upjet-github/config/teamrepository"
  	ujconfig "github.com/upbound/upjet/pkg/config"
 @@ -40,6 +41,7 @@ func GetProvider() *ujconfig.Provider {
  		// add custom config functions

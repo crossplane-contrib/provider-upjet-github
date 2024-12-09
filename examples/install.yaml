@@ -3,4 +3,4 @@ kind: Provider
 metadata:
   name: provider-github
 spec:
-  package: coopnorge/provider-github:v0.1.0
+  package: crossplane-contrib/provider-upjet-github:v0.1.0

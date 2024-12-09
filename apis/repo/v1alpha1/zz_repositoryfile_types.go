@@ -17,8 +17,22 @@ type RepositoryFileInitParameters struct {
 
 	// Git branch (defaults to the repository's default branch).
 	// The branch must already exist, it will not be created if it does not already exist.
+	// Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
+	AutocreateBranch *bool `json:"autocreateBranch,omitempty" tf:"autocreate_branch,omitempty"`
+
+	// Git branch (defaults to the repository's default branch).
+	// The branch must already exist, it will not be created if it does not already exist.
+	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+	AutocreateBranchSourceBranch *string `json:"autocreateBranchSourceBranch,omitempty" tf:"autocreate_branch_source_branch,omitempty"`
+
+	// The SHA blob of the file.
+	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+	AutocreateBranchSourceSha *string `json:"autocreateBranchSourceSha,omitempty" tf:"autocreate_branch_source_sha,omitempty"`
+
+	// Git branch (defaults to the repository's default branch).
+	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name, defaults to the repository's default branch
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Branch
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
 	// Reference to a Branch in repo to populate branch.
@@ -55,7 +69,7 @@ type RepositoryFileInitParameters struct {
 
 	// The repository to create the file in.
 	// The repository name
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
 	// Reference to a Repository in repo to populate repository.
@@ -68,6 +82,20 @@ type RepositoryFileInitParameters struct {
 }
 
 type RepositoryFileObservation struct {
+
+	// Git branch (defaults to the repository's default branch).
+	// The branch must already exist, it will not be created if it does not already exist.
+	// Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
+	AutocreateBranch *bool `json:"autocreateBranch,omitempty" tf:"autocreate_branch,omitempty"`
+
+	// Git branch (defaults to the repository's default branch).
+	// The branch must already exist, it will not be created if it does not already exist.
+	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+	AutocreateBranchSourceBranch *string `json:"autocreateBranchSourceBranch,omitempty" tf:"autocreate_branch_source_branch,omitempty"`
+
+	// The SHA blob of the file.
+	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+	AutocreateBranchSourceSha *string `json:"autocreateBranchSourceSha,omitempty" tf:"autocreate_branch_source_sha,omitempty"`
 
 	// Git branch (defaults to the repository's default branch).
 	// The branch must already exist, it will not be created if it does not already exist.
@@ -121,8 +149,25 @@ type RepositoryFileParameters struct {
 
 	// Git branch (defaults to the repository's default branch).
 	// The branch must already exist, it will not be created if it does not already exist.
+	// Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
+	// +kubebuilder:validation:Optional
+	AutocreateBranch *bool `json:"autocreateBranch,omitempty" tf:"autocreate_branch,omitempty"`
+
+	// Git branch (defaults to the repository's default branch).
+	// The branch must already exist, it will not be created if it does not already exist.
+	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+	// +kubebuilder:validation:Optional
+	AutocreateBranchSourceBranch *string `json:"autocreateBranchSourceBranch,omitempty" tf:"autocreate_branch_source_branch,omitempty"`
+
+	// The SHA blob of the file.
+	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+	// +kubebuilder:validation:Optional
+	AutocreateBranchSourceSha *string `json:"autocreateBranchSourceSha,omitempty" tf:"autocreate_branch_source_sha,omitempty"`
+
+	// Git branch (defaults to the repository's default branch).
+	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name, defaults to the repository's default branch
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Branch
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Branch
 	// +kubebuilder:validation:Optional
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
@@ -166,7 +211,7 @@ type RepositoryFileParameters struct {
 
 	// The repository to create the file in.
 	// The repository name
-	// +crossplane:generate:reference:type=github.com/coopnorge/provider-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 

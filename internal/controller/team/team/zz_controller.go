@@ -21,8 +21,8 @@ import (
 	"github.com/pkg/errors"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/coopnorge/provider-github/apis/team/v1alpha1"
-	features "github.com/coopnorge/provider-github/internal/features"
+	v1alpha1 "github.com/crossplane-contrib/provider-upjet-github/apis/team/v1alpha1"
+	features "github.com/crossplane-contrib/provider-upjet-github/internal/features"
 )
 
 // Setup adds a controller that reconciles Team managed resources.

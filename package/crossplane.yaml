@@ -1,20 +1,20 @@
 apiVersion: meta.pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: provider-github
+  name: provider-upjet-github
   annotations:
     meta.crossplane.io/maintainer: Coop Norge SA
-    meta.crossplane.io/source: github.com/coopnorge/provider-github
+    meta.crossplane.io/source: github.com/crossplane-contrib/provider-upjet-github
     meta.crossplane.io/license: Apache-2.0
     meta.crossplane.io/description: |
       The Github Crossplane provider adds support for 
       managing Github resources in kubernetes.
 
     meta.crossplane.io/readme: |
-      `provider-github` is a crossplane infrastructure provider for 
+      `provider-upjet-github` is a crossplane infrastructure provider for 
       [Github](https://github.com). 
 
       It is based on the Terraform Github provider. Read the 
-      [readme](https://github.com/coopnorge/provider-github/blob/main/README.md)
+      [readme](https://github.com/crossplane-contrib/provider-upjet-github/blob/main/README.md)
       for instructions.
 

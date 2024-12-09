@@ -405,7 +405,8 @@ spec:
                       type: object
                     type: array
                   target:
-                    description: Possible values are `branch` and `tag`.
+                    description: 'Possible values are `branch`, `tag` and `push`.
+                      Note: The `push` target is in beta and is subject to change.'
                     type: string
                 type: object
               initProvider:
@@ -753,7 +754,8 @@ spec:
                       type: object
                     type: array
                   target:
-                    description: Possible values are `branch` and `tag`.
+                    description: 'Possible values are `branch`, `tag` and `push`.
+                      Note: The `push` target is in beta and is subject to change.'
                     type: string
                 type: object
               managementPolicies:
@@ -1288,7 +1290,8 @@ spec:
                     format: int64
                     type: integer
                   target:
-                    description: Possible values are `branch` and `tag`.
+                    description: 'Possible values are `branch`, `tag` and `push`.
+                      Note: The `push` target is in beta and is subject to change.'
                     type: string
                 type: object
               conditions:
