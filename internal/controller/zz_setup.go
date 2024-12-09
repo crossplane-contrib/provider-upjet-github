@@ -18,6 +18,7 @@ import (
 	branchprotection "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/branchprotection"
 	defaultbranch "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/defaultbranch"
 	deploykey "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/deploykey"
+	environment "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/environment"
 	pullrequest "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/pullrequest"
 	repository "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repository"
 	repositoryautolinkreference "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositoryautolinkreference"
@@ -46,6 +47,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		branchprotection.Setup,
 		defaultbranch.Setup,
 		deploykey.Setup,
+		environment.Setup,
 		pullrequest.Setup,
 		repository.Setup,
 		repositoryautolinkreference.Setup,
