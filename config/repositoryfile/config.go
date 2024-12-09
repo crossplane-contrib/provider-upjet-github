@@ -15,6 +15,7 @@ func Configure(p *config.Provider) {
 		}
 		r.References["branch"] = config.Reference{
 			TerraformName: "github_branch",
+			Extractor:     `github.com/crossplane/upjet/pkg/resource.ExtractParamPath("branch",true)`,
 		}
 	})
 }
