@@ -9,6 +9,7 @@ import (
 	// Note(ezgidemirel): we are importing this to embed provider schema document
 	_ "embed"
 
+	"github.com/crossplane-contrib/provider-upjet-github/config/actions"
 	"github.com/crossplane-contrib/provider-upjet-github/config/actionssecret"
 	"github.com/crossplane-contrib/provider-upjet-github/config/actionsvariable"
 	"github.com/crossplane-contrib/provider-upjet-github/config/branch"
@@ -76,6 +77,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		branchprotection.Configure,
 		repositorywebhook.Configure,
 		actionssecret.Configure,
+		actions.Configure,
 		actionsvariable.Configure,
 		organization.Configure,
 		organizationruleset.Configure,
