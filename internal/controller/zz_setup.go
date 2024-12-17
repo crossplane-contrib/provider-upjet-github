@@ -25,6 +25,7 @@ import (
 	repositoryautolinkreference "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositoryautolinkreference"
 	repositorycollaborator "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositorycollaborator"
 	repositoryfile "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositoryfile"
+	repositoryruleset "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositoryruleset"
 	repositorywebhook "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositorywebhook"
 	emugroupmapping "github.com/crossplane-contrib/provider-upjet-github/internal/controller/team/emugroupmapping"
 	team "github.com/crossplane-contrib/provider-upjet-github/internal/controller/team/team"
@@ -55,6 +56,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		repositoryautolinkreference.Setup,
 		repositorycollaborator.Setup,
 		repositoryfile.Setup,
+		repositoryruleset.Setup,
 		repositorywebhook.Setup,
 		emugroupmapping.Setup,
 		team.Setup,
