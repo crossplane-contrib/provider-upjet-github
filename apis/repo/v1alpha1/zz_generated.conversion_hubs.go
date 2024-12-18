@@ -37,4 +37,7 @@ func (tr *RepositoryCollaborator) Hub() {}
 func (tr *RepositoryFile) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *RepositoryRuleset) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *RepositoryWebhook) Hub() {}

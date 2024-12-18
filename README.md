@@ -102,6 +102,7 @@ spec:
 | `RepositoryAutolinkReference` | `repo` | `github_repository_autolink_reference` | |
 | `RepositoryCollaborator` | `repo` | `github_repository_collaborator` | |
 | `RepositoryWebhook` | `repo` | `github_repository_webhook` | |
+| `RepositoryRuleset` | `repo` | `github_repository_ruleset` | |
 | `PullRequest` | `repo` | `github_repository_pull_request` | |
 | `DeployKey` | `repo` | `github_repository_deploy_key` | |
 | `Team` | `team` | `github_team` | |
