@@ -1,0 +1,13 @@
+apiVersion: organization.github.upbound.io/v1alpha1
+kind: OrganizationActionsVariable
+metadata:
+  annotations:
+    meta.upbound.io/example-id: organization/v1alpha1/organizationactionsvariable
+  labels:
+    testing.upbound.io/example-name: example_variable
+  name: example-variable
+spec:
+  forProvider:
+    value: example_variable_value
+    variableName: example_variable_name
+    visibility: private

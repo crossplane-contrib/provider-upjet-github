@@ -19,6 +19,8 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/emugroupmapping"
 	"github.com/crossplane-contrib/provider-upjet-github/config/membership"
 	"github.com/crossplane-contrib/provider-upjet-github/config/organization"
+	"github.com/crossplane-contrib/provider-upjet-github/config/organizationactionssecret"
+	"github.com/crossplane-contrib/provider-upjet-github/config/organizationactionsvariable"
 	"github.com/crossplane-contrib/provider-upjet-github/config/organizationruleset"
 	"github.com/crossplane-contrib/provider-upjet-github/config/pullrequest"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repository"
@@ -88,6 +90,8 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		membership.Configure,
 		teamsettings.Configure,
 		teamsyncgroupmapping.Configure,
+		organizationactionssecret.Configure,
+		organizationactionsvariable.Configure,
 	} {
 		configure(pc)
 	}

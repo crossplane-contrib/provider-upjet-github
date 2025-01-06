@@ -1,0 +1,9 @@
+apiVersion: actions.github.upbound.io/v1alpha1
+kind: OrganizationActionsVariable
+metadata:
+  name: organization-variable-test
+spec:
+  forProvider:
+    value: "My variable value"
+    variableName: TEST_VARIABLE
+    visibility: private
