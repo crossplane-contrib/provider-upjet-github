@@ -11,11 +11,11 @@ import (
 
 	actionssecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/actionssecret"
 	actionsvariable "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/actionsvariable"
+	organizationactionssecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/organizationactionssecret"
+	organizationactionsvariable "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/organizationactionsvariable"
 	runnergroup "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/runnergroup"
 	organization "github.com/crossplane-contrib/provider-upjet-github/internal/controller/enterprise/organization"
 	organizationruleset "github.com/crossplane-contrib/provider-upjet-github/internal/controller/enterprise/organizationruleset"
-	organizationactionssecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/organization/organizationactionssecret"
-	organizationactionsvariable "github.com/crossplane-contrib/provider-upjet-github/internal/controller/organization/organizationactionsvariable"
 	providerconfig "github.com/crossplane-contrib/provider-upjet-github/internal/controller/providerconfig"
 	branch "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/branch"
 	branchprotection "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/branchprotection"
@@ -44,11 +44,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		actionssecret.Setup,
 		actionsvariable.Setup,
+		organizationactionssecret.Setup,
+		organizationactionsvariable.Setup,
 		runnergroup.Setup,
 		organization.Setup,
 		organizationruleset.Setup,
-		organizationactionssecret.Setup,
-		organizationactionsvariable.Setup,
 		providerconfig.Setup,
 		branch.Setup,
 		branchprotection.Setup,

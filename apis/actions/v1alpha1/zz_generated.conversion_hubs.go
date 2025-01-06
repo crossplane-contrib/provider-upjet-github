@@ -13,4 +13,10 @@ func (tr *ActionsSecret) Hub() {}
 func (tr *ActionsVariable) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *OrganizationActionsSecret) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *OrganizationActionsVariable) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *RunnerGroup) Hub() {}

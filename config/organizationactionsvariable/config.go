@@ -8,6 +8,6 @@ func Configure(p *config.Provider) {
 		// We need to override the default group that upjet generated for
 		// this resource, which would be "github"
 		r.Kind = "OrganizationActionsVariable"
-		r.ShortGroup = "organization"
+		r.ShortGroup = "actions"
 	})
 }
