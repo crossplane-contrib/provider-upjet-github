@@ -57,13 +57,13 @@ spec:
       name: provider-secret
       namespace: upbound-system
       key: credentials
-
 ```
 
 #### Provider config example with Github application based authentication
 
 Note that the PEM certificate needs to be wrapped in a non-multiline string, with the characters "\n"
 as newline. See Terraform provider doc for more information.
+
 ```yaml
 ---
 apiVersion: v1
@@ -87,8 +87,23 @@ spec:
       name: provider-secret
       namespace: upbound-system
       key: credentials
-
 ```
+
+### Provider config scope
+
+Most operations of the provider happen in the scope of the `owner` attribute in the `credentials` JSON structure. This means that the provider
+will create resources in the context of the given owner. For example, if you want to create a repository in an organization, the `owner` attribute
+must point to a GitHub organization. If you want to create a repository in a user account, the `owner` attribute must point to a GitHub user
+account.
+
+Note that some resources like `OrganizationActionsSecret` and `OrganizationActionsVariable` require the `owner` attribute to point to the
+organization as they are not supported at the user level.
+
+Administration of resources on the *organization* level requires a token with at least `admin:org` scope.
+
+There are a few endpoints in the GitHub API that operate on the *enterprise* level and can be used for GitHub customers that have an enterprise
+account. One such resource is `Organization` which can be used to provision new organizations on the enterprise level. In this case, the token
+or app authentication must have at least `admin:enterprise` scope.
 
 ## Supported resources
 
@@ -112,8 +127,8 @@ spec:
 | `TeamSyncGroupMapping` | `team` | `github_team_sync_group_mapping` | |
 | `EmuTeamMapping` | `team` | `github_emu_group_mapping` | |
 | `ActionsSecret` | `actions` | `github_actions_secret` | |
-| `OrganizationActionsSecret` | `actions` | `github_organization_actions_secret` | |
-| `OrganizationActionsVariable` | `actions` | `github_organization_actions_variable` | |
+| `OrganizationActionsSecret` | `actions` | `github_organization_actions_secret` | The `owner` attribute in the `credentials` JSON structure must point to the organization. |
+| `OrganizationActionsVariable` | `actions` | `github_organization_actions_variable` | The `owner` attribute in the `credentials` JSON structure must point to the organization. |
 | `OrganizationRuleset` | `organization` | `github_organization_ruleset` | |
 | `Membership` | `user` | `github_membership` | Works only with - GitHub App user access tokens - GitHub App installation access tokens - Fine-grained personal access tokens using a token with at least `members:read` |
 | `Organization` | `enterprise` | `github_enterprise_organization` | Works only with PAT based authentication using a token with at least `admin:enterprise` scope.<br/>The following *GraphQL* query can be used to obtain the required `enterprise_id`:<br/> `gh api graphql -f query='query ($slug: String!) { enterprise(slug: $slug) { id } }' -F slug='<slug>' --jq '.data.enterprise.id'` |
