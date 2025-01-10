@@ -45,10 +45,12 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	// Can be imported using the following format: {{ repository }}/{{ id }}.
 	"github_repository_webhook": config.IdentifierFromProvider,
 	// This cannot be imported.
-	"github_actions_secret":          config.IdentifierFromProvider,
-	"github_actions_variable":        config.IdentifierFromProvider,
-	"github_enterprise_organization": config.IdentifierFromProvider,
-	"github_organization_ruleset":    config.IdentifierFromProvider,
+	"github_actions_secret":                config.IdentifierFromProvider,
+	"github_actions_variable":              config.IdentifierFromProvider,
+	"github_actions_organization_secret":   config.IdentifierFromProvider,
+	"github_actions_organization_variable": config.IdentifierFromProvider,
+	"github_enterprise_organization":       config.IdentifierFromProvider,
+	"github_organization_ruleset":          config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}/{{ id }} or {{ key_prefix }}.
 	"github_repository_autolink_reference": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}:{{ username }}.
