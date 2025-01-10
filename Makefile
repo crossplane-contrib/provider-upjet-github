@@ -13,7 +13,7 @@ export TERRAFORM_PROVIDER_REPO := https://github.com/integrations/terraform-prov
 export TERRAFORM_DOCS_PATH := website/docs/r
 export PROVIDER_NAME
 
-PLATFORMS ?= linux_amd64
+PLATFORMS ?= linux_amd64 linux_arm64
 
 # -include will silently skip missing files, which allows us
 # to load those files with a target in the Makefile. If only
