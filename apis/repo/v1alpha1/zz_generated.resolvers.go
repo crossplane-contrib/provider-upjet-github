@@ -7,7 +7,6 @@ package v1alpha1
 
 import (
 	"context"
-
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
@@ -94,6 +93,48 @@ func (mg *BranchProtection) ResolveReferences(ctx context.Context, c client.Read
 	}
 	mg.Spec.InitProvider.RepositoryID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.RepositoryIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this BranchProtectionv3.
+func (mg *BranchProtectionv3) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Repository),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.RepositoryRef,
+		Selector:     mg.Spec.ForProvider.RepositorySelector,
+		To: reference.To{
+			List:    &RepositoryList{},
+			Managed: &Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Repository")
+	}
+	mg.Spec.ForProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RepositoryRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Repository),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.RepositoryRef,
+		Selector:     mg.Spec.InitProvider.RepositorySelector,
+		To: reference.To{
+			List:    &RepositoryList{},
+			Managed: &Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Repository")
+	}
+	mg.Spec.InitProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RepositoryRef = rsp.ResolvedReference
 
 	return nil
 }
@@ -204,6 +245,80 @@ func (mg *Environment) ResolveReferences(ctx context.Context, c client.Reader) e
 	}
 	mg.Spec.ForProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.RepositoryRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Repository),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.RepositoryRef,
+		Selector:     mg.Spec.InitProvider.RepositorySelector,
+		To: reference.To{
+			List:    &RepositoryList{},
+			Managed: &Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Repository")
+	}
+	mg.Spec.InitProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RepositoryRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this EnvironmentDeploymentPolicy.
+func (mg *EnvironmentDeploymentPolicy) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Environment),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.EnvironmentRef,
+		Selector:     mg.Spec.ForProvider.EnvironmentSelector,
+		To: reference.To{
+			List:    &EnvironmentList{},
+			Managed: &Environment{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Environment")
+	}
+	mg.Spec.ForProvider.Environment = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.EnvironmentRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Repository),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.RepositoryRef,
+		Selector:     mg.Spec.ForProvider.RepositorySelector,
+		To: reference.To{
+			List:    &RepositoryList{},
+			Managed: &Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Repository")
+	}
+	mg.Spec.ForProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RepositoryRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Environment),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.EnvironmentRef,
+		Selector:     mg.Spec.InitProvider.EnvironmentSelector,
+		To: reference.To{
+			List:    &EnvironmentList{},
+			Managed: &Environment{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Environment")
+	}
+	mg.Spec.InitProvider.Environment = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.EnvironmentRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Repository),
@@ -500,6 +615,48 @@ func (mg *RepositoryRuleset) ResolveReferences(ctx context.Context, c client.Rea
 
 // ResolveReferences of this RepositoryWebhook.
 func (mg *RepositoryWebhook) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Repository),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.RepositoryRef,
+		Selector:     mg.Spec.ForProvider.RepositorySelector,
+		To: reference.To{
+			List:    &RepositoryList{},
+			Managed: &Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Repository")
+	}
+	mg.Spec.ForProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RepositoryRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Repository),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.RepositoryRef,
+		Selector:     mg.Spec.InitProvider.RepositorySelector,
+		To: reference.To{
+			List:    &RepositoryList{},
+			Managed: &Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Repository")
+	}
+	mg.Spec.InitProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RepositoryRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this TagProtection.
+func (mg *TagProtection) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
