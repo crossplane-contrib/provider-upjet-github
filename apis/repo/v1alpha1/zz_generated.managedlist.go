@@ -25,6 +25,15 @@ func (l *BranchProtectionList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this BranchProtectionv3List.
+func (l *BranchProtectionv3List) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this DefaultBranchList.
 func (l *DefaultBranchList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -43,8 +52,26 @@ func (l *DeployKeyList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this EnvironmentDeploymentPolicyList.
+func (l *EnvironmentDeploymentPolicyList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this EnvironmentList.
 func (l *EnvironmentList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this IssueLabelsList.
+func (l *IssueLabelsList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -108,6 +135,15 @@ func (l *RepositoryRulesetList) GetItems() []resource.Managed {
 
 // GetItems of this RepositoryWebhookList.
 func (l *RepositoryWebhookList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this TagProtectionList.
+func (l *TagProtectionList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
