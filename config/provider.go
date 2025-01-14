@@ -15,6 +15,7 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/actionsenvironmentsecret"
 	"github.com/crossplane-contrib/provider-upjet-github/config/actionsenvironmentvariable"
 	"github.com/crossplane-contrib/provider-upjet-github/config/actionsorganizationpermissions"
+	"github.com/crossplane-contrib/provider-upjet-github/config/actionsorganizationsecret"
 	"github.com/crossplane-contrib/provider-upjet-github/config/actionsorganizationvariable"
 	"github.com/crossplane-contrib/provider-upjet-github/config/actionsrepositoryaccesslevel"
 	"github.com/crossplane-contrib/provider-upjet-github/config/actionsrepositorypermissions"
@@ -33,7 +34,6 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryautolinkreference"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorycollaborator"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorydeploykey"
-	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryenvironment"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryenvironmentdeploymentpolicy"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryfile"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorypullrequest"
@@ -82,6 +82,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		actionsenvironmentsecret.Configure,
 		actionsenvironmentvariable.Configure,
 		actionsorganizationpermissions.Configure,
+		actionsorganizationsecret.Configure,
 		actionsorganizationvariable.Configure,
 		actionsrepositoryaccesslevel.Configure,
 		actionsrepositorypermissions.Configure,
@@ -100,7 +101,6 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		repositoryautolinkreference.Configure,
 		repositorycollaborator.Configure,
 		repositorydeploykey.Configure,
-		repositoryenvironment.Configure,
 		repositoryenvironmentdeploymentpolicy.Configure,
 		repositoryfile.Configure,
 		repositorypullrequest.Configure,
