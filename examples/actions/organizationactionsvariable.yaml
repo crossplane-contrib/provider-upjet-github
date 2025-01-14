@@ -1,5 +1,5 @@
 apiVersion: actions.github.upbound.io/v1alpha1
-kind: OrganizationActionsVariable
+kind: ActionsOrganizationVariable
 metadata:
   name: organization-variable-test
 spec:
