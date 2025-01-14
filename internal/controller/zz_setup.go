@@ -9,9 +9,9 @@ import (
 
 	"github.com/crossplane/upjet/pkg/controller"
 
-	actionsorganizationvariable "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/actionsorganizationvariable"
 	actionssecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/actionssecret"
 	actionsvariable "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/actionsvariable"
+	organizationactionsvariable "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/organizationactionsvariable"
 	organizationsecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/organizationsecret"
 	runnergroup "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/runnergroup"
 	organization "github.com/crossplane-contrib/provider-upjet-github/internal/controller/enterprise/organization"
@@ -42,9 +42,9 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		actionsorganizationvariable.Setup,
 		actionssecret.Setup,
 		actionsvariable.Setup,
+		organizationactionsvariable.Setup,
 		organizationsecret.Setup,
 		runnergroup.Setup,
 		organization.Setup,

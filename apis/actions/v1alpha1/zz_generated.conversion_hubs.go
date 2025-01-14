@@ -7,13 +7,13 @@ Copyright 2022 Upbound Inc.
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
-func (tr *ActionsOrganizationVariable) Hub() {}
-
-// Hub marks this type as a conversion hub.
 func (tr *ActionsSecret) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *ActionsVariable) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *OrganizationActionsVariable) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *OrganizationSecret) Hub() {}
