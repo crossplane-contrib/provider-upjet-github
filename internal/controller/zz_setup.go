@@ -9,10 +9,10 @@ import (
 
 	"github.com/crossplane/upjet/pkg/controller"
 
+	actionsorganizationvariable "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/actionsorganizationvariable"
 	actionssecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/actionssecret"
 	actionsvariable "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/actionsvariable"
-	organizationactionssecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/organizationactionssecret"
-	organizationactionsvariable "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/organizationactionsvariable"
+	organizationsecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/organizationsecret"
 	runnergroup "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/runnergroup"
 	organization "github.com/crossplane-contrib/provider-upjet-github/internal/controller/enterprise/organization"
 	organizationruleset "github.com/crossplane-contrib/provider-upjet-github/internal/controller/enterprise/organizationruleset"
@@ -21,11 +21,11 @@ import (
 	branchprotection "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/branchprotection"
 	defaultbranch "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/defaultbranch"
 	deploykey "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/deploykey"
-	environment "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/environment"
 	pullrequest "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/pullrequest"
 	repository "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repository"
 	repositoryautolinkreference "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositoryautolinkreference"
 	repositorycollaborator "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositorycollaborator"
+	repositoryenvironment "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositoryenvironment"
 	repositoryfile "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositoryfile"
 	repositoryruleset "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositoryruleset"
 	repositorywebhook "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositorywebhook"
@@ -42,10 +42,10 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		actionsorganizationvariable.Setup,
 		actionssecret.Setup,
 		actionsvariable.Setup,
-		organizationactionssecret.Setup,
-		organizationactionsvariable.Setup,
+		organizationsecret.Setup,
 		runnergroup.Setup,
 		organization.Setup,
 		organizationruleset.Setup,
@@ -54,11 +54,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		branchprotection.Setup,
 		defaultbranch.Setup,
 		deploykey.Setup,
-		environment.Setup,
 		pullrequest.Setup,
 		repository.Setup,
 		repositoryautolinkreference.Setup,
 		repositorycollaborator.Setup,
+		repositoryenvironment.Setup,
 		repositoryfile.Setup,
 		repositoryruleset.Setup,
 		repositorywebhook.Setup,

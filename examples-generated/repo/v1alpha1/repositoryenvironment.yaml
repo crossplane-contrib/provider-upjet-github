@@ -1,0 +1,36 @@
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: RepositoryEnvironment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositoryenvironment
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    deploymentBranchPolicy:
+    - customBranchPolicies: false
+      protectedBranches: true
+    environment: example
+    preventSelfReview: true
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    reviewers:
+    - usersRefs:
+      - name: github_user
+
+---
+
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositoryenvironment
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    description: My awesome codebase
+    name: A Repository Project
