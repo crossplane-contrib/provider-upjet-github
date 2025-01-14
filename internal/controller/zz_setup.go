@@ -9,6 +9,7 @@ import (
 
 	"github.com/crossplane/upjet/pkg/controller"
 
+	actionsrepositoryaccesslevel "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/actionsrepositoryaccesslevel"
 	actionssecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/actionssecret"
 	actionsvariable "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/actionsvariable"
 	organizationactionssecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/actions/organizationactionssecret"
@@ -42,6 +43,7 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		actionsrepositoryaccesslevel.Setup,
 		actionssecret.Setup,
 		actionsvariable.Setup,
 		organizationactionssecret.Setup,

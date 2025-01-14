@@ -44,6 +44,8 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	"github_membership": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}/{{ id }}.
 	"github_repository_webhook": config.IdentifierFromProvider,
+	// This can be imported using the following format: {{ repository }}
+	"github_actions_repository_access_level": config.IdentifierFromProvider,
 	// This cannot be imported.
 	"github_actions_secret":                config.IdentifierFromProvider,
 	"github_actions_variable":              config.IdentifierFromProvider,
