@@ -24,14 +24,11 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/branchdefault"
 	"github.com/crossplane-contrib/provider-upjet-github/config/branchprotection"
 	"github.com/crossplane-contrib/provider-upjet-github/config/branchprotectionv3"
-	"github.com/crossplane-contrib/provider-upjet-github/config/deploykey"
 	"github.com/crossplane-contrib/provider-upjet-github/config/emugroupmapping"
 	"github.com/crossplane-contrib/provider-upjet-github/config/enterpriseorganization"
 	"github.com/crossplane-contrib/provider-upjet-github/config/issuelabels"
 	"github.com/crossplane-contrib/provider-upjet-github/config/membership"
-	"github.com/crossplane-contrib/provider-upjet-github/config/organization"
 	"github.com/crossplane-contrib/provider-upjet-github/config/organizationruleset"
-	"github.com/crossplane-contrib/provider-upjet-github/config/pullrequest"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repository"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryautolinkreference"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorycollaborator"
@@ -94,14 +91,11 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		branchdefault.Configure,
 		branchprotection.Configure,
 		branchprotectionv3.Configure,
-		deploykey.Configure,
 		emugroupmapping.Configure,
 		enterpriseorganization.Configure,
 		issuelabels.Configure,
 		membership.Configure,
-		organization.Configure,
 		organizationruleset.Configure,
-		pullrequest.Configure,
 		repository.Configure,
 		repositoryautolinkreference.Configure,
 		repositorycollaborator.Configure,

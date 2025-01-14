@@ -1,4 +1,4 @@
-package organization
+package enterpriseorganization
 
 import "github.com/crossplane/upjet/pkg/config"
 

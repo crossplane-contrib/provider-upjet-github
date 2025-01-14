@@ -1,4 +1,4 @@
-package pullrequest
+package repositorypullrequest
 
 import "github.com/crossplane/upjet/pkg/config"
 

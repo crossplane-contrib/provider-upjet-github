@@ -1,4 +1,4 @@
-package deploykey
+package repositorydeploykey
 
 import (
 	"github.com/crossplane/upjet/pkg/config"
