@@ -1,0 +1,63 @@
+apiVersion: team.github.upbound.io/v1alpha1
+kind: Members
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/members
+  labels:
+    testing.upbound.io/example-name: some_team_members
+  name: some-team-members
+spec:
+  forProvider:
+    members:
+    - role: maintainer
+      username: SomeUser
+    - role: member
+      username: AnotherUser
+    teamIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: some_team
+
+---
+
+apiVersion: user.github.upbound.io/v1alpha1
+kind: Membership
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/members
+  labels:
+    testing.upbound.io/example-name: membership_for_another_user
+  name: membership-for-another-user
+spec:
+  forProvider:
+    role: member
+    username: AnotherUser
+
+---
+
+apiVersion: user.github.upbound.io/v1alpha1
+kind: Membership
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/members
+  labels:
+    testing.upbound.io/example-name: membership_for_some_user
+  name: membership-for-some-user
+spec:
+  forProvider:
+    role: member
+    username: SomeUser
+
+---
+
+apiVersion: team.github.upbound.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/members
+  labels:
+    testing.upbound.io/example-name: some_team
+  name: some-team
+spec:
+  forProvider:
+    description: Some cool team
+    name: SomeTeam

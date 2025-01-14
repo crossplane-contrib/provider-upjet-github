@@ -10,6 +10,9 @@ package v1alpha1
 func (tr *EmuGroupMapping) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *Members) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Team) Hub() {}
 
 // Hub marks this type as a conversion hub.
