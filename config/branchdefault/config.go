@@ -1,4 +1,4 @@
-package defaultbranch
+package branchdefault
 
 import "github.com/crossplane/upjet/pkg/config"
 
