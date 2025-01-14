@@ -10,6 +10,7 @@ import (
 	_ "embed"
 
 	"github.com/crossplane-contrib/provider-upjet-github/config/actions"
+	"github.com/crossplane-contrib/provider-upjet-github/config/actionsrepositoryaccesslevel"
 	"github.com/crossplane-contrib/provider-upjet-github/config/actionssecret"
 	"github.com/crossplane-contrib/provider-upjet-github/config/actionsvariable"
 	"github.com/crossplane-contrib/provider-upjet-github/config/branch"
@@ -79,6 +80,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		defaultbranch.Configure,
 		branchprotection.Configure,
 		repositorywebhook.Configure,
+		actionsrepositoryaccesslevel.Configure,
 		actionssecret.Configure,
 		actions.Configure,
 		actionsvariable.Configure,

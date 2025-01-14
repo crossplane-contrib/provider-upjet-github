@@ -1,0 +1,22 @@
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  name: github-crossplane-action-repository-access-level
+spec:
+  forProvider:
+    visibility: private
+    autoInit: true
+    gitignoreTemplate: Terraform
+  providerConfigRef:
+    name: default
+---
+apiVersion: actions.github.upbound.io/v1alpha1
+kind: ActionsRepositoryAccessLevel
+metadata:
+  name: action-repository-access-level-organization
+spec:
+  forProvider:
+    accessLevel: organization
+    repositoryRef:
+      name: github-crossplane-action-repository-access-level
