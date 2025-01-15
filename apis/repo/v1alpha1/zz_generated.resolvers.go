@@ -7,6 +7,8 @@ package v1alpha1
 
 import (
 	"context"
+	v1alpha1 "github.com/crossplane-contrib/provider-upjet-github/apis/team/v1alpha1"
+	v1alpha11 "github.com/crossplane-contrib/provider-upjet-github/apis/user/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
@@ -228,6 +230,7 @@ func (mg *Environment) ResolveReferences(ctx context.Context, c client.Reader) e
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
+	var mrsp reference.MultiResolutionResponse
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
@@ -246,6 +249,42 @@ func (mg *Environment) ResolveReferences(ctx context.Context, c client.Reader) e
 	mg.Spec.ForProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.RepositoryRef = rsp.ResolvedReference
 
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.Reviewers); i3++ {
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.Reviewers[i3].Teams),
+			Extract:       reference.ExternalName(),
+			References:    mg.Spec.ForProvider.Reviewers[i3].TeamsRefs,
+			Selector:      mg.Spec.ForProvider.Reviewers[i3].TeamsSelector,
+			To: reference.To{
+				List:    &v1alpha1.TeamList{},
+				Managed: &v1alpha1.Team{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.Reviewers[i3].Teams")
+		}
+		mg.Spec.ForProvider.Reviewers[i3].Teams = reference.ToPtrValues(mrsp.ResolvedValues)
+		mg.Spec.ForProvider.Reviewers[i3].TeamsRefs = mrsp.ResolvedReferences
+
+	}
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.Reviewers); i3++ {
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.Reviewers[i3].Users),
+			Extract:       reference.ExternalName(),
+			References:    mg.Spec.ForProvider.Reviewers[i3].UsersRefs,
+			Selector:      mg.Spec.ForProvider.Reviewers[i3].UsersSelector,
+			To: reference.To{
+				List:    &v1alpha11.MembershipList{},
+				Managed: &v1alpha11.Membership{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.Reviewers[i3].Users")
+		}
+		mg.Spec.ForProvider.Reviewers[i3].Users = reference.ToPtrValues(mrsp.ResolvedValues)
+		mg.Spec.ForProvider.Reviewers[i3].UsersRefs = mrsp.ResolvedReferences
+
+	}
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Repository),
 		Extract:      reference.ExternalName(),
@@ -261,6 +300,43 @@ func (mg *Environment) ResolveReferences(ctx context.Context, c client.Reader) e
 	}
 	mg.Spec.InitProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.RepositoryRef = rsp.ResolvedReference
+
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.Reviewers); i3++ {
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.Reviewers[i3].Teams),
+			Extract:       reference.ExternalName(),
+			References:    mg.Spec.InitProvider.Reviewers[i3].TeamsRefs,
+			Selector:      mg.Spec.InitProvider.Reviewers[i3].TeamsSelector,
+			To: reference.To{
+				List:    &v1alpha1.TeamList{},
+				Managed: &v1alpha1.Team{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.Reviewers[i3].Teams")
+		}
+		mg.Spec.InitProvider.Reviewers[i3].Teams = reference.ToPtrValues(mrsp.ResolvedValues)
+		mg.Spec.InitProvider.Reviewers[i3].TeamsRefs = mrsp.ResolvedReferences
+
+	}
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.Reviewers); i3++ {
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.Reviewers[i3].Users),
+			Extract:       reference.ExternalName(),
+			References:    mg.Spec.InitProvider.Reviewers[i3].UsersRefs,
+			Selector:      mg.Spec.InitProvider.Reviewers[i3].UsersSelector,
+			To: reference.To{
+				List:    &v1alpha11.MembershipList{},
+				Managed: &v1alpha11.Membership{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.Reviewers[i3].Users")
+		}
+		mg.Spec.InitProvider.Reviewers[i3].Users = reference.ToPtrValues(mrsp.ResolvedValues)
+		mg.Spec.InitProvider.Reviewers[i3].UsersRefs = mrsp.ResolvedReferences
+
+	}
 
 	return nil
 }
