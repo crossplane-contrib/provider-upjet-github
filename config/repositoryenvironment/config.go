@@ -15,12 +15,5 @@ func Configure(p *config.Provider) {
 			TerraformName: "github_repository",
 		}
 
-		r.References["reviewers.teams"] = config.Reference{
-			TerraformName: "github_team",
-		}
-
-		r.References["reviewers.users"] = config.Reference{
-			TerraformName: "github_membership",
-		}
 	})
 }

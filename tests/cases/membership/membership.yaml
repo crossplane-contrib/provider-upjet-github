@@ -1,3 +1,21 @@
+apiVersion: team.github.upbound.io/v1alpha1
+kind: Members
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/members
+  labels:
+    testing.upbound.io/example-name: some_team_members
+  name: some-team-members
+spec:
+  forProvider:
+    members:
+      - role: maintainer
+        username: TestUser
+      - role: member
+        username: TestUser
+    teamIdRef:
+      name: SomeExampleTeam
+---
 apiVersion: user.github.upbound.io/v1alpha1
 kind: Membership
 metadata:
@@ -10,3 +28,10 @@ spec:
   forProvider:
     role: member
     username: TestUser
+---
+apiVersion: team.github.upbound.io/v1alpha1
+kind: Team
+spec:
+  forProvider:
+    description: Some cool random team
+    name: SomeExampleTeam

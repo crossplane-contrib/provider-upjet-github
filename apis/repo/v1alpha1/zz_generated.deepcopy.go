@@ -6849,18 +6849,6 @@ func (in *ReviewersInitParameters) DeepCopyInto(out *ReviewersInitParameters) {
 			}
 		}
 	}
-	if in.TeamsRefs != nil {
-		in, out := &in.TeamsRefs, &out.TeamsRefs
-		*out = make([]v1.Reference, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.TeamsSelector != nil {
-		in, out := &in.TeamsSelector, &out.TeamsSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.Users != nil {
 		in, out := &in.Users, &out.Users
 		*out = make([]*int64, len(*in))
@@ -6871,18 +6859,6 @@ func (in *ReviewersInitParameters) DeepCopyInto(out *ReviewersInitParameters) {
 				**out = **in
 			}
 		}
-	}
-	if in.UsersRefs != nil {
-		in, out := &in.UsersRefs, &out.UsersRefs
-		*out = make([]v1.Reference, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.UsersSelector != nil {
-		in, out := &in.UsersSelector, &out.UsersSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -6947,18 +6923,6 @@ func (in *ReviewersParameters) DeepCopyInto(out *ReviewersParameters) {
 			}
 		}
 	}
-	if in.TeamsRefs != nil {
-		in, out := &in.TeamsRefs, &out.TeamsRefs
-		*out = make([]v1.Reference, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.TeamsSelector != nil {
-		in, out := &in.TeamsSelector, &out.TeamsSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.Users != nil {
 		in, out := &in.Users, &out.Users
 		*out = make([]*int64, len(*in))
@@ -6969,18 +6933,6 @@ func (in *ReviewersParameters) DeepCopyInto(out *ReviewersParameters) {
 				**out = **in
 			}
 		}
-	}
-	if in.UsersRefs != nil {
-		in, out := &in.UsersRefs, &out.UsersRefs
-		*out = make([]v1.Reference, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.UsersSelector != nil {
-		in, out := &in.UsersSelector, &out.UsersSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
 	}
 }
 

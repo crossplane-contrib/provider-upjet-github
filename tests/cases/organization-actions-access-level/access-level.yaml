@@ -1,0 +1,24 @@
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  name: github-crossplane-deploy-key
+spec:
+  forProvider:
+    visibility: public
+    autoInit: true
+    gitignoreTemplate: Terraform
+  providerConfigRef:
+    name: default
+---
+apiVersion: actions.github.upbound.io/v1alpha1
+kind: RepositoryAccessLevel
+metadata:
+  name: organization-access-level-test
+spec:
+  forProvider:
+    accessLevel: user
+    repositoryRef:
+      name: github-crossplane-provider-testing
+  providerConfigRef:
+    name: default

@@ -1,0 +1,9 @@
+apiVersion: actions.github.upbound.io/v1alpha1
+kind: EnvironmentVariable
+metadata:
+  name: environment-variable-test
+spec:
+  forProvider:
+    value: "My variable value"
+    variableName: TEST_VARIABLE
+    environment: github-crossplane-provider-testing

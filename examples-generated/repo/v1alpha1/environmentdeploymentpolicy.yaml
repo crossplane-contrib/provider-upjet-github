@@ -50,6 +50,6 @@ spec:
       matchLabels:
         testing.upbound.io/example-name: example
     reviewers:
-    - usersRefs:
-      - name: github_user
+    - users:
+      - ${data.github_user.current.id}
     waitTimer: 10000
