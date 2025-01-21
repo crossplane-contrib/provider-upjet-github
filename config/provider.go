@@ -34,6 +34,7 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryautolinkreference"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorycollaborator"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorydeploykey"
+	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryenvironment"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryenvironmentdeploymentpolicy"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryfile"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorypullrequest"
@@ -46,7 +47,6 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/teamrepository"
 	"github.com/crossplane-contrib/provider-upjet-github/config/teamsettings"
 	"github.com/crossplane-contrib/provider-upjet-github/config/teamsyncgroupmapping"
-	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryenvironment"
 	"github.com/crossplane/upjet/pkg/registry/reference"
 	"github.com/integrations/terraform-provider-github/v6/github"
 )
