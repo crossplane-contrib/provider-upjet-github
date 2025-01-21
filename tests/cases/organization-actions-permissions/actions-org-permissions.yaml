@@ -1,0 +1,15 @@
+apiVersion: actions.github.upbound.io/v1alpha1
+kind: OrganizationPermissions
+metadata:
+  name: organization-variable-test
+spec:
+  forProvider:
+    allowedActions: all
+    allowedActionsConfig:
+      - githubOwnedAllowed: true
+        patternsAllowed:
+          - actions/cache@*
+          - actions/checkout@*
+        verifiedAllowed: true
+    enabledRepositories: all
+

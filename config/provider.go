@@ -9,32 +9,44 @@ import (
 	// Note(ezgidemirel): we are importing this to embed provider schema document
 	_ "embed"
 
+	ujconfig "github.com/crossplane/upjet/pkg/config"
+
 	"github.com/crossplane-contrib/provider-upjet-github/config/actions"
+	"github.com/crossplane-contrib/provider-upjet-github/config/actionsenvironmentsecret"
+	"github.com/crossplane-contrib/provider-upjet-github/config/actionsenvironmentvariable"
+	"github.com/crossplane-contrib/provider-upjet-github/config/actionsorganizationpermissions"
+	"github.com/crossplane-contrib/provider-upjet-github/config/actionsorganizationsecret"
+	"github.com/crossplane-contrib/provider-upjet-github/config/actionsorganizationvariable"
+	"github.com/crossplane-contrib/provider-upjet-github/config/actionsrepositoryaccesslevel"
+	"github.com/crossplane-contrib/provider-upjet-github/config/actionsrepositorypermissions"
 	"github.com/crossplane-contrib/provider-upjet-github/config/actionssecret"
 	"github.com/crossplane-contrib/provider-upjet-github/config/actionsvariable"
 	"github.com/crossplane-contrib/provider-upjet-github/config/branch"
+	"github.com/crossplane-contrib/provider-upjet-github/config/branchdefault"
 	"github.com/crossplane-contrib/provider-upjet-github/config/branchprotection"
-	"github.com/crossplane-contrib/provider-upjet-github/config/defaultbranch"
-	"github.com/crossplane-contrib/provider-upjet-github/config/deploykey"
+	"github.com/crossplane-contrib/provider-upjet-github/config/branchprotectionv3"
 	"github.com/crossplane-contrib/provider-upjet-github/config/emugroupmapping"
+	"github.com/crossplane-contrib/provider-upjet-github/config/enterpriseorganization"
+	"github.com/crossplane-contrib/provider-upjet-github/config/issuelabels"
 	"github.com/crossplane-contrib/provider-upjet-github/config/membership"
-	"github.com/crossplane-contrib/provider-upjet-github/config/organization"
-	"github.com/crossplane-contrib/provider-upjet-github/config/organizationactionssecret"
-	"github.com/crossplane-contrib/provider-upjet-github/config/organizationactionsvariable"
 	"github.com/crossplane-contrib/provider-upjet-github/config/organizationruleset"
-	"github.com/crossplane-contrib/provider-upjet-github/config/pullrequest"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repository"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryautolinkreference"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorycollaborator"
+	"github.com/crossplane-contrib/provider-upjet-github/config/repositorydeploykey"
+	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryenvironment"
+	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryenvironmentdeploymentpolicy"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryfile"
+	"github.com/crossplane-contrib/provider-upjet-github/config/repositorypullrequest"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryruleset"
+	"github.com/crossplane-contrib/provider-upjet-github/config/repositorytagprotection"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorywebhook"
 	"github.com/crossplane-contrib/provider-upjet-github/config/team"
+	"github.com/crossplane-contrib/provider-upjet-github/config/teammembers"
 	"github.com/crossplane-contrib/provider-upjet-github/config/teammembership"
 	"github.com/crossplane-contrib/provider-upjet-github/config/teamrepository"
 	"github.com/crossplane-contrib/provider-upjet-github/config/teamsettings"
 	"github.com/crossplane-contrib/provider-upjet-github/config/teamsyncgroupmapping"
-	ujconfig "github.com/crossplane/upjet/pkg/config"
 	"github.com/crossplane/upjet/pkg/registry/reference"
 	"github.com/integrations/terraform-provider-github/v6/github"
 )
@@ -67,31 +79,42 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		repository.Configure,
-		branch.Configure,
-		deploykey.Configure,
-		repositoryfile.Configure,
-		pullrequest.Configure,
-		team.Configure,
-		emugroupmapping.Configure,
-		teammembership.Configure,
-		teamrepository.Configure,
-		defaultbranch.Configure,
-		branchprotection.Configure,
-		repositorywebhook.Configure,
-		actionssecret.Configure,
 		actions.Configure,
+		actionsenvironmentsecret.Configure,
+		actionsenvironmentvariable.Configure,
+		actionsorganizationpermissions.Configure,
+		actionsorganizationsecret.Configure,
+		actionsorganizationvariable.Configure,
+		actionsrepositoryaccesslevel.Configure,
+		actionsrepositorypermissions.Configure,
+		actionssecret.Configure,
 		actionsvariable.Configure,
-		organization.Configure,
+		branch.Configure,
+		branchdefault.Configure,
+		branchprotection.Configure,
+		branchprotectionv3.Configure,
+		emugroupmapping.Configure,
+		enterpriseorganization.Configure,
+		issuelabels.Configure,
+		membership.Configure,
 		organizationruleset.Configure,
+		repository.Configure,
 		repositoryautolinkreference.Configure,
 		repositorycollaborator.Configure,
+		repositorydeploykey.Configure,
+		repositoryenvironmentdeploymentpolicy.Configure,
+		repositoryfile.Configure,
+		repositorypullrequest.Configure,
 		repositoryruleset.Configure,
-		membership.Configure,
+		repositorytagprotection.Configure,
+		repositorywebhook.Configure,
+		team.Configure,
+		teammembers.Configure,
+		teammembership.Configure,
+		teamrepository.Configure,
 		teamsettings.Configure,
 		teamsyncgroupmapping.Configure,
-		organizationactionssecret.Configure,
-		organizationactionsvariable.Configure,
+		repositoryenvironment.Configure,
 	} {
 		configure(pc)
 	}

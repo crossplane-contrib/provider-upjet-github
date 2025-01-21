@@ -37,6 +37,20 @@ spec:
     name: default
 ---
 apiVersion: repo.github.upbound.io/v1alpha1
+kind: BranchProtectionv3
+metadata:
+  name: github-crossplane-provider-testing-branchprotectionv3
+spec:
+  forProvider:
+    repositoryRef:
+      name: github-crossplane-provider-testing
+    branch: github-crossplane-provider-testing
+    restrictions:
+      - users : ["foo-user"]
+  providerConfigRef:
+    name: default
+---
+apiVersion: repo.github.upbound.io/v1alpha1
 kind: DefaultBranch
 metadata:
   name: github-crossplane-provider-testing

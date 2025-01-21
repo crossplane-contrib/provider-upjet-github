@@ -110,7 +110,7 @@ spec:
                       The repository of the environment.
                     type: string
                   repositoryRef:
-                    description: Reference to a Repository to populate repository.
+                    description: Reference to a Repository in repo to populate repository.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -144,7 +144,7 @@ spec:
                     - name
                     type: object
                   repositorySelector:
-                    description: Selector for a Repository to populate repository.
+                    description: Selector for a Repository in repo to populate repository.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -264,7 +264,7 @@ spec:
                       The repository of the environment.
                     type: string
                   repositoryRef:
-                    description: Reference to a Repository to populate repository.
+                    description: Reference to a Repository in repo to populate repository.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -298,7 +298,7 @@ spec:
                     - name
                     type: object
                   repositorySelector:
-                    description: Selector for a Repository to populate repository.
+                    description: Selector for a Repository in repo to populate repository.
                     properties:
                       matchControllerRef:
                         description: |-

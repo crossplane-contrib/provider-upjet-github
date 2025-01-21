@@ -67,14 +67,14 @@ type EnvironmentInitParameters struct {
 
 	// The repository of the environment.
 	// The repository of the environment.
-	// +crossplane:generate:reference:type=Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// Reference to a Repository to populate repository.
+	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
-	// Selector for a Repository to populate repository.
+	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
@@ -140,15 +140,15 @@ type EnvironmentParameters struct {
 
 	// The repository of the environment.
 	// The repository of the environment.
-	// +crossplane:generate:reference:type=Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// Reference to a Repository to populate repository.
+	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
-	// Selector for a Repository to populate repository.
+	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 

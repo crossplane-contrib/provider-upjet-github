@@ -13,6 +13,9 @@ func (tr *Branch) Hub() {}
 func (tr *BranchProtection) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *BranchProtectionv3) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *DefaultBranch) Hub() {}
 
 // Hub marks this type as a conversion hub.
@@ -20,6 +23,12 @@ func (tr *DeployKey) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *Environment) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *EnvironmentDeploymentPolicy) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *IssueLabels) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *PullRequest) Hub() {}
@@ -41,3 +50,6 @@ func (tr *RepositoryRuleset) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *RepositoryWebhook) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *TagProtection) Hub() {}
