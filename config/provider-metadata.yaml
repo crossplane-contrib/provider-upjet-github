@@ -1050,11 +1050,10 @@ resources:
                       ]
                     }
                   ],
-                  "enterprise_id": "${data.github_enterprise.example-enterprise.slug}"
+                  "enterprise_slug": "my-enterprise"
                 }
-              references:
-                enterprise_id: data.github_enterprise.example-enterprise.slug
         argumentDocs:
+            '"my-enterprise"': '- (Required) The slug of the enterprise.'
             allowed_actions: '- (Optional) The permissions policy that controls the actions that are allowed to run. Can be one of: all, local_only, or selected.'
             allowed_actions_config: '- (Optional) Sets the actions that are allowed in an enterprise. Only available when allowed_actions = selected. See Allowed Actions Config below for details.'
             allowed_actions_config.github_owned_allowed: '- (Required) Whether GitHub-owned actions are allowed in the organization.'
@@ -1063,7 +1062,6 @@ resources:
             enabled_organizations: '- (Required) The policy that controls the organizations in the enterprise that are allowed to run GitHub Actions. Can be one of: all, none, or selected.'
             enabled_organizations_config: '- (Optional) Sets the list of selected organizations that are enabled for GitHub Actions in an enterprise. Only available when enabled_organizations = selected. See Enabled Organizations Config below for details.'
             enabled_organizations_config.organization_ids: '- (Required) List of organization IDs to enable for GitHub Actions.'
-            enterprise_id: '- (Required) The ID of the enterprise.'
         importStatements: []
     github_enterprise_actions_runner_group:
         subCategory: ""
@@ -1110,7 +1108,7 @@ resources:
             selected_organization_ids: '- (Optional) IDs of the organizations which should be added to the runner group'
             selected_organizations_url: '- The GitHub API URL for the runner group''s selected organizations'
             selected_workflows: '- (Optional) List of workflows the runner group should be allowed to run. This setting will be ignored unless restricted_to_workflows is set to true.'
-            visibility: '- (Optional) Visibility of a runner group to enterprise organizations. Whether the runner group can include all or selected'
+            visibility: '- (Required) Visibility of a runner group to enterprise organizations. Whether the runner group can include all or selected'
         importStatements: []
     github_enterprise_organization:
         subCategory: ""
@@ -1722,9 +1720,9 @@ resources:
         argumentDocs:
             advanced_security.status: '- (Required) Set to enabled to enable advanced security features on the repository. Can be enabled or disabled.'
             allow_auto_merge: '- (Optional) Set to true to allow auto-merging pull requests on the repository.'
-            allow_merge_commit: (including the related merge_commit_title and merge_commit_message)
+            allow_merge_commit: '- (Optional) Set to false to disable merge commits on the repository.'
             allow_rebase_merge: '- (Optional) Set to false to disable rebase merges on the repository.'
-            allow_squash_merge: (including the related squash_merge_commit_title and squash_merge_commit_message)
+            allow_squash_merge: '- (Optional) Set to false to disable squash merges on the repository.'
             allow_update_branch: (Optional) - Set to true to always suggest updating pull request branches.
             archive_on_destroy: '- (Optional) Set to true to archive the repository instead of deleting on destroy.'
             archived: '- (Optional) Specifies if the repository should be archived. Defaults to false. NOTE Currently, the API does not support unarchiving.'
@@ -2096,10 +2094,34 @@ resources:
                       "auto_init": true,
                       "name": "tf-acc-test-%s"
                     }
+            - name: foo
+              manifest: |-
+                {
+                  "autocreate_branch": true,
+                  "branch": "does/not/exist",
+                  "commit_author": "Terraform User",
+                  "commit_email": "terraform@example.com",
+                  "commit_message": "Managed by Terraform",
+                  "content": "**/*.tfstate",
+                  "file": ".gitignore",
+                  "overwrite_on_create": true,
+                  "repository": "${github_repository.foo.name}"
+                }
+              references:
+                repository: github_repository.foo.name
+              dependencies:
+                github_repository.foo: |-
+                    {
+                      "auto_init": true,
+                      "name": "tf-acc-test-%s"
+                    }
         argumentDocs:
+            autocreate_branch: '- (Optional) Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from ''autocreate_branch_source_branch''.'
+            autocreate_branch_source_branch: '- (Optional) The branch name to start from, if ''autocreate_branch'' is set. Defaults to ''main''.'
+            autocreate_branch_source_sha: '- (Optional) The commit hash to start from, if ''autocreate_branch'' is set. Defaults to the tip of ''autocreate_branch_source_branch''. If provided, ''autocreate_branch_source_branch'' is ignored.'
             branch: |-
                 - (Optional) Git branch (defaults to the repository's default branch).
-                The branch must already exist, it will not be created if it does not already exist.
+                The branch must already exist, it will only be created automatically if 'autocreate_branch' is set true.
             commit_author: '- (Optional) Committer author name to use. NOTE: GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App. This maybe useful when a branch protection rule requires signed commits.'
             commit_email: '- (Optional) Committer email address to use. NOTE: GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App. This may be useful when a branch protection rule requires signed commits.'
             commit_message: '- (Optional) The commit message when creating, updating or deleting the managed file.'
