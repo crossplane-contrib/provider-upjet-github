@@ -1,0 +1,16 @@
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: IssueLabels
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/issuelabels
+  labels:
+    testing.upbound.io/example-name: test_repo
+  name: test-repo
+spec:
+  forProvider:
+    label:
+    - color: FF0000
+      name: Urgent
+    - color: FF0000
+      name: Critical
+    repository: test-repo
