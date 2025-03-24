@@ -11,3 +11,4 @@ guidelines and responsibilities for the steering committee and maintainers.
 ## Maintainers
 
 * Atze de Vries <the.atz@gmail.com> ([Atze de Vries](https://github.com/atzedevries))
+* Pravin Dahal <pravindahal@gmail.com> ([Pravin Dahal](https://github.com/pravindahal))
