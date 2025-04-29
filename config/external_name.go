@@ -67,7 +67,7 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	// No documentation on how to import
 	"github_repository_pull_request": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}:{{ ruleset id }}
-	"github_repository_ruleset": config.IdentifierFromProvider,
+	"github_repository_ruleset": config.TemplatedStringAsIdentifier("repository", "{{ .parameters.repository }}:{{ .external_name }}"),
 	// Can be imported using the following format: {{ repository }}:{{ tag protection id }}
 	"github_repository_tag_protection": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}/{{ id }}.
