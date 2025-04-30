@@ -27,5 +27,14 @@ func Configure(p *config.Provider) {
 
 			return diff, nil
 		}
+
+		p.AddResourceConfigurator("github_repository_environment", func(r *config.Resource) {
+			r.ShortGroup = "repo"
+
+			r.References["repository"] = config.Reference{
+				Type: "Repository",
+			}
+			//TODO: Add user reference in when user resource exists.
+		})
 	})
 }

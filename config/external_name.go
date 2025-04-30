@@ -36,7 +36,7 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	"github_branch_default": config.TemplatedStringAsIdentifier("repository", "{{ .external_name }}"),
 	// Imported by using the following format: {{ repository }}:{{ pattern }}
 	// We cannot use the external_name = pattern here since pattern can contain non alpha numberic characters
-	"github_branch_protection": config.IdentifierFromProvider,
+	"github_branch_protection": config.TemplatedStringAsIdentifier("repository_pattern", "{{ .parameters.repository }}:{{ .parameters.pattern }}"),
 	// Imported by using the following format: {{ repository }}: {{ branch}}
 	"github_branch_protection_v3": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ group_id }}
