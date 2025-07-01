@@ -11,8 +11,8 @@ spec:
     nameSelector:
       matchLabels:
         testing.upbound.io/example-name: example
-    selectedRepositoryIds:
-    - ${github_repository.example.repo_id}
+    selectedRepositoryIdsRefs:
+    - name: example
     visibility: selected
 
 ---

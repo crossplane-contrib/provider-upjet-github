@@ -17,8 +17,8 @@ spec:
       verifiedAllowed: true
     enabledRepositories: selected
     enabledRepositoriesConfig:
-    - repositoryIds:
-      - ${github_repository.example.repo_id}
+    - repositoryIdsRefs:
+      - name: example
 
 ---
 

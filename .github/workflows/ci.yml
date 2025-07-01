@@ -8,8 +8,8 @@ on:
   workflow_dispatch: {}
 env:
   # Common versions
-  GO_VERSION: '1.22'
-  GOLANGCI_VERSION: 'v1.55.2'
+  GO_VERSION: '1.23'
+  GOLANGCI_LINT_VERSION: 'v1.55.2'
   DOCKER_BUILDX_VERSION: 'v0.25.0'
   # Common users. We can't run a step 'if secrets.XXX != ""' but we can run a
   # step 'if env.XXX != ""', so we copy these to succinctly test whether
@@ -63,7 +63,7 @@ jobs:
       - name: Lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: ${{ env.GOLANGCI_VERSION }}
+          version: ${{ env.GOLANGCI_LINT_VERSION }}
   check-diff:
     runs-on: ubuntu-22.04
     needs: detect-noop
