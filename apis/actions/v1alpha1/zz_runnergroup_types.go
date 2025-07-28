@@ -39,8 +39,18 @@ type RunnerGroupInitParameters struct {
 
 	// IDs of the repositories which should be added to the runner group
 	// List of repository IDs that can access the runner group.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("repo_id",true)
 	// +listType=set
 	SelectedRepositoryIds []*int64 `json:"selectedRepositoryIds,omitempty" tf:"selected_repository_ids,omitempty"`
+
+	// References to Repository in repo to populate selectedRepositoryIds.
+	// +kubebuilder:validation:Optional
+	SelectedRepositoryIdsRefs []v1.Reference `json:"selectedRepositoryIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Repository in repo to populate selectedRepositoryIds.
+	// +kubebuilder:validation:Optional
+	SelectedRepositoryIdsSelector *v1.Selector `json:"selectedRepositoryIdsSelector,omitempty" tf:"-"`
 
 	// List of workflows the runner group should be allowed to run. This setting will be ignored unless restricted_to_workflows is set to true.
 	// List of workflows the runner group should be allowed to run. This setting will be ignored unless restricted_to_workflows is set to 'true'.
@@ -130,9 +140,19 @@ type RunnerGroupParameters struct {
 
 	// IDs of the repositories which should be added to the runner group
 	// List of repository IDs that can access the runner group.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("repo_id",true)
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	SelectedRepositoryIds []*int64 `json:"selectedRepositoryIds,omitempty" tf:"selected_repository_ids,omitempty"`
+
+	// References to Repository in repo to populate selectedRepositoryIds.
+	// +kubebuilder:validation:Optional
+	SelectedRepositoryIdsRefs []v1.Reference `json:"selectedRepositoryIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Repository in repo to populate selectedRepositoryIds.
+	// +kubebuilder:validation:Optional
+	SelectedRepositoryIdsSelector *v1.Selector `json:"selectedRepositoryIdsSelector,omitempty" tf:"-"`
 
 	// List of workflows the runner group should be allowed to run. This setting will be ignored unless restricted_to_workflows is set to true.
 	// List of workflows the runner group should be allowed to run. This setting will be ignored unless restricted_to_workflows is set to 'true'.

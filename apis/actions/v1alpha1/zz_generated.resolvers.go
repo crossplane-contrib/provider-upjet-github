@@ -246,6 +246,53 @@ func (mg *EnvironmentVariable) ResolveReferences(ctx context.Context, c client.R
 	return nil
 }
 
+// ResolveReferences of this OrganizationPermissions.
+func (mg *OrganizationPermissions) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var mrsp reference.MultiResolutionResponse
+	var err error
+
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.EnabledRepositoriesConfig); i3++ {
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.EnabledRepositoriesConfig[i3].RepositoryIds),
+			Extract:       resource.ExtractParamPath("repo_id", true),
+			References:    mg.Spec.ForProvider.EnabledRepositoriesConfig[i3].RepositoryIdsRefs,
+			Selector:      mg.Spec.ForProvider.EnabledRepositoriesConfig[i3].RepositoryIdsSelector,
+			To: reference.To{
+				List:    &v1alpha1.RepositoryList{},
+				Managed: &v1alpha1.Repository{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.EnabledRepositoriesConfig[i3].RepositoryIds")
+		}
+		mg.Spec.ForProvider.EnabledRepositoriesConfig[i3].RepositoryIds = reference.ToPtrValues(mrsp.ResolvedValues)
+		mg.Spec.ForProvider.EnabledRepositoriesConfig[i3].RepositoryIdsRefs = mrsp.ResolvedReferences
+
+	}
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.EnabledRepositoriesConfig); i3++ {
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.EnabledRepositoriesConfig[i3].RepositoryIds),
+			Extract:       resource.ExtractParamPath("repo_id", true),
+			References:    mg.Spec.InitProvider.EnabledRepositoriesConfig[i3].RepositoryIdsRefs,
+			Selector:      mg.Spec.InitProvider.EnabledRepositoriesConfig[i3].RepositoryIdsSelector,
+			To: reference.To{
+				List:    &v1alpha1.RepositoryList{},
+				Managed: &v1alpha1.Repository{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.EnabledRepositoriesConfig[i3].RepositoryIds")
+		}
+		mg.Spec.InitProvider.EnabledRepositoriesConfig[i3].RepositoryIds = reference.ToPtrValues(mrsp.ResolvedValues)
+		mg.Spec.InitProvider.EnabledRepositoriesConfig[i3].RepositoryIdsRefs = mrsp.ResolvedReferences
+
+	}
+
+	return nil
+}
+
 // ResolveReferences of this RepositoryAccessLevel.
 func (mg *RepositoryAccessLevel) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
@@ -335,6 +382,7 @@ func (mg *RunnerGroup) ResolveReferences(ctx context.Context, c client.Reader) e
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
+	var mrsp reference.MultiResolutionResponse
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
@@ -353,6 +401,22 @@ func (mg *RunnerGroup) ResolveReferences(ctx context.Context, c client.Reader) e
 	mg.Spec.ForProvider.Name = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.NameRef = rsp.ResolvedReference
 
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.SelectedRepositoryIds),
+		Extract:       resource.ExtractParamPath("repo_id", true),
+		References:    mg.Spec.ForProvider.SelectedRepositoryIdsRefs,
+		Selector:      mg.Spec.ForProvider.SelectedRepositoryIdsSelector,
+		To: reference.To{
+			List:    &v1alpha1.RepositoryList{},
+			Managed: &v1alpha1.Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.SelectedRepositoryIds")
+	}
+	mg.Spec.ForProvider.SelectedRepositoryIds = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.ForProvider.SelectedRepositoryIdsRefs = mrsp.ResolvedReferences
+
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Name),
 		Extract:      resource.ExtractParamPath("name", false),
@@ -368,6 +432,22 @@ func (mg *RunnerGroup) ResolveReferences(ctx context.Context, c client.Reader) e
 	}
 	mg.Spec.InitProvider.Name = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.NameRef = rsp.ResolvedReference
+
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.SelectedRepositoryIds),
+		Extract:       resource.ExtractParamPath("repo_id", true),
+		References:    mg.Spec.InitProvider.SelectedRepositoryIdsRefs,
+		Selector:      mg.Spec.InitProvider.SelectedRepositoryIdsSelector,
+		To: reference.To{
+			List:    &v1alpha1.RepositoryList{},
+			Managed: &v1alpha1.Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.SelectedRepositoryIds")
+	}
+	mg.Spec.InitProvider.SelectedRepositoryIds = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.InitProvider.SelectedRepositoryIdsRefs = mrsp.ResolvedReferences
 
 	return nil
 }

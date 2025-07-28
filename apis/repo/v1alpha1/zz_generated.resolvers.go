@@ -7,6 +7,7 @@ package v1alpha1
 
 import (
 	"context"
+	v1alpha1 "github.com/crossplane-contrib/provider-upjet-github/apis/team/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
@@ -102,6 +103,7 @@ func (mg *BranchProtectionv3) ResolveReferences(ctx context.Context, c client.Re
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
+	var mrsp reference.MultiResolutionResponse
 	var err error
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
@@ -120,6 +122,62 @@ func (mg *BranchProtectionv3) ResolveReferences(ctx context.Context, c client.Re
 	mg.Spec.ForProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.RepositoryRef = rsp.ResolvedReference
 
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.RequiredPullRequestReviews); i3++ {
+		for i4 := 0; i4 < len(mg.Spec.ForProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances); i4++ {
+			mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+				CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances[i4].Teams),
+				Extract:       resource.ExtractParamPath("slug", true),
+				References:    mg.Spec.ForProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances[i4].TeamsRefs,
+				Selector:      mg.Spec.ForProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances[i4].TeamsSelector,
+				To: reference.To{
+					List:    &v1alpha1.TeamList{},
+					Managed: &v1alpha1.Team{},
+				},
+			})
+			if err != nil {
+				return errors.Wrap(err, "mg.Spec.ForProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances[i4].Teams")
+			}
+			mg.Spec.ForProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances[i4].Teams = reference.ToPtrValues(mrsp.ResolvedValues)
+			mg.Spec.ForProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances[i4].TeamsRefs = mrsp.ResolvedReferences
+
+		}
+	}
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.RequiredPullRequestReviews); i3++ {
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.RequiredPullRequestReviews[i3].DismissalTeams),
+			Extract:       resource.ExtractParamPath("slug", true),
+			References:    mg.Spec.ForProvider.RequiredPullRequestReviews[i3].DismissalTeamsRefs,
+			Selector:      mg.Spec.ForProvider.RequiredPullRequestReviews[i3].DismissalTeamsSelector,
+			To: reference.To{
+				List:    &v1alpha1.TeamList{},
+				Managed: &v1alpha1.Team{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.RequiredPullRequestReviews[i3].DismissalTeams")
+		}
+		mg.Spec.ForProvider.RequiredPullRequestReviews[i3].DismissalTeams = reference.ToPtrValues(mrsp.ResolvedValues)
+		mg.Spec.ForProvider.RequiredPullRequestReviews[i3].DismissalTeamsRefs = mrsp.ResolvedReferences
+
+	}
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.Restrictions); i3++ {
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.Restrictions[i3].Teams),
+			Extract:       resource.ExtractParamPath("slug", true),
+			References:    mg.Spec.ForProvider.Restrictions[i3].TeamsRefs,
+			Selector:      mg.Spec.ForProvider.Restrictions[i3].TeamsSelector,
+			To: reference.To{
+				List:    &v1alpha1.TeamList{},
+				Managed: &v1alpha1.Team{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.Restrictions[i3].Teams")
+		}
+		mg.Spec.ForProvider.Restrictions[i3].Teams = reference.ToPtrValues(mrsp.ResolvedValues)
+		mg.Spec.ForProvider.Restrictions[i3].TeamsRefs = mrsp.ResolvedReferences
+
+	}
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Repository),
 		Extract:      reference.ExternalName(),
@@ -135,6 +193,63 @@ func (mg *BranchProtectionv3) ResolveReferences(ctx context.Context, c client.Re
 	}
 	mg.Spec.InitProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.RepositoryRef = rsp.ResolvedReference
+
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.RequiredPullRequestReviews); i3++ {
+		for i4 := 0; i4 < len(mg.Spec.InitProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances); i4++ {
+			mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+				CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances[i4].Teams),
+				Extract:       resource.ExtractParamPath("slug", true),
+				References:    mg.Spec.InitProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances[i4].TeamsRefs,
+				Selector:      mg.Spec.InitProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances[i4].TeamsSelector,
+				To: reference.To{
+					List:    &v1alpha1.TeamList{},
+					Managed: &v1alpha1.Team{},
+				},
+			})
+			if err != nil {
+				return errors.Wrap(err, "mg.Spec.InitProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances[i4].Teams")
+			}
+			mg.Spec.InitProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances[i4].Teams = reference.ToPtrValues(mrsp.ResolvedValues)
+			mg.Spec.InitProvider.RequiredPullRequestReviews[i3].BypassPullRequestAllowances[i4].TeamsRefs = mrsp.ResolvedReferences
+
+		}
+	}
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.RequiredPullRequestReviews); i3++ {
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.RequiredPullRequestReviews[i3].DismissalTeams),
+			Extract:       resource.ExtractParamPath("slug", true),
+			References:    mg.Spec.InitProvider.RequiredPullRequestReviews[i3].DismissalTeamsRefs,
+			Selector:      mg.Spec.InitProvider.RequiredPullRequestReviews[i3].DismissalTeamsSelector,
+			To: reference.To{
+				List:    &v1alpha1.TeamList{},
+				Managed: &v1alpha1.Team{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.RequiredPullRequestReviews[i3].DismissalTeams")
+		}
+		mg.Spec.InitProvider.RequiredPullRequestReviews[i3].DismissalTeams = reference.ToPtrValues(mrsp.ResolvedValues)
+		mg.Spec.InitProvider.RequiredPullRequestReviews[i3].DismissalTeamsRefs = mrsp.ResolvedReferences
+
+	}
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.Restrictions); i3++ {
+		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+			CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.Restrictions[i3].Teams),
+			Extract:       resource.ExtractParamPath("slug", true),
+			References:    mg.Spec.InitProvider.Restrictions[i3].TeamsRefs,
+			Selector:      mg.Spec.InitProvider.Restrictions[i3].TeamsSelector,
+			To: reference.To{
+				List:    &v1alpha1.TeamList{},
+				Managed: &v1alpha1.Team{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.Restrictions[i3].Teams")
+		}
+		mg.Spec.InitProvider.Restrictions[i3].Teams = reference.ToPtrValues(mrsp.ResolvedValues)
+		mg.Spec.InitProvider.Restrictions[i3].TeamsRefs = mrsp.ResolvedReferences
+
+	}
 
 	return nil
 }

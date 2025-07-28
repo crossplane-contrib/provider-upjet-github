@@ -1086,6 +1086,18 @@ func (in *BranchProtectionv3RequiredPullRequestReviewsInitParameters) DeepCopyIn
 			}
 		}
 	}
+	if in.DismissalTeamsRefs != nil {
+		in, out := &in.DismissalTeamsRefs, &out.DismissalTeamsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.DismissalTeamsSelector != nil {
+		in, out := &in.DismissalTeamsSelector, &out.DismissalTeamsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.DismissalUsers != nil {
 		in, out := &in.DismissalUsers, &out.DismissalUsers
 		*out = make([]*string, len(*in))
@@ -1245,6 +1257,18 @@ func (in *BranchProtectionv3RequiredPullRequestReviewsParameters) DeepCopyInto(o
 				**out = **in
 			}
 		}
+	}
+	if in.DismissalTeamsRefs != nil {
+		in, out := &in.DismissalTeamsRefs, &out.DismissalTeamsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.DismissalTeamsSelector != nil {
+		in, out := &in.DismissalTeamsSelector, &out.DismissalTeamsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.DismissalUsers != nil {
 		in, out := &in.DismissalUsers, &out.DismissalUsers
@@ -1615,6 +1639,18 @@ func (in *BypassPullRequestAllowancesInitParameters) DeepCopyInto(out *BypassPul
 			}
 		}
 	}
+	if in.TeamsRefs != nil {
+		in, out := &in.TeamsRefs, &out.TeamsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.TeamsSelector != nil {
+		in, out := &in.TeamsSelector, &out.TeamsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Users != nil {
 		in, out := &in.Users, &out.Users
 		*out = make([]*string, len(*in))
@@ -1710,6 +1746,18 @@ func (in *BypassPullRequestAllowancesParameters) DeepCopyInto(out *BypassPullReq
 				**out = **in
 			}
 		}
+	}
+	if in.TeamsRefs != nil {
+		in, out := &in.TeamsRefs, &out.TeamsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.TeamsSelector != nil {
+		in, out := &in.TeamsSelector, &out.TeamsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Users != nil {
 		in, out := &in.Users, &out.Users
@@ -6716,6 +6764,18 @@ func (in *RestrictionsInitParameters) DeepCopyInto(out *RestrictionsInitParamete
 			}
 		}
 	}
+	if in.TeamsRefs != nil {
+		in, out := &in.TeamsRefs, &out.TeamsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.TeamsSelector != nil {
+		in, out := &in.TeamsSelector, &out.TeamsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Users != nil {
 		in, out := &in.Users, &out.Users
 		*out = make([]*string, len(*in))
@@ -6811,6 +6871,18 @@ func (in *RestrictionsParameters) DeepCopyInto(out *RestrictionsParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.TeamsRefs != nil {
+		in, out := &in.TeamsRefs, &out.TeamsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.TeamsSelector != nil {
+		in, out := &in.TeamsSelector, &out.TeamsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Users != nil {
 		in, out := &in.Users, &out.Users
