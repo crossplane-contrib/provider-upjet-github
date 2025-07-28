@@ -37,7 +37,6 @@ import (
 	repositoryfile "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositoryfile"
 	repositoryruleset "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositoryruleset"
 	repositorywebhook "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositorywebhook"
-	tagprotection "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/tagprotection"
 	emugroupmapping "github.com/crossplane-contrib/provider-upjet-github/internal/controller/team/emugroupmapping"
 	members "github.com/crossplane-contrib/provider-upjet-github/internal/controller/team/members"
 	team "github.com/crossplane-contrib/provider-upjet-github/internal/controller/team/team"
@@ -80,7 +79,6 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		repositoryfile.Setup,
 		repositoryruleset.Setup,
 		repositorywebhook.Setup,
-		tagprotection.Setup,
 		emugroupmapping.Setup,
 		members.Setup,
 		team.Setup,

@@ -76,7 +76,7 @@ type BranchNamePatternParameters struct {
 
 type BypassActorsInitParameters struct {
 
-	// (Number) The ID of the actor that can bypass a ruleset.
+	// (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
 	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
 	ActorID *int64 `json:"actorId,omitempty" tf:"actor_id,omitempty"`
 
@@ -91,7 +91,7 @@ type BypassActorsInitParameters struct {
 
 type BypassActorsObservation struct {
 
-	// (Number) The ID of the actor that can bypass a ruleset.
+	// (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
 	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
 	ActorID *int64 `json:"actorId,omitempty" tf:"actor_id,omitempty"`
 
@@ -106,7 +106,7 @@ type BypassActorsObservation struct {
 
 type BypassActorsParameters struct {
 
-	// (Number) The ID of the actor that can bypass a ruleset.
+	// (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
 	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
 	// +kubebuilder:validation:Optional
 	ActorID *int64 `json:"actorId" tf:"actor_id,omitempty"`
@@ -496,7 +496,7 @@ type RequiredCheckInitParameters struct {
 	// The status check context name that must be present on the commit.
 	Context *string `json:"context,omitempty" tf:"context,omitempty"`
 
-	// (Number) The optional integration ID that this status check must originate from.
+	// (Number) The optional integration ID that this status check must originate from. It's a GitHub App ID, which can be obtained by following instructions from the Get an App API docs.
 	// The optional integration ID that this status check must originate from.
 	IntegrationID *int64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
 }
@@ -507,7 +507,7 @@ type RequiredCheckObservation struct {
 	// The status check context name that must be present on the commit.
 	Context *string `json:"context,omitempty" tf:"context,omitempty"`
 
-	// (Number) The optional integration ID that this status check must originate from.
+	// (Number) The optional integration ID that this status check must originate from. It's a GitHub App ID, which can be obtained by following instructions from the Get an App API docs.
 	// The optional integration ID that this status check must originate from.
 	IntegrationID *int64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
 }
@@ -519,7 +519,7 @@ type RequiredCheckParameters struct {
 	// +kubebuilder:validation:Optional
 	Context *string `json:"context" tf:"context,omitempty"`
 
-	// (Number) The optional integration ID that this status check must originate from.
+	// (Number) The optional integration ID that this status check must originate from. It's a GitHub App ID, which can be obtained by following instructions from the Get an App API docs.
 	// The optional integration ID that this status check must originate from.
 	// +kubebuilder:validation:Optional
 	IntegrationID *int64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
