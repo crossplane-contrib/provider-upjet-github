@@ -103,7 +103,7 @@ type RepositoryInitParameters struct {
 	// Set to 'true' to allow auto-merging pull requests on the repository.
 	AllowAutoMerge *bool `json:"allowAutoMerge,omitempty" tf:"allow_auto_merge,omitempty"`
 
-	// (including the related merge_commit_title and merge_commit_message)
+	// Set to false to disable merge commits on the repository.
 	// Set to 'false' to disable merge commits on the repository.
 	AllowMergeCommit *bool `json:"allowMergeCommit,omitempty" tf:"allow_merge_commit,omitempty"`
 
@@ -111,7 +111,7 @@ type RepositoryInitParameters struct {
 	// Set to 'false' to disable rebase merges on the repository.
 	AllowRebaseMerge *bool `json:"allowRebaseMerge,omitempty" tf:"allow_rebase_merge,omitempty"`
 
-	// (including the related squash_merge_commit_title and squash_merge_commit_message)
+	// Set to false to disable squash merges on the repository.
 	// Set to 'false' to disable squash merges on the repository.
 	AllowSquashMerge *bool `json:"allowSquashMerge,omitempty" tf:"allow_squash_merge,omitempty"`
 
@@ -247,7 +247,7 @@ type RepositoryObservation struct {
 	// Set to 'true' to allow auto-merging pull requests on the repository.
 	AllowAutoMerge *bool `json:"allowAutoMerge,omitempty" tf:"allow_auto_merge,omitempty"`
 
-	// (including the related merge_commit_title and merge_commit_message)
+	// Set to false to disable merge commits on the repository.
 	// Set to 'false' to disable merge commits on the repository.
 	AllowMergeCommit *bool `json:"allowMergeCommit,omitempty" tf:"allow_merge_commit,omitempty"`
 
@@ -255,7 +255,7 @@ type RepositoryObservation struct {
 	// Set to 'false' to disable rebase merges on the repository.
 	AllowRebaseMerge *bool `json:"allowRebaseMerge,omitempty" tf:"allow_rebase_merge,omitempty"`
 
-	// (including the related squash_merge_commit_title and squash_merge_commit_message)
+	// Set to false to disable squash merges on the repository.
 	// Set to 'false' to disable squash merges on the repository.
 	AllowSquashMerge *bool `json:"allowSquashMerge,omitempty" tf:"allow_squash_merge,omitempty"`
 
@@ -431,7 +431,7 @@ type RepositoryParameters struct {
 	// +kubebuilder:validation:Optional
 	AllowAutoMerge *bool `json:"allowAutoMerge,omitempty" tf:"allow_auto_merge,omitempty"`
 
-	// (including the related merge_commit_title and merge_commit_message)
+	// Set to false to disable merge commits on the repository.
 	// Set to 'false' to disable merge commits on the repository.
 	// +kubebuilder:validation:Optional
 	AllowMergeCommit *bool `json:"allowMergeCommit,omitempty" tf:"allow_merge_commit,omitempty"`
@@ -441,7 +441,7 @@ type RepositoryParameters struct {
 	// +kubebuilder:validation:Optional
 	AllowRebaseMerge *bool `json:"allowRebaseMerge,omitempty" tf:"allow_rebase_merge,omitempty"`
 
-	// (including the related squash_merge_commit_title and squash_merge_commit_message)
+	// Set to false to disable squash merges on the repository.
 	// Set to 'false' to disable squash merges on the repository.
 	// +kubebuilder:validation:Optional
 	AllowSquashMerge *bool `json:"allowSquashMerge,omitempty" tf:"allow_squash_merge,omitempty"`

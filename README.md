@@ -1,7 +1,7 @@
 # Provider GitHub
 
 `provider-upjet-github` is a [Crossplane](https://crossplane.io/) provider that
-is built using [Upjet](https://github.com/upbound/upjet) code
+is built using [Upjet](https://github.com/crossplane/upjet) code
 generation tools and exposes XRM-conformant managed resources for the
 GitHub API.
 
@@ -194,7 +194,7 @@ index e2d81bf..093bdf8 100644
 +	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryfile"
  	"github.com/crossplane-contrib/provider-upjet-github/config/team"
  	"github.com/crossplane-contrib/provider-upjet-github/config/teamrepository"
- 	ujconfig "github.com/upbound/upjet/pkg/config"
+ 	ujconfig "github.com/crossplane/upjet/pkg/config"
 @@ -40,6 +41,7 @@ func GetProvider() *ujconfig.Provider {
  		// add custom config functions
  		repository.Configure,
@@ -211,7 +211,7 @@ index 0000000..5684451
 @@ -0,0 +1,20 @@
 +package repositoryfile
 +
-+import "github.com/upbound/upjet/pkg/config"
++import "github.com/crossplane/upjet/pkg/config"
 +
 +// Configure github_repository_file resource.
 +func Configure(p *config.Provider) {

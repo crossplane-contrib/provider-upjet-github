@@ -1,16 +1,16 @@
 module github.com/crossplane-contrib/provider-upjet-github
 
-go 1.22
+go 1.23
 
 require (
-	dario.cat/mergo v1.0.0
+	dario.cat/mergo v1.0.2
+	github.com/alecthomas/kingpin/v2 v2.4.0
 	github.com/crossplane/crossplane-runtime v1.16.0
 	github.com/crossplane/crossplane-tools v0.0.0-20230925130601-628280f8bf79
 	github.com/crossplane/upjet v1.4.1
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.34.0
-	github.com/integrations/terraform-provider-github/v6 v6.3.0
+	github.com/integrations/terraform-provider-github/v6 v6.3.1
 	github.com/pkg/errors v0.9.1
-	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	k8s.io/apimachinery v0.29.6
 	k8s.io/client-go v0.29.6
 	sigs.k8s.io/controller-runtime v0.17.5
@@ -48,7 +48,7 @@ require (
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/go-github/v63 v63.0.0 // indirect
+	github.com/google/go-github/v65 v65.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
@@ -102,6 +102,7 @@ require (
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
+	github.com/xhit/go-str2duration/v2 v2.1.0 // indirect
 	github.com/yuin/goldmark v1.4.13 // indirect
 	github.com/zclconf/go-cty v1.14.4 // indirect
 	github.com/zclconf/go-cty-yaml v1.0.3 // indirect
@@ -123,6 +124,7 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240227224415-6ceb2ff114de // indirect
 	google.golang.org/grpc v1.63.2 // indirect
 	google.golang.org/protobuf v1.34.0 // indirect
+	gopkg.in/alecthomas/kingpin.v2 v2.2.6 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
