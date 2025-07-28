@@ -15,20 +15,22 @@ import (
 
 type RepositoryFileInitParameters struct {
 
-	// Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'.
+	// Git branch (defaults to the repository's default branch).
+	// The branch must already exist, it will not be created if it does not already exist.
 	// Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
 	AutocreateBranch *bool `json:"autocreateBranch,omitempty" tf:"autocreate_branch,omitempty"`
 
-	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+	// Git branch (defaults to the repository's default branch).
+	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
 	AutocreateBranchSourceBranch *string `json:"autocreateBranchSourceBranch,omitempty" tf:"autocreate_branch_source_branch,omitempty"`
 
-	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+	// The SHA blob of the file.
 	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
 	AutocreateBranchSourceSha *string `json:"autocreateBranchSourceSha,omitempty" tf:"autocreate_branch_source_sha,omitempty"`
 
 	// Git branch (defaults to the repository's default branch).
-	// The branch must already exist, it will only be created automatically if 'autocreate_branch' is set true.
+	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name, defaults to the repository's default branch
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Branch
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("branch",true)
@@ -82,20 +84,22 @@ type RepositoryFileInitParameters struct {
 
 type RepositoryFileObservation struct {
 
-	// Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'.
+	// Git branch (defaults to the repository's default branch).
+	// The branch must already exist, it will not be created if it does not already exist.
 	// Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
 	AutocreateBranch *bool `json:"autocreateBranch,omitempty" tf:"autocreate_branch,omitempty"`
 
-	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+	// Git branch (defaults to the repository's default branch).
+	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
 	AutocreateBranchSourceBranch *string `json:"autocreateBranchSourceBranch,omitempty" tf:"autocreate_branch_source_branch,omitempty"`
 
-	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+	// The SHA blob of the file.
 	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
 	AutocreateBranchSourceSha *string `json:"autocreateBranchSourceSha,omitempty" tf:"autocreate_branch_source_sha,omitempty"`
 
 	// Git branch (defaults to the repository's default branch).
-	// The branch must already exist, it will only be created automatically if 'autocreate_branch' is set true.
+	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name, defaults to the repository's default branch
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
@@ -144,23 +148,25 @@ type RepositoryFileObservation struct {
 
 type RepositoryFileParameters struct {
 
-	// Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'.
+	// Git branch (defaults to the repository's default branch).
+	// The branch must already exist, it will not be created if it does not already exist.
 	// Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
 	// +kubebuilder:validation:Optional
 	AutocreateBranch *bool `json:"autocreateBranch,omitempty" tf:"autocreate_branch,omitempty"`
 
-	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+	// Git branch (defaults to the repository's default branch).
+	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
 	// +kubebuilder:validation:Optional
 	AutocreateBranchSourceBranch *string `json:"autocreateBranchSourceBranch,omitempty" tf:"autocreate_branch_source_branch,omitempty"`
 
-	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+	// The SHA blob of the file.
 	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
 	// +kubebuilder:validation:Optional
 	AutocreateBranchSourceSha *string `json:"autocreateBranchSourceSha,omitempty" tf:"autocreate_branch_source_sha,omitempty"`
 
 	// Git branch (defaults to the repository's default branch).
-	// The branch must already exist, it will only be created automatically if 'autocreate_branch' is set true.
+	// The branch must already exist, it will not be created if it does not already exist.
 	// The branch name, defaults to the repository's default branch
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Branch
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("branch",true)

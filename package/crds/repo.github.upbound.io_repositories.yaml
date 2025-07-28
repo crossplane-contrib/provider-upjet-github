@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.14.0
+    controller-gen.kubebuilder.io/version: v0.16.0
   name: repositories.repo.github.upbound.io
 spec:
   group: repo.github.upbound.io
@@ -80,7 +80,7 @@ spec:
                     type: boolean
                   allowMergeCommit:
                     description: |-
-                      Set to false to disable merge commits on the repository.
+                      (including the related merge_commit_title and merge_commit_message)
                       Set to 'false' to disable merge commits on the repository.
                     type: boolean
                   allowRebaseMerge:
@@ -90,7 +90,7 @@ spec:
                     type: boolean
                   allowSquashMerge:
                     description: |-
-                      Set to false to disable squash merges on the repository.
+                      (including the related squash_merge_commit_title and squash_merge_commit_message)
                       Set to 'false' to disable squash merges on the repository.
                     type: boolean
                   allowUpdateBranch:
@@ -362,7 +362,7 @@ spec:
                     type: boolean
                   allowMergeCommit:
                     description: |-
-                      Set to false to disable merge commits on the repository.
+                      (including the related merge_commit_title and merge_commit_message)
                       Set to 'false' to disable merge commits on the repository.
                     type: boolean
                   allowRebaseMerge:
@@ -372,7 +372,7 @@ spec:
                     type: boolean
                   allowSquashMerge:
                     description: |-
-                      Set to false to disable squash merges on the repository.
+                      (including the related squash_merge_commit_title and squash_merge_commit_message)
                       Set to 'false' to disable squash merges on the repository.
                     type: boolean
                   allowUpdateBranch:
@@ -808,7 +808,7 @@ spec:
                     type: boolean
                   allowMergeCommit:
                     description: |-
-                      Set to false to disable merge commits on the repository.
+                      (including the related merge_commit_title and merge_commit_message)
                       Set to 'false' to disable merge commits on the repository.
                     type: boolean
                   allowRebaseMerge:
@@ -818,7 +818,7 @@ spec:
                     type: boolean
                   allowSquashMerge:
                     description: |-
-                      Set to false to disable squash merges on the repository.
+                      (including the related squash_merge_commit_title and squash_merge_commit_message)
                       Set to 'false' to disable squash merges on the repository.
                     type: boolean
                   allowUpdateBranch:
