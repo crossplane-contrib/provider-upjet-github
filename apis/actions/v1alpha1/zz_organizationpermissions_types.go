@@ -68,8 +68,18 @@ type EnabledRepositoriesConfigInitParameters struct {
 
 	// List of repository IDs to enable for GitHub Actions.
 	// List of repository IDs to enable for GitHub Actions.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("repo_id",true)
 	// +listType=set
 	RepositoryIds []*int64 `json:"repositoryIds,omitempty" tf:"repository_ids,omitempty"`
+
+	// References to Repository in repo to populate repositoryIds.
+	// +kubebuilder:validation:Optional
+	RepositoryIdsRefs []v1.Reference `json:"repositoryIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Repository in repo to populate repositoryIds.
+	// +kubebuilder:validation:Optional
+	RepositoryIdsSelector *v1.Selector `json:"repositoryIdsSelector,omitempty" tf:"-"`
 }
 
 type EnabledRepositoriesConfigObservation struct {
@@ -84,9 +94,19 @@ type EnabledRepositoriesConfigParameters struct {
 
 	// List of repository IDs to enable for GitHub Actions.
 	// List of repository IDs to enable for GitHub Actions.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("repo_id",true)
 	// +kubebuilder:validation:Optional
 	// +listType=set
-	RepositoryIds []*int64 `json:"repositoryIds" tf:"repository_ids,omitempty"`
+	RepositoryIds []*int64 `json:"repositoryIds,omitempty" tf:"repository_ids,omitempty"`
+
+	// References to Repository in repo to populate repositoryIds.
+	// +kubebuilder:validation:Optional
+	RepositoryIdsRefs []v1.Reference `json:"repositoryIdsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Repository in repo to populate repositoryIds.
+	// +kubebuilder:validation:Optional
+	RepositoryIdsSelector *v1.Selector `json:"repositoryIdsSelector,omitempty" tf:"-"`
 }
 
 type OrganizationPermissionsInitParameters struct {
