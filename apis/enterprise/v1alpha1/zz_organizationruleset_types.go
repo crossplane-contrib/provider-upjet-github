@@ -15,48 +15,60 @@ import (
 
 type BranchNamePatternInitParameters struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 }
 
 type BranchNamePatternObservation struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 }
 
 type BranchNamePatternParameters struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	// +kubebuilder:validation:Optional
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	// +kubebuilder:validation:Optional
 	Operator *string `json:"operator" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	// +kubebuilder:validation:Optional
 	Pattern *string `json:"pattern" tf:"pattern,omitempty"`
@@ -64,38 +76,47 @@ type BranchNamePatternParameters struct {
 
 type BypassActorsInitParameters struct {
 
+	// (Number) The ID of the actor that can bypass a ruleset.
 	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
 	ActorID *int64 `json:"actorId,omitempty" tf:"actor_id,omitempty"`
 
+	// (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
 	// The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
 	ActorType *string `json:"actorType,omitempty" tf:"actor_type,omitempty"`
 
+	// (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
 	// When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
 	BypassMode *string `json:"bypassMode,omitempty" tf:"bypass_mode,omitempty"`
 }
 
 type BypassActorsObservation struct {
 
+	// (Number) The ID of the actor that can bypass a ruleset.
 	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
 	ActorID *int64 `json:"actorId,omitempty" tf:"actor_id,omitempty"`
 
+	// (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
 	// The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
 	ActorType *string `json:"actorType,omitempty" tf:"actor_type,omitempty"`
 
+	// (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
 	// When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
 	BypassMode *string `json:"bypassMode,omitempty" tf:"bypass_mode,omitempty"`
 }
 
 type BypassActorsParameters struct {
 
+	// (Number) The ID of the actor that can bypass a ruleset.
 	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
 	// +kubebuilder:validation:Optional
 	ActorID *int64 `json:"actorId" tf:"actor_id,omitempty"`
 
+	// (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
 	// The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
 	// +kubebuilder:validation:Optional
 	ActorType *string `json:"actorType" tf:"actor_type,omitempty"`
 
+	// (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
 	// When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
 	// +kubebuilder:validation:Optional
 	BypassMode *string `json:"bypassMode" tf:"bypass_mode,omitempty"`
@@ -103,48 +124,60 @@ type BypassActorsParameters struct {
 
 type CommitAuthorEmailPatternInitParameters struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 }
 
 type CommitAuthorEmailPatternObservation struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 }
 
 type CommitAuthorEmailPatternParameters struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	// +kubebuilder:validation:Optional
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	// +kubebuilder:validation:Optional
 	Operator *string `json:"operator" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	// +kubebuilder:validation:Optional
 	Pattern *string `json:"pattern" tf:"pattern,omitempty"`
@@ -152,48 +185,60 @@ type CommitAuthorEmailPatternParameters struct {
 
 type CommitMessagePatternInitParameters struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 }
 
 type CommitMessagePatternObservation struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 }
 
 type CommitMessagePatternParameters struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	// +kubebuilder:validation:Optional
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	// +kubebuilder:validation:Optional
 	Operator *string `json:"operator" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	// +kubebuilder:validation:Optional
 	Pattern *string `json:"pattern" tf:"pattern,omitempty"`
@@ -201,158 +246,202 @@ type CommitMessagePatternParameters struct {
 
 type CommitterEmailPatternInitParameters struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 }
 
 type CommitterEmailPatternObservation struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 }
 
 type CommitterEmailPatternParameters struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	// +kubebuilder:validation:Optional
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	// +kubebuilder:validation:Optional
 	Operator *string `json:"operator" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	// +kubebuilder:validation:Optional
 	Pattern *string `json:"pattern" tf:"pattern,omitempty"`
 }
 
 type ConditionsInitParameters struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	RefName []RefNameInitParameters `json:"refName,omitempty" tf:"ref_name,omitempty"`
 
+	// (List of Number) The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass. Conflicts with repository_name.
 	// The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass.
 	RepositoryID []*int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 
+	// (Block List, Max: 1) Conflicts with repository_id. (see below for nested schema)
 	RepositoryName []RepositoryNameInitParameters `json:"repositoryName,omitempty" tf:"repository_name,omitempty"`
 }
 
 type ConditionsObservation struct {
+
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	RefName []RefNameObservation `json:"refName,omitempty" tf:"ref_name,omitempty"`
 
+	// (List of Number) The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass. Conflicts with repository_name.
 	// The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass.
 	RepositoryID []*int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 
+	// (Block List, Max: 1) Conflicts with repository_id. (see below for nested schema)
 	RepositoryName []RepositoryNameObservation `json:"repositoryName,omitempty" tf:"repository_name,omitempty"`
 }
 
 type ConditionsParameters struct {
 
+	// (Block List, Min: 1, Max: 1) (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	RefName []RefNameParameters `json:"refName" tf:"ref_name,omitempty"`
 
+	// (List of Number) The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass. Conflicts with repository_name.
 	// The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass.
 	// +kubebuilder:validation:Optional
 	RepositoryID []*int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 
+	// (Block List, Max: 1) Conflicts with repository_id. (see below for nested schema)
 	// +kubebuilder:validation:Optional
 	RepositoryName []RepositoryNameParameters `json:"repositoryName,omitempty" tf:"repository_name,omitempty"`
 }
 
 type OrganizationRulesetInitParameters struct {
 
+	// (Block List) The actors that can bypass the rules in this ruleset. (see below for nested schema)
 	// The actors that can bypass the rules in this ruleset.
 	BypassActors []BypassActorsInitParameters `json:"bypassActors,omitempty" tf:"bypass_actors,omitempty"`
 
+	// (Block List, Max: 1) Parameters for an organization ruleset condition. ref_name is required alongside one of repository_name or repository_id. (see below for nested schema)
 	// Parameters for an organization ruleset condition. `ref_name` is required alongside one of `repository_name` or `repository_id`.
 	Conditions []ConditionsInitParameters `json:"conditions,omitempty" tf:"conditions,omitempty"`
 
+	// (String) Possible values for Enforcement are disabled, active, evaluate. Note: evaluate is currently only supported for owners of type organization.
 	// Possible values for Enforcement are `disabled`, `active`, `evaluate`. Note: `evaluate` is currently only supported for owners of type `organization`.
 	Enforcement *string `json:"enforcement,omitempty" tf:"enforcement,omitempty"`
 
+	// (String) The name of the ruleset.
 	// The name of the ruleset.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Block List, Min: 1, Max: 1) Rules within the ruleset. (see below for nested schema)
 	// Rules within the ruleset.
 	Rules []RulesInitParameters `json:"rules,omitempty" tf:"rules,omitempty"`
 
+	// (String) Possible values are branch and tag.
 	// Possible values are `branch`, `tag` and `push`. Note: The `push` target is in beta and is subject to change.
 	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 }
 
 type OrganizationRulesetObservation struct {
 
+	// (Block List) The actors that can bypass the rules in this ruleset. (see below for nested schema)
 	// The actors that can bypass the rules in this ruleset.
 	BypassActors []BypassActorsObservation `json:"bypassActors,omitempty" tf:"bypass_actors,omitempty"`
 
+	// (Block List, Max: 1) Parameters for an organization ruleset condition. ref_name is required alongside one of repository_name or repository_id. (see below for nested schema)
 	// Parameters for an organization ruleset condition. `ref_name` is required alongside one of `repository_name` or `repository_id`.
 	Conditions []ConditionsObservation `json:"conditions,omitempty" tf:"conditions,omitempty"`
 
+	// (String) Possible values for Enforcement are disabled, active, evaluate. Note: evaluate is currently only supported for owners of type organization.
 	// Possible values for Enforcement are `disabled`, `active`, `evaluate`. Note: `evaluate` is currently only supported for owners of type `organization`.
 	Enforcement *string `json:"enforcement,omitempty" tf:"enforcement,omitempty"`
 
+	// (String)
 	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// (String) The name of the ruleset.
 	// The name of the ruleset.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (String) GraphQL global node id for use with v4 API.
 	// GraphQL global node id for use with v4 API.
 	NodeID *string `json:"nodeId,omitempty" tf:"node_id,omitempty"`
 
+	// (Block List, Min: 1, Max: 1) Rules within the ruleset. (see below for nested schema)
 	// Rules within the ruleset.
 	Rules []RulesObservation `json:"rules,omitempty" tf:"rules,omitempty"`
 
+	// (Number) GitHub ID for the ruleset.
 	// GitHub ID for the ruleset.
 	RulesetID *int64 `json:"rulesetId,omitempty" tf:"ruleset_id,omitempty"`
 
+	// (String) Possible values are branch and tag.
 	// Possible values are `branch`, `tag` and `push`. Note: The `push` target is in beta and is subject to change.
 	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 }
 
 type OrganizationRulesetParameters struct {
 
+	// (Block List) The actors that can bypass the rules in this ruleset. (see below for nested schema)
 	// The actors that can bypass the rules in this ruleset.
 	// +kubebuilder:validation:Optional
 	BypassActors []BypassActorsParameters `json:"bypassActors,omitempty" tf:"bypass_actors,omitempty"`
 
+	// (Block List, Max: 1) Parameters for an organization ruleset condition. ref_name is required alongside one of repository_name or repository_id. (see below for nested schema)
 	// Parameters for an organization ruleset condition. `ref_name` is required alongside one of `repository_name` or `repository_id`.
 	// +kubebuilder:validation:Optional
 	Conditions []ConditionsParameters `json:"conditions,omitempty" tf:"conditions,omitempty"`
 
+	// (String) Possible values for Enforcement are disabled, active, evaluate. Note: evaluate is currently only supported for owners of type organization.
 	// Possible values for Enforcement are `disabled`, `active`, `evaluate`. Note: `evaluate` is currently only supported for owners of type `organization`.
 	// +kubebuilder:validation:Optional
 	Enforcement *string `json:"enforcement,omitempty" tf:"enforcement,omitempty"`
 
+	// (String) The name of the ruleset.
 	// The name of the ruleset.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Block List, Min: 1, Max: 1) Rules within the ruleset. (see below for nested schema)
 	// Rules within the ruleset.
 	// +kubebuilder:validation:Optional
 	Rules []RulesParameters `json:"rules,omitempty" tf:"rules,omitempty"`
 
+	// (String) Possible values are branch and tag.
 	// Possible values are `branch`, `tag` and `push`. Note: The `push` target is in beta and is subject to change.
 	// +kubebuilder:validation:Optional
 	Target *string `json:"target,omitempty" tf:"target,omitempty"`
@@ -360,58 +449,73 @@ type OrganizationRulesetParameters struct {
 
 type PullRequestInitParameters struct {
 
+	// (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
 	// New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to `false`.
 	DismissStaleReviewsOnPush *bool `json:"dismissStaleReviewsOnPush,omitempty" tf:"dismiss_stale_reviews_on_push,omitempty"`
 
+	// (Boolean) Require an approving review in pull requests that modify files that have a designated code owner. Defaults to false.
 	// Require an approving review in pull requests that modify files that have a designated code owner. Defaults to `false`.
 	RequireCodeOwnerReview *bool `json:"requireCodeOwnerReview,omitempty" tf:"require_code_owner_review,omitempty"`
 
+	// (Boolean) Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to false.
 	// Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to `false`.
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
+	// (Number) The number of approving reviews that are required before a pull request can be merged. Defaults to 0.
 	// The number of approving reviews that are required before a pull request can be merged. Defaults to `0`.
 	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
+	// (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
 	// All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
 	RequiredReviewThreadResolution *bool `json:"requiredReviewThreadResolution,omitempty" tf:"required_review_thread_resolution,omitempty"`
 }
 
 type PullRequestObservation struct {
 
+	// (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
 	// New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to `false`.
 	DismissStaleReviewsOnPush *bool `json:"dismissStaleReviewsOnPush,omitempty" tf:"dismiss_stale_reviews_on_push,omitempty"`
 
+	// (Boolean) Require an approving review in pull requests that modify files that have a designated code owner. Defaults to false.
 	// Require an approving review in pull requests that modify files that have a designated code owner. Defaults to `false`.
 	RequireCodeOwnerReview *bool `json:"requireCodeOwnerReview,omitempty" tf:"require_code_owner_review,omitempty"`
 
+	// (Boolean) Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to false.
 	// Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to `false`.
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
+	// (Number) The number of approving reviews that are required before a pull request can be merged. Defaults to 0.
 	// The number of approving reviews that are required before a pull request can be merged. Defaults to `0`.
 	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
+	// (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
 	// All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
 	RequiredReviewThreadResolution *bool `json:"requiredReviewThreadResolution,omitempty" tf:"required_review_thread_resolution,omitempty"`
 }
 
 type PullRequestParameters struct {
 
+	// (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
 	// New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	DismissStaleReviewsOnPush *bool `json:"dismissStaleReviewsOnPush,omitempty" tf:"dismiss_stale_reviews_on_push,omitempty"`
 
+	// (Boolean) Require an approving review in pull requests that modify files that have a designated code owner. Defaults to false.
 	// Require an approving review in pull requests that modify files that have a designated code owner. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	RequireCodeOwnerReview *bool `json:"requireCodeOwnerReview,omitempty" tf:"require_code_owner_review,omitempty"`
 
+	// (Boolean) Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to false.
 	// Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
+	// (Number) The number of approving reviews that are required before a pull request can be merged. Defaults to 0.
 	// The number of approving reviews that are required before a pull request can be merged. Defaults to `0`.
 	// +kubebuilder:validation:Optional
 	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
+	// (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
 	// All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	RequiredReviewThreadResolution *bool `json:"requiredReviewThreadResolution,omitempty" tf:"required_review_thread_resolution,omitempty"`
@@ -419,28 +523,34 @@ type PullRequestParameters struct {
 
 type RefNameInitParameters struct {
 
+	// (List of String) Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
 	// Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
 	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
 
+	// (List of String) Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~DEFAULT_BRANCH to include the default branch or ~ALL to include all branches.
 	// Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type RefNameObservation struct {
 
+	// (List of String) Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
 	// Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
 	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
 
+	// (List of String) Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~DEFAULT_BRANCH to include the default branch or ~ALL to include all branches.
 	// Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 }
 
 type RefNameParameters struct {
 
+	// (List of String) Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
 	// Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
 	// +kubebuilder:validation:Optional
 	Exclude []*string `json:"exclude" tf:"exclude,omitempty"`
 
+	// (List of String) Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~DEFAULT_BRANCH to include the default branch or ~ALL to include all branches.
 	// Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
 	// +kubebuilder:validation:Optional
 	Include []*string `json:"include" tf:"include,omitempty"`
@@ -448,9 +558,11 @@ type RefNameParameters struct {
 
 type RepositoryNameInitParameters struct {
 
+	// (List of String) Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
 	// Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
 	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
 
+	// (List of String) Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~ALL to include all repositories.
 	// Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~ALL` to include all repositories.
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 
@@ -460,9 +572,11 @@ type RepositoryNameInitParameters struct {
 
 type RepositoryNameObservation struct {
 
+	// (List of String) Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
 	// Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
 	Exclude []*string `json:"exclude,omitempty" tf:"exclude,omitempty"`
 
+	// (List of String) Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~ALL to include all repositories.
 	// Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~ALL` to include all repositories.
 	Include []*string `json:"include,omitempty" tf:"include,omitempty"`
 
@@ -472,10 +586,12 @@ type RepositoryNameObservation struct {
 
 type RepositoryNameParameters struct {
 
+	// (List of String) Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
 	// Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
 	// +kubebuilder:validation:Optional
 	Exclude []*string `json:"exclude" tf:"exclude,omitempty"`
 
+	// (List of String) Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~ALL to include all repositories.
 	// Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~ALL` to include all repositories.
 	// +kubebuilder:validation:Optional
 	Include []*string `json:"include" tf:"include,omitempty"`
@@ -487,28 +603,34 @@ type RepositoryNameParameters struct {
 
 type RequiredCheckInitParameters struct {
 
+	// (String) The status check context name that must be present on the commit.
 	// The status check context name that must be present on the commit.
 	Context *string `json:"context,omitempty" tf:"context,omitempty"`
 
+	// (Number) The optional integration ID that this status check must originate from.
 	// The optional integration ID that this status check must originate from.
 	IntegrationID *int64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
 }
 
 type RequiredCheckObservation struct {
 
+	// (String) The status check context name that must be present on the commit.
 	// The status check context name that must be present on the commit.
 	Context *string `json:"context,omitempty" tf:"context,omitempty"`
 
+	// (Number) The optional integration ID that this status check must originate from.
 	// The optional integration ID that this status check must originate from.
 	IntegrationID *int64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
 }
 
 type RequiredCheckParameters struct {
 
+	// (String) The status check context name that must be present on the commit.
 	// The status check context name that must be present on the commit.
 	// +kubebuilder:validation:Optional
 	Context *string `json:"context" tf:"context,omitempty"`
 
+	// (Number) The optional integration ID that this status check must originate from.
 	// The optional integration ID that this status check must originate from.
 	// +kubebuilder:validation:Optional
 	IntegrationID *int64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
@@ -516,28 +638,34 @@ type RequiredCheckParameters struct {
 
 type RequiredStatusChecksInitParameters struct {
 
+	// (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
 	// Status checks that are required. Several can be defined.
 	RequiredCheck []RequiredCheckInitParameters `json:"requiredCheck,omitempty" tf:"required_check,omitempty"`
 
+	// (Boolean) Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to false.
 	// Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to `false`.
 	StrictRequiredStatusChecksPolicy *bool `json:"strictRequiredStatusChecksPolicy,omitempty" tf:"strict_required_status_checks_policy,omitempty"`
 }
 
 type RequiredStatusChecksObservation struct {
 
+	// (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
 	// Status checks that are required. Several can be defined.
 	RequiredCheck []RequiredCheckObservation `json:"requiredCheck,omitempty" tf:"required_check,omitempty"`
 
+	// (Boolean) Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to false.
 	// Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to `false`.
 	StrictRequiredStatusChecksPolicy *bool `json:"strictRequiredStatusChecksPolicy,omitempty" tf:"strict_required_status_checks_policy,omitempty"`
 }
 
 type RequiredStatusChecksParameters struct {
 
+	// (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
 	// Status checks that are required. Several can be defined.
 	// +kubebuilder:validation:Optional
 	RequiredCheck []RequiredCheckParameters `json:"requiredCheck" tf:"required_check,omitempty"`
 
+	// (Boolean) Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to false.
 	// Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	StrictRequiredStatusChecksPolicy *bool `json:"strictRequiredStatusChecksPolicy,omitempty" tf:"strict_required_status_checks_policy,omitempty"`
@@ -545,38 +673,47 @@ type RequiredStatusChecksParameters struct {
 
 type RequiredWorkflowInitParameters struct {
 
+	// (String) The path to the YAML definition file of the workflow.
 	// The path to the workflow YAML definition file.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// (String) The optional ref from which to fetch the workflow. Defaults to master.
 	// The ref (branch or tag) of the workflow file to use.
 	Ref *string `json:"ref,omitempty" tf:"ref,omitempty"`
 
+	// (Number) The ID of the repository. Names, full names and repository URLs are not supported.
 	// The repository in which the workflow is defined.
 	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 }
 
 type RequiredWorkflowObservation struct {
 
+	// (String) The path to the YAML definition file of the workflow.
 	// The path to the workflow YAML definition file.
 	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
+	// (String) The optional ref from which to fetch the workflow. Defaults to master.
 	// The ref (branch or tag) of the workflow file to use.
 	Ref *string `json:"ref,omitempty" tf:"ref,omitempty"`
 
+	// (Number) The ID of the repository. Names, full names and repository URLs are not supported.
 	// The repository in which the workflow is defined.
 	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 }
 
 type RequiredWorkflowParameters struct {
 
+	// (String) The path to the YAML definition file of the workflow.
 	// The path to the workflow YAML definition file.
 	// +kubebuilder:validation:Optional
 	Path *string `json:"path" tf:"path,omitempty"`
 
+	// (String) The optional ref from which to fetch the workflow. Defaults to master.
 	// The ref (branch or tag) of the workflow file to use.
 	// +kubebuilder:validation:Optional
 	Ref *string `json:"ref,omitempty" tf:"ref,omitempty"`
 
+	// (Number) The ID of the repository. Names, full names and repository URLs are not supported.
 	// The repository in which the workflow is defined.
 	// +kubebuilder:validation:Optional
 	RepositoryID *int64 `json:"repositoryId" tf:"repository_id,omitempty"`
@@ -584,18 +721,21 @@ type RequiredWorkflowParameters struct {
 
 type RequiredWorkflowsInitParameters struct {
 
+	// (Block Set, Min: 1) Actions workflows that are required. Multiple can be defined. (see below for nested schema)
 	// Actions workflows that are required. Several can be defined.
 	RequiredWorkflow []RequiredWorkflowInitParameters `json:"requiredWorkflow,omitempty" tf:"required_workflow,omitempty"`
 }
 
 type RequiredWorkflowsObservation struct {
 
+	// (Block Set, Min: 1) Actions workflows that are required. Multiple can be defined. (see below for nested schema)
 	// Actions workflows that are required. Several can be defined.
 	RequiredWorkflow []RequiredWorkflowObservation `json:"requiredWorkflow,omitempty" tf:"required_workflow,omitempty"`
 }
 
 type RequiredWorkflowsParameters struct {
 
+	// (Block Set, Min: 1) Actions workflows that are required. Multiple can be defined. (see below for nested schema)
 	// Actions workflows that are required. Several can be defined.
 	// +kubebuilder:validation:Optional
 	RequiredWorkflow []RequiredWorkflowParameters `json:"requiredWorkflow" tf:"required_workflow,omitempty"`
@@ -603,148 +743,190 @@ type RequiredWorkflowsParameters struct {
 
 type RulesInitParameters struct {
 
+	// (Block List, Max: 1) Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with tag_name_pattern as it only applies to rulesets with target branch. (see below for nested schema)
 	// Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `tag_name_pattern` as it only applies to rulesets with target `branch`.
 	BranchNamePattern []BranchNamePatternInitParameters `json:"branchNamePattern,omitempty" tf:"branch_name_pattern,omitempty"`
 
+	// (Block List, Max: 1) Parameters to be used for the commit_author_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
 	// Parameters to be used for the commit_author_email_pattern rule.
 	CommitAuthorEmailPattern []CommitAuthorEmailPatternInitParameters `json:"commitAuthorEmailPattern,omitempty" tf:"commit_author_email_pattern,omitempty"`
 
+	// (Block List, Max: 1) Parameters to be used for the commit_message_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
 	// Parameters to be used for the commit_message_pattern rule.
 	CommitMessagePattern []CommitMessagePatternInitParameters `json:"commitMessagePattern,omitempty" tf:"commit_message_pattern,omitempty"`
 
+	// (Block List, Max: 1) Parameters to be used for the committer_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
 	// Parameters to be used for the committer_email_pattern rule.
 	CommitterEmailPattern []CommitterEmailPatternInitParameters `json:"committerEmailPattern,omitempty" tf:"committer_email_pattern,omitempty"`
 
+	// (Boolean) Only allow users with bypass permission to create matching refs.
 	// Only allow users with bypass permission to create matching refs.
 	Creation *bool `json:"creation,omitempty" tf:"creation,omitempty"`
 
+	// (Boolean) Only allow users with bypass permissions to delete matching refs.
 	// Only allow users with bypass permissions to delete matching refs.
 	Deletion *bool `json:"deletion,omitempty" tf:"deletion,omitempty"`
 
+	// (Boolean) Prevent users with push access from force pushing to branches.
 	// Prevent users with push access from force pushing to branches.
 	NonFastForward *bool `json:"nonFastForward,omitempty" tf:"non_fast_forward,omitempty"`
 
+	// (Block List, Max: 1) Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. (see below for nested schema)
 	// Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
 	PullRequest []PullRequestInitParameters `json:"pullRequest,omitempty" tf:"pull_request,omitempty"`
 
+	// (Boolean) Prevent merge commits from being pushed to matching branches.
 	// Prevent merge commits from being pushed to matching branches.
 	RequiredLinearHistory *bool `json:"requiredLinearHistory,omitempty" tf:"required_linear_history,omitempty"`
 
+	// (Boolean) Commits pushed to matching branches must have verified signatures.
 	// Commits pushed to matching branches must have verified signatures.
 	RequiredSignatures *bool `json:"requiredSignatures,omitempty" tf:"required_signatures,omitempty"`
 
+	// (Block List, Max: 1) Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed. (see below for nested schema)
 	// Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.
 	RequiredStatusChecks []RequiredStatusChecksInitParameters `json:"requiredStatusChecks,omitempty" tf:"required_status_checks,omitempty"`
 
+	// (Block List, Max: 1) Define which Actions workflows must pass before changes can be merged into a branch matching the rule. Multiple workflows can be specified. (see below for nested schema)
 	// Choose which Actions workflows must pass before branches can be merged into a branch that matches this rule.
 	RequiredWorkflows []RequiredWorkflowsInitParameters `json:"requiredWorkflows,omitempty" tf:"required_workflows,omitempty"`
 
+	// (Block List, Max: 1) Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with branch_name_pattern as it only applies to rulesets with target tag. (see below for nested schema)
 	// Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `branch_name_pattern` as it only applies to rulesets with target `tag`.
 	TagNamePattern []TagNamePatternInitParameters `json:"tagNamePattern,omitempty" tf:"tag_name_pattern,omitempty"`
 
+	// (Boolean) Only allow users with bypass permission to update matching refs.
 	// Only allow users with bypass permission to update matching refs.
 	Update *bool `json:"update,omitempty" tf:"update,omitempty"`
 }
 
 type RulesObservation struct {
 
+	// (Block List, Max: 1) Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with tag_name_pattern as it only applies to rulesets with target branch. (see below for nested schema)
 	// Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `tag_name_pattern` as it only applies to rulesets with target `branch`.
 	BranchNamePattern []BranchNamePatternObservation `json:"branchNamePattern,omitempty" tf:"branch_name_pattern,omitempty"`
 
+	// (Block List, Max: 1) Parameters to be used for the commit_author_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
 	// Parameters to be used for the commit_author_email_pattern rule.
 	CommitAuthorEmailPattern []CommitAuthorEmailPatternObservation `json:"commitAuthorEmailPattern,omitempty" tf:"commit_author_email_pattern,omitempty"`
 
+	// (Block List, Max: 1) Parameters to be used for the commit_message_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
 	// Parameters to be used for the commit_message_pattern rule.
 	CommitMessagePattern []CommitMessagePatternObservation `json:"commitMessagePattern,omitempty" tf:"commit_message_pattern,omitempty"`
 
+	// (Block List, Max: 1) Parameters to be used for the committer_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
 	// Parameters to be used for the committer_email_pattern rule.
 	CommitterEmailPattern []CommitterEmailPatternObservation `json:"committerEmailPattern,omitempty" tf:"committer_email_pattern,omitempty"`
 
+	// (Boolean) Only allow users with bypass permission to create matching refs.
 	// Only allow users with bypass permission to create matching refs.
 	Creation *bool `json:"creation,omitempty" tf:"creation,omitempty"`
 
+	// (Boolean) Only allow users with bypass permissions to delete matching refs.
 	// Only allow users with bypass permissions to delete matching refs.
 	Deletion *bool `json:"deletion,omitempty" tf:"deletion,omitempty"`
 
+	// (Boolean) Prevent users with push access from force pushing to branches.
 	// Prevent users with push access from force pushing to branches.
 	NonFastForward *bool `json:"nonFastForward,omitempty" tf:"non_fast_forward,omitempty"`
 
+	// (Block List, Max: 1) Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. (see below for nested schema)
 	// Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
 	PullRequest []PullRequestObservation `json:"pullRequest,omitempty" tf:"pull_request,omitempty"`
 
+	// (Boolean) Prevent merge commits from being pushed to matching branches.
 	// Prevent merge commits from being pushed to matching branches.
 	RequiredLinearHistory *bool `json:"requiredLinearHistory,omitempty" tf:"required_linear_history,omitempty"`
 
+	// (Boolean) Commits pushed to matching branches must have verified signatures.
 	// Commits pushed to matching branches must have verified signatures.
 	RequiredSignatures *bool `json:"requiredSignatures,omitempty" tf:"required_signatures,omitempty"`
 
+	// (Block List, Max: 1) Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed. (see below for nested schema)
 	// Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.
 	RequiredStatusChecks []RequiredStatusChecksObservation `json:"requiredStatusChecks,omitempty" tf:"required_status_checks,omitempty"`
 
+	// (Block List, Max: 1) Define which Actions workflows must pass before changes can be merged into a branch matching the rule. Multiple workflows can be specified. (see below for nested schema)
 	// Choose which Actions workflows must pass before branches can be merged into a branch that matches this rule.
 	RequiredWorkflows []RequiredWorkflowsObservation `json:"requiredWorkflows,omitempty" tf:"required_workflows,omitempty"`
 
+	// (Block List, Max: 1) Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with branch_name_pattern as it only applies to rulesets with target tag. (see below for nested schema)
 	// Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `branch_name_pattern` as it only applies to rulesets with target `tag`.
 	TagNamePattern []TagNamePatternObservation `json:"tagNamePattern,omitempty" tf:"tag_name_pattern,omitempty"`
 
+	// (Boolean) Only allow users with bypass permission to update matching refs.
 	// Only allow users with bypass permission to update matching refs.
 	Update *bool `json:"update,omitempty" tf:"update,omitempty"`
 }
 
 type RulesParameters struct {
 
+	// (Block List, Max: 1) Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with tag_name_pattern as it only applies to rulesets with target branch. (see below for nested schema)
 	// Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `tag_name_pattern` as it only applies to rulesets with target `branch`.
 	// +kubebuilder:validation:Optional
 	BranchNamePattern []BranchNamePatternParameters `json:"branchNamePattern,omitempty" tf:"branch_name_pattern,omitempty"`
 
+	// (Block List, Max: 1) Parameters to be used for the commit_author_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
 	// Parameters to be used for the commit_author_email_pattern rule.
 	// +kubebuilder:validation:Optional
 	CommitAuthorEmailPattern []CommitAuthorEmailPatternParameters `json:"commitAuthorEmailPattern,omitempty" tf:"commit_author_email_pattern,omitempty"`
 
+	// (Block List, Max: 1) Parameters to be used for the commit_message_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
 	// Parameters to be used for the commit_message_pattern rule.
 	// +kubebuilder:validation:Optional
 	CommitMessagePattern []CommitMessagePatternParameters `json:"commitMessagePattern,omitempty" tf:"commit_message_pattern,omitempty"`
 
+	// (Block List, Max: 1) Parameters to be used for the committer_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
 	// Parameters to be used for the committer_email_pattern rule.
 	// +kubebuilder:validation:Optional
 	CommitterEmailPattern []CommitterEmailPatternParameters `json:"committerEmailPattern,omitempty" tf:"committer_email_pattern,omitempty"`
 
+	// (Boolean) Only allow users with bypass permission to create matching refs.
 	// Only allow users with bypass permission to create matching refs.
 	// +kubebuilder:validation:Optional
 	Creation *bool `json:"creation,omitempty" tf:"creation,omitempty"`
 
+	// (Boolean) Only allow users with bypass permissions to delete matching refs.
 	// Only allow users with bypass permissions to delete matching refs.
 	// +kubebuilder:validation:Optional
 	Deletion *bool `json:"deletion,omitempty" tf:"deletion,omitempty"`
 
+	// (Boolean) Prevent users with push access from force pushing to branches.
 	// Prevent users with push access from force pushing to branches.
 	// +kubebuilder:validation:Optional
 	NonFastForward *bool `json:"nonFastForward,omitempty" tf:"non_fast_forward,omitempty"`
 
+	// (Block List, Max: 1) Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. (see below for nested schema)
 	// Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
 	// +kubebuilder:validation:Optional
 	PullRequest []PullRequestParameters `json:"pullRequest,omitempty" tf:"pull_request,omitempty"`
 
+	// (Boolean) Prevent merge commits from being pushed to matching branches.
 	// Prevent merge commits from being pushed to matching branches.
 	// +kubebuilder:validation:Optional
 	RequiredLinearHistory *bool `json:"requiredLinearHistory,omitempty" tf:"required_linear_history,omitempty"`
 
+	// (Boolean) Commits pushed to matching branches must have verified signatures.
 	// Commits pushed to matching branches must have verified signatures.
 	// +kubebuilder:validation:Optional
 	RequiredSignatures *bool `json:"requiredSignatures,omitempty" tf:"required_signatures,omitempty"`
 
+	// (Block List, Max: 1) Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed. (see below for nested schema)
 	// Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.
 	// +kubebuilder:validation:Optional
 	RequiredStatusChecks []RequiredStatusChecksParameters `json:"requiredStatusChecks,omitempty" tf:"required_status_checks,omitempty"`
 
+	// (Block List, Max: 1) Define which Actions workflows must pass before changes can be merged into a branch matching the rule. Multiple workflows can be specified. (see below for nested schema)
 	// Choose which Actions workflows must pass before branches can be merged into a branch that matches this rule.
 	// +kubebuilder:validation:Optional
 	RequiredWorkflows []RequiredWorkflowsParameters `json:"requiredWorkflows,omitempty" tf:"required_workflows,omitempty"`
 
+	// (Block List, Max: 1) Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with branch_name_pattern as it only applies to rulesets with target tag. (see below for nested schema)
 	// Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `branch_name_pattern` as it only applies to rulesets with target `tag`.
 	// +kubebuilder:validation:Optional
 	TagNamePattern []TagNamePatternParameters `json:"tagNamePattern,omitempty" tf:"tag_name_pattern,omitempty"`
 
+	// (Boolean) Only allow users with bypass permission to update matching refs.
 	// Only allow users with bypass permission to update matching refs.
 	// +kubebuilder:validation:Optional
 	Update *bool `json:"update,omitempty" tf:"update,omitempty"`
@@ -752,48 +934,60 @@ type RulesParameters struct {
 
 type TagNamePatternInitParameters struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 }
 
 type TagNamePatternObservation struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	Pattern *string `json:"pattern,omitempty" tf:"pattern,omitempty"`
 }
 
 type TagNamePatternParameters struct {
 
+	// (String) How this rule will appear to users.
 	// How this rule will appear to users.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// (Boolean) If true, the rule will fail if the pattern matches.
 	// If true, the rule will fail if the pattern matches.
 	// +kubebuilder:validation:Optional
 	Negate *bool `json:"negate,omitempty" tf:"negate,omitempty"`
 
+	// (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
 	// The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
 	// +kubebuilder:validation:Optional
 	Operator *string `json:"operator" tf:"operator,omitempty"`
 
+	// (String) The pattern to match with.
 	// The pattern to match with.
 	// +kubebuilder:validation:Optional
 	Pattern *string `json:"pattern" tf:"pattern,omitempty"`
@@ -826,7 +1020,7 @@ type OrganizationRulesetStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// OrganizationRuleset is the Schema for the OrganizationRulesets API. <no value>
+// OrganizationRuleset is the Schema for the OrganizationRulesets API. Creates a GitHub organization ruleset.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

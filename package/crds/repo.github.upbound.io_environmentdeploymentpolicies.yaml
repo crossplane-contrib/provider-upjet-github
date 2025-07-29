@@ -77,7 +77,7 @@ spec:
                 properties:
                   branchPattern:
                     description: |-
-                      The name pattern that branches must match in order to deploy to the environment.
+                      The name pattern that branches must match in order to deploy to the environment. If not specified, tag_pattern must be specified.
                       The name pattern that branches must match in order to deploy to the environment.
                     type: string
                   environment:
@@ -254,7 +254,7 @@ spec:
                 properties:
                   branchPattern:
                     description: |-
-                      The name pattern that branches must match in order to deploy to the environment.
+                      The name pattern that branches must match in order to deploy to the environment. If not specified, tag_pattern must be specified.
                       The name pattern that branches must match in order to deploy to the environment.
                     type: string
                   environment:
@@ -596,7 +596,7 @@ spec:
                 properties:
                   branchPattern:
                     description: |-
-                      The name pattern that branches must match in order to deploy to the environment.
+                      The name pattern that branches must match in order to deploy to the environment. If not specified, tag_pattern must be specified.
                       The name pattern that branches must match in order to deploy to the environment.
                     type: string
                   environment:

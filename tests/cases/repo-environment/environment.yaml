@@ -34,11 +34,3 @@ spec:
       name: environment-name
     repositoryRef:
       name: github-crossplane-provider-test
----
-apiVersion: repo.github.upbound.io/v1alpha1
-kind: TagProtection
-spec:
-  forProvider:
-    pattern: v*
-    repositoryRef:
-      name: github-crossplane-provider-test

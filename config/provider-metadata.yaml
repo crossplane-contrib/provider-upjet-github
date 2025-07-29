@@ -1335,11 +1335,55 @@ resources:
             name: '- (Required) The name of the project.'
             url: '- URL of the project'
         importStatements: []
-    github_organization_ruleset Resource - terraform-provider-github:
+    github_organization_ruleset:
         subCategory: ""
         description: Creates a GitHub organization ruleset.
-        name: github_organization_ruleset Resource - terraform-provider-github
+        name: github_organization_ruleset
         title: github_organization_ruleset Resource - terraform-provider-github
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "bypass_actors": [
+                    {
+                      "actor_id": 13473,
+                      "actor_type": "Integration",
+                      "bypass_mode": "always"
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "ref_name": [
+                        {
+                          "exclude": [],
+                          "include": [
+                            "~ALL"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "enforcement": "active",
+                  "name": "example",
+                  "rules": [
+                    {
+                      "branch_name_pattern": [
+                        {
+                          "name": "example",
+                          "negate": false,
+                          "operator": "starts_with",
+                          "pattern": "ex"
+                        }
+                      ],
+                      "creation": true,
+                      "deletion": true,
+                      "required_linear_history": true,
+                      "required_signatures": true,
+                      "update": true
+                    }
+                  ],
+                  "target": "branch"
+                }
         argumentDocs:
             admin: -> 5
             bypass_actors: '- (Optional) (Block List) The actors that can bypass the rules in this ruleset. (see below for nested schema)'
@@ -1393,6 +1437,11 @@ resources:
             rules.pull_request.require_last_push_approval: '- (Optional) (Boolean) Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to false.'
             rules.pull_request.required_approving_review_count: '- (Optional) (Number) The number of approving reviews that are required before a pull request can be merged. Defaults to 0.'
             rules.pull_request.required_review_thread_resolution: '- (Optional) (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.'
+            rules.required_code_scanning: '- (Optional) (Block List, Max: 1) Define which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated. Multiple code scanning tools can be specified. (see below for nested schema)'
+            rules.required_code_scanning.required_code_scanning_tool: '- (Required) (Block Set, Min: 1) Actions code scanning tools that are required. Multiple can be defined. (see below for nested schema)'
+            rules.required_code_scanning.required_code_scanning_tool.alerts_threshold: '- (Required) (String) The severity level at which code scanning results that raise alerts block a reference update. Can be one of: none, errors, errors_and_warnings, all.'
+            rules.required_code_scanning.required_code_scanning_tool.security_alerts_threshold: '- (Required) (String) The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: none, critical, high_or_higher, medium_or_higher, all.'
+            rules.required_code_scanning.required_code_scanning_tool.tool: '- (Required) (String) The name of a code scanning tool.'
             rules.required_linear_history: '- (Optional) (Boolean) Prevent merge commits from being pushed to matching branches.'
             rules.required_signatures: '- (Optional) (Boolean) Commits pushed to matching branches must have verified signatures.'
             rules.required_status_checks: '- (Optional) (Block List, Max: 1) Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed. (see below for nested schema)'
@@ -1874,22 +1923,54 @@ resources:
                       "name": "SomeTeam"
                     }
         argumentDocs:
+            ignore_team: '- (Optional) List of teams to ignore when checking for repository access. This supports ignoring teams granted access at an organizational level.'
             invitation_ids: |-
                 - Map of usernames to invitation ID for any users added as part of creation of this resource to
                 be used in github_user_invitation_accepter.
-            repository: '- (Required) The GitHub repository'
-            team: '- (Optional) List of teams'
+            repository: '- (Required) The GitHub repository.'
+            team: '- (Optional) List of teams to grant access to the repository.'
             team.permission: |-
                 - (Optional) The permission of the outside collaborators for the repository.
                 Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
                 Must be push for personal repositories. Defaults to push.
-            team.team_id: '- (Required) The GitHub team id or the GitHub team slug'
-            user: '- (Optional) List of users'
+            team.team_id: '- (Required) The GitHub team id or the GitHub team slug.'
+            team_ignore.team_id: '- (Required) The GitHub team id or the GitHub team slug.'
+            user: '- (Optional) List of users to grant access to the repository.'
             user.permission: |-
                 - (Optional) The permission of the outside collaborators for the repository.
                 Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories.
                 Must be push for personal repositories. Defaults to push.
             user.username: '- (Required) The user to add to the repository as a collaborator.'
+        importStatements: []
+    github_repository_custom_property:
+        subCategory: ""
+        description: Creates and a specific custom property for a GitHub repository
+        name: github_repository_custom_property
+        title: github_repository_custom_property
+        examples:
+            - name: string
+              manifest: |-
+                {
+                  "property_name": "my-cool-property",
+                  "property_type": "string",
+                  "property_value": [
+                    "test"
+                  ],
+                  "repository": "${github_repository.example.name}"
+                }
+              references:
+                repository: github_repository.example.name
+              dependencies:
+                github_repository.example: |-
+                    {
+                      "description": "My awesome codebase",
+                      "name": "example"
+                    }
+        argumentDocs:
+            property_name: '- (Required) Name of the custom property. Note that a pre-requisiste for this resource is that a custom property of this name has already been defined on the organization level'
+            property_type: '- (Required) Type of the custom property. Can be one of single_select, multi_select, string, or true_false'
+            property_value: '- (Required) Value of the custom property in the form of an array. Properties of type single_select, string, and true_false are represented as a string array of length 1'
+            repository: '- (Required) The repository of the environment.'
         importStatements: []
     github_repository_dependabot_security_updates:
         subCategory: ""
@@ -1901,10 +1982,10 @@ resources:
               manifest: |-
                 {
                   "enabled": true,
-                  "repository": "${github_repository.test.id}"
+                  "repository": "${github_repository.test.name}"
                 }
               references:
-                repository: github_repository.test.id
+                repository: github_repository.test.name
               dependencies:
                 github_repository.repo: |-
                     {
@@ -1915,7 +1996,7 @@ resources:
                     }
         argumentDocs:
             enabled: '- (Required) The state of the automated security fixes.'
-            repository: '- (Required) The repository to manage.'
+            repository: '- (Required) The name of the GitHub repository.'
         importStatements: []
     github_repository_deploy_key:
         subCategory: ""
@@ -2063,10 +2144,45 @@ resources:
                       ],
                       "wait_timer": 10000
                     }
+            - name: test
+              manifest: |-
+                {
+                  "environment": "${github_repository_environment.test.environment}",
+                  "repository": "${github_repository.test.name}",
+                  "tag_pattern": "v*"
+                }
+              references:
+                environment: github_repository_environment.test.environment
+                repository: github_repository.test.name
+              dependencies:
+                github_repository.test: |-
+                    {
+                      "name": "tf-acc-test-%s"
+                    }
+                github_repository_environment.test: |-
+                    {
+                      "deployment_branch_policy": [
+                        {
+                          "custom_branch_policies": true,
+                          "protected_branches": false
+                        }
+                      ],
+                      "environment": "environment/test",
+                      "repository": "${github_repository.test.name}",
+                      "reviewers": [
+                        {
+                          "users": [
+                            "${data.github_user.current.id}"
+                          ]
+                        }
+                      ],
+                      "wait_timer": 10000
+                    }
         argumentDocs:
-            branch_pattern: '- (Required) The name pattern that branches must match in order to deploy to the environment.'
+            branch_pattern: '- (Optional) The name pattern that branches must match in order to deploy to the environment. If not specified, tag_pattern must be specified.'
             environment: '- (Required) The name of the environment.'
             repository: '- (Required) The repository of the environment.'
+            tag_pattern: '- (Optional) The name pattern that tags must match in order to deploy to the environment. If not specified, branch_pattern must be specified.'
         importStatements: []
     github_repository_file:
         subCategory: ""
@@ -2276,7 +2392,7 @@ resources:
             bypass_actors: '- (Optional) (Block List) The actors that can bypass the rules in this ruleset. (see below for nested schema)'
             bypass_actors.OrganizationAdmin: -> 1
             bypass_actors.RepositoryRole: (This is the actor type, the following are the base repository roles and their associated IDs.)
-            bypass_actors.actor_id: '- (Required) (Number) The ID of the actor that can bypass a ruleset.'
+            bypass_actors.actor_id: '- (Required) (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs'
             bypass_actors.actor_type: '(String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.'
             bypass_actors.bypass_mode: '- (Optional) (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.'
             conditions: '- (Optional) (Block List, Max: 1) Parameters for a repository ruleset ref name condition. (see below for nested schema)'
@@ -2312,6 +2428,14 @@ resources:
             rules.committer_email_pattern.pattern: '- (Required) (String) The pattern to match with.'
             rules.creation: '- (Optional) (Boolean) Only allow users with bypass permission to create matching refs.'
             rules.deletion: '- (Optional) (Boolean) Only allow users with bypass permissions to delete matching refs.'
+            rules.merge_queue: '- (Optional) (Block List, Max: 1) Merges must be performed via a merge queue.'
+            rules.merge_queue.check_response_timeout_minutes: '- (Required) (Number)Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.'
+            rules.merge_queue.grouping_strategy: '- (Required) (String)When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to ALLGREEN.'
+            rules.merge_queue.max_entries_to_build: '- (Required) (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.'
+            rules.merge_queue.max_entries_to_merge: '- (Required) (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.'
+            rules.merge_queue.merge_method: '- (Required) (String) Method to use when merging changes from queued pull requests. Can be one of: MERGE, SQUASH, REBASE. Defaults to MERGE.'
+            rules.merge_queue.min_entries_to_merge: '- (Required) (Number) The minimum number of PRs that will be merged together in a group. Defaults to 1.'
+            rules.merge_queue.min_entries_to_merge_wait_minutes: '- (Required) (Number) The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met. After this time has elapsed, the minimum group size will be ignored and a smaller group will be merged. Defaults to 5.'
             rules.non_fast_forward: '- (Optional) (Boolean) Prevent users with push access from force pushing to branches.'
             rules.pull_request: '- (Optional) (Block List, Max: 1) Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. (see below for nested schema)'
             rules.pull_request.dismiss_stale_reviews_on_push: '- (Optional) (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.'
@@ -2319,14 +2443,20 @@ resources:
             rules.pull_request.require_last_push_approval: '- (Optional) (Boolean) Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to false.'
             rules.pull_request.required_approving_review_count: '- (Optional) (Number) The number of approving reviews that are required before a pull request can be merged. Defaults to 0.'
             rules.pull_request.required_review_thread_resolution: '- (Optional) (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.'
+            rules.required_code_scanning: '- (Optional) (Block List, Max: 1) Define which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated. Multiple code scanning tools can be specified. (see below for nested schema)'
+            rules.required_code_scanning.required_code_scanning_tool: '- (Required) (Block Set, Min: 1) Actions code scanning tools that are required. Multiple can be defined. (see below for nested schema)'
+            rules.required_code_scanning.required_code_scanning_tool.alerts_threshold: '- (Required) (String) The severity level at which code scanning results that raise alerts block a reference update. Can be one of: none, errors, errors_and_warnings, all.'
+            rules.required_code_scanning.required_code_scanning_tool.security_alerts_threshold: '- (Required) (String) The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: none, critical, high_or_higher, medium_or_higher, all.'
+            rules.required_code_scanning.required_code_scanning_tool.tool: '- (Required) (String) The name of a code scanning tool.'
             rules.required_deployments: '- (Optional) (Block List, Max: 1) Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule. (see below for nested schema)'
             rules.required_deployments.required_deployment_environments: '- (Required) (List of String) The environments that must be successfully deployed to before branches can be merged.'
             rules.required_linear_history: '- (Optional) (Boolean) Prevent merge commits from being pushed to matching branches.'
             rules.required_signatures: '- (Optional) (Boolean) Commits pushed to matching branches must have verified signatures.'
             rules.required_status_checks: '- (Optional) (Block List, Max: 1) Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed. (see below for nested schema)'
+            rules.required_status_checks.do_not_enforce_on_create: '- (Optional) (Boolean) Allow repositories and branches to be created if a check would otherwise prohibit it. Defaults to false.'
             rules.required_status_checks.required_check: '- (Required) (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)'
             rules.required_status_checks.required_check.context: '- (Required) (String) The status check context name that must be present on the commit.'
-            rules.required_status_checks.required_check.integration_id: '- (Optional) (Number) The optional integration ID that this status check must originate from.'
+            rules.required_status_checks.required_check.integration_id: '- (Optional) (Number) The optional integration ID that this status check must originate from. It''s a GitHub App ID, which can be obtained by following instructions from the Get an App API docs.'
             rules.required_status_checks.strict_required_status_checks_policy: '- (Optional) (Boolean) Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to false.'
             rules.tag_name_pattern: '- (Optional) (Block List, Max: 1) Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with branch_name_pattern as it only applied to rulesets with target tag. (see below for nested schema)'
             rules.tag_name_pattern.name: '- (Optional) (String) How this rule will appear to users.'

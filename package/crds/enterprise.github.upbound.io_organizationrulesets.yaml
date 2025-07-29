@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: OrganizationRuleset is the Schema for the OrganizationRulesets
-          API. <no value>
+          API. Creates a GitHub organization ruleset.
         properties:
           apiVersion:
             description: |-
@@ -74,75 +74,80 @@ spec:
               forProvider:
                 properties:
                   bypassActors:
-                    description: The actors that can bypass the rules in this ruleset.
+                    description: |-
+                      (Block List) The actors that can bypass the rules in this ruleset. (see below for nested schema)
+                      The actors that can bypass the rules in this ruleset.
                     items:
                       properties:
                         actorId:
-                          description: The ID of the actor that can bypass a ruleset.
-                            When `actor_type` is `OrganizationAdmin`, this should
-                            be set to `1`.
+                          description: |-
+                            (Number) The ID of the actor that can bypass a ruleset.
+                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
                           format: int64
                           type: integer
                         actorType:
-                          description: 'The type of actor that can bypass a ruleset.
-                            Can be one of: `RepositoryRole`, `Team`, `Integration`,
-                            `OrganizationAdmin`.'
+                          description: |-
+                            (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
+                            The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
                           type: string
                         bypassMode:
-                          description: 'When the specified actor can bypass the ruleset.
-                            pull_request means that an actor can only bypass rules
-                            on pull requests. Can be one of: `always`, `pull_request`.'
+                          description: |-
+                            (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
+                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
                           type: string
                       type: object
                     type: array
                   conditions:
-                    description: Parameters for an organization ruleset condition.
-                      `ref_name` is required alongside one of `repository_name` or
-                      `repository_id`.
+                    description: |-
+                      (Block List, Max: 1) Parameters for an organization ruleset condition. ref_name is required alongside one of repository_name or repository_id. (see below for nested schema)
+                      Parameters for an organization ruleset condition. `ref_name` is required alongside one of `repository_name` or `repository_id`.
                     items:
                       properties:
                         refName:
+                          description: '(Block List, Min: 1, Max: 1) (see below for
+                            nested schema)'
                           items:
                             properties:
                               exclude:
-                                description: Array of ref names or patterns to exclude.
-                                  The condition will not pass if any of these patterns
-                                  match.
+                                description: |-
+                                  (List of String) Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
+                                  Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
                                 items:
                                   type: string
                                 type: array
                               include:
-                                description: Array of ref names or patterns to include.
-                                  One of these patterns must match for the condition
-                                  to pass. Also accepts `~DEFAULT_BRANCH` to include
-                                  the default branch or `~ALL` to include all branches.
+                                description: |-
+                                  (List of String) Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~DEFAULT_BRANCH to include the default branch or ~ALL to include all branches.
+                                  Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
                                 items:
                                   type: string
                                 type: array
                             type: object
                           type: array
                         repositoryId:
-                          description: The repository IDs that the ruleset applies
-                            to. One of these IDs must match for the condition to pass.
+                          description: |-
+                            (List of Number) The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass. Conflicts with repository_name.
+                            The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass.
                           items:
                             format: int64
                             type: integer
                           type: array
                         repositoryName:
+                          description: '(Block List, Max: 1) Conflicts with repository_id.
+                            (see below for nested schema)'
                           items:
                             properties:
                               exclude:
-                                description: Array of repository names or patterns
-                                  to exclude. The condition will not pass if any of
-                                  these patterns match.
+                                description: |-
+                                  (List of String) Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
+                                  Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
                                 items:
                                   type: string
                                 type: array
                               include:
-                                description: Array of repository names or patterns
-                                  to include. One of these patterns must match for
-                                  the condition to pass. Also accepts `~ALL` to include
-                                  all repositories.
+                                description: |-
+                                  (List of String) Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~ALL to include all repositories.
+                                  Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~ALL` to include all repositories.
                                 items:
                                   type: string
                                 type: array
@@ -155,217 +160,250 @@ spec:
                       type: object
                     type: array
                   enforcement:
-                    description: 'Possible values for Enforcement are `disabled`,
-                      `active`, `evaluate`. Note: `evaluate` is currently only supported
-                      for owners of type `organization`.'
+                    description: |-
+                      (String) Possible values for Enforcement are disabled, active, evaluate. Note: evaluate is currently only supported for owners of type organization.
+                      Possible values for Enforcement are `disabled`, `active`, `evaluate`. Note: `evaluate` is currently only supported for owners of type `organization`.
                     type: string
                   name:
-                    description: The name of the ruleset.
+                    description: |-
+                      (String) The name of the ruleset.
+                      The name of the ruleset.
                     type: string
                   rules:
-                    description: Rules within the ruleset.
+                    description: |-
+                      (Block List, Min: 1, Max: 1) Rules within the ruleset. (see below for nested schema)
+                      Rules within the ruleset.
                     items:
                       properties:
                         branchNamePattern:
-                          description: Parameters to be used for the branch_name_pattern
-                            rule. This rule only applies to repositories within an
-                            enterprise, it cannot be applied to repositories owned
-                            by individuals or regular organizations. Conflicts with
-                            `tag_name_pattern` as it only applies to rulesets with
-                            target `branch`.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with tag_name_pattern as it only applies to rulesets with target branch. (see below for nested schema)
+                            Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `tag_name_pattern` as it only applies to rulesets with target `branch`.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         commitAuthorEmailPattern:
-                          description: Parameters to be used for the commit_author_email_pattern
-                            rule.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the commit_author_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
+                            Parameters to be used for the commit_author_email_pattern rule.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         commitMessagePattern:
-                          description: Parameters to be used for the commit_message_pattern
-                            rule.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the commit_message_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
+                            Parameters to be used for the commit_message_pattern rule.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         committerEmailPattern:
-                          description: Parameters to be used for the committer_email_pattern
-                            rule.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the committer_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
+                            Parameters to be used for the committer_email_pattern rule.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         creation:
-                          description: Only allow users with bypass permission to
-                            create matching refs.
+                          description: |-
+                            (Boolean) Only allow users with bypass permission to create matching refs.
+                            Only allow users with bypass permission to create matching refs.
                           type: boolean
                         deletion:
-                          description: Only allow users with bypass permissions to
-                            delete matching refs.
+                          description: |-
+                            (Boolean) Only allow users with bypass permissions to delete matching refs.
+                            Only allow users with bypass permissions to delete matching refs.
                           type: boolean
                         nonFastForward:
-                          description: Prevent users with push access from force pushing
-                            to branches.
+                          description: |-
+                            (Boolean) Prevent users with push access from force pushing to branches.
+                            Prevent users with push access from force pushing to branches.
                           type: boolean
                         pullRequest:
-                          description: Require all commits be made to a non-target
-                            branch and submitted via a pull request before they can
-                            be merged.
+                          description: |-
+                            (Block List, Max: 1) Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. (see below for nested schema)
+                            Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
                           items:
                             properties:
                               dismissStaleReviewsOnPush:
-                                description: New, reviewable commits pushed will dismiss
-                                  previous pull request review approvals. Defaults
-                                  to `false`.
+                                description: |-
+                                  (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
+                                  New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to `false`.
                                 type: boolean
                               requireCodeOwnerReview:
-                                description: Require an approving review in pull requests
-                                  that modify files that have a designated code owner.
-                                  Defaults to `false`.
+                                description: |-
+                                  (Boolean) Require an approving review in pull requests that modify files that have a designated code owner. Defaults to false.
+                                  Require an approving review in pull requests that modify files that have a designated code owner. Defaults to `false`.
                                 type: boolean
                               requireLastPushApproval:
-                                description: Whether the most recent reviewable push
-                                  must be approved by someone other than the person
-                                  who pushed it. Defaults to `false`.
+                                description: |-
+                                  (Boolean) Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to false.
+                                  Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to `false`.
                                 type: boolean
                               requiredApprovingReviewCount:
-                                description: The number of approving reviews that
-                                  are required before a pull request can be merged.
-                                  Defaults to `0`.
+                                description: |-
+                                  (Number) The number of approving reviews that are required before a pull request can be merged. Defaults to 0.
+                                  The number of approving reviews that are required before a pull request can be merged. Defaults to `0`.
                                 format: int64
                                 type: integer
                               requiredReviewThreadResolution:
-                                description: All conversations on code must be resolved
-                                  before a pull request can be merged. Defaults to
-                                  `false`.
+                                description: |-
+                                  (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
+                                  All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
                                 type: boolean
                             type: object
                           type: array
                         requiredLinearHistory:
-                          description: Prevent merge commits from being pushed to
-                            matching branches.
+                          description: |-
+                            (Boolean) Prevent merge commits from being pushed to matching branches.
+                            Prevent merge commits from being pushed to matching branches.
                           type: boolean
                         requiredSignatures:
-                          description: Commits pushed to matching branches must have
-                            verified signatures.
+                          description: |-
+                            (Boolean) Commits pushed to matching branches must have verified signatures.
+                            Commits pushed to matching branches must have verified signatures.
                           type: boolean
                         requiredStatusChecks:
-                          description: Choose which status checks must pass before
-                            branches can be merged into a branch that matches this
-                            rule. When enabled, commits must first be pushed to another
-                            branch, then merged or pushed directly to a branch that
-                            matches this rule after status checks have passed.
+                          description: |-
+                            (Block List, Max: 1) Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed. (see below for nested schema)
+                            Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.
                           items:
                             properties:
                               requiredCheck:
-                                description: Status checks that are required. Several
-                                  can be defined.
+                                description: |-
+                                  (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
+                                  Status checks that are required. Several can be defined.
                                 items:
                                   properties:
                                     context:
-                                      description: The status check context name that
-                                        must be present on the commit.
+                                      description: |-
+                                        (String) The status check context name that must be present on the commit.
+                                        The status check context name that must be present on the commit.
                                       type: string
                                     integrationId:
-                                      description: The optional integration ID that
-                                        this status check must originate from.
+                                      description: |-
+                                        (Number) The optional integration ID that this status check must originate from.
+                                        The optional integration ID that this status check must originate from.
                                       format: int64
                                       type: integer
                                   type: object
                                 type: array
                               strictRequiredStatusChecksPolicy:
-                                description: Whether pull requests targeting a matching
-                                  branch must be tested with the latest code. This
-                                  setting will not take effect unless at least one
-                                  status check is enabled. Defaults to `false`.
+                                description: |-
+                                  (Boolean) Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to false.
+                                  Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to `false`.
                                 type: boolean
                             type: object
                           type: array
                         requiredWorkflows:
-                          description: Choose which Actions workflows must pass before
-                            branches can be merged into a branch that matches this
-                            rule.
+                          description: |-
+                            (Block List, Max: 1) Define which Actions workflows must pass before changes can be merged into a branch matching the rule. Multiple workflows can be specified. (see below for nested schema)
+                            Choose which Actions workflows must pass before branches can be merged into a branch that matches this rule.
                           items:
                             properties:
                               requiredWorkflow:
-                                description: Actions workflows that are required.
-                                  Several can be defined.
+                                description: |-
+                                  (Block Set, Min: 1) Actions workflows that are required. Multiple can be defined. (see below for nested schema)
+                                  Actions workflows that are required. Several can be defined.
                                 items:
                                   properties:
                                     path:
-                                      description: The path to the workflow YAML definition
-                                        file.
+                                      description: |-
+                                        (String) The path to the YAML definition file of the workflow.
+                                        The path to the workflow YAML definition file.
                                       type: string
                                     ref:
-                                      description: The ref (branch or tag) of the
-                                        workflow file to use.
+                                      description: |-
+                                        (String) The optional ref from which to fetch the workflow. Defaults to master.
+                                        The ref (branch or tag) of the workflow file to use.
                                       type: string
                                     repositoryId:
-                                      description: The repository in which the workflow
-                                        is defined.
+                                      description: |-
+                                        (Number) The ID of the repository. Names, full names and repository URLs are not supported.
+                                        The repository in which the workflow is defined.
                                       format: int64
                                       type: integer
                                   type: object
@@ -373,40 +411,44 @@ spec:
                             type: object
                           type: array
                         tagNamePattern:
-                          description: Parameters to be used for the tag_name_pattern
-                            rule. This rule only applies to repositories within an
-                            enterprise, it cannot be applied to repositories owned
-                            by individuals or regular organizations. Conflicts with
-                            `branch_name_pattern` as it only applies to rulesets with
-                            target `tag`.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with branch_name_pattern as it only applies to rulesets with target tag. (see below for nested schema)
+                            Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `branch_name_pattern` as it only applies to rulesets with target `tag`.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         update:
-                          description: Only allow users with bypass permission to
-                            update matching refs.
+                          description: |-
+                            (Boolean) Only allow users with bypass permission to update matching refs.
+                            Only allow users with bypass permission to update matching refs.
                           type: boolean
                       type: object
                     type: array
                   target:
-                    description: 'Possible values are `branch`, `tag` and `push`.
-                      Note: The `push` target is in beta and is subject to change.'
+                    description: |-
+                      (String) Possible values are branch and tag.
+                      Possible values are `branch`, `tag` and `push`. Note: The `push` target is in beta and is subject to change.
                     type: string
                 type: object
               initProvider:
@@ -423,75 +465,80 @@ spec:
                   autoscaler.
                 properties:
                   bypassActors:
-                    description: The actors that can bypass the rules in this ruleset.
+                    description: |-
+                      (Block List) The actors that can bypass the rules in this ruleset. (see below for nested schema)
+                      The actors that can bypass the rules in this ruleset.
                     items:
                       properties:
                         actorId:
-                          description: The ID of the actor that can bypass a ruleset.
-                            When `actor_type` is `OrganizationAdmin`, this should
-                            be set to `1`.
+                          description: |-
+                            (Number) The ID of the actor that can bypass a ruleset.
+                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
                           format: int64
                           type: integer
                         actorType:
-                          description: 'The type of actor that can bypass a ruleset.
-                            Can be one of: `RepositoryRole`, `Team`, `Integration`,
-                            `OrganizationAdmin`.'
+                          description: |-
+                            (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
+                            The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
                           type: string
                         bypassMode:
-                          description: 'When the specified actor can bypass the ruleset.
-                            pull_request means that an actor can only bypass rules
-                            on pull requests. Can be one of: `always`, `pull_request`.'
+                          description: |-
+                            (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
+                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
                           type: string
                       type: object
                     type: array
                   conditions:
-                    description: Parameters for an organization ruleset condition.
-                      `ref_name` is required alongside one of `repository_name` or
-                      `repository_id`.
+                    description: |-
+                      (Block List, Max: 1) Parameters for an organization ruleset condition. ref_name is required alongside one of repository_name or repository_id. (see below for nested schema)
+                      Parameters for an organization ruleset condition. `ref_name` is required alongside one of `repository_name` or `repository_id`.
                     items:
                       properties:
                         refName:
+                          description: '(Block List, Min: 1, Max: 1) (see below for
+                            nested schema)'
                           items:
                             properties:
                               exclude:
-                                description: Array of ref names or patterns to exclude.
-                                  The condition will not pass if any of these patterns
-                                  match.
+                                description: |-
+                                  (List of String) Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
+                                  Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
                                 items:
                                   type: string
                                 type: array
                               include:
-                                description: Array of ref names or patterns to include.
-                                  One of these patterns must match for the condition
-                                  to pass. Also accepts `~DEFAULT_BRANCH` to include
-                                  the default branch or `~ALL` to include all branches.
+                                description: |-
+                                  (List of String) Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~DEFAULT_BRANCH to include the default branch or ~ALL to include all branches.
+                                  Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
                                 items:
                                   type: string
                                 type: array
                             type: object
                           type: array
                         repositoryId:
-                          description: The repository IDs that the ruleset applies
-                            to. One of these IDs must match for the condition to pass.
+                          description: |-
+                            (List of Number) The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass. Conflicts with repository_name.
+                            The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass.
                           items:
                             format: int64
                             type: integer
                           type: array
                         repositoryName:
+                          description: '(Block List, Max: 1) Conflicts with repository_id.
+                            (see below for nested schema)'
                           items:
                             properties:
                               exclude:
-                                description: Array of repository names or patterns
-                                  to exclude. The condition will not pass if any of
-                                  these patterns match.
+                                description: |-
+                                  (List of String) Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
+                                  Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
                                 items:
                                   type: string
                                 type: array
                               include:
-                                description: Array of repository names or patterns
-                                  to include. One of these patterns must match for
-                                  the condition to pass. Also accepts `~ALL` to include
-                                  all repositories.
+                                description: |-
+                                  (List of String) Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~ALL to include all repositories.
+                                  Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~ALL` to include all repositories.
                                 items:
                                   type: string
                                 type: array
@@ -504,217 +551,250 @@ spec:
                       type: object
                     type: array
                   enforcement:
-                    description: 'Possible values for Enforcement are `disabled`,
-                      `active`, `evaluate`. Note: `evaluate` is currently only supported
-                      for owners of type `organization`.'
+                    description: |-
+                      (String) Possible values for Enforcement are disabled, active, evaluate. Note: evaluate is currently only supported for owners of type organization.
+                      Possible values for Enforcement are `disabled`, `active`, `evaluate`. Note: `evaluate` is currently only supported for owners of type `organization`.
                     type: string
                   name:
-                    description: The name of the ruleset.
+                    description: |-
+                      (String) The name of the ruleset.
+                      The name of the ruleset.
                     type: string
                   rules:
-                    description: Rules within the ruleset.
+                    description: |-
+                      (Block List, Min: 1, Max: 1) Rules within the ruleset. (see below for nested schema)
+                      Rules within the ruleset.
                     items:
                       properties:
                         branchNamePattern:
-                          description: Parameters to be used for the branch_name_pattern
-                            rule. This rule only applies to repositories within an
-                            enterprise, it cannot be applied to repositories owned
-                            by individuals or regular organizations. Conflicts with
-                            `tag_name_pattern` as it only applies to rulesets with
-                            target `branch`.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with tag_name_pattern as it only applies to rulesets with target branch. (see below for nested schema)
+                            Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `tag_name_pattern` as it only applies to rulesets with target `branch`.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         commitAuthorEmailPattern:
-                          description: Parameters to be used for the commit_author_email_pattern
-                            rule.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the commit_author_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
+                            Parameters to be used for the commit_author_email_pattern rule.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         commitMessagePattern:
-                          description: Parameters to be used for the commit_message_pattern
-                            rule.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the commit_message_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
+                            Parameters to be used for the commit_message_pattern rule.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         committerEmailPattern:
-                          description: Parameters to be used for the committer_email_pattern
-                            rule.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the committer_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
+                            Parameters to be used for the committer_email_pattern rule.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         creation:
-                          description: Only allow users with bypass permission to
-                            create matching refs.
+                          description: |-
+                            (Boolean) Only allow users with bypass permission to create matching refs.
+                            Only allow users with bypass permission to create matching refs.
                           type: boolean
                         deletion:
-                          description: Only allow users with bypass permissions to
-                            delete matching refs.
+                          description: |-
+                            (Boolean) Only allow users with bypass permissions to delete matching refs.
+                            Only allow users with bypass permissions to delete matching refs.
                           type: boolean
                         nonFastForward:
-                          description: Prevent users with push access from force pushing
-                            to branches.
+                          description: |-
+                            (Boolean) Prevent users with push access from force pushing to branches.
+                            Prevent users with push access from force pushing to branches.
                           type: boolean
                         pullRequest:
-                          description: Require all commits be made to a non-target
-                            branch and submitted via a pull request before they can
-                            be merged.
+                          description: |-
+                            (Block List, Max: 1) Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. (see below for nested schema)
+                            Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
                           items:
                             properties:
                               dismissStaleReviewsOnPush:
-                                description: New, reviewable commits pushed will dismiss
-                                  previous pull request review approvals. Defaults
-                                  to `false`.
+                                description: |-
+                                  (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
+                                  New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to `false`.
                                 type: boolean
                               requireCodeOwnerReview:
-                                description: Require an approving review in pull requests
-                                  that modify files that have a designated code owner.
-                                  Defaults to `false`.
+                                description: |-
+                                  (Boolean) Require an approving review in pull requests that modify files that have a designated code owner. Defaults to false.
+                                  Require an approving review in pull requests that modify files that have a designated code owner. Defaults to `false`.
                                 type: boolean
                               requireLastPushApproval:
-                                description: Whether the most recent reviewable push
-                                  must be approved by someone other than the person
-                                  who pushed it. Defaults to `false`.
+                                description: |-
+                                  (Boolean) Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to false.
+                                  Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to `false`.
                                 type: boolean
                               requiredApprovingReviewCount:
-                                description: The number of approving reviews that
-                                  are required before a pull request can be merged.
-                                  Defaults to `0`.
+                                description: |-
+                                  (Number) The number of approving reviews that are required before a pull request can be merged. Defaults to 0.
+                                  The number of approving reviews that are required before a pull request can be merged. Defaults to `0`.
                                 format: int64
                                 type: integer
                               requiredReviewThreadResolution:
-                                description: All conversations on code must be resolved
-                                  before a pull request can be merged. Defaults to
-                                  `false`.
+                                description: |-
+                                  (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
+                                  All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
                                 type: boolean
                             type: object
                           type: array
                         requiredLinearHistory:
-                          description: Prevent merge commits from being pushed to
-                            matching branches.
+                          description: |-
+                            (Boolean) Prevent merge commits from being pushed to matching branches.
+                            Prevent merge commits from being pushed to matching branches.
                           type: boolean
                         requiredSignatures:
-                          description: Commits pushed to matching branches must have
-                            verified signatures.
+                          description: |-
+                            (Boolean) Commits pushed to matching branches must have verified signatures.
+                            Commits pushed to matching branches must have verified signatures.
                           type: boolean
                         requiredStatusChecks:
-                          description: Choose which status checks must pass before
-                            branches can be merged into a branch that matches this
-                            rule. When enabled, commits must first be pushed to another
-                            branch, then merged or pushed directly to a branch that
-                            matches this rule after status checks have passed.
+                          description: |-
+                            (Block List, Max: 1) Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed. (see below for nested schema)
+                            Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.
                           items:
                             properties:
                               requiredCheck:
-                                description: Status checks that are required. Several
-                                  can be defined.
+                                description: |-
+                                  (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
+                                  Status checks that are required. Several can be defined.
                                 items:
                                   properties:
                                     context:
-                                      description: The status check context name that
-                                        must be present on the commit.
+                                      description: |-
+                                        (String) The status check context name that must be present on the commit.
+                                        The status check context name that must be present on the commit.
                                       type: string
                                     integrationId:
-                                      description: The optional integration ID that
-                                        this status check must originate from.
+                                      description: |-
+                                        (Number) The optional integration ID that this status check must originate from.
+                                        The optional integration ID that this status check must originate from.
                                       format: int64
                                       type: integer
                                   type: object
                                 type: array
                               strictRequiredStatusChecksPolicy:
-                                description: Whether pull requests targeting a matching
-                                  branch must be tested with the latest code. This
-                                  setting will not take effect unless at least one
-                                  status check is enabled. Defaults to `false`.
+                                description: |-
+                                  (Boolean) Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to false.
+                                  Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to `false`.
                                 type: boolean
                             type: object
                           type: array
                         requiredWorkflows:
-                          description: Choose which Actions workflows must pass before
-                            branches can be merged into a branch that matches this
-                            rule.
+                          description: |-
+                            (Block List, Max: 1) Define which Actions workflows must pass before changes can be merged into a branch matching the rule. Multiple workflows can be specified. (see below for nested schema)
+                            Choose which Actions workflows must pass before branches can be merged into a branch that matches this rule.
                           items:
                             properties:
                               requiredWorkflow:
-                                description: Actions workflows that are required.
-                                  Several can be defined.
+                                description: |-
+                                  (Block Set, Min: 1) Actions workflows that are required. Multiple can be defined. (see below for nested schema)
+                                  Actions workflows that are required. Several can be defined.
                                 items:
                                   properties:
                                     path:
-                                      description: The path to the workflow YAML definition
-                                        file.
+                                      description: |-
+                                        (String) The path to the YAML definition file of the workflow.
+                                        The path to the workflow YAML definition file.
                                       type: string
                                     ref:
-                                      description: The ref (branch or tag) of the
-                                        workflow file to use.
+                                      description: |-
+                                        (String) The optional ref from which to fetch the workflow. Defaults to master.
+                                        The ref (branch or tag) of the workflow file to use.
                                       type: string
                                     repositoryId:
-                                      description: The repository in which the workflow
-                                        is defined.
+                                      description: |-
+                                        (Number) The ID of the repository. Names, full names and repository URLs are not supported.
+                                        The repository in which the workflow is defined.
                                       format: int64
                                       type: integer
                                   type: object
@@ -722,40 +802,44 @@ spec:
                             type: object
                           type: array
                         tagNamePattern:
-                          description: Parameters to be used for the tag_name_pattern
-                            rule. This rule only applies to repositories within an
-                            enterprise, it cannot be applied to repositories owned
-                            by individuals or regular organizations. Conflicts with
-                            `branch_name_pattern` as it only applies to rulesets with
-                            target `tag`.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with branch_name_pattern as it only applies to rulesets with target tag. (see below for nested schema)
+                            Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `branch_name_pattern` as it only applies to rulesets with target `tag`.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         update:
-                          description: Only allow users with bypass permission to
-                            update matching refs.
+                          description: |-
+                            (Boolean) Only allow users with bypass permission to update matching refs.
+                            Only allow users with bypass permission to update matching refs.
                           type: boolean
                       type: object
                     type: array
                   target:
-                    description: 'Possible values are `branch`, `tag` and `push`.
-                      Note: The `push` target is in beta and is subject to change.'
+                    description: |-
+                      (String) Possible values are branch and tag.
+                      Possible values are `branch`, `tag` and `push`. Note: The `push` target is in beta and is subject to change.
                     type: string
                 type: object
               managementPolicies:
@@ -948,75 +1032,80 @@ spec:
               atProvider:
                 properties:
                   bypassActors:
-                    description: The actors that can bypass the rules in this ruleset.
+                    description: |-
+                      (Block List) The actors that can bypass the rules in this ruleset. (see below for nested schema)
+                      The actors that can bypass the rules in this ruleset.
                     items:
                       properties:
                         actorId:
-                          description: The ID of the actor that can bypass a ruleset.
-                            When `actor_type` is `OrganizationAdmin`, this should
-                            be set to `1`.
+                          description: |-
+                            (Number) The ID of the actor that can bypass a ruleset.
+                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
                           format: int64
                           type: integer
                         actorType:
-                          description: 'The type of actor that can bypass a ruleset.
-                            Can be one of: `RepositoryRole`, `Team`, `Integration`,
-                            `OrganizationAdmin`.'
+                          description: |-
+                            (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
+                            The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
                           type: string
                         bypassMode:
-                          description: 'When the specified actor can bypass the ruleset.
-                            pull_request means that an actor can only bypass rules
-                            on pull requests. Can be one of: `always`, `pull_request`.'
+                          description: |-
+                            (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
+                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
                           type: string
                       type: object
                     type: array
                   conditions:
-                    description: Parameters for an organization ruleset condition.
-                      `ref_name` is required alongside one of `repository_name` or
-                      `repository_id`.
+                    description: |-
+                      (Block List, Max: 1) Parameters for an organization ruleset condition. ref_name is required alongside one of repository_name or repository_id. (see below for nested schema)
+                      Parameters for an organization ruleset condition. `ref_name` is required alongside one of `repository_name` or `repository_id`.
                     items:
                       properties:
                         refName:
+                          description: '(Block List, Min: 1, Max: 1) (see below for
+                            nested schema)'
                           items:
                             properties:
                               exclude:
-                                description: Array of ref names or patterns to exclude.
-                                  The condition will not pass if any of these patterns
-                                  match.
+                                description: |-
+                                  (List of String) Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
+                                  Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
                                 items:
                                   type: string
                                 type: array
                               include:
-                                description: Array of ref names or patterns to include.
-                                  One of these patterns must match for the condition
-                                  to pass. Also accepts `~DEFAULT_BRANCH` to include
-                                  the default branch or `~ALL` to include all branches.
+                                description: |-
+                                  (List of String) Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~DEFAULT_BRANCH to include the default branch or ~ALL to include all branches.
+                                  Array of ref names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~DEFAULT_BRANCH` to include the default branch or `~ALL` to include all branches.
                                 items:
                                   type: string
                                 type: array
                             type: object
                           type: array
                         repositoryId:
-                          description: The repository IDs that the ruleset applies
-                            to. One of these IDs must match for the condition to pass.
+                          description: |-
+                            (List of Number) The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass. Conflicts with repository_name.
+                            The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass.
                           items:
                             format: int64
                             type: integer
                           type: array
                         repositoryName:
+                          description: '(Block List, Max: 1) Conflicts with repository_id.
+                            (see below for nested schema)'
                           items:
                             properties:
                               exclude:
-                                description: Array of repository names or patterns
-                                  to exclude. The condition will not pass if any of
-                                  these patterns match.
+                                description: |-
+                                  (List of String) Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
+                                  Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
                                 items:
                                   type: string
                                 type: array
                               include:
-                                description: Array of repository names or patterns
-                                  to include. One of these patterns must match for
-                                  the condition to pass. Also accepts `~ALL` to include
-                                  all repositories.
+                                description: |-
+                                  (List of String) Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~ALL to include all repositories.
+                                  Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts `~ALL` to include all repositories.
                                 items:
                                   type: string
                                 type: array
@@ -1029,224 +1118,260 @@ spec:
                       type: object
                     type: array
                   enforcement:
-                    description: 'Possible values for Enforcement are `disabled`,
-                      `active`, `evaluate`. Note: `evaluate` is currently only supported
-                      for owners of type `organization`.'
+                    description: |-
+                      (String) Possible values for Enforcement are disabled, active, evaluate. Note: evaluate is currently only supported for owners of type organization.
+                      Possible values for Enforcement are `disabled`, `active`, `evaluate`. Note: `evaluate` is currently only supported for owners of type `organization`.
                     type: string
                   etag:
+                    description: (String)
                     type: string
                   id:
                     type: string
                   name:
-                    description: The name of the ruleset.
+                    description: |-
+                      (String) The name of the ruleset.
+                      The name of the ruleset.
                     type: string
                   nodeId:
-                    description: GraphQL global node id for use with v4 API.
+                    description: |-
+                      (String) GraphQL global node id for use with v4 API.
+                      GraphQL global node id for use with v4 API.
                     type: string
                   rules:
-                    description: Rules within the ruleset.
+                    description: |-
+                      (Block List, Min: 1, Max: 1) Rules within the ruleset. (see below for nested schema)
+                      Rules within the ruleset.
                     items:
                       properties:
                         branchNamePattern:
-                          description: Parameters to be used for the branch_name_pattern
-                            rule. This rule only applies to repositories within an
-                            enterprise, it cannot be applied to repositories owned
-                            by individuals or regular organizations. Conflicts with
-                            `tag_name_pattern` as it only applies to rulesets with
-                            target `branch`.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with tag_name_pattern as it only applies to rulesets with target branch. (see below for nested schema)
+                            Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `tag_name_pattern` as it only applies to rulesets with target `branch`.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         commitAuthorEmailPattern:
-                          description: Parameters to be used for the commit_author_email_pattern
-                            rule.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the commit_author_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
+                            Parameters to be used for the commit_author_email_pattern rule.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         commitMessagePattern:
-                          description: Parameters to be used for the commit_message_pattern
-                            rule.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the commit_message_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
+                            Parameters to be used for the commit_message_pattern rule.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         committerEmailPattern:
-                          description: Parameters to be used for the committer_email_pattern
-                            rule.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the committer_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. (see below for nested schema)
+                            Parameters to be used for the committer_email_pattern rule.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         creation:
-                          description: Only allow users with bypass permission to
-                            create matching refs.
+                          description: |-
+                            (Boolean) Only allow users with bypass permission to create matching refs.
+                            Only allow users with bypass permission to create matching refs.
                           type: boolean
                         deletion:
-                          description: Only allow users with bypass permissions to
-                            delete matching refs.
+                          description: |-
+                            (Boolean) Only allow users with bypass permissions to delete matching refs.
+                            Only allow users with bypass permissions to delete matching refs.
                           type: boolean
                         nonFastForward:
-                          description: Prevent users with push access from force pushing
-                            to branches.
+                          description: |-
+                            (Boolean) Prevent users with push access from force pushing to branches.
+                            Prevent users with push access from force pushing to branches.
                           type: boolean
                         pullRequest:
-                          description: Require all commits be made to a non-target
-                            branch and submitted via a pull request before they can
-                            be merged.
+                          description: |-
+                            (Block List, Max: 1) Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. (see below for nested schema)
+                            Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
                           items:
                             properties:
                               dismissStaleReviewsOnPush:
-                                description: New, reviewable commits pushed will dismiss
-                                  previous pull request review approvals. Defaults
-                                  to `false`.
+                                description: |-
+                                  (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
+                                  New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to `false`.
                                 type: boolean
                               requireCodeOwnerReview:
-                                description: Require an approving review in pull requests
-                                  that modify files that have a designated code owner.
-                                  Defaults to `false`.
+                                description: |-
+                                  (Boolean) Require an approving review in pull requests that modify files that have a designated code owner. Defaults to false.
+                                  Require an approving review in pull requests that modify files that have a designated code owner. Defaults to `false`.
                                 type: boolean
                               requireLastPushApproval:
-                                description: Whether the most recent reviewable push
-                                  must be approved by someone other than the person
-                                  who pushed it. Defaults to `false`.
+                                description: |-
+                                  (Boolean) Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to false.
+                                  Whether the most recent reviewable push must be approved by someone other than the person who pushed it. Defaults to `false`.
                                 type: boolean
                               requiredApprovingReviewCount:
-                                description: The number of approving reviews that
-                                  are required before a pull request can be merged.
-                                  Defaults to `0`.
+                                description: |-
+                                  (Number) The number of approving reviews that are required before a pull request can be merged. Defaults to 0.
+                                  The number of approving reviews that are required before a pull request can be merged. Defaults to `0`.
                                 format: int64
                                 type: integer
                               requiredReviewThreadResolution:
-                                description: All conversations on code must be resolved
-                                  before a pull request can be merged. Defaults to
-                                  `false`.
+                                description: |-
+                                  (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
+                                  All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
                                 type: boolean
                             type: object
                           type: array
                         requiredLinearHistory:
-                          description: Prevent merge commits from being pushed to
-                            matching branches.
+                          description: |-
+                            (Boolean) Prevent merge commits from being pushed to matching branches.
+                            Prevent merge commits from being pushed to matching branches.
                           type: boolean
                         requiredSignatures:
-                          description: Commits pushed to matching branches must have
-                            verified signatures.
+                          description: |-
+                            (Boolean) Commits pushed to matching branches must have verified signatures.
+                            Commits pushed to matching branches must have verified signatures.
                           type: boolean
                         requiredStatusChecks:
-                          description: Choose which status checks must pass before
-                            branches can be merged into a branch that matches this
-                            rule. When enabled, commits must first be pushed to another
-                            branch, then merged or pushed directly to a branch that
-                            matches this rule after status checks have passed.
+                          description: |-
+                            (Block List, Max: 1) Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed. (see below for nested schema)
+                            Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.
                           items:
                             properties:
                               requiredCheck:
-                                description: Status checks that are required. Several
-                                  can be defined.
+                                description: |-
+                                  (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
+                                  Status checks that are required. Several can be defined.
                                 items:
                                   properties:
                                     context:
-                                      description: The status check context name that
-                                        must be present on the commit.
+                                      description: |-
+                                        (String) The status check context name that must be present on the commit.
+                                        The status check context name that must be present on the commit.
                                       type: string
                                     integrationId:
-                                      description: The optional integration ID that
-                                        this status check must originate from.
+                                      description: |-
+                                        (Number) The optional integration ID that this status check must originate from.
+                                        The optional integration ID that this status check must originate from.
                                       format: int64
                                       type: integer
                                   type: object
                                 type: array
                               strictRequiredStatusChecksPolicy:
-                                description: Whether pull requests targeting a matching
-                                  branch must be tested with the latest code. This
-                                  setting will not take effect unless at least one
-                                  status check is enabled. Defaults to `false`.
+                                description: |-
+                                  (Boolean) Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to false.
+                                  Whether pull requests targeting a matching branch must be tested with the latest code. This setting will not take effect unless at least one status check is enabled. Defaults to `false`.
                                 type: boolean
                             type: object
                           type: array
                         requiredWorkflows:
-                          description: Choose which Actions workflows must pass before
-                            branches can be merged into a branch that matches this
-                            rule.
+                          description: |-
+                            (Block List, Max: 1) Define which Actions workflows must pass before changes can be merged into a branch matching the rule. Multiple workflows can be specified. (see below for nested schema)
+                            Choose which Actions workflows must pass before branches can be merged into a branch that matches this rule.
                           items:
                             properties:
                               requiredWorkflow:
-                                description: Actions workflows that are required.
-                                  Several can be defined.
+                                description: |-
+                                  (Block Set, Min: 1) Actions workflows that are required. Multiple can be defined. (see below for nested schema)
+                                  Actions workflows that are required. Several can be defined.
                                 items:
                                   properties:
                                     path:
-                                      description: The path to the workflow YAML definition
-                                        file.
+                                      description: |-
+                                        (String) The path to the YAML definition file of the workflow.
+                                        The path to the workflow YAML definition file.
                                       type: string
                                     ref:
-                                      description: The ref (branch or tag) of the
-                                        workflow file to use.
+                                      description: |-
+                                        (String) The optional ref from which to fetch the workflow. Defaults to master.
+                                        The ref (branch or tag) of the workflow file to use.
                                       type: string
                                     repositoryId:
-                                      description: The repository in which the workflow
-                                        is defined.
+                                      description: |-
+                                        (Number) The ID of the repository. Names, full names and repository URLs are not supported.
+                                        The repository in which the workflow is defined.
                                       format: int64
                                       type: integer
                                   type: object
@@ -1254,44 +1379,50 @@ spec:
                             type: object
                           type: array
                         tagNamePattern:
-                          description: Parameters to be used for the tag_name_pattern
-                            rule. This rule only applies to repositories within an
-                            enterprise, it cannot be applied to repositories owned
-                            by individuals or regular organizations. Conflicts with
-                            `branch_name_pattern` as it only applies to rulesets with
-                            target `tag`.
+                          description: |-
+                            (Block List, Max: 1) Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with branch_name_pattern as it only applies to rulesets with target tag. (see below for nested schema)
+                            Parameters to be used for the tag_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with `branch_name_pattern` as it only applies to rulesets with target `tag`.
                           items:
                             properties:
                               name:
-                                description: How this rule will appear to users.
+                                description: |-
+                                  (String) How this rule will appear to users.
+                                  How this rule will appear to users.
                                 type: string
                               negate:
-                                description: If true, the rule will fail if the pattern
-                                  matches.
+                                description: |-
+                                  (Boolean) If true, the rule will fail if the pattern matches.
+                                  If true, the rule will fail if the pattern matches.
                                 type: boolean
                               operator:
-                                description: 'The operator to use for matching. Can
-                                  be one of: `starts_with`, `ends_with`, `contains`,
-                                  `regex`.'
+                                description: |-
+                                  (String) The operator to use for matching. Can be one of: starts_with, ends_with, contains, regex.
+                                  The operator to use for matching. Can be one of: `starts_with`, `ends_with`, `contains`, `regex`.
                                 type: string
                               pattern:
-                                description: The pattern to match with.
+                                description: |-
+                                  (String) The pattern to match with.
+                                  The pattern to match with.
                                 type: string
                             type: object
                           type: array
                         update:
-                          description: Only allow users with bypass permission to
-                            update matching refs.
+                          description: |-
+                            (Boolean) Only allow users with bypass permission to update matching refs.
+                            Only allow users with bypass permission to update matching refs.
                           type: boolean
                       type: object
                     type: array
                   rulesetId:
-                    description: GitHub ID for the ruleset.
+                    description: |-
+                      (Number) GitHub ID for the ruleset.
+                      GitHub ID for the ruleset.
                     format: int64
                     type: integer
                   target:
-                    description: 'Possible values are `branch`, `tag` and `push`.
-                      Note: The `push` target is in beta and is subject to change.'
+                    description: |-
+                      (String) Possible values are branch and tag.
+                      Possible values are `branch`, `tag` and `push`. Note: The `push` target is in beta and is subject to change.
                     type: string
                 type: object
               conditions:

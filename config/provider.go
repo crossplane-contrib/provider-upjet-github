@@ -39,7 +39,6 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryfile"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorypullrequest"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryruleset"
-	"github.com/crossplane-contrib/provider-upjet-github/config/repositorytagprotection"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorywebhook"
 	"github.com/crossplane-contrib/provider-upjet-github/config/team"
 	"github.com/crossplane-contrib/provider-upjet-github/config/teammembers"
@@ -106,7 +105,6 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		repositoryfile.Configure,
 		repositorypullrequest.Configure,
 		repositoryruleset.Configure,
-		repositorytagprotection.Configure,
 		repositorywebhook.Configure,
 		team.Configure,
 		teammembers.Configure,

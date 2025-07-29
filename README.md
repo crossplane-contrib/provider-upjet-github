@@ -134,7 +134,6 @@ or app authentication must have at least `admin:enterprise` scope.
 | `RepositoryFile`              | `repo`         | `github_repository_file`                          |                                                                                                                                                                                                                                                                                                                             |
 | `RepositoryRuleset`           | `repo`         | `github_repository_ruleset`                       |                                                                                                                                                                                                                                                                                                                             |
 | `RepositoryWebhook`           | `repo`         | `github_repository_webhook`                       |                                                                                                                                                                                                                                                                                                                             |
-| `TagProtection`               | `repo`         | `github_repository_tag_protection`                |                                                                                                                                                                                                                                                                                                                             |
 | `EmuTeamMapping`              | `team`         | `github_emu_group_mapping`                        |                                                                                                                                                                                                                                                                                                                             |
 | `Members`                     | `team`         | `github_team_members`                             |                                                                                                                                                                                                                                                                                                                             |
 | `Team`                        | `team`         | `github_team`                                     |                                                                                                                                                                                                                                                                                                                             |
@@ -267,7 +266,7 @@ index 0000000..b1c6cf4
 +  forProvider:
 +    file: sample-file.txt
 +    content: |
-+      I am an crossplane 
++      I am an crossplane
 +      provider. This should be nice.
 +    commitMessage: "managed by crossplane provider"
 +    commitAuthor: "Crossplane Github Provider"

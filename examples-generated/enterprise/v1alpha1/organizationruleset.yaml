@@ -1,0 +1,33 @@
+apiVersion: enterprise.github.upbound.io/v1alpha1
+kind: OrganizationRuleset
+metadata:
+  annotations:
+    meta.upbound.io/example-id: enterprise/v1alpha1/organizationruleset
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    bypassActors:
+    - actorId: 13473
+      actorType: Integration
+      bypassMode: always
+    conditions:
+    - refName:
+      - exclude: []
+        include:
+        - ~ALL
+    enforcement: active
+    name: example
+    rules:
+    - branchNamePattern:
+      - name: example
+        negate: false
+        operator: starts_with
+        pattern: ex
+      creation: true
+      deletion: true
+      requiredLinearHistory: true
+      requiredSignatures: true
+      update: true
+    target: branch

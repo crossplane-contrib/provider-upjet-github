@@ -15,7 +15,7 @@ import (
 
 type EnvironmentDeploymentPolicyInitParameters struct {
 
-	// The name pattern that branches must match in order to deploy to the environment.
+	// The name pattern that branches must match in order to deploy to the environment. If not specified, tag_pattern must be specified.
 	// The name pattern that branches must match in order to deploy to the environment.
 	BranchPattern *string `json:"branchPattern,omitempty" tf:"branch_pattern,omitempty"`
 
@@ -48,7 +48,7 @@ type EnvironmentDeploymentPolicyInitParameters struct {
 
 type EnvironmentDeploymentPolicyObservation struct {
 
-	// The name pattern that branches must match in order to deploy to the environment.
+	// The name pattern that branches must match in order to deploy to the environment. If not specified, tag_pattern must be specified.
 	// The name pattern that branches must match in order to deploy to the environment.
 	BranchPattern *string `json:"branchPattern,omitempty" tf:"branch_pattern,omitempty"`
 
@@ -65,7 +65,7 @@ type EnvironmentDeploymentPolicyObservation struct {
 
 type EnvironmentDeploymentPolicyParameters struct {
 
-	// The name pattern that branches must match in order to deploy to the environment.
+	// The name pattern that branches must match in order to deploy to the environment. If not specified, tag_pattern must be specified.
 	// The name pattern that branches must match in order to deploy to the environment.
 	// +kubebuilder:validation:Optional
 	BranchPattern *string `json:"branchPattern,omitempty" tf:"branch_pattern,omitempty"`

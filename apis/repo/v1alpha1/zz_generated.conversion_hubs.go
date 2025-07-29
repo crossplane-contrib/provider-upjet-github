@@ -50,6 +50,3 @@ func (tr *RepositoryRuleset) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *RepositoryWebhook) Hub() {}
-
-// Hub marks this type as a conversion hub.
-func (tr *TagProtection) Hub() {}

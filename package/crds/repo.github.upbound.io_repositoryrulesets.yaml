@@ -81,7 +81,7 @@ spec:
                       properties:
                         actorId:
                           description: |-
-                            (Number) The ID of the actor that can bypass a ruleset.
+                            (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
                             The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
                           format: int64
                           type: integer
@@ -426,7 +426,7 @@ spec:
                                       type: string
                                     integrationId:
                                       description: |-
-                                        (Number) The optional integration ID that this status check must originate from.
+                                        (Number) The optional integration ID that this status check must originate from. It's a GitHub App ID, which can be obtained by following instructions from the Get an App API docs.
                                         The optional integration ID that this status check must originate from.
                                       format: int64
                                       type: integer
@@ -506,7 +506,7 @@ spec:
                       properties:
                         actorId:
                           description: |-
-                            (Number) The ID of the actor that can bypass a ruleset.
+                            (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
                             The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
                           format: int64
                           type: integer
@@ -851,7 +851,7 @@ spec:
                                       type: string
                                     integrationId:
                                       description: |-
-                                        (Number) The optional integration ID that this status check must originate from.
+                                        (Number) The optional integration ID that this status check must originate from. It's a GitHub App ID, which can be obtained by following instructions from the Get an App API docs.
                                         The optional integration ID that this status check must originate from.
                                       format: int64
                                       type: integer
@@ -1107,7 +1107,7 @@ spec:
                       properties:
                         actorId:
                           description: |-
-                            (Number) The ID of the actor that can bypass a ruleset.
+                            (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
                             The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
                           format: int64
                           type: integer
@@ -1388,7 +1388,7 @@ spec:
                                       type: string
                                     integrationId:
                                       description: |-
-                                        (Number) The optional integration ID that this status check must originate from.
+                                        (Number) The optional integration ID that this status check must originate from. It's a GitHub App ID, which can be obtained by following instructions from the Get an App API docs.
                                         The optional integration ID that this status check must originate from.
                                       format: int64
                                       type: integer
