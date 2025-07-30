@@ -9,7 +9,7 @@ require (
 	github.com/crossplane/crossplane-tools v0.0.0-20230925130601-628280f8bf79
 	github.com/crossplane/upjet v1.4.1
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.34.0
-	github.com/integrations/terraform-provider-github/v6 v6.3.1
+	github.com/integrations/terraform-provider-github/v6 v6.6.0
 	github.com/pkg/errors v0.9.1
 	k8s.io/apimachinery v0.29.6
 	k8s.io/client-go v0.29.6
@@ -48,7 +48,7 @@ require (
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/go-github/v65 v65.0.0 // indirect
+	github.com/google/go-github/v66 v66.0.1-0.20241027130611-9e5757d5a766 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect

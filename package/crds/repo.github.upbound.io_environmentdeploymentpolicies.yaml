@@ -238,6 +238,11 @@ spec:
                             type: string
                         type: object
                     type: object
+                  tagPattern:
+                    description: |-
+                      The name pattern that tags must match in order to deploy to the environment. If not specified, branch_pattern must be specified.
+                      The name pattern that tags must match in order to deploy to the environment.
+                    type: string
                 type: object
               initProvider:
                 description: |-
@@ -415,6 +420,11 @@ spec:
                             type: string
                         type: object
                     type: object
+                  tagPattern:
+                    description: |-
+                      The name pattern that tags must match in order to deploy to the environment. If not specified, branch_pattern must be specified.
+                      The name pattern that tags must match in order to deploy to the environment.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -583,11 +593,6 @@ spec:
             required:
             - forProvider
             type: object
-            x-kubernetes-validations:
-            - message: spec.forProvider.branchPattern is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.branchPattern)
-                || (has(self.initProvider) && has(self.initProvider.branchPattern))'
           status:
             description: EnvironmentDeploymentPolicyStatus defines the observed state
               of EnvironmentDeploymentPolicy.
@@ -610,6 +615,11 @@ spec:
                     description: |-
                       The repository of the environment.
                       The name of the repository. The name is not case sensitive.
+                    type: string
+                  tagPattern:
+                    description: |-
+                      The name pattern that tags must match in order to deploy to the environment. If not specified, branch_pattern must be specified.
+                      The name pattern that tags must match in order to deploy to the environment.
                     type: string
                 type: object
               conditions:

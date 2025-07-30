@@ -44,6 +44,10 @@ type EnvironmentDeploymentPolicyInitParameters struct {
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+
+	// The name pattern that tags must match in order to deploy to the environment. If not specified, branch_pattern must be specified.
+	// The name pattern that tags must match in order to deploy to the environment.
+	TagPattern *string `json:"tagPattern,omitempty" tf:"tag_pattern,omitempty"`
 }
 
 type EnvironmentDeploymentPolicyObservation struct {
@@ -61,6 +65,10 @@ type EnvironmentDeploymentPolicyObservation struct {
 	// The repository of the environment.
 	// The name of the repository. The name is not case sensitive.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// The name pattern that tags must match in order to deploy to the environment. If not specified, branch_pattern must be specified.
+	// The name pattern that tags must match in order to deploy to the environment.
+	TagPattern *string `json:"tagPattern,omitempty" tf:"tag_pattern,omitempty"`
 }
 
 type EnvironmentDeploymentPolicyParameters struct {
@@ -97,6 +105,11 @@ type EnvironmentDeploymentPolicyParameters struct {
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+
+	// The name pattern that tags must match in order to deploy to the environment. If not specified, branch_pattern must be specified.
+	// The name pattern that tags must match in order to deploy to the environment.
+	// +kubebuilder:validation:Optional
+	TagPattern *string `json:"tagPattern,omitempty" tf:"tag_pattern,omitempty"`
 }
 
 // EnvironmentDeploymentPolicySpec defines the desired state of EnvironmentDeploymentPolicy
@@ -135,9 +148,8 @@ type EnvironmentDeploymentPolicyStatus struct {
 type EnvironmentDeploymentPolicy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.branchPattern) || (has(self.initProvider) && has(self.initProvider.branchPattern))",message="spec.forProvider.branchPattern is a required parameter"
-	Spec   EnvironmentDeploymentPolicySpec   `json:"spec"`
-	Status EnvironmentDeploymentPolicyStatus `json:"status,omitempty"`
+	Spec              EnvironmentDeploymentPolicySpec   `json:"spec"`
+	Status            EnvironmentDeploymentPolicyStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
