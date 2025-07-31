@@ -1,0 +1,32 @@
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: RepositoryCustomProperty
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositorycustomproperty
+  labels:
+    testing.upbound.io/example-name: string
+  name: string
+spec:
+  forProvider:
+    propertyName: my-cool-property
+    propertyType: string
+    propertyValue:
+    - test
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositorycustomproperty
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    description: My awesome codebase
+    name: example

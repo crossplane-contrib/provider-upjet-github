@@ -33,6 +33,7 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/repository"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryautolinkreference"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorycollaborator"
+	"github.com/crossplane-contrib/provider-upjet-github/config/repositorycustomproperty"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositorydeploykey"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryenvironment"
 	"github.com/crossplane-contrib/provider-upjet-github/config/repositoryenvironmentdeploymentpolicy"
@@ -100,6 +101,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		repository.Configure,
 		repositoryautolinkreference.Configure,
 		repositorycollaborator.Configure,
+		repositorycustomproperty.Configure,
 		repositorydeploykey.Configure,
 		repositoryenvironmentdeploymentpolicy.Configure,
 		repositoryfile.Configure,
