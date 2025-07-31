@@ -12,3 +12,4 @@ guidelines and responsibilities for the steering committee and maintainers.
 
 * Atze de Vries <the.atz@gmail.com> ([Atze de Vries](https://github.com/atzedevries))
 * Pravin Dahal <pravindahal@gmail.com> ([Pravin Dahal](https://github.com/pravindahal))
+* Michael Fornaro ([Michael Fornaro](https://github.com/xunholy))
