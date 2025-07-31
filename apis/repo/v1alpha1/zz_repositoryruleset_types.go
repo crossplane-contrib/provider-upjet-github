@@ -324,6 +324,106 @@ type ConditionsParameters struct {
 	RefName []RefNameParameters `json:"refName" tf:"ref_name,omitempty"`
 }
 
+type MergeQueueInitParameters struct {
+
+	// (Number)Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.
+	// Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to `60`.
+	CheckResponseTimeoutMinutes *int64 `json:"checkResponseTimeoutMinutes,omitempty" tf:"check_response_timeout_minutes,omitempty"`
+
+	// (String)When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to ALLGREEN.
+	// When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to `ALLGREEN`.
+	GroupingStrategy *string `json:"groupingStrategy,omitempty" tf:"grouping_strategy,omitempty"`
+
+	// (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+	// Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to `5`.
+	MaxEntriesToBuild *int64 `json:"maxEntriesToBuild,omitempty" tf:"max_entries_to_build,omitempty"`
+
+	// (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+	// The maximum number of PRs that will be merged together in a group. Defaults to `5`.
+	MaxEntriesToMerge *int64 `json:"maxEntriesToMerge,omitempty" tf:"max_entries_to_merge,omitempty"`
+
+	// (String) Method to use when merging changes from queued pull requests. Can be one of: MERGE, SQUASH, REBASE. Defaults to MERGE.
+	// Method to use when merging changes from queued pull requests. Can be one of: MERGE, SQUASH, REBASE. Defaults to `MERGE`.
+	MergeMethod *string `json:"mergeMethod,omitempty" tf:"merge_method,omitempty"`
+
+	// (Number) The minimum number of PRs that will be merged together in a group. Defaults to 1.
+	// The minimum number of PRs that will be merged together in a group. Defaults to `1`.
+	MinEntriesToMerge *int64 `json:"minEntriesToMerge,omitempty" tf:"min_entries_to_merge,omitempty"`
+
+	// (Number) The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met. After this time has elapsed, the minimum group size will be ignored and a smaller group will be merged. Defaults to 5.
+	// The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met. After this time has elapsed, the minimum group size will be ignored and a smaller group will be merged. Defaults to `5`.
+	MinEntriesToMergeWaitMinutes *int64 `json:"minEntriesToMergeWaitMinutes,omitempty" tf:"min_entries_to_merge_wait_minutes,omitempty"`
+}
+
+type MergeQueueObservation struct {
+
+	// (Number)Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.
+	// Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to `60`.
+	CheckResponseTimeoutMinutes *int64 `json:"checkResponseTimeoutMinutes,omitempty" tf:"check_response_timeout_minutes,omitempty"`
+
+	// (String)When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to ALLGREEN.
+	// When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to `ALLGREEN`.
+	GroupingStrategy *string `json:"groupingStrategy,omitempty" tf:"grouping_strategy,omitempty"`
+
+	// (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+	// Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to `5`.
+	MaxEntriesToBuild *int64 `json:"maxEntriesToBuild,omitempty" tf:"max_entries_to_build,omitempty"`
+
+	// (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+	// The maximum number of PRs that will be merged together in a group. Defaults to `5`.
+	MaxEntriesToMerge *int64 `json:"maxEntriesToMerge,omitempty" tf:"max_entries_to_merge,omitempty"`
+
+	// (String) Method to use when merging changes from queued pull requests. Can be one of: MERGE, SQUASH, REBASE. Defaults to MERGE.
+	// Method to use when merging changes from queued pull requests. Can be one of: MERGE, SQUASH, REBASE. Defaults to `MERGE`.
+	MergeMethod *string `json:"mergeMethod,omitempty" tf:"merge_method,omitempty"`
+
+	// (Number) The minimum number of PRs that will be merged together in a group. Defaults to 1.
+	// The minimum number of PRs that will be merged together in a group. Defaults to `1`.
+	MinEntriesToMerge *int64 `json:"minEntriesToMerge,omitempty" tf:"min_entries_to_merge,omitempty"`
+
+	// (Number) The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met. After this time has elapsed, the minimum group size will be ignored and a smaller group will be merged. Defaults to 5.
+	// The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met. After this time has elapsed, the minimum group size will be ignored and a smaller group will be merged. Defaults to `5`.
+	MinEntriesToMergeWaitMinutes *int64 `json:"minEntriesToMergeWaitMinutes,omitempty" tf:"min_entries_to_merge_wait_minutes,omitempty"`
+}
+
+type MergeQueueParameters struct {
+
+	// (Number)Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.
+	// Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to `60`.
+	// +kubebuilder:validation:Optional
+	CheckResponseTimeoutMinutes *int64 `json:"checkResponseTimeoutMinutes,omitempty" tf:"check_response_timeout_minutes,omitempty"`
+
+	// (String)When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to ALLGREEN.
+	// When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to `ALLGREEN`.
+	// +kubebuilder:validation:Optional
+	GroupingStrategy *string `json:"groupingStrategy,omitempty" tf:"grouping_strategy,omitempty"`
+
+	// (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+	// Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to `5`.
+	// +kubebuilder:validation:Optional
+	MaxEntriesToBuild *int64 `json:"maxEntriesToBuild,omitempty" tf:"max_entries_to_build,omitempty"`
+
+	// (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+	// The maximum number of PRs that will be merged together in a group. Defaults to `5`.
+	// +kubebuilder:validation:Optional
+	MaxEntriesToMerge *int64 `json:"maxEntriesToMerge,omitempty" tf:"max_entries_to_merge,omitempty"`
+
+	// (String) Method to use when merging changes from queued pull requests. Can be one of: MERGE, SQUASH, REBASE. Defaults to MERGE.
+	// Method to use when merging changes from queued pull requests. Can be one of: MERGE, SQUASH, REBASE. Defaults to `MERGE`.
+	// +kubebuilder:validation:Optional
+	MergeMethod *string `json:"mergeMethod,omitempty" tf:"merge_method,omitempty"`
+
+	// (Number) The minimum number of PRs that will be merged together in a group. Defaults to 1.
+	// The minimum number of PRs that will be merged together in a group. Defaults to `1`.
+	// +kubebuilder:validation:Optional
+	MinEntriesToMerge *int64 `json:"minEntriesToMerge,omitempty" tf:"min_entries_to_merge,omitempty"`
+
+	// (Number) The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met. After this time has elapsed, the minimum group size will be ignored and a smaller group will be merged. Defaults to 5.
+	// The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met. After this time has elapsed, the minimum group size will be ignored and a smaller group will be merged. Defaults to `5`.
+	// +kubebuilder:validation:Optional
+	MinEntriesToMergeWaitMinutes *int64 `json:"minEntriesToMergeWaitMinutes,omitempty" tf:"min_entries_to_merge_wait_minutes,omitempty"`
+}
+
 type RefNameInitParameters struct {
 
 	// (List of String) Array of ref names or patterns to exclude. The condition will not pass if any of these patterns match.
@@ -525,6 +625,76 @@ type RequiredCheckParameters struct {
 	IntegrationID *int64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
 }
 
+type RequiredCodeScanningInitParameters struct {
+
+	// (Block Set, Min: 1) Actions code scanning tools that are required. Multiple can be defined. (see below for nested schema)
+	// Tools that must provide code scanning results for this rule to pass.
+	RequiredCodeScanningTool []RequiredCodeScanningToolInitParameters `json:"requiredCodeScanningTool,omitempty" tf:"required_code_scanning_tool,omitempty"`
+}
+
+type RequiredCodeScanningObservation struct {
+
+	// (Block Set, Min: 1) Actions code scanning tools that are required. Multiple can be defined. (see below for nested schema)
+	// Tools that must provide code scanning results for this rule to pass.
+	RequiredCodeScanningTool []RequiredCodeScanningToolObservation `json:"requiredCodeScanningTool,omitempty" tf:"required_code_scanning_tool,omitempty"`
+}
+
+type RequiredCodeScanningParameters struct {
+
+	// (Block Set, Min: 1) Actions code scanning tools that are required. Multiple can be defined. (see below for nested schema)
+	// Tools that must provide code scanning results for this rule to pass.
+	// +kubebuilder:validation:Optional
+	RequiredCodeScanningTool []RequiredCodeScanningToolParameters `json:"requiredCodeScanningTool" tf:"required_code_scanning_tool,omitempty"`
+}
+
+type RequiredCodeScanningToolInitParameters struct {
+
+	// (String) The severity level at which code scanning results that raise alerts block a reference update. Can be one of: none, errors, errors_and_warnings, all.
+	// The severity level at which code scanning results that raise alerts block a reference update. Can be one of: `none`, `errors`, `errors_and_warnings`, `all`.
+	AlertsThreshold *string `json:"alertsThreshold,omitempty" tf:"alerts_threshold,omitempty"`
+
+	// (String) The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: none, critical, high_or_higher, medium_or_higher, all.
+	// The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: `none`, `critical`, `high_or_higher`, `medium_or_higher`, `all`.
+	SecurityAlertsThreshold *string `json:"securityAlertsThreshold,omitempty" tf:"security_alerts_threshold,omitempty"`
+
+	// (String) The name of a code scanning tool.
+	// The name of a code scanning tool
+	Tool *string `json:"tool,omitempty" tf:"tool,omitempty"`
+}
+
+type RequiredCodeScanningToolObservation struct {
+
+	// (String) The severity level at which code scanning results that raise alerts block a reference update. Can be one of: none, errors, errors_and_warnings, all.
+	// The severity level at which code scanning results that raise alerts block a reference update. Can be one of: `none`, `errors`, `errors_and_warnings`, `all`.
+	AlertsThreshold *string `json:"alertsThreshold,omitempty" tf:"alerts_threshold,omitempty"`
+
+	// (String) The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: none, critical, high_or_higher, medium_or_higher, all.
+	// The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: `none`, `critical`, `high_or_higher`, `medium_or_higher`, `all`.
+	SecurityAlertsThreshold *string `json:"securityAlertsThreshold,omitempty" tf:"security_alerts_threshold,omitempty"`
+
+	// (String) The name of a code scanning tool.
+	// The name of a code scanning tool
+	Tool *string `json:"tool,omitempty" tf:"tool,omitempty"`
+}
+
+type RequiredCodeScanningToolParameters struct {
+
+	// (String) The severity level at which code scanning results that raise alerts block a reference update. Can be one of: none, errors, errors_and_warnings, all.
+	// The severity level at which code scanning results that raise alerts block a reference update. Can be one of: `none`, `errors`, `errors_and_warnings`, `all`.
+	// +kubebuilder:validation:Optional
+	AlertsThreshold *string `json:"alertsThreshold" tf:"alerts_threshold,omitempty"`
+
+	// (String) The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: none, critical, high_or_higher, medium_or_higher, all.
+	// The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: `none`, `critical`, `high_or_higher`, `medium_or_higher`, `all`.
+	// +kubebuilder:validation:Optional
+	SecurityAlertsThreshold *string `json:"securityAlertsThreshold" tf:"security_alerts_threshold,omitempty"`
+
+	// (String) The name of a code scanning tool.
+	// The name of a code scanning tool
+	// +kubebuilder:validation:Optional
+	Tool *string `json:"tool" tf:"tool,omitempty"`
+}
+
 type RequiredDeploymentsInitParameters struct {
 
 	// (List of String) The environments that must be successfully deployed to before branches can be merged.
@@ -573,6 +743,10 @@ type RulesInitParameters struct {
 	// Only allow users with bypass permissions to delete matching refs.
 	Deletion *bool `json:"deletion,omitempty" tf:"deletion,omitempty"`
 
+	// (Block List, Max: 1) Merges must be performed via a merge queue.
+	// Merges must be performed via a merge queue.
+	MergeQueue []MergeQueueInitParameters `json:"mergeQueue,omitempty" tf:"merge_queue,omitempty"`
+
 	// (Boolean) Prevent users with push access from force pushing to branches.
 	// Prevent users with push access from force pushing to branches.
 	NonFastForward *bool `json:"nonFastForward,omitempty" tf:"non_fast_forward,omitempty"`
@@ -580,6 +754,10 @@ type RulesInitParameters struct {
 	// (Block List, Max: 1) Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. (see below for nested schema)
 	// Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
 	PullRequest []RulesPullRequestInitParameters `json:"pullRequest,omitempty" tf:"pull_request,omitempty"`
+
+	// (Block List, Max: 1) Define which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated. Multiple code scanning tools can be specified. (see below for nested schema)
+	// Choose which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated.
+	RequiredCodeScanning []RequiredCodeScanningInitParameters `json:"requiredCodeScanning,omitempty" tf:"required_code_scanning,omitempty"`
 
 	// (Block List, Max: 1) Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule. (see below for nested schema)
 	// Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule.
@@ -636,6 +814,10 @@ type RulesObservation struct {
 	// Only allow users with bypass permissions to delete matching refs.
 	Deletion *bool `json:"deletion,omitempty" tf:"deletion,omitempty"`
 
+	// (Block List, Max: 1) Merges must be performed via a merge queue.
+	// Merges must be performed via a merge queue.
+	MergeQueue []MergeQueueObservation `json:"mergeQueue,omitempty" tf:"merge_queue,omitempty"`
+
 	// (Boolean) Prevent users with push access from force pushing to branches.
 	// Prevent users with push access from force pushing to branches.
 	NonFastForward *bool `json:"nonFastForward,omitempty" tf:"non_fast_forward,omitempty"`
@@ -643,6 +825,10 @@ type RulesObservation struct {
 	// (Block List, Max: 1) Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. (see below for nested schema)
 	// Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
 	PullRequest []RulesPullRequestObservation `json:"pullRequest,omitempty" tf:"pull_request,omitempty"`
+
+	// (Block List, Max: 1) Define which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated. Multiple code scanning tools can be specified. (see below for nested schema)
+	// Choose which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated.
+	RequiredCodeScanning []RequiredCodeScanningObservation `json:"requiredCodeScanning,omitempty" tf:"required_code_scanning,omitempty"`
 
 	// (Block List, Max: 1) Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule. (see below for nested schema)
 	// Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule.
@@ -705,6 +891,11 @@ type RulesParameters struct {
 	// +kubebuilder:validation:Optional
 	Deletion *bool `json:"deletion,omitempty" tf:"deletion,omitempty"`
 
+	// (Block List, Max: 1) Merges must be performed via a merge queue.
+	// Merges must be performed via a merge queue.
+	// +kubebuilder:validation:Optional
+	MergeQueue []MergeQueueParameters `json:"mergeQueue,omitempty" tf:"merge_queue,omitempty"`
+
 	// (Boolean) Prevent users with push access from force pushing to branches.
 	// Prevent users with push access from force pushing to branches.
 	// +kubebuilder:validation:Optional
@@ -714,6 +905,11 @@ type RulesParameters struct {
 	// Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
 	// +kubebuilder:validation:Optional
 	PullRequest []RulesPullRequestParameters `json:"pullRequest,omitempty" tf:"pull_request,omitempty"`
+
+	// (Block List, Max: 1) Define which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated. Multiple code scanning tools can be specified. (see below for nested schema)
+	// Choose which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated.
+	// +kubebuilder:validation:Optional
+	RequiredCodeScanning []RequiredCodeScanningParameters `json:"requiredCodeScanning,omitempty" tf:"required_code_scanning,omitempty"`
 
 	// (Block List, Max: 1) Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule. (see below for nested schema)
 	// Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule.
@@ -827,6 +1023,10 @@ type RulesPullRequestParameters struct {
 
 type RulesRequiredStatusChecksInitParameters struct {
 
+	// (Boolean) Allow repositories and branches to be created if a check would otherwise prohibit it. Defaults to false.
+	// Allow repositories and branches to be created if a check would otherwise prohibit it.
+	DoNotEnforceOnCreate *bool `json:"doNotEnforceOnCreate,omitempty" tf:"do_not_enforce_on_create,omitempty"`
+
 	// (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
 	// Status checks that are required. Several can be defined.
 	RequiredCheck []RequiredCheckInitParameters `json:"requiredCheck,omitempty" tf:"required_check,omitempty"`
@@ -838,6 +1038,10 @@ type RulesRequiredStatusChecksInitParameters struct {
 
 type RulesRequiredStatusChecksObservation struct {
 
+	// (Boolean) Allow repositories and branches to be created if a check would otherwise prohibit it. Defaults to false.
+	// Allow repositories and branches to be created if a check would otherwise prohibit it.
+	DoNotEnforceOnCreate *bool `json:"doNotEnforceOnCreate,omitempty" tf:"do_not_enforce_on_create,omitempty"`
+
 	// (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
 	// Status checks that are required. Several can be defined.
 	RequiredCheck []RequiredCheckObservation `json:"requiredCheck,omitempty" tf:"required_check,omitempty"`
@@ -848,6 +1052,11 @@ type RulesRequiredStatusChecksObservation struct {
 }
 
 type RulesRequiredStatusChecksParameters struct {
+
+	// (Boolean) Allow repositories and branches to be created if a check would otherwise prohibit it. Defaults to false.
+	// Allow repositories and branches to be created if a check would otherwise prohibit it.
+	// +kubebuilder:validation:Optional
+	DoNotEnforceOnCreate *bool `json:"doNotEnforceOnCreate,omitempty" tf:"do_not_enforce_on_create,omitempty"`
 
 	// (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
 	// Status checks that are required. Several can be defined.

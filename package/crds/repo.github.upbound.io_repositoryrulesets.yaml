@@ -343,6 +343,54 @@ spec:
                             (Boolean) Only allow users with bypass permissions to delete matching refs.
                             Only allow users with bypass permissions to delete matching refs.
                           type: boolean
+                        mergeQueue:
+                          description: |-
+                            (Block List, Max: 1) Merges must be performed via a merge queue.
+                            Merges must be performed via a merge queue.
+                          items:
+                            properties:
+                              checkResponseTimeoutMinutes:
+                                description: |-
+                                  (Number)Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.
+                                  Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to `60`.
+                                format: int64
+                                type: integer
+                              groupingStrategy:
+                                description: |-
+                                  (String)When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to ALLGREEN.
+                                  When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to `ALLGREEN`.
+                                type: string
+                              maxEntriesToBuild:
+                                description: |-
+                                  (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+                                  Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to `5`.
+                                format: int64
+                                type: integer
+                              maxEntriesToMerge:
+                                description: |-
+                                  (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+                                  The maximum number of PRs that will be merged together in a group. Defaults to `5`.
+                                format: int64
+                                type: integer
+                              mergeMethod:
+                                description: |-
+                                  (String) Method to use when merging changes from queued pull requests. Can be one of: MERGE, SQUASH, REBASE. Defaults to MERGE.
+                                  Method to use when merging changes from queued pull requests. Can be one of: MERGE, SQUASH, REBASE. Defaults to `MERGE`.
+                                type: string
+                              minEntriesToMerge:
+                                description: |-
+                                  (Number) The minimum number of PRs that will be merged together in a group. Defaults to 1.
+                                  The minimum number of PRs that will be merged together in a group. Defaults to `1`.
+                                format: int64
+                                type: integer
+                              minEntriesToMergeWaitMinutes:
+                                description: |-
+                                  (Number) The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met. After this time has elapsed, the minimum group size will be ignored and a smaller group will be merged. Defaults to 5.
+                                  The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met. After this time has elapsed, the minimum group size will be ignored and a smaller group will be merged. Defaults to `5`.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
                         nonFastForward:
                           description: |-
                             (Boolean) Prevent users with push access from force pushing to branches.
@@ -382,6 +430,37 @@ spec:
                                 type: boolean
                             type: object
                           type: array
+                        requiredCodeScanning:
+                          description: |-
+                            (Block List, Max: 1) Define which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated. Multiple code scanning tools can be specified. (see below for nested schema)
+                            Choose which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated.
+                          items:
+                            properties:
+                              requiredCodeScanningTool:
+                                description: |-
+                                  (Block Set, Min: 1) Actions code scanning tools that are required. Multiple can be defined. (see below for nested schema)
+                                  Tools that must provide code scanning results for this rule to pass.
+                                items:
+                                  properties:
+                                    alertsThreshold:
+                                      description: |-
+                                        (String) The severity level at which code scanning results that raise alerts block a reference update. Can be one of: none, errors, errors_and_warnings, all.
+                                        The severity level at which code scanning results that raise alerts block a reference update. Can be one of: `none`, `errors`, `errors_and_warnings`, `all`.
+                                      type: string
+                                    securityAlertsThreshold:
+                                      description: |-
+                                        (String) The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: none, critical, high_or_higher, medium_or_higher, all.
+                                        The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: `none`, `critical`, `high_or_higher`, `medium_or_higher`, `all`.
+                                      type: string
+                                    tool:
+                                      description: |-
+                                        (String) The name of a code scanning tool.
+                                        The name of a code scanning tool
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                         requiredDeployments:
                           description: |-
                             (Block List, Max: 1) Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule. (see below for nested schema)
@@ -413,6 +492,11 @@ spec:
                             Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.
                           items:
                             properties:
+                              doNotEnforceOnCreate:
+                                description: |-
+                                  (Boolean) Allow repositories and branches to be created if a check would otherwise prohibit it. Defaults to false.
+                                  Allow repositories and branches to be created if a check would otherwise prohibit it.
+                                type: boolean
                               requiredCheck:
                                 description: |-
                                   (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
@@ -768,6 +852,54 @@ spec:
                             (Boolean) Only allow users with bypass permissions to delete matching refs.
                             Only allow users with bypass permissions to delete matching refs.
                           type: boolean
+                        mergeQueue:
+                          description: |-
+                            (Block List, Max: 1) Merges must be performed via a merge queue.
+                            Merges must be performed via a merge queue.
+                          items:
+                            properties:
+                              checkResponseTimeoutMinutes:
+                                description: |-
+                                  (Number)Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.
+                                  Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to `60`.
+                                format: int64
+                                type: integer
+                              groupingStrategy:
+                                description: |-
+                                  (String)When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to ALLGREEN.
+                                  When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to `ALLGREEN`.
+                                type: string
+                              maxEntriesToBuild:
+                                description: |-
+                                  (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+                                  Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to `5`.
+                                format: int64
+                                type: integer
+                              maxEntriesToMerge:
+                                description: |-
+                                  (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+                                  The maximum number of PRs that will be merged together in a group. Defaults to `5`.
+                                format: int64
+                                type: integer
+                              mergeMethod:
+                                description: |-
+                                  (String) Method to use when merging changes from queued pull requests. Can be one of: MERGE, SQUASH, REBASE. Defaults to MERGE.
+                                  Method to use when merging changes from queued pull requests. Can be one of: MERGE, SQUASH, REBASE. Defaults to `MERGE`.
+                                type: string
+                              minEntriesToMerge:
+                                description: |-
+                                  (Number) The minimum number of PRs that will be merged together in a group. Defaults to 1.
+                                  The minimum number of PRs that will be merged together in a group. Defaults to `1`.
+                                format: int64
+                                type: integer
+                              minEntriesToMergeWaitMinutes:
+                                description: |-
+                                  (Number) The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met. After this time has elapsed, the minimum group size will be ignored and a smaller group will be merged. Defaults to 5.
+                                  The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met. After this time has elapsed, the minimum group size will be ignored and a smaller group will be merged. Defaults to `5`.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
                         nonFastForward:
                           description: |-
                             (Boolean) Prevent users with push access from force pushing to branches.
@@ -807,6 +939,37 @@ spec:
                                 type: boolean
                             type: object
                           type: array
+                        requiredCodeScanning:
+                          description: |-
+                            (Block List, Max: 1) Define which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated. Multiple code scanning tools can be specified. (see below for nested schema)
+                            Choose which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated.
+                          items:
+                            properties:
+                              requiredCodeScanningTool:
+                                description: |-
+                                  (Block Set, Min: 1) Actions code scanning tools that are required. Multiple can be defined. (see below for nested schema)
+                                  Tools that must provide code scanning results for this rule to pass.
+                                items:
+                                  properties:
+                                    alertsThreshold:
+                                      description: |-
+                                        (String) The severity level at which code scanning results that raise alerts block a reference update. Can be one of: none, errors, errors_and_warnings, all.
+                                        The severity level at which code scanning results that raise alerts block a reference update. Can be one of: `none`, `errors`, `errors_and_warnings`, `all`.
+                                      type: string
+                                    securityAlertsThreshold:
+                                      description: |-
+                                        (String) The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: none, critical, high_or_higher, medium_or_higher, all.
+                                        The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: `none`, `critical`, `high_or_higher`, `medium_or_higher`, `all`.
+                                      type: string
+                                    tool:
+                                      description: |-
+                                        (String) The name of a code scanning tool.
+                                        The name of a code scanning tool
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                         requiredDeployments:
                           description: |-
                             (Block List, Max: 1) Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule. (see below for nested schema)
@@ -838,6 +1001,11 @@ spec:
                             Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.
                           items:
                             properties:
+                              doNotEnforceOnCreate:
+                                description: |-
+                                  (Boolean) Allow repositories and branches to be created if a check would otherwise prohibit it. Defaults to false.
+                                  Allow repositories and branches to be created if a check would otherwise prohibit it.
+                                type: boolean
                               requiredCheck:
                                 description: |-
                                   (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
@@ -1305,6 +1473,54 @@ spec:
                             (Boolean) Only allow users with bypass permissions to delete matching refs.
                             Only allow users with bypass permissions to delete matching refs.
                           type: boolean
+                        mergeQueue:
+                          description: |-
+                            (Block List, Max: 1) Merges must be performed via a merge queue.
+                            Merges must be performed via a merge queue.
+                          items:
+                            properties:
+                              checkResponseTimeoutMinutes:
+                                description: |-
+                                  (Number)Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.
+                                  Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to `60`.
+                                format: int64
+                                type: integer
+                              groupingStrategy:
+                                description: |-
+                                  (String)When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to ALLGREEN.
+                                  When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to `ALLGREEN`.
+                                type: string
+                              maxEntriesToBuild:
+                                description: |-
+                                  (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+                                  Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to `5`.
+                                format: int64
+                                type: integer
+                              maxEntriesToMerge:
+                                description: |-
+                                  (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+                                  The maximum number of PRs that will be merged together in a group. Defaults to `5`.
+                                format: int64
+                                type: integer
+                              mergeMethod:
+                                description: |-
+                                  (String) Method to use when merging changes from queued pull requests. Can be one of: MERGE, SQUASH, REBASE. Defaults to MERGE.
+                                  Method to use when merging changes from queued pull requests. Can be one of: MERGE, SQUASH, REBASE. Defaults to `MERGE`.
+                                type: string
+                              minEntriesToMerge:
+                                description: |-
+                                  (Number) The minimum number of PRs that will be merged together in a group. Defaults to 1.
+                                  The minimum number of PRs that will be merged together in a group. Defaults to `1`.
+                                format: int64
+                                type: integer
+                              minEntriesToMergeWaitMinutes:
+                                description: |-
+                                  (Number) The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met. After this time has elapsed, the minimum group size will be ignored and a smaller group will be merged. Defaults to 5.
+                                  The time merge queue should wait after the first PR is added to the queue for the minimum group size to be met. After this time has elapsed, the minimum group size will be ignored and a smaller group will be merged. Defaults to `5`.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
                         nonFastForward:
                           description: |-
                             (Boolean) Prevent users with push access from force pushing to branches.
@@ -1344,6 +1560,37 @@ spec:
                                 type: boolean
                             type: object
                           type: array
+                        requiredCodeScanning:
+                          description: |-
+                            (Block List, Max: 1) Define which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated. Multiple code scanning tools can be specified. (see below for nested schema)
+                            Choose which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated.
+                          items:
+                            properties:
+                              requiredCodeScanningTool:
+                                description: |-
+                                  (Block Set, Min: 1) Actions code scanning tools that are required. Multiple can be defined. (see below for nested schema)
+                                  Tools that must provide code scanning results for this rule to pass.
+                                items:
+                                  properties:
+                                    alertsThreshold:
+                                      description: |-
+                                        (String) The severity level at which code scanning results that raise alerts block a reference update. Can be one of: none, errors, errors_and_warnings, all.
+                                        The severity level at which code scanning results that raise alerts block a reference update. Can be one of: `none`, `errors`, `errors_and_warnings`, `all`.
+                                      type: string
+                                    securityAlertsThreshold:
+                                      description: |-
+                                        (String) The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: none, critical, high_or_higher, medium_or_higher, all.
+                                        The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: `none`, `critical`, `high_or_higher`, `medium_or_higher`, `all`.
+                                      type: string
+                                    tool:
+                                      description: |-
+                                        (String) The name of a code scanning tool.
+                                        The name of a code scanning tool
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                         requiredDeployments:
                           description: |-
                             (Block List, Max: 1) Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule. (see below for nested schema)
@@ -1375,6 +1622,11 @@ spec:
                             Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.
                           items:
                             properties:
+                              doNotEnforceOnCreate:
+                                description: |-
+                                  (Boolean) Allow repositories and branches to be created if a check would otherwise prohibit it. Defaults to false.
+                                  Allow repositories and branches to be created if a check would otherwise prohibit it.
+                                type: boolean
                               requiredCheck:
                                 description: |-
                                   (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
