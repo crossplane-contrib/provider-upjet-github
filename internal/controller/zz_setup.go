@@ -34,6 +34,7 @@ import (
 	repository "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repository"
 	repositoryautolinkreference "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositoryautolinkreference"
 	repositorycollaborator "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositorycollaborator"
+	repositorycustomproperty "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositorycustomproperty"
 	repositoryfile "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositoryfile"
 	repositoryruleset "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositoryruleset"
 	repositorywebhook "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repositorywebhook"
@@ -76,6 +77,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		repository.Setup,
 		repositoryautolinkreference.Setup,
 		repositorycollaborator.Setup,
+		repositorycustomproperty.Setup,
 		repositoryfile.Setup,
 		repositoryruleset.Setup,
 		repositorywebhook.Setup,
