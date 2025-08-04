@@ -727,6 +727,66 @@ func (mg *RepositoryCollaborator) SetWriteConnectionSecretToReference(r *xpv1.Se
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
+// GetCondition of this RepositoryCustomProperty.
+func (mg *RepositoryCustomProperty) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this RepositoryCustomProperty.
+func (mg *RepositoryCustomProperty) GetDeletionPolicy() xpv1.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this RepositoryCustomProperty.
+func (mg *RepositoryCustomProperty) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this RepositoryCustomProperty.
+func (mg *RepositoryCustomProperty) GetProviderConfigReference() *xpv1.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetPublishConnectionDetailsTo of this RepositoryCustomProperty.
+func (mg *RepositoryCustomProperty) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this RepositoryCustomProperty.
+func (mg *RepositoryCustomProperty) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this RepositoryCustomProperty.
+func (mg *RepositoryCustomProperty) SetConditions(c ...xpv1.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this RepositoryCustomProperty.
+func (mg *RepositoryCustomProperty) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this RepositoryCustomProperty.
+func (mg *RepositoryCustomProperty) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this RepositoryCustomProperty.
+func (mg *RepositoryCustomProperty) SetProviderConfigReference(r *xpv1.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetPublishConnectionDetailsTo of this RepositoryCustomProperty.
+func (mg *RepositoryCustomProperty) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this RepositoryCustomProperty.
+func (mg *RepositoryCustomProperty) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this RepositoryFile.
 func (mg *RepositoryFile) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)

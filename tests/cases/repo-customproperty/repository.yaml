@@ -1,0 +1,27 @@
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  name: github-crossplane-customproperty-test
+spec:
+  forProvider:
+    visibility: public
+    autoInit: true
+    gitignoreTemplate: Terraform
+  providerConfigRef:
+    name: default
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: RepositoryCustomProperty
+metadata:
+  name: repo-custom-property-example
+spec:
+  forProvider:
+    repositoryRef:
+      name: github-crossplane-customproperty-test
+    propertyType: string
+    propertyName: environment
+    propertyValue:
+      - production
+  providerConfigRef:
+    name: default
