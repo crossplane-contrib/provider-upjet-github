@@ -15,7 +15,7 @@ on:
 jobs:
   publish-provider-package:
     permissions: 
-      content: read
+      contents: read
       packages: write
     uses: crossplane-contrib/provider-workflows/.github/workflows/publish-provider-non-family.yml@main
     with:
