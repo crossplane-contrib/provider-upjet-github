@@ -1,6 +1,6 @@
 module github.com/crossplane-contrib/provider-upjet-github
 
-go 1.23.0
+go 1.23.12
 
 require (
 	dario.cat/mergo v1.0.2
