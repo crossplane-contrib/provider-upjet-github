@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"sync"
+	"time"
 
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -62,6 +63,11 @@ type githubConfig struct {
 	RetryDelayMs    *int       `json:"retry_delay_ms,omitempty"`
 	MaxRetries      *int       `json:"max_retries,omitempty"`
 	RetryableErrors []int      `json:"retryable_errors,omitempty"`
+}
+
+type githubCredentialCache struct {
+    configName *terraform.Setup
+		cachedAt time.Time
 }
 
 // setCredentialConfigs will add credential type fields (Owner, Token, AppAuth) to terraform providerConfiguration
@@ -141,7 +147,7 @@ func terraformProviderConfigurationBuilder(creds githubConfig) (terraform.Provid
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which returns Terraform provider setup configuration
 func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 	var tfSetupLock sync.RWMutex
-	tfSetups := make(map[string]*terraform.Setup)
+	tfSetups := make(map[string]*githubCredentialCache)
 
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
 		ps := terraform.Setup{}
@@ -151,12 +157,17 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 			return ps, errors.New(errNoProviderConfig)
 		}
 
+    tokenValidDuration, err := time.ParseDuration("6h")
+		if err != nil {
+			return ps, err
+		}
+
 		tfSetupLock.Lock()
 		defer tfSetupLock.Unlock()
 
 		tfSetup, ok := tfSetups[configRef.Name]
-		if ok {
-			return *tfSetup, nil
+		if ok && time.Since(tfSetup.cachedAt) < tokenValidDuration {
+			return *tfSetup.configName, nil
 		}
 
 		pc := &v1beta1.ProviderConfig{}
@@ -191,7 +202,7 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 			return ps, errors.Wrap(err, "failed to configure the Terraform Github provider meta")
 		}
 
-		tfSetups[configRef.Name] = &ps
+		tfSetups[configRef.Name] = &githubCredentialCache{&ps, time.Now()}
 
 		return ps, nil
 
