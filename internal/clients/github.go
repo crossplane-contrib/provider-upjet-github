@@ -157,7 +157,7 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 			return ps, errors.New(errNoProviderConfig)
 		}
 
-    tokenValidDuration, err := time.ParseDuration("6h")
+    tokenValidDuration, err := time.ParseDuration("45m")
 		if err != nil {
 			return ps, err
 		}
