@@ -158,6 +158,7 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 	var tfSetupLock sync.RWMutex
 	tfSetups := make(map[string]CachedTerraformSetup)
 
+
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
 		ps := terraform.Setup{}
 
@@ -172,6 +173,7 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 		tfSetup, ok := tfSetups[configRef.Name]
 		if ok && tfSetup.expiry.After(time.Now()) {
 			return *tfSetup.setup, nil
+
 		}
 
 		pc := &v1beta1.ProviderConfig{}
