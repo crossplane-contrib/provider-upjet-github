@@ -66,8 +66,8 @@ type githubConfig struct {
 }
 
 type githubCredentialCache struct {
-    configName *terraform.Setup
-		cachedAt time.Time
+	configName *terraform.Setup
+	cachedAt   time.Time
 }
 
 // setCredentialConfigs will add credential type fields (Owner, Token, AppAuth) to terraform providerConfiguration
@@ -157,7 +157,7 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 			return ps, errors.New(errNoProviderConfig)
 		}
 
-    tokenValidDuration, err := time.ParseDuration("45m")
+		tokenValidDuration, err := time.ParseDuration("45m")
 		if err != nil {
 			return ps, err
 		}
