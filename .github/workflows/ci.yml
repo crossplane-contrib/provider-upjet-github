@@ -38,7 +38,7 @@ jobs:
         with:
           submodules: true
       - name: Setup Go
-        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v5
         with:
           go-version: ${{ env.GO_VERSION }}
       - name: Find the Go Build Cache
@@ -74,7 +74,7 @@ jobs:
         with:
           submodules: true
       - name: Setup Go
-        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v5
         with:
           go-version: ${{ env.GO_VERSION }}
       - name: Install goimports
@@ -110,7 +110,7 @@ jobs:
       - name: Fetch History
         run: git fetch --prune --unshallow
       - name: Setup Go
-        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v5
         with:
           go-version: ${{ env.GO_VERSION }}
       - name: Find the Go Build Cache
@@ -133,7 +133,7 @@ jobs:
       - name: Run Unit Tests
         run: make -j2 test
       - name: Publish Unit Test Coverage
-        uses: codecov/codecov-action@fdcc8476540edceab3de004e990f80d881c6cc00 # v1
+        uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v1
         with:
           flags: unittests
           file: _output/tests/linux_amd64/coverage.txt
@@ -149,7 +149,7 @@ jobs:
       - name: Fetch History
         run: git fetch --prune --unshallow
       - name: Setup Go
-        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v5
         with:
           go-version: ${{ env.GO_VERSION }}
       - name: Find the Go Build Cache
