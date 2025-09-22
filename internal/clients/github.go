@@ -154,6 +154,8 @@ const (
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which returns Terraform provider setup configuration
+//
+//gocyclo:ignore
 func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 	var tfSetupLock sync.RWMutex
 	tfSetups := make(map[string]CachedTerraformSetup)
