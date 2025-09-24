@@ -7,6 +7,8 @@ package clients
 import (
 	"context"
 	"encoding/json"
+	"sync"
+	"time"
 
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -137,14 +139,41 @@ func terraformProviderConfigurationBuilder(creds githubConfig) (terraform.Provid
 
 }
 
+// The terraform provider currently doesn't refresh installation tokens automatically
+// Therefore, the terraform provider config needs to be refreshed at least every hour
+// Once this PR is merged to terraform provider, the cache expiry can be removed
+// https://github.com/integrations/terraform-provider-github/pull/2695
+
+type CachedTerraformSetup struct {
+	setup  *terraform.Setup
+	expiry time.Time
+}
+
+const (
+	tfSetupCacheTTL = time.Minute * 55
+)
+
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which returns Terraform provider setup configuration
+//
+//gocyclo:ignore
 func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
+	var tfSetupLock sync.RWMutex
+	tfSetups := make(map[string]CachedTerraformSetup)
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
 		ps := terraform.Setup{}
 
 		configRef := mg.GetProviderConfigReference()
 		if configRef == nil {
 			return ps, errors.New(errNoProviderConfig)
+		}
+
+		tfSetupLock.Lock()
+		defer tfSetupLock.Unlock()
+
+		tfSetup, ok := tfSetups[configRef.Name]
+		if ok && tfSetup.expiry.After(time.Now()) {
+			return *tfSetup.setup, nil
+
 		}
 
 		pc := &v1beta1.ProviderConfig{}
@@ -163,8 +192,10 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 		}
 
 		creds := githubConfig{}
-		if err := json.Unmarshal(data, &creds); err != nil {
-			return ps, errors.Wrap(err, errUnmarshalCredentials)
+		if data != nil {
+			if err := json.Unmarshal(data, &creds); err != nil {
+				return ps, errors.Wrap(err, errUnmarshalCredentials)
+			}
 		}
 
 		ps.Configuration, err = terraformProviderConfigurationBuilder(creds)
@@ -172,7 +203,17 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 			return ps, errors.Wrap(err, errProviderConfigurationBuilder)
 		}
 
-		return ps, errors.Wrap(configureNoForkGithubClient(ctx, &ps, *tfProvider), "failed to configure the Terraform Github provider meta")
+		err = configureNoForkGithubClient(ctx, &ps, *tfProvider)
+		if err != nil {
+			return ps, errors.Wrap(err, "failed to configure the Terraform Github provider meta")
+		}
+
+		tfSetups[configRef.Name] = CachedTerraformSetup{
+			setup:  &ps,
+			expiry: time.Now().Add(tfSetupCacheTTL),
+		}
+
+		return ps, nil
 
 	}
 }
