@@ -1,0 +1,35 @@
+apiVersion: actions.github.upbound.io/v1alpha1
+kind: OrganizationPermissions
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/organizationpermissions
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    allowedActions: selected
+    allowedActionsConfig:
+    - githubOwnedAllowed: true
+      patternsAllowed:
+      - actions/cache@*
+      - actions/checkout@*
+      verifiedAllowed: true
+    enabledRepositories: selected
+    enabledRepositoriesConfig:
+    - repositoryIdsRefs:
+      - name: example
+
+---
+
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/organizationpermissions
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: my-repository

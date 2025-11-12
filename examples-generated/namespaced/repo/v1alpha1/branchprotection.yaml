@@ -1,0 +1,89 @@
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: BranchProtection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/branchprotection
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    allowsDeletions: true
+    enforceAdmins: true
+    forcePushBypassers:
+    - ${data.github_user.example.node_id}
+    - /exampleuser
+    - exampleorganization/exampleteam
+    pattern: main
+    repositoryIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    requiredPullRequestReviews:
+    - dismissStaleReviews: true
+      dismissalRestrictions:
+      - ${data.github_user.example.node_id}
+      - ${github_team.example.node_id}
+      - /exampleuser
+      - exampleorganization/exampleteam
+      restrictDismissals: true
+    requiredStatusChecks:
+    - contexts:
+      - ci/travis
+      strict: false
+    restrictPushes:
+    - pushAllowances:
+      - ${data.github_user.example.node_id}
+      - /exampleuser
+      - exampleorganization/exampleteam
+
+---
+
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/branchprotection
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: test
+
+---
+
+apiVersion: team.github.m.upbound.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/branchprotection
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: Example Name
+
+---
+
+apiVersion: team.github.m.upbound.io/v1alpha1
+kind: TeamRepository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/branchprotection
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    permission: pull
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    teamIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

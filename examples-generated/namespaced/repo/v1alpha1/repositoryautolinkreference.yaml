@@ -1,0 +1,33 @@
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: RepositoryAutolinkReference
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositoryautolinkreference
+  labels:
+    testing.upbound.io/example-name: autolink
+  name: autolink
+  namespace: upbound-system
+spec:
+  forProvider:
+    keyPrefix: TICKET-
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: repo
+    targetUrlTemplate: https://example.com/TICKET?query=<num>
+
+---
+
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositoryautolinkreference
+  labels:
+    testing.upbound.io/example-name: repo
+  name: repo
+  namespace: upbound-system
+spec:
+  forProvider:
+    description: GitHub repo managed by Terraform
+    name: my-repo
+    private: false

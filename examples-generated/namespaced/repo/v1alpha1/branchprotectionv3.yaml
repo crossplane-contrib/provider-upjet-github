@@ -1,0 +1,18 @@
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: BranchProtectionv3
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/branchprotectionv3
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    branch: main
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    restrictions:
+    - users:
+      - foo-user

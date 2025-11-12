@@ -1,0 +1,15 @@
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: Branch
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/branch
+  labels:
+    testing.upbound.io/example-name: development
+  name: development
+  namespace: upbound-system
+spec:
+  forProvider:
+    branch: development
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

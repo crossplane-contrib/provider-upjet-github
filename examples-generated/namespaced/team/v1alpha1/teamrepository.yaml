@@ -1,0 +1,49 @@
+apiVersion: team.github.m.upbound.io/v1alpha1
+kind: TeamRepository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/teamrepository
+  labels:
+    testing.upbound.io/example-name: some_team_repo
+  name: some-team-repo
+  namespace: upbound-system
+spec:
+  forProvider:
+    permission: pull
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: some_repo
+    teamIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: some_team
+
+---
+
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/teamrepository
+  labels:
+    testing.upbound.io/example-name: some_repo
+  name: some-repo
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: some-repo
+
+---
+
+apiVersion: team.github.m.upbound.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/teamrepository
+  labels:
+    testing.upbound.io/example-name: some_team
+  name: some-team
+  namespace: upbound-system
+spec:
+  forProvider:
+    description: Some cool team
+    name: SomeTeam
