@@ -33,7 +33,7 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	// the branch field unavailable. This causes the name of the k8s object to be leading and will cause naming conflict.
 	"github_branch": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository }}
-	"github_branch_default": config.TemplatedStringAsIdentifier("repository", "{{ .external_name }}"),
+	"github_branch_default": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository }}:{{ pattern }}
 	// We cannot use the external_name = pattern here since pattern can contain non alpha numberic characters
 	"github_branch_protection": config.IdentifierFromProvider,
