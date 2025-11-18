@@ -1,0 +1,16 @@
+apiVersion: actions.github.m.upbound.io/v1alpha1
+kind: EnvironmentVariable
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/environmentvariable
+  labels:
+    testing.upbound.io/example-name: example_variable
+  name: example-variable
+  namespace: upbound-system
+spec:
+  forProvider:
+    environmentSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    value: example_variable_value
+    variableName: example_variable_name

@@ -1,0 +1,39 @@
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: RepositoryFile
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositoryfile
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: upbound-system
+spec:
+  forProvider:
+    branchSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    commitAuthor: Terraform User
+    commitEmail: terraform@example.com
+    commitMessage: Managed by Terraform
+    content: '**/*.tfstate'
+    file: .gitignore
+    overwriteOnCreate: true
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: foo
+
+---
+
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositoryfile
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: upbound-system
+spec:
+  forProvider:
+    autoInit: true
+    name: tf-acc-test-%s

@@ -1,0 +1,34 @@
+apiVersion: team.github.m.upbound.io/v1alpha1
+kind: TeamSettings
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/teamsettings
+  labels:
+    testing.upbound.io/example-name: code_review_settings
+  name: code-review-settings
+  namespace: upbound-system
+spec:
+  forProvider:
+    reviewRequestDelegation:
+    - algorithm: ROUND_ROBIN
+      memberCount: 1
+      notify: true
+    teamIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: some_team
+
+---
+
+apiVersion: team.github.m.upbound.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/teamsettings
+  labels:
+    testing.upbound.io/example-name: some_team
+  name: some-team
+  namespace: upbound-system
+spec:
+  forProvider:
+    description: Some cool team
+    name: SomeTeam

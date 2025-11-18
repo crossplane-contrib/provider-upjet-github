@@ -1,0 +1,19 @@
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: DeployKey
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/deploykey
+  labels:
+    testing.upbound.io/example-name: example_repository_deploy_key
+  name: example-repository-deploy-key
+  namespace: upbound-system
+spec:
+  forProvider:
+    keySecretRef:
+      key: attribute.public_key_openssh
+      name: example-private-key
+    readOnly: true
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    title: Repository test key

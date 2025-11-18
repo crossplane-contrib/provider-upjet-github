@@ -1,0 +1,15 @@
+apiVersion: team.github.m.upbound.io/v1alpha1
+kind: EmuGroupMapping
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/emugroupmapping
+  labels:
+    testing.upbound.io/example-name: example_emu_group_mapping
+  name: example-emu-group-mapping
+  namespace: upbound-system
+spec:
+  forProvider:
+    groupId: 28836
+    teamSlugSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

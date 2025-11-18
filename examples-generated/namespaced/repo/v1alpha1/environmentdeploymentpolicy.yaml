@@ -1,0 +1,58 @@
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: EnvironmentDeploymentPolicy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/environmentdeploymentpolicy
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+  namespace: upbound-system
+spec:
+  forProvider:
+    branchPattern: releases/*
+    environmentSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
+
+---
+
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/environmentdeploymentpolicy
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: tf-acc-test-%s
+
+---
+
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: Environment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/environmentdeploymentpolicy
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+  namespace: upbound-system
+spec:
+  forProvider:
+    deploymentBranchPolicy:
+    - customBranchPolicies: true
+      protectedBranches: false
+    environment: environment/test
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    reviewers:
+    - users:
+      - ${data.github_user.current.id}
+    waitTimer: 10000

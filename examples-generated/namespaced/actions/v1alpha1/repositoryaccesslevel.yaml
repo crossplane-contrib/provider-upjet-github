@@ -1,0 +1,31 @@
+apiVersion: actions.github.m.upbound.io/v1alpha1
+kind: RepositoryAccessLevel
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/repositoryaccesslevel
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+  namespace: upbound-system
+spec:
+  forProvider:
+    accessLevel: user
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/repositoryaccesslevel
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: my-repository
+    visibility: private

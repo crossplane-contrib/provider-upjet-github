@@ -10,7 +10,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/crossplane/upjet/pkg/pipeline"
+	"github.com/crossplane/upjet/v2/pkg/pipeline"
 
 	"github.com/crossplane-contrib/provider-upjet-github/config"
 )
@@ -27,8 +27,13 @@ func main() {
 
 	p, err := config.GetProvider(context.Background())
 	if err != nil {
-		panic("cannot get config")
+		panic("cannot get cluster provider")
 	}
 
-	pipeline.Run(p, absRootDir)
+	pn, err := config.GetProviderNamespaced(context.Background())
+	if err != nil {
+		panic("cannot get namespaced provider")
+	}
+
+	pipeline.Run(p, pn, absRootDir)
 }
