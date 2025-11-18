@@ -7,7 +7,6 @@ package clients
 import (
 	"context"
 	"encoding/json"
-	"time"
 
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -138,20 +137,6 @@ func terraformProviderConfigurationBuilder(creds githubConfig) (terraform.Provid
 	return cnf, nil
 
 }
-
-// The terraform provider currently doesn't refresh installation tokens automatically
-// Therefore, the terraform provider config needs to be refreshed at least every hour
-// Once this PR is merged to terraform provider, the cache expiry can be removed
-// https://github.com/integrations/terraform-provider-github/pull/2695
-
-type CachedTerraformSetup struct {
-	setup  *terraform.Setup
-	expiry time.Time
-}
-
-const (
-	tfSetupCacheTTL = time.Minute * 55
-)
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which returns Terraform provider setup configuration
 //
