@@ -14,7 +14,7 @@ import (
 	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
 )
 
-type RepositoryPermissionsAllowedActionsConfigInitParameters struct {
+type AllowedActionsConfigInitParameters struct {
 
 	// Whether GitHub-owned actions are allowed in the repository.
 	// Whether GitHub-owned actions are allowed in the repository.
@@ -30,7 +30,7 @@ type RepositoryPermissionsAllowedActionsConfigInitParameters struct {
 	VerifiedAllowed *bool `json:"verifiedAllowed,omitempty" tf:"verified_allowed,omitempty"`
 }
 
-type RepositoryPermissionsAllowedActionsConfigObservation struct {
+type AllowedActionsConfigObservation struct {
 
 	// Whether GitHub-owned actions are allowed in the repository.
 	// Whether GitHub-owned actions are allowed in the repository.
@@ -46,7 +46,7 @@ type RepositoryPermissionsAllowedActionsConfigObservation struct {
 	VerifiedAllowed *bool `json:"verifiedAllowed,omitempty" tf:"verified_allowed,omitempty"`
 }
 
-type RepositoryPermissionsAllowedActionsConfigParameters struct {
+type AllowedActionsConfigParameters struct {
 
 	// Whether GitHub-owned actions are allowed in the repository.
 	// Whether GitHub-owned actions are allowed in the repository.
@@ -73,7 +73,7 @@ type RepositoryPermissionsInitParameters struct {
 
 	// Sets the actions that are allowed in an repository. Only available when allowed_actions = selected. See Allowed Actions Config below for details.
 	// Sets the actions that are allowed in an repository. Only available when 'allowed_actions' = 'selected'.
-	AllowedActionsConfig []RepositoryPermissionsAllowedActionsConfigInitParameters `json:"allowedActionsConfig,omitempty" tf:"allowed_actions_config,omitempty"`
+	AllowedActionsConfig []AllowedActionsConfigInitParameters `json:"allowedActionsConfig,omitempty" tf:"allowed_actions_config,omitempty"`
 
 	// Should GitHub actions be enabled on this repository?
 	// Should GitHub actions be enabled on this repository.
@@ -101,7 +101,7 @@ type RepositoryPermissionsObservation struct {
 
 	// Sets the actions that are allowed in an repository. Only available when allowed_actions = selected. See Allowed Actions Config below for details.
 	// Sets the actions that are allowed in an repository. Only available when 'allowed_actions' = 'selected'.
-	AllowedActionsConfig []RepositoryPermissionsAllowedActionsConfigObservation `json:"allowedActionsConfig,omitempty" tf:"allowed_actions_config,omitempty"`
+	AllowedActionsConfig []AllowedActionsConfigObservation `json:"allowedActionsConfig,omitempty" tf:"allowed_actions_config,omitempty"`
 
 	// Should GitHub actions be enabled on this repository?
 	// Should GitHub actions be enabled on this repository.
@@ -124,7 +124,7 @@ type RepositoryPermissionsParameters struct {
 	// Sets the actions that are allowed in an repository. Only available when allowed_actions = selected. See Allowed Actions Config below for details.
 	// Sets the actions that are allowed in an repository. Only available when 'allowed_actions' = 'selected'.
 	// +kubebuilder:validation:Optional
-	AllowedActionsConfig []RepositoryPermissionsAllowedActionsConfigParameters `json:"allowedActionsConfig,omitempty" tf:"allowed_actions_config,omitempty"`
+	AllowedActionsConfig []AllowedActionsConfigParameters `json:"allowedActionsConfig,omitempty" tf:"allowed_actions_config,omitempty"`
 
 	// Should GitHub actions be enabled on this repository?
 	// Should GitHub actions be enabled on this repository.
