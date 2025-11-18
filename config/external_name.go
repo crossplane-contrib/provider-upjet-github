@@ -10,13 +10,15 @@ import "github.com/crossplane/upjet/v2/pkg/config"
 // provider.
 var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	// Can be imported using the following format: {{ runner id }}
-	"github_actions_runner_group": config.IdentifierFromProvider,
+	// DISABLED due to wrong type association
+	// "github_actions_runner_group": config.IdentifierFromProvider,
 	// This cannot be imported.
 	"github_actions_environment_secret": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}:{{ environment }}:{{ variable }}
 	"github_actions_environment_variable": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ organization }}
-	"github_actions_organization_permissions": config.IdentifierFromProvider,
+	// DISABLED due to wrong type association
+	// "github_actions_organization_permissions": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ secret id }}
 	"github_actions_organization_secret": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ variable id }}
@@ -83,7 +85,8 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	"github_team_membership": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ team_id/slug }}:{{ repository }}
 	// The id in the state needs to use the numberic id of the team plus the repository. Cannot make external_name nice
-	"github_team_repository": config.IdentifierFromProvider,
+	// DISABLED due to import cycle
+	// "github_team_repository": config.IdentifierFromProvider,
 	// This is imported using Github Team ID or Team slug.
 	"github_team_settings": config.IdentifierFromProvider,
 	// Imported by using the following format: {{team_slug}}

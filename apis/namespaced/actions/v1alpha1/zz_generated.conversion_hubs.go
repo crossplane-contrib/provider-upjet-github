@@ -25,13 +25,7 @@ func (tr *OrganizationActionsSecret) Hub() {}
 func (tr *OrganizationActionsVariable) Hub() {}
 
 // Hub marks this type as a conversion hub.
-func (tr *OrganizationPermissions) Hub() {}
-
-// Hub marks this type as a conversion hub.
 func (tr *RepositoryAccessLevel) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *RepositoryPermissions) Hub() {}
-
-// Hub marks this type as a conversion hub.
-func (tr *RunnerGroup) Hub() {}

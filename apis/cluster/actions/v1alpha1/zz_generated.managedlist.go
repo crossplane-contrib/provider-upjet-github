@@ -61,15 +61,6 @@ func (l *OrganizationActionsVariableList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this OrganizationPermissionsList.
-func (l *OrganizationPermissionsList) GetItems() []resource.Managed {
-	items := make([]resource.Managed, len(l.Items))
-	for i := range l.Items {
-		items[i] = &l.Items[i]
-	}
-	return items
-}
-
 // GetItems of this RepositoryAccessLevelList.
 func (l *RepositoryAccessLevelList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -81,15 +72,6 @@ func (l *RepositoryAccessLevelList) GetItems() []resource.Managed {
 
 // GetItems of this RepositoryPermissionsList.
 func (l *RepositoryPermissionsList) GetItems() []resource.Managed {
-	items := make([]resource.Managed, len(l.Items))
-	for i := range l.Items {
-		items[i] = &l.Items[i]
-	}
-	return items
-}
-
-// GetItems of this RunnerGroupList.
-func (l *RunnerGroupList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

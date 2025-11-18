@@ -9,7 +9,6 @@ import (
 	"context"
 	v1alpha1 "github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/repo/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/v2/pkg/reference"
-	resource "github.com/crossplane/upjet/v2/pkg/resource"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -258,55 +257,6 @@ func (mg *EnvironmentVariable) ResolveReferences(ctx context.Context, c client.R
 	return nil
 }
 
-// ResolveReferences of this OrganizationPermissions.
-func (mg *OrganizationPermissions) ResolveReferences(ctx context.Context, c client.Reader) error {
-	r := reference.NewAPINamespacedResolver(c, mg)
-
-	var mrsp reference.MultiNamespacedResolutionResponse
-	var err error
-
-	for i3 := 0; i3 < len(mg.Spec.ForProvider.EnabledRepositoriesConfig); i3++ {
-		mrsp, err = r.ResolveMultiple(ctx, reference.MultiNamespacedResolutionRequest{
-			CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.EnabledRepositoriesConfig[i3].RepositoryIds),
-			Extract:       resource.ExtractParamPath("repo_id", true),
-			Namespace:     mg.GetNamespace(),
-			References:    mg.Spec.ForProvider.EnabledRepositoriesConfig[i3].RepositoryIdsRefs,
-			Selector:      mg.Spec.ForProvider.EnabledRepositoriesConfig[i3].RepositoryIdsSelector,
-			To: reference.To{
-				List:    &v1alpha1.RepositoryList{},
-				Managed: &v1alpha1.Repository{},
-			},
-		})
-		if err != nil {
-			return errors.Wrap(err, "mg.Spec.ForProvider.EnabledRepositoriesConfig[i3].RepositoryIds")
-		}
-		mg.Spec.ForProvider.EnabledRepositoriesConfig[i3].RepositoryIds = reference.ToPtrValues(mrsp.ResolvedValues)
-		mg.Spec.ForProvider.EnabledRepositoriesConfig[i3].RepositoryIdsRefs = mrsp.ResolvedReferences
-
-	}
-	for i3 := 0; i3 < len(mg.Spec.InitProvider.EnabledRepositoriesConfig); i3++ {
-		mrsp, err = r.ResolveMultiple(ctx, reference.MultiNamespacedResolutionRequest{
-			CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.EnabledRepositoriesConfig[i3].RepositoryIds),
-			Extract:       resource.ExtractParamPath("repo_id", true),
-			Namespace:     mg.GetNamespace(),
-			References:    mg.Spec.InitProvider.EnabledRepositoriesConfig[i3].RepositoryIdsRefs,
-			Selector:      mg.Spec.InitProvider.EnabledRepositoriesConfig[i3].RepositoryIdsSelector,
-			To: reference.To{
-				List:    &v1alpha1.RepositoryList{},
-				Managed: &v1alpha1.Repository{},
-			},
-		})
-		if err != nil {
-			return errors.Wrap(err, "mg.Spec.InitProvider.EnabledRepositoriesConfig[i3].RepositoryIds")
-		}
-		mg.Spec.InitProvider.EnabledRepositoriesConfig[i3].RepositoryIds = reference.ToPtrValues(mrsp.ResolvedValues)
-		mg.Spec.InitProvider.EnabledRepositoriesConfig[i3].RepositoryIdsRefs = mrsp.ResolvedReferences
-
-	}
-
-	return nil
-}
-
 // ResolveReferences of this RepositoryAccessLevel.
 func (mg *RepositoryAccessLevel) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPINamespacedResolver(c, mg)
@@ -391,85 +341,6 @@ func (mg *RepositoryPermissions) ResolveReferences(ctx context.Context, c client
 	}
 	mg.Spec.InitProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.RepositoryRef = rsp.ResolvedReference
-
-	return nil
-}
-
-// ResolveReferences of this RunnerGroup.
-func (mg *RunnerGroup) ResolveReferences(ctx context.Context, c client.Reader) error {
-	r := reference.NewAPINamespacedResolver(c, mg)
-
-	var rsp reference.NamespacedResolutionResponse
-	var mrsp reference.MultiNamespacedResolutionResponse
-	var err error
-
-	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Name),
-		Extract:      resource.ExtractParamPath("name", false),
-		Namespace:    mg.GetNamespace(),
-		Reference:    mg.Spec.ForProvider.NameRef,
-		Selector:     mg.Spec.ForProvider.NameSelector,
-		To: reference.To{
-			List:    &v1alpha1.RepositoryList{},
-			Managed: &v1alpha1.Repository{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.ForProvider.Name")
-	}
-	mg.Spec.ForProvider.Name = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.NameRef = rsp.ResolvedReference
-
-	mrsp, err = r.ResolveMultiple(ctx, reference.MultiNamespacedResolutionRequest{
-		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.SelectedRepositoryIds),
-		Extract:       resource.ExtractParamPath("repo_id", true),
-		Namespace:     mg.GetNamespace(),
-		References:    mg.Spec.ForProvider.SelectedRepositoryIdsRefs,
-		Selector:      mg.Spec.ForProvider.SelectedRepositoryIdsSelector,
-		To: reference.To{
-			List:    &v1alpha1.RepositoryList{},
-			Managed: &v1alpha1.Repository{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.ForProvider.SelectedRepositoryIds")
-	}
-	mg.Spec.ForProvider.SelectedRepositoryIds = reference.ToPtrValues(mrsp.ResolvedValues)
-	mg.Spec.ForProvider.SelectedRepositoryIdsRefs = mrsp.ResolvedReferences
-
-	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Name),
-		Extract:      resource.ExtractParamPath("name", false),
-		Namespace:    mg.GetNamespace(),
-		Reference:    mg.Spec.InitProvider.NameRef,
-		Selector:     mg.Spec.InitProvider.NameSelector,
-		To: reference.To{
-			List:    &v1alpha1.RepositoryList{},
-			Managed: &v1alpha1.Repository{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.InitProvider.Name")
-	}
-	mg.Spec.InitProvider.Name = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.InitProvider.NameRef = rsp.ResolvedReference
-
-	mrsp, err = r.ResolveMultiple(ctx, reference.MultiNamespacedResolutionRequest{
-		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.SelectedRepositoryIds),
-		Extract:       resource.ExtractParamPath("repo_id", true),
-		Namespace:     mg.GetNamespace(),
-		References:    mg.Spec.InitProvider.SelectedRepositoryIdsRefs,
-		Selector:      mg.Spec.InitProvider.SelectedRepositoryIdsSelector,
-		To: reference.To{
-			List:    &v1alpha1.RepositoryList{},
-			Managed: &v1alpha1.Repository{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.InitProvider.SelectedRepositoryIds")
-	}
-	mg.Spec.InitProvider.SelectedRepositoryIds = reference.ToPtrValues(mrsp.ResolvedValues)
-	mg.Spec.InitProvider.SelectedRepositoryIdsRefs = mrsp.ResolvedReferences
 
 	return nil
 }
