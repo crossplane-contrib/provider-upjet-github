@@ -1,0 +1,1075 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.18.0
+  name: repositories.repo.github.m.upbound.io
+spec:
+  group: repo.github.m.upbound.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - github
+    kind: Repository
+    listKind: RepositoryList
+    plural: repositories
+    singular: repository
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Repository is the Schema for the Repositorys API. Creates and
+          manages repositories within GitHub organizations or personal accounts
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RepositorySpec defines the desired state of Repository
+            properties:
+              forProvider:
+                properties:
+                  allowAutoMerge:
+                    description: |-
+                      Set to true to allow auto-merging pull requests on the repository.
+                      Set to 'true' to allow auto-merging pull requests on the repository.
+                    type: boolean
+                  allowMergeCommit:
+                    description: |-
+                      Set to false to disable merge commits on the repository.
+                      Set to 'false' to disable merge commits on the repository.
+                    type: boolean
+                  allowRebaseMerge:
+                    description: |-
+                      Set to false to disable rebase merges on the repository.
+                      Set to 'false' to disable rebase merges on the repository.
+                    type: boolean
+                  allowSquashMerge:
+                    description: |-
+                      Set to false to disable squash merges on the repository.
+                      Set to 'false' to disable squash merges on the repository.
+                    type: boolean
+                  allowUpdateBranch:
+                    description: |-
+                      Set to true to always suggest updating pull request branches.
+                      Set to 'true' to always suggest updating pull request branches.
+                    type: boolean
+                  archiveOnDestroy:
+                    description: |-
+                      Set to true to archive the repository instead of deleting on destroy.
+                      Set to 'true' to archive the repository instead of deleting on destroy.
+                    type: boolean
+                  archived:
+                    description: |-
+                      Specifies if the repository should be archived. Defaults to false. NOTE Currently, the API does not support unarchiving.
+                      Specifies if the repository should be archived. Defaults to 'false'. NOTE Currently, the API does not support unarchiving.
+                    type: boolean
+                  autoInit:
+                    description: |-
+                      Set to true to produce an initial commit in the repository.
+                      Set to 'true' to produce an initial commit in the repository.
+                    type: boolean
+                  defaultBranch:
+                    description: |-
+                      (Deprecated: Use github_branch_default resource instead) The name of the default branch of the repository. NOTE: This can only be set after a repository has already been created,
+                      and after a correct reference has been created for the target branch inside the repository. This means a user will have to omit this parameter from the
+                      initial repository creation and create the target branch inside of the repository prior to setting this attribute.
+                      Can only be set after initial repository creation, and only if the target branch exists
+                    type: string
+                  deleteBranchOnMerge:
+                    description: |-
+                      Automatically delete head branch after a pull request is merged. Defaults to false.
+                      Automatically delete head branch after a pull request is merged. Defaults to 'false'.
+                    type: boolean
+                  description:
+                    description: |-
+                      A description of the repository.
+                      A description of the repository.
+                    type: string
+                  gitignoreTemplate:
+                    description: |-
+                      Use the name of the template without the extension. For example, "Haskell".
+                      Use the name of the template without the extension. For example, 'Haskell'.
+                    type: string
+                  hasDiscussions:
+                    description: |-
+                      Set to true to enable GitHub Discussions on the repository. Defaults to false.
+                      Set to 'true' to enable GitHub Discussions on the repository. Defaults to 'false'.
+                    type: boolean
+                  hasDownloads:
+                    description: |-
+                      Set to true to enable the (deprecated) downloads features on the repository.
+                      Set to 'true' to enable the (deprecated) downloads features on the repository.
+                    type: boolean
+                  hasIssues:
+                    description: |-
+                      Set to true to enable the GitHub Issues features
+                      on the repository.
+                      Set to 'true' to enable the GitHub Issues features on the repository
+                    type: boolean
+                  hasProjects:
+                    description: |-
+                      Set to true to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to false and will otherwise default to true. If you specify true when it has been disabled it will return an error.
+                      Set to 'true' to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to 'false' and will otherwise default to 'true'. If you specify 'true' when it has been disabled it will return an error.
+                    type: boolean
+                  hasWiki:
+                    description: |-
+                      Set to true to enable the GitHub Wiki features on
+                      the repository.
+                      Set to 'true' to enable the GitHub Wiki features on the repository.
+                    type: boolean
+                  homepageUrl:
+                    description: |-
+                      URL of a page describing the project.
+                      URL of a page describing the project.
+                    type: string
+                  ignoreVulnerabilityAlertsDuringRead:
+                    description: |-
+                      Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
+                      Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
+                    type: boolean
+                  isTemplate:
+                    description: |-
+                      Set to true to tell GitHub that this is a template repository.
+                      Set to 'true' to tell GitHub that this is a template repository.
+                    type: boolean
+                  licenseTemplate:
+                    description: |-
+                      Use the name of the template without the extension. For example, "mit" or "mpl-2.0".
+                      Use the name of the template without the extension. For example, 'mit' or 'mpl-2.0'.
+                    type: string
+                  mergeCommitMessage:
+                    description: |-
+                      Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message. Applicable only if allow_merge_commit is true.
+                      Can be 'PR_BODY', 'PR_TITLE', or 'BLANK' for a default merge commit message.
+                    type: string
+                  mergeCommitTitle:
+                    description: |-
+                      Can be PR_TITLE or MERGE_MESSAGE for a default merge commit title. Applicable only if allow_merge_commit is true.
+                      Can be 'PR_TITLE' or 'MERGE_MESSAGE' for a default merge commit title.
+                    type: string
+                  name:
+                    description: |-
+                      The name of the repository.
+                      The name of the repository.
+                    type: string
+                  pages:
+                    description: |-
+                      The repository's GitHub Pages configuration. See GitHub Pages Configuration below for details.
+                      The repository's GitHub Pages configuration
+                    items:
+                      properties:
+                        buildType:
+                          description: |-
+                            The type of GitHub Pages site to build. Can be legacy or workflow. If you use legacy as build type you need to set the option source.
+                            The type the page should be sourced.
+                          type: string
+                        cname:
+                          description: |-
+                            The custom domain for the repository. This can only be set after the repository has been created.
+                            The custom domain for the repository. This can only be set after the repository has been created.
+                          type: string
+                        source:
+                          description: |-
+                            The source branch and directory for the rendered Pages site. See GitHub Pages Source below for details.
+                            The source branch and directory for the rendered Pages site.
+                          items:
+                            properties:
+                              branch:
+                                description: |-
+                                  The repository branch used to publish the site's source files. (i.e. main or gh-pages.
+                                  The repository branch used to publish the site's source files. (i.e. 'main' or 'gh-pages')
+                                type: string
+                              path:
+                                description: |-
+                                  The repository directory from which the site publishes (Default: /).
+                                  The repository directory from which the site publishes (Default: '/')
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  private:
+                    description: |-
+                      Set to true to create a private repository.
+                      Repositories are created as public (e.g. open source) by default.
+                    type: boolean
+                  securityAndAnalysis:
+                    description: |-
+                      The repository's security and analysis configuration. See Security and Analysis Configuration below for details.
+                      Security and analysis settings for the repository. To use this parameter you must have admin permissions for the repository or be an owner or security manager for the organization that owns the repository.
+                    items:
+                      properties:
+                        advancedSecurity:
+                          description: |-
+                            The advanced security configuration for the repository. See Advanced Security Configuration below for details. If a repository's visibility is public, advanced security is always enabled and cannot be changed, so this setting cannot be supplied.
+                            The advanced security configuration for the repository. If a repository's visibility is 'public', advanced security is always enabled and cannot be changed, so this setting cannot be supplied.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable advanced security features on the repository. Can be 'enabled' or 'disabled'.
+                                type: string
+                            type: object
+                          type: array
+                        secretScanning:
+                          description: |-
+                            The secret scanning configuration for the repository. See Secret Scanning Configuration below for details.
+                            The secret scanning configuration for the repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable secret scanning on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
+                                type: string
+                            type: object
+                          type: array
+                        secretScanningPushProtection:
+                          description: |-
+                            The secret scanning push protection configuration for the repository. See Secret Scanning Push Protection Configuration below for details.
+                            The secret scanning push protection configuration for the repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable secret scanning push protection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  squashMergeCommitMessage:
+                    description: |-
+                      Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message. Applicable only if allow_squash_merge is true.
+                      Can be 'PR_BODY', 'COMMIT_MESSAGES', or 'BLANK' for a default squash merge commit message.
+                    type: string
+                  squashMergeCommitTitle:
+                    description: |-
+                      Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title. Applicable only if allow_squash_merge is true.
+                      Can be 'PR_TITLE' or 'COMMIT_OR_PR_TITLE' for a default squash merge commit title.
+                    type: string
+                  template:
+                    description: |-
+                      Use a template repository to create this resource. See Template Repositories below for details.
+                      Use a template repository to create this resource.
+                    items:
+                      properties:
+                        includeAllBranches:
+                          description: |-
+                            : Whether the new repository should include all the branches from the template repository (defaults to false, which includes only the default branch from the template).
+                            Whether the new repository should include all the branches from the template repository (defaults to 'false', which includes only the default branch from the template).
+                          type: boolean
+                        owner:
+                          description: |-
+                            : The GitHub organization or user the template repository is owned by.
+                            The GitHub organization or user the template repository is owned by.
+                          type: string
+                        repository:
+                          description: |-
+                            : The name of the template repository.
+                            The name of the template repository.
+                          type: string
+                      type: object
+                    type: array
+                  topics:
+                    description: |-
+                      The list of topics of the repository.
+                      The list of topics of the repository.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  visibility:
+                    description: |-
+                      Can be public or private. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be internal. The visibility parameter overrides the private parameter.
+                      Can be 'public' or 'private'. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be 'internal'.
+                    type: string
+                  vulnerabilityAlerts:
+                    description: |-
+                      Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default.) See GitHub Documentation for details. Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
+                      Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
+                    type: boolean
+                  webCommitSignoffRequired:
+                    description: |-
+                      Require contributors to sign off on web-based commits. See more here. Defaults to false.
+                      Require contributors to sign off on web-based commits. Defaults to 'false'.
+                    type: boolean
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  allowAutoMerge:
+                    description: |-
+                      Set to true to allow auto-merging pull requests on the repository.
+                      Set to 'true' to allow auto-merging pull requests on the repository.
+                    type: boolean
+                  allowMergeCommit:
+                    description: |-
+                      Set to false to disable merge commits on the repository.
+                      Set to 'false' to disable merge commits on the repository.
+                    type: boolean
+                  allowRebaseMerge:
+                    description: |-
+                      Set to false to disable rebase merges on the repository.
+                      Set to 'false' to disable rebase merges on the repository.
+                    type: boolean
+                  allowSquashMerge:
+                    description: |-
+                      Set to false to disable squash merges on the repository.
+                      Set to 'false' to disable squash merges on the repository.
+                    type: boolean
+                  allowUpdateBranch:
+                    description: |-
+                      Set to true to always suggest updating pull request branches.
+                      Set to 'true' to always suggest updating pull request branches.
+                    type: boolean
+                  archiveOnDestroy:
+                    description: |-
+                      Set to true to archive the repository instead of deleting on destroy.
+                      Set to 'true' to archive the repository instead of deleting on destroy.
+                    type: boolean
+                  archived:
+                    description: |-
+                      Specifies if the repository should be archived. Defaults to false. NOTE Currently, the API does not support unarchiving.
+                      Specifies if the repository should be archived. Defaults to 'false'. NOTE Currently, the API does not support unarchiving.
+                    type: boolean
+                  autoInit:
+                    description: |-
+                      Set to true to produce an initial commit in the repository.
+                      Set to 'true' to produce an initial commit in the repository.
+                    type: boolean
+                  defaultBranch:
+                    description: |-
+                      (Deprecated: Use github_branch_default resource instead) The name of the default branch of the repository. NOTE: This can only be set after a repository has already been created,
+                      and after a correct reference has been created for the target branch inside the repository. This means a user will have to omit this parameter from the
+                      initial repository creation and create the target branch inside of the repository prior to setting this attribute.
+                      Can only be set after initial repository creation, and only if the target branch exists
+                    type: string
+                  deleteBranchOnMerge:
+                    description: |-
+                      Automatically delete head branch after a pull request is merged. Defaults to false.
+                      Automatically delete head branch after a pull request is merged. Defaults to 'false'.
+                    type: boolean
+                  description:
+                    description: |-
+                      A description of the repository.
+                      A description of the repository.
+                    type: string
+                  gitignoreTemplate:
+                    description: |-
+                      Use the name of the template without the extension. For example, "Haskell".
+                      Use the name of the template without the extension. For example, 'Haskell'.
+                    type: string
+                  hasDiscussions:
+                    description: |-
+                      Set to true to enable GitHub Discussions on the repository. Defaults to false.
+                      Set to 'true' to enable GitHub Discussions on the repository. Defaults to 'false'.
+                    type: boolean
+                  hasDownloads:
+                    description: |-
+                      Set to true to enable the (deprecated) downloads features on the repository.
+                      Set to 'true' to enable the (deprecated) downloads features on the repository.
+                    type: boolean
+                  hasIssues:
+                    description: |-
+                      Set to true to enable the GitHub Issues features
+                      on the repository.
+                      Set to 'true' to enable the GitHub Issues features on the repository
+                    type: boolean
+                  hasProjects:
+                    description: |-
+                      Set to true to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to false and will otherwise default to true. If you specify true when it has been disabled it will return an error.
+                      Set to 'true' to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to 'false' and will otherwise default to 'true'. If you specify 'true' when it has been disabled it will return an error.
+                    type: boolean
+                  hasWiki:
+                    description: |-
+                      Set to true to enable the GitHub Wiki features on
+                      the repository.
+                      Set to 'true' to enable the GitHub Wiki features on the repository.
+                    type: boolean
+                  homepageUrl:
+                    description: |-
+                      URL of a page describing the project.
+                      URL of a page describing the project.
+                    type: string
+                  ignoreVulnerabilityAlertsDuringRead:
+                    description: |-
+                      Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
+                      Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
+                    type: boolean
+                  isTemplate:
+                    description: |-
+                      Set to true to tell GitHub that this is a template repository.
+                      Set to 'true' to tell GitHub that this is a template repository.
+                    type: boolean
+                  licenseTemplate:
+                    description: |-
+                      Use the name of the template without the extension. For example, "mit" or "mpl-2.0".
+                      Use the name of the template without the extension. For example, 'mit' or 'mpl-2.0'.
+                    type: string
+                  mergeCommitMessage:
+                    description: |-
+                      Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message. Applicable only if allow_merge_commit is true.
+                      Can be 'PR_BODY', 'PR_TITLE', or 'BLANK' for a default merge commit message.
+                    type: string
+                  mergeCommitTitle:
+                    description: |-
+                      Can be PR_TITLE or MERGE_MESSAGE for a default merge commit title. Applicable only if allow_merge_commit is true.
+                      Can be 'PR_TITLE' or 'MERGE_MESSAGE' for a default merge commit title.
+                    type: string
+                  name:
+                    description: |-
+                      The name of the repository.
+                      The name of the repository.
+                    type: string
+                  pages:
+                    description: |-
+                      The repository's GitHub Pages configuration. See GitHub Pages Configuration below for details.
+                      The repository's GitHub Pages configuration
+                    items:
+                      properties:
+                        buildType:
+                          description: |-
+                            The type of GitHub Pages site to build. Can be legacy or workflow. If you use legacy as build type you need to set the option source.
+                            The type the page should be sourced.
+                          type: string
+                        cname:
+                          description: |-
+                            The custom domain for the repository. This can only be set after the repository has been created.
+                            The custom domain for the repository. This can only be set after the repository has been created.
+                          type: string
+                        source:
+                          description: |-
+                            The source branch and directory for the rendered Pages site. See GitHub Pages Source below for details.
+                            The source branch and directory for the rendered Pages site.
+                          items:
+                            properties:
+                              branch:
+                                description: |-
+                                  The repository branch used to publish the site's source files. (i.e. main or gh-pages.
+                                  The repository branch used to publish the site's source files. (i.e. 'main' or 'gh-pages')
+                                type: string
+                              path:
+                                description: |-
+                                  The repository directory from which the site publishes (Default: /).
+                                  The repository directory from which the site publishes (Default: '/')
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  private:
+                    description: |-
+                      Set to true to create a private repository.
+                      Repositories are created as public (e.g. open source) by default.
+                    type: boolean
+                  securityAndAnalysis:
+                    description: |-
+                      The repository's security and analysis configuration. See Security and Analysis Configuration below for details.
+                      Security and analysis settings for the repository. To use this parameter you must have admin permissions for the repository or be an owner or security manager for the organization that owns the repository.
+                    items:
+                      properties:
+                        advancedSecurity:
+                          description: |-
+                            The advanced security configuration for the repository. See Advanced Security Configuration below for details. If a repository's visibility is public, advanced security is always enabled and cannot be changed, so this setting cannot be supplied.
+                            The advanced security configuration for the repository. If a repository's visibility is 'public', advanced security is always enabled and cannot be changed, so this setting cannot be supplied.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable advanced security features on the repository. Can be 'enabled' or 'disabled'.
+                                type: string
+                            type: object
+                          type: array
+                        secretScanning:
+                          description: |-
+                            The secret scanning configuration for the repository. See Secret Scanning Configuration below for details.
+                            The secret scanning configuration for the repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable secret scanning on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
+                                type: string
+                            type: object
+                          type: array
+                        secretScanningPushProtection:
+                          description: |-
+                            The secret scanning push protection configuration for the repository. See Secret Scanning Push Protection Configuration below for details.
+                            The secret scanning push protection configuration for the repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable secret scanning push protection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  squashMergeCommitMessage:
+                    description: |-
+                      Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message. Applicable only if allow_squash_merge is true.
+                      Can be 'PR_BODY', 'COMMIT_MESSAGES', or 'BLANK' for a default squash merge commit message.
+                    type: string
+                  squashMergeCommitTitle:
+                    description: |-
+                      Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title. Applicable only if allow_squash_merge is true.
+                      Can be 'PR_TITLE' or 'COMMIT_OR_PR_TITLE' for a default squash merge commit title.
+                    type: string
+                  template:
+                    description: |-
+                      Use a template repository to create this resource. See Template Repositories below for details.
+                      Use a template repository to create this resource.
+                    items:
+                      properties:
+                        includeAllBranches:
+                          description: |-
+                            : Whether the new repository should include all the branches from the template repository (defaults to false, which includes only the default branch from the template).
+                            Whether the new repository should include all the branches from the template repository (defaults to 'false', which includes only the default branch from the template).
+                          type: boolean
+                        owner:
+                          description: |-
+                            : The GitHub organization or user the template repository is owned by.
+                            The GitHub organization or user the template repository is owned by.
+                          type: string
+                        repository:
+                          description: |-
+                            : The name of the template repository.
+                            The name of the template repository.
+                          type: string
+                      type: object
+                    type: array
+                  topics:
+                    description: |-
+                      The list of topics of the repository.
+                      The list of topics of the repository.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  visibility:
+                    description: |-
+                      Can be public or private. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be internal. The visibility parameter overrides the private parameter.
+                      Can be 'public' or 'private'. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be 'internal'.
+                    type: string
+                  vulnerabilityAlerts:
+                    description: |-
+                      Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default.) See GitHub Documentation for details. Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
+                      Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
+                    type: boolean
+                  webCommitSignoffRequired:
+                    description: |-
+                      Require contributors to sign off on web-based commits. See more here. Defaults to false.
+                      Require contributors to sign off on web-based commits. Defaults to 'false'.
+                    type: boolean
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  kind: ClusterProviderConfig
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  kind:
+                    description: Kind of the referenced object.
+                    type: string
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - kind
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                required:
+                - name
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+          status:
+            description: RepositoryStatus defines the observed state of Repository.
+            properties:
+              atProvider:
+                properties:
+                  allowAutoMerge:
+                    description: |-
+                      Set to true to allow auto-merging pull requests on the repository.
+                      Set to 'true' to allow auto-merging pull requests on the repository.
+                    type: boolean
+                  allowMergeCommit:
+                    description: |-
+                      Set to false to disable merge commits on the repository.
+                      Set to 'false' to disable merge commits on the repository.
+                    type: boolean
+                  allowRebaseMerge:
+                    description: |-
+                      Set to false to disable rebase merges on the repository.
+                      Set to 'false' to disable rebase merges on the repository.
+                    type: boolean
+                  allowSquashMerge:
+                    description: |-
+                      Set to false to disable squash merges on the repository.
+                      Set to 'false' to disable squash merges on the repository.
+                    type: boolean
+                  allowUpdateBranch:
+                    description: |-
+                      Set to true to always suggest updating pull request branches.
+                      Set to 'true' to always suggest updating pull request branches.
+                    type: boolean
+                  archiveOnDestroy:
+                    description: |-
+                      Set to true to archive the repository instead of deleting on destroy.
+                      Set to 'true' to archive the repository instead of deleting on destroy.
+                    type: boolean
+                  archived:
+                    description: |-
+                      Specifies if the repository should be archived. Defaults to false. NOTE Currently, the API does not support unarchiving.
+                      Specifies if the repository should be archived. Defaults to 'false'. NOTE Currently, the API does not support unarchiving.
+                    type: boolean
+                  autoInit:
+                    description: |-
+                      Set to true to produce an initial commit in the repository.
+                      Set to 'true' to produce an initial commit in the repository.
+                    type: boolean
+                  defaultBranch:
+                    description: |-
+                      (Deprecated: Use github_branch_default resource instead) The name of the default branch of the repository. NOTE: This can only be set after a repository has already been created,
+                      and after a correct reference has been created for the target branch inside the repository. This means a user will have to omit this parameter from the
+                      initial repository creation and create the target branch inside of the repository prior to setting this attribute.
+                      Can only be set after initial repository creation, and only if the target branch exists
+                    type: string
+                  deleteBranchOnMerge:
+                    description: |-
+                      Automatically delete head branch after a pull request is merged. Defaults to false.
+                      Automatically delete head branch after a pull request is merged. Defaults to 'false'.
+                    type: boolean
+                  description:
+                    description: |-
+                      A description of the repository.
+                      A description of the repository.
+                    type: string
+                  etag:
+                    type: string
+                  fullName:
+                    description: |-
+                      A string of the form "orgname/reponame".
+                      A string of the form 'orgname/reponame'.
+                    type: string
+                  gitCloneUrl:
+                    description: |-
+                      URL that can be provided to git clone to clone the repository anonymously via the git protocol.
+                      URL that can be provided to 'git clone' to clone the repository anonymously via the git protocol.
+                    type: string
+                  gitignoreTemplate:
+                    description: |-
+                      Use the name of the template without the extension. For example, "Haskell".
+                      Use the name of the template without the extension. For example, 'Haskell'.
+                    type: string
+                  hasDiscussions:
+                    description: |-
+                      Set to true to enable GitHub Discussions on the repository. Defaults to false.
+                      Set to 'true' to enable GitHub Discussions on the repository. Defaults to 'false'.
+                    type: boolean
+                  hasDownloads:
+                    description: |-
+                      Set to true to enable the (deprecated) downloads features on the repository.
+                      Set to 'true' to enable the (deprecated) downloads features on the repository.
+                    type: boolean
+                  hasIssues:
+                    description: |-
+                      Set to true to enable the GitHub Issues features
+                      on the repository.
+                      Set to 'true' to enable the GitHub Issues features on the repository
+                    type: boolean
+                  hasProjects:
+                    description: |-
+                      Set to true to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to false and will otherwise default to true. If you specify true when it has been disabled it will return an error.
+                      Set to 'true' to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to 'false' and will otherwise default to 'true'. If you specify 'true' when it has been disabled it will return an error.
+                    type: boolean
+                  hasWiki:
+                    description: |-
+                      Set to true to enable the GitHub Wiki features on
+                      the repository.
+                      Set to 'true' to enable the GitHub Wiki features on the repository.
+                    type: boolean
+                  homepageUrl:
+                    description: |-
+                      URL of a page describing the project.
+                      URL of a page describing the project.
+                    type: string
+                  htmlUrl:
+                    description: |-
+                      URL to the repository on the web.
+                      URL to the repository on the web.
+                    type: string
+                  httpCloneUrl:
+                    description: |-
+                      URL that can be provided to git clone to clone the repository via HTTPS.
+                      URL that can be provided to 'git clone' to clone the repository via HTTPS.
+                    type: string
+                  id:
+                    type: string
+                  ignoreVulnerabilityAlertsDuringRead:
+                    description: |-
+                      Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
+                      Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
+                    type: boolean
+                  isTemplate:
+                    description: |-
+                      Set to true to tell GitHub that this is a template repository.
+                      Set to 'true' to tell GitHub that this is a template repository.
+                    type: boolean
+                  licenseTemplate:
+                    description: |-
+                      Use the name of the template without the extension. For example, "mit" or "mpl-2.0".
+                      Use the name of the template without the extension. For example, 'mit' or 'mpl-2.0'.
+                    type: string
+                  mergeCommitMessage:
+                    description: |-
+                      Can be PR_BODY, PR_TITLE, or BLANK for a default merge commit message. Applicable only if allow_merge_commit is true.
+                      Can be 'PR_BODY', 'PR_TITLE', or 'BLANK' for a default merge commit message.
+                    type: string
+                  mergeCommitTitle:
+                    description: |-
+                      Can be PR_TITLE or MERGE_MESSAGE for a default merge commit title. Applicable only if allow_merge_commit is true.
+                      Can be 'PR_TITLE' or 'MERGE_MESSAGE' for a default merge commit title.
+                    type: string
+                  name:
+                    description: |-
+                      The name of the repository.
+                      The name of the repository.
+                    type: string
+                  nodeId:
+                    description: |-
+                      GraphQL global node id for use with v4 API
+                      GraphQL global node id for use with v4 API.
+                    type: string
+                  pages:
+                    description: |-
+                      The repository's GitHub Pages configuration. See GitHub Pages Configuration below for details.
+                      The repository's GitHub Pages configuration
+                    items:
+                      properties:
+                        buildType:
+                          description: |-
+                            The type of GitHub Pages site to build. Can be legacy or workflow. If you use legacy as build type you need to set the option source.
+                            The type the page should be sourced.
+                          type: string
+                        cname:
+                          description: |-
+                            The custom domain for the repository. This can only be set after the repository has been created.
+                            The custom domain for the repository. This can only be set after the repository has been created.
+                          type: string
+                        custom404:
+                          description: |-
+                            Whether the rendered GitHub Pages site has a custom 404 page.
+                            Whether the rendered GitHub Pages site has a custom 404 page
+                          type: boolean
+                        htmlUrl:
+                          description: |-
+                            URL to the repository on the web.
+                            URL to the repository on the web.
+                          type: string
+                        source:
+                          description: |-
+                            The source branch and directory for the rendered Pages site. See GitHub Pages Source below for details.
+                            The source branch and directory for the rendered Pages site.
+                          items:
+                            properties:
+                              branch:
+                                description: |-
+                                  The repository branch used to publish the site's source files. (i.e. main or gh-pages.
+                                  The repository branch used to publish the site's source files. (i.e. 'main' or 'gh-pages')
+                                type: string
+                              path:
+                                description: |-
+                                  The repository directory from which the site publishes (Default: /).
+                                  The repository directory from which the site publishes (Default: '/')
+                                type: string
+                            type: object
+                          type: array
+                        status:
+                          description: |-
+                            Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                            The GitHub Pages site's build status e.g. building or built.
+                          type: string
+                        url:
+                          type: string
+                      type: object
+                    type: array
+                  primaryLanguage:
+                    description: The primary language used in the repository.
+                    type: string
+                  private:
+                    description: |-
+                      Set to true to create a private repository.
+                      Repositories are created as public (e.g. open source) by default.
+                    type: boolean
+                  repoId:
+                    description: |-
+                      GitHub ID for the repository
+                      GitHub ID for the repository.
+                    format: int64
+                    type: integer
+                  securityAndAnalysis:
+                    description: |-
+                      The repository's security and analysis configuration. See Security and Analysis Configuration below for details.
+                      Security and analysis settings for the repository. To use this parameter you must have admin permissions for the repository or be an owner or security manager for the organization that owns the repository.
+                    items:
+                      properties:
+                        advancedSecurity:
+                          description: |-
+                            The advanced security configuration for the repository. See Advanced Security Configuration below for details. If a repository's visibility is public, advanced security is always enabled and cannot be changed, so this setting cannot be supplied.
+                            The advanced security configuration for the repository. If a repository's visibility is 'public', advanced security is always enabled and cannot be changed, so this setting cannot be supplied.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable advanced security features on the repository. Can be 'enabled' or 'disabled'.
+                                type: string
+                            type: object
+                          type: array
+                        secretScanning:
+                          description: |-
+                            The secret scanning configuration for the repository. See Secret Scanning Configuration below for details.
+                            The secret scanning configuration for the repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable secret scanning on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
+                                type: string
+                            type: object
+                          type: array
+                        secretScanningPushProtection:
+                          description: |-
+                            The secret scanning push protection configuration for the repository. See Secret Scanning Push Protection Configuration below for details.
+                            The secret scanning push protection configuration for the repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable secret scanning push protection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  squashMergeCommitMessage:
+                    description: |-
+                      Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message. Applicable only if allow_squash_merge is true.
+                      Can be 'PR_BODY', 'COMMIT_MESSAGES', or 'BLANK' for a default squash merge commit message.
+                    type: string
+                  squashMergeCommitTitle:
+                    description: |-
+                      Can be PR_TITLE or COMMIT_OR_PR_TITLE for a default squash merge commit title. Applicable only if allow_squash_merge is true.
+                      Can be 'PR_TITLE' or 'COMMIT_OR_PR_TITLE' for a default squash merge commit title.
+                    type: string
+                  sshCloneUrl:
+                    description: |-
+                      URL that can be provided to git clone to clone the repository via SSH.
+                      URL that can be provided to 'git clone' to clone the repository via SSH.
+                    type: string
+                  svnUrl:
+                    description: |-
+                      URL that can be provided to svn checkout to check out the repository via GitHub's Subversion protocol emulation.
+                      URL that can be provided to 'svn checkout' to check out the repository via GitHub's Subversion protocol emulation.
+                    type: string
+                  template:
+                    description: |-
+                      Use a template repository to create this resource. See Template Repositories below for details.
+                      Use a template repository to create this resource.
+                    items:
+                      properties:
+                        includeAllBranches:
+                          description: |-
+                            : Whether the new repository should include all the branches from the template repository (defaults to false, which includes only the default branch from the template).
+                            Whether the new repository should include all the branches from the template repository (defaults to 'false', which includes only the default branch from the template).
+                          type: boolean
+                        owner:
+                          description: |-
+                            : The GitHub organization or user the template repository is owned by.
+                            The GitHub organization or user the template repository is owned by.
+                          type: string
+                        repository:
+                          description: |-
+                            : The name of the template repository.
+                            The name of the template repository.
+                          type: string
+                      type: object
+                    type: array
+                  topics:
+                    description: |-
+                      The list of topics of the repository.
+                      The list of topics of the repository.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  visibility:
+                    description: |-
+                      Can be public or private. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be internal. The visibility parameter overrides the private parameter.
+                      Can be 'public' or 'private'. If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be 'internal'.
+                    type: string
+                  vulnerabilityAlerts:
+                    description: |-
+                      Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default.) See GitHub Documentation for details. Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
+                      Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
+                    type: boolean
+                  webCommitSignoffRequired:
+                    description: |-
+                      Require contributors to sign off on web-based commits. See more here. Defaults to false.
+                      Require contributors to sign off on web-based commits. Defaults to 'false'.
+                    type: boolean
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

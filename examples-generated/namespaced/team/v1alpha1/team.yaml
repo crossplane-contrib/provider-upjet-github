@@ -1,0 +1,14 @@
+apiVersion: team.github.m.upbound.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/team
+  labels:
+    testing.upbound.io/example-name: some_team
+  name: some-team
+  namespace: upbound-system
+spec:
+  forProvider:
+    description: Some cool team
+    name: some-team
+    privacy: closed

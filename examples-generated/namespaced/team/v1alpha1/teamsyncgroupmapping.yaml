@@ -1,0 +1,20 @@
+apiVersion: team.github.m.upbound.io/v1alpha1
+kind: TeamSyncGroupMapping
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/teamsyncgroupmapping
+  labels:
+    testing.upbound.io/example-name: example_group_mapping
+  name: example-group-mapping
+  namespace: upbound-system
+spec:
+  forProvider:
+    dynamic:
+      group:
+      - content:
+        - group_description: ${group.value.group_description}
+          group_id: ${group.value.group_id}
+          group_name: ${group.value.group_name}
+        for_each: '${[for g in data.github_organization_team_sync_groups.example_groups.groups
+          : g if g.group_name == "some_team_group"]}'
+    teamSlug: example

@@ -7,14 +7,16 @@ metadata:
     meta.crossplane.io/source: github.com/crossplane-contrib/provider-upjet-github
     meta.crossplane.io/license: Apache-2.0
     meta.crossplane.io/description: |
-      The Github Crossplane provider adds support for 
+      The Github Crossplane provider adds support for
       managing Github resources in kubernetes.
 
     meta.crossplane.io/readme: |
-      `provider-upjet-github` is a crossplane infrastructure provider for 
-      [Github](https://github.com). 
+      `provider-upjet-github` is a crossplane infrastructure provider for
+      [Github](https://github.com).
 
-      It is based on the Terraform Github provider. Read the 
+      It is based on the Terraform Github provider. Read the
       [readme](https://github.com/crossplane-contrib/provider-upjet-github/blob/main/README.md)
       for instructions.
-
+spec:
+  capabilities:
+    - SafeStart

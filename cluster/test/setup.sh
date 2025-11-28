@@ -25,3 +25,18 @@ spec:
       namespace: upbound-system
       key: credentials
 EOF
+
+  echo "Creating a default provider config (v2)..."
+  cat <<EOF | ${KUBECTL} apply -f -
+apiVersion: azuread.m.upbound.io/v1beta1
+kind: ClusterProviderConfig
+metadata:
+  name: default
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      name: provider-secret
+      namespace: upbound-system
+      key: credentials
+EOF
