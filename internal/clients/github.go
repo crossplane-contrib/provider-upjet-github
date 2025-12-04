@@ -167,16 +167,16 @@ func TerraformSetupBuilder(tfProvider *schema.Provider, l logging.Logger) terraf
 			return ps, errors.New(errNoProviderConfig)
 		}
 
-		l.Debug("Locking in order to update credentials")
-		ok := tfSetupLock.TryLock()
-		if !ok {
-			return ps, errors.New(errLockError)
-		}
-		l.Debug("Lock succedeed")
-		defer unlockMutex(&tfSetupLock, l)
-
 		tfSetup, ok := tfSetups[configRef.Name]
 		if ok && tfSetup.expiry.After(time.Now()) {
+			l.Debug("Locking in order to update credentials")
+			ok := tfSetupLock.TryLock()
+			if !ok {
+				return ps, errors.New(errLockError)
+			}
+			l.Debug("Lock succedeed")
+			defer unlockMutex(&tfSetupLock, l)
+
 			return *tfSetup.setup, nil
 		}
 
