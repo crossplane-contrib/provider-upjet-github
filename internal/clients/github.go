@@ -169,16 +169,16 @@ func TerraformSetupBuilder(tfProvider *schema.Provider, l logging.Logger) terraf
 
 		tfSetup, ok := tfSetups[configRef.Name]
 		if ok && tfSetup.expiry.After(time.Now()) {
-			l.Debug("Locking in order to update credentials")
-			ok := tfSetupLock.TryLock()
-			if !ok {
-				return ps, errors.New(errLockError)
-			}
-			l.Debug("Lock succedeed")
-			defer unlockMutex(&tfSetupLock, l)
-
 			return *tfSetup.setup, nil
 		}
+
+		l.Debug("Locking in order to update credentials")
+		unlocked := tfSetupLock.TryLock()
+		if !unlocked {
+			return ps, errors.New(errLockError)
+		}
+		l.Debug("Lock succedeed")
+		defer unlockMutex(&tfSetupLock, l)
 
 		pc := &v1beta1.ProviderConfig{}
 		if err := client.Get(ctx, types.NamespacedName{Name: configRef.Name}, pc); err != nil {
@@ -216,6 +216,8 @@ func TerraformSetupBuilder(tfProvider *schema.Provider, l logging.Logger) terraf
 			setup:  &ps,
 			expiry: time.Now().Add(tfSetupCacheTTL),
 		}
+
+		l.Info("Updated Github Token for config %s, token valid until %s", configRef.Name, tfSetups[configRef.Name].expiry)
 
 		return ps, nil
 	}
