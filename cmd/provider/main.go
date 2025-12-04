@@ -113,7 +113,7 @@ func main() {
 			},
 		},
 		Provider:              provider,
-		SetupFn:               clients.TerraformSetupBuilder(provider.TerraformProvider),
+		SetupFn:               clients.TerraformSetupBuilder(provider.TerraformProvider, logr),
 		PollJitter:            pollJitter,
 		OperationTrackerStore: tjcontroller.NewOperationStore(logr),
 	}

@@ -10,6 +10,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/crossplane/crossplane-runtime/pkg/logging"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	tfsdk "github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
@@ -31,6 +32,7 @@ const (
 	errUnmarshalCredentials          = "cannot unmarshal github credentials as JSON"
 	errProviderConfigurationBuilder  = "cannot build configuration for terraform provider block"
 	errTerraformProviderMissingOwner = "github provider app_auth needs owner key to be set"
+	errLockError                     = "unable to lock for github credential refresh"
 
 	// provider config variables
 	keyBaseURL               = "base_url"
@@ -121,7 +123,6 @@ func setParameterConfigs(creds githubConfig, cnf terraform.ProviderConfiguration
 }
 
 func terraformProviderConfigurationBuilder(creds githubConfig) (terraform.ProviderConfiguration, error) {
-
 	cnf := terraform.ProviderConfiguration{}
 
 	if creds.BaseURL != nil {
@@ -136,7 +137,6 @@ func terraformProviderConfigurationBuilder(creds githubConfig) (terraform.Provid
 	cnf = setParameterConfigs(creds, cnf)
 
 	return cnf, nil
-
 }
 
 // The terraform provider currently doesn't refresh installation tokens automatically
@@ -156,7 +156,7 @@ const (
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which returns Terraform provider setup configuration
 //
 //gocyclo:ignore
-func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
+func TerraformSetupBuilder(tfProvider *schema.Provider, l logging.Logger) terraform.SetupFn {
 	var tfSetupLock sync.RWMutex
 	tfSetups := make(map[string]CachedTerraformSetup)
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
@@ -167,13 +167,17 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 			return ps, errors.New(errNoProviderConfig)
 		}
 
-		tfSetupLock.Lock()
-		defer tfSetupLock.Unlock()
+		l.Debug("Locking in order to update credentials")
+		ok := tfSetupLock.TryLock()
+		if !ok {
+			return ps, errors.New(errLockError)
+		}
+		l.Debug("Lock succedeed")
+		defer unlockMutex(&tfSetupLock, l)
 
 		tfSetup, ok := tfSetups[configRef.Name]
 		if ok && tfSetup.expiry.After(time.Now()) {
 			return *tfSetup.setup, nil
-
 		}
 
 		pc := &v1beta1.ProviderConfig{}
@@ -214,8 +218,13 @@ func TerraformSetupBuilder(tfProvider *schema.Provider) terraform.SetupFn {
 		}
 
 		return ps, nil
-
 	}
+}
+
+func unlockMutex(lock *sync.RWMutex, l logging.Logger) {
+	l.Debug("Initiating unlock")
+	lock.Unlock()
+	l.Debug("Unlock succeeded")
 }
 
 func configureNoForkGithubClient(ctx context.Context, ps *terraform.Setup, p schema.Provider) error {
