@@ -32,7 +32,6 @@ const (
 	errUnmarshalCredentials          = "cannot unmarshal github credentials as JSON"
 	errProviderConfigurationBuilder  = "cannot build configuration for terraform provider block"
 	errTerraformProviderMissingOwner = "github provider app_auth needs owner key to be set"
-	errLockError                     = "unable to lock for github credential refresh"
 
 	// provider config variables
 	keyBaseURL               = "base_url"
