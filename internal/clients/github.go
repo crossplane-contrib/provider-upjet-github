@@ -32,6 +32,7 @@ const (
 	errUnmarshalCredentials          = "cannot unmarshal github credentials as JSON"
 	errProviderConfigurationBuilder  = "cannot build configuration for terraform provider block"
 	errTerraformProviderMissingOwner = "github provider app_auth needs owner key to be set"
+	errGitHubTokenNotReady           = "github token not ready yet"
 
 	// provider config variables
 	keyBaseURL               = "base_url"
@@ -176,7 +177,11 @@ func TerraformSetupBuilder(tfProvider *schema.Provider, l logging.Logger) terraf
 		if !unlocked {
 			// it is actually save to return the 'old' token since
 			// it is still valid for 7 hours.
-			return *tfSetup.setup, nil
+			if ok {
+				return *tfSetup.setup, nil
+			}
+
+			return ps, errors.New(errGitHubTokenNotReady)
 		}
 		l.Debug("Lock succedeed")
 		defer unlockMutex(&tfSetupLock, l)
