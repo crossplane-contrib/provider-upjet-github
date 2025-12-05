@@ -217,7 +217,7 @@ func TerraformSetupBuilder(tfProvider *schema.Provider, l logging.Logger) terraf
 			expiry: time.Now().Add(tfSetupCacheTTL),
 		}
 
-		l.Info("Updated Github Token for config %s, token valid until %s", configRef.Name, tfSetups[configRef.Name].expiry)
+		l.Info("Refreshed Github Token", "configName", configRef.Name, "expiry", tfSetups[configRef.Name].expiry)
 
 		return ps, nil
 	}
