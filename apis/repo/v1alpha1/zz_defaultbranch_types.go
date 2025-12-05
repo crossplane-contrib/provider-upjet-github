@@ -31,6 +31,19 @@ type DefaultBranchInitParameters struct {
 	// Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
 	// Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
 	Rename *bool `json:"rename,omitempty" tf:"rename,omitempty"`
+
+	// The GitHub repository
+	// The GitHub repository.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
+	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// Reference to a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+
+	// Selector for a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 }
 
 type DefaultBranchObservation struct {
@@ -46,6 +59,10 @@ type DefaultBranchObservation struct {
 	// Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
 	// Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
 	Rename *bool `json:"rename,omitempty" tf:"rename,omitempty"`
+
+	// The GitHub repository
+	// The GitHub repository.
+	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 }
 
 type DefaultBranchParameters struct {
@@ -68,6 +85,20 @@ type DefaultBranchParameters struct {
 	// Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
 	// +kubebuilder:validation:Optional
 	Rename *bool `json:"rename,omitempty" tf:"rename,omitempty"`
+
+	// The GitHub repository
+	// The GitHub repository.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1.Repository
+	// +kubebuilder:validation:Optional
+	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// Reference to a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+
+	// Selector for a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 }
 
 // DefaultBranchSpec defines the desired state of DefaultBranch
