@@ -175,7 +175,9 @@ func TerraformSetupBuilder(tfProvider *schema.Provider, l logging.Logger) terraf
 		l.Debug("Locking in order to update credentials")
 		unlocked := tfSetupLock.TryLock()
 		if !unlocked {
-			return ps, errors.New(errLockError)
+			// it is actually save to return the 'old' token since
+			// it is still valid for 7 hours.
+			return *tfSetup.setup, nil
 		}
 		l.Debug("Lock succedeed")
 		defer unlockMutex(&tfSetupLock, l)
