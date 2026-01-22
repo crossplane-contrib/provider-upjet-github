@@ -5,11 +5,11 @@ on:
     inputs:
       version:
         description: "Version string to use while publishing the package (e.g. v1.0.0-alpha.1)"
-        default: ''
+        default: ""
         required: false
       go-version:
-        description: 'Go version to use if building needs to be done'
-        default: '1.24'
+        description: "Go version to use if building needs to be done"
+        default: "1.24"
         required: false
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    uses: crossplane-contrib/provider-workflows/.github/workflows/publish-provider-non-family.yml@43ca8f166d0e9abd792feefb22b286146d7534a7
+    uses: hmlkao/provider-workflows/.github/workflows/publish-provider-non-family.yml@43ca8f166d0e9abd792feefb22b286146d7534a7
     with:
       repository: provider-upjet-github
       version: ${{ github.event.inputs.version }}
