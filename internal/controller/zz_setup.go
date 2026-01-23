@@ -29,6 +29,7 @@ import (
 	deploykey "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/deploykey"
 	environment "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/environment"
 	environmentdeploymentpolicy "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/environmentdeploymentpolicy"
+	issue "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/issue"
 	issuelabels "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/issuelabels"
 	pullrequest "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/pullrequest"
 	repository "github.com/crossplane-contrib/provider-upjet-github/internal/controller/repo/repository"
@@ -72,6 +73,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		deploykey.Setup,
 		environment.Setup,
 		environmentdeploymentpolicy.Setup,
+		issue.Setup,
 		issuelabels.Setup,
 		pullrequest.Setup,
 		repository.Setup,

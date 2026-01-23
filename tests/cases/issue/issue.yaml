@@ -1,0 +1,32 @@
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Issue
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/issue
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    body: The body of my issue
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
+    title: My issue title
+
+---
+
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/issue
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    autoInit: true
+    hasIssues: true
+    name: tf-acc-test-%s
