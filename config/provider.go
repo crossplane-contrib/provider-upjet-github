@@ -27,6 +27,7 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/branchprotectionv3"
 	"github.com/crossplane-contrib/provider-upjet-github/config/emugroupmapping"
 	"github.com/crossplane-contrib/provider-upjet-github/config/enterpriseorganization"
+	"github.com/crossplane-contrib/provider-upjet-github/config/issue"
 	"github.com/crossplane-contrib/provider-upjet-github/config/issuelabels"
 	"github.com/crossplane-contrib/provider-upjet-github/config/membership"
 	"github.com/crossplane-contrib/provider-upjet-github/config/organizationruleset"
@@ -96,6 +97,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		emugroupmapping.Configure,
 		enterpriseorganization.Configure,
 		issuelabels.Configure,
+		issue.Configure,
 		membership.Configure,
 		organizationruleset.Configure,
 		repository.Configure,
