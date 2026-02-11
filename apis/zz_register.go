@@ -12,6 +12,7 @@ import (
 
 	v1alpha1 "github.com/crossplane-contrib/provider-upjet-github/apis/actions/v1alpha1"
 	v1alpha1enterprise "github.com/crossplane-contrib/provider-upjet-github/apis/enterprise/v1alpha1"
+	v1alpha1organization "github.com/crossplane-contrib/provider-upjet-github/apis/organization/v1alpha1"
 	v1alpha1repo "github.com/crossplane-contrib/provider-upjet-github/apis/repo/v1alpha1"
 	v1alpha1team "github.com/crossplane-contrib/provider-upjet-github/apis/team/v1alpha1"
 	v1alpha1user "github.com/crossplane-contrib/provider-upjet-github/apis/user/v1alpha1"
@@ -24,6 +25,7 @@ func init() {
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1alpha1enterprise.SchemeBuilder.AddToScheme,
+		v1alpha1organization.SchemeBuilder.AddToScheme,
 		v1alpha1repo.SchemeBuilder.AddToScheme,
 		v1alpha1team.SchemeBuilder.AddToScheme,
 		v1alpha1user.SchemeBuilder.AddToScheme,
