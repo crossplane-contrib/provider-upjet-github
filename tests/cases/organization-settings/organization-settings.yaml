@@ -1,0 +1,14 @@
+---
+apiVersion: respo.github.upbound.io/v1alpha1
+kind: OrganizationSettings
+metadata:
+  name: github-crossplane-organization-settings-test
+spec:
+  forProvider:
+    name: hello-provider-github
+    adminLogins:
+      - janedoe
+    billingEmail: foo@bar.com
+    description: "Hello GitHub Provider"
+  providerConfigRef:
+    name: default
