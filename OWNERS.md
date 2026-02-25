@@ -10,5 +10,6 @@ organization](https://github.com/crossplane-contrib/) will list their repository
 * Atze de Vries <the.atz@gmail.com> ([Atze de Vries](https://github.com/atzedevries))
 * Pravin Dahal <pravindahal@gmail.com> ([Pravin Dahal](https://github.com/pravindahal))
 * Michael Fornaro ([Michael Fornaro](https://github.com/xunholy))
+* Kaelen Baldwin <kaelen.baldwin@bayer.com> ([Kael Baldwin](https://github.com/KaelBaldwin))
 
 See [CODEOWNERS](./CODEOWNERS) for automatic PR assignment.
