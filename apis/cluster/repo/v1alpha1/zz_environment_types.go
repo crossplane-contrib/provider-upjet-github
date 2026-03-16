@@ -50,7 +50,7 @@ type DeploymentBranchPolicyParameters struct {
 
 type EnvironmentInitParameters struct {
 
-	// Can repository admins bypass the environment protections.  Defaults to true.
+	// Can repository admins bypass the environment protections. Defaults to true.
 	// Can Admins bypass deployment protections
 	CanAdminsBypass *bool `json:"canAdminsBypass,omitempty" tf:"can_admins_bypass,omitempty"`
 
@@ -88,7 +88,7 @@ type EnvironmentInitParameters struct {
 
 type EnvironmentObservation struct {
 
-	// Can repository admins bypass the environment protections.  Defaults to true.
+	// Can repository admins bypass the environment protections. Defaults to true.
 	// Can Admins bypass deployment protections
 	CanAdminsBypass *bool `json:"canAdminsBypass,omitempty" tf:"can_admins_bypass,omitempty"`
 
@@ -119,7 +119,7 @@ type EnvironmentObservation struct {
 
 type EnvironmentParameters struct {
 
-	// Can repository admins bypass the environment protections.  Defaults to true.
+	// Can repository admins bypass the environment protections. Defaults to true.
 	// Can Admins bypass deployment protections
 	// +kubebuilder:validation:Optional
 	CanAdminsBypass *bool `json:"canAdminsBypass,omitempty" tf:"can_admins_bypass,omitempty"`

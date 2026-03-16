@@ -120,9 +120,19 @@ func (in *EmuGroupMappingObservation) DeepCopyInto(out *EmuGroupMappingObservati
 		*out = new(int64)
 		**out = **in
 	}
+	if in.GroupName != nil {
+		in, out := &in.GroupName, &out.GroupName
+		*out = new(string)
+		**out = **in
+	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
 		*out = new(string)
+		**out = **in
+	}
+	if in.TeamID != nil {
+		in, out := &in.TeamID, &out.TeamID
+		*out = new(int64)
 		**out = **in
 	}
 	if in.TeamSlug != nil {
@@ -717,6 +727,11 @@ func (in *TeamInitParameters) DeepCopyInto(out *TeamInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.NotificationSetting != nil {
+		in, out := &in.NotificationSetting, &out.NotificationSetting
+		*out = new(string)
+		**out = **in
+	}
 	if in.ParentTeamID != nil {
 		in, out := &in.ParentTeamID, &out.ParentTeamID
 		*out = new(string)
@@ -1038,6 +1053,11 @@ func (in *TeamObservation) DeepCopyInto(out *TeamObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.NotificationSetting != nil {
+		in, out := &in.NotificationSetting, &out.NotificationSetting
+		*out = new(string)
+		**out = **in
+	}
 	if in.ParentTeamID != nil {
 		in, out := &in.ParentTeamID, &out.ParentTeamID
 		*out = new(string)
@@ -1095,6 +1115,11 @@ func (in *TeamParameters) DeepCopyInto(out *TeamParameters) {
 	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.NotificationSetting != nil {
+		in, out := &in.NotificationSetting, &out.NotificationSetting
 		*out = new(string)
 		**out = **in
 	}

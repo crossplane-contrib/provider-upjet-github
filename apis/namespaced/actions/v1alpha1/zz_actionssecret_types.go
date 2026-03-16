@@ -16,15 +16,22 @@ import (
 
 type ActionsSecretInitParameters struct {
 
+	// (DEPRECATED)  This is ignored as drift detection is built into the resource.
+	DestroyOnDrift *bool `json:"destroyOnDrift,omitempty" tf:"destroy_on_drift,omitempty"`
+
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	EncryptedValueSecretRef *v1.LocalSecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
 
-	// Plaintext value of the secret to be encrypted
+	// ID of the public key used to encrypt the secret. This should be provided when setting encrypted_value; if it isn't then the current public key will be looked up, which could cause a missmatch. This conflicts with plaintext_value.
+	// ID of the public key used to encrypt the secret.
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
+
+	// Plaintext value of the secret to be encrypted.
 	// Plaintext value of the secret to be encrypted.
 	PlaintextValueSecretRef *v1.LocalSecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
 
-	// Name of the repository
+	// Name of the repository.
 	// Name of the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
@@ -37,45 +44,69 @@ type ActionsSecretInitParameters struct {
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
-	// Name of the secret
+	// Name of the secret.
 	// Name of the secret.
 	SecretName *string `json:"secretName,omitempty" tf:"secret_name,omitempty"`
 }
 
 type ActionsSecretObservation struct {
 
-	// Date of actions_secret creation.
-	// Date of 'actions_secret' creation.
+	// Date the secret was created.
+	// Date of secret creation.
 	CreatedAt *string `json:"createdAt,omitempty" tf:"created_at,omitempty"`
+
+	// (DEPRECATED)  This is ignored as drift detection is built into the resource.
+	DestroyOnDrift *bool `json:"destroyOnDrift,omitempty" tf:"destroy_on_drift,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Name of the repository
+	// ID of the public key used to encrypt the secret. This should be provided when setting encrypted_value; if it isn't then the current public key will be looked up, which could cause a missmatch. This conflicts with plaintext_value.
+	// ID of the public key used to encrypt the secret.
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
+
+	// Date the secret was last updated in GitHub.
+	// Date of secret update at the remote.
+	RemoteUpdatedAt *string `json:"remoteUpdatedAt,omitempty" tf:"remote_updated_at,omitempty"`
+
+	// Name of the repository.
 	// Name of the repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// Name of the secret
+	// ID of the repository.
+	// ID of the repository.
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+
+	// Name of the secret.
 	// Name of the secret.
 	SecretName *string `json:"secretName,omitempty" tf:"secret_name,omitempty"`
 
-	// Date of actions_secret update.
-	// Date of 'actions_secret' update.
+	// Date the secret was last updated by the provider.
+	// Date of secret update.
 	UpdatedAt *string `json:"updatedAt,omitempty" tf:"updated_at,omitempty"`
 }
 
 type ActionsSecretParameters struct {
+
+	// (DEPRECATED)  This is ignored as drift detection is built into the resource.
+	// +kubebuilder:validation:Optional
+	DestroyOnDrift *bool `json:"destroyOnDrift,omitempty" tf:"destroy_on_drift,omitempty"`
 
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	// +kubebuilder:validation:Optional
 	EncryptedValueSecretRef *v1.LocalSecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
 
-	// Plaintext value of the secret to be encrypted
+	// ID of the public key used to encrypt the secret. This should be provided when setting encrypted_value; if it isn't then the current public key will be looked up, which could cause a missmatch. This conflicts with plaintext_value.
+	// ID of the public key used to encrypt the secret.
+	// +kubebuilder:validation:Optional
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
+
+	// Plaintext value of the secret to be encrypted.
 	// Plaintext value of the secret to be encrypted.
 	// +kubebuilder:validation:Optional
 	PlaintextValueSecretRef *v1.LocalSecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
 
-	// Name of the repository
+	// Name of the repository.
 	// Name of the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
@@ -89,7 +120,7 @@ type ActionsSecretParameters struct {
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
-	// Name of the secret
+	// Name of the secret.
 	// Name of the secret.
 	// +kubebuilder:validation:Optional
 	SecretName *string `json:"secretName,omitempty" tf:"secret_name,omitempty"`

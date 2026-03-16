@@ -125,5 +125,5 @@ func (tr *OrganizationActionsSecret) LateInitialize(attrs []byte) (bool, error) 
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
 func (tr *OrganizationActionsSecret) GetTerraformSchemaVersion() int {
-	return 0
+	return 1
 }

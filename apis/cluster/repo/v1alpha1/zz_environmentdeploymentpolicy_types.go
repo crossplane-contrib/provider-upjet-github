@@ -33,7 +33,7 @@ type EnvironmentDeploymentPolicyInitParameters struct {
 	EnvironmentSelector *v1.Selector `json:"environmentSelector,omitempty" tf:"-"`
 
 	// The repository of the environment.
-	// The name of the repository. The name is not case sensitive.
+	// The name of the GitHub repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
@@ -63,7 +63,7 @@ type EnvironmentDeploymentPolicyObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The repository of the environment.
-	// The name of the repository. The name is not case sensitive.
+	// The name of the GitHub repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
 	// The name pattern that tags must match in order to deploy to the environment. If not specified, branch_pattern must be specified.
@@ -93,7 +93,7 @@ type EnvironmentDeploymentPolicyParameters struct {
 	EnvironmentSelector *v1.Selector `json:"environmentSelector,omitempty" tf:"-"`
 
 	// The repository of the environment.
-	// The name of the repository. The name is not case sensitive.
+	// The name of the GitHub repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`

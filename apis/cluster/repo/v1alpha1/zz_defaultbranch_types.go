@@ -28,6 +28,8 @@ type DefaultBranchInitParameters struct {
 	// +kubebuilder:validation:Optional
 	BranchSelector *v1.Selector `json:"branchSelector,omitempty" tf:"-"`
 
+	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
+
 	// Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
 	// Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
 	Rename *bool `json:"rename,omitempty" tf:"rename,omitempty"`
@@ -63,6 +65,9 @@ type DefaultBranchParameters struct {
 	// Selector for a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
 	BranchSelector *v1.Selector `json:"branchSelector,omitempty" tf:"-"`
+
+	// +kubebuilder:validation:Optional
+	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
 
 	// Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
 	// Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.

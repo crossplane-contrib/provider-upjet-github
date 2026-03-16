@@ -180,6 +180,10 @@ spec:
                             type: string
                         type: object
                     type: object
+                  shaPinningRequired:
+                    description: Whether pinning to a specific SHA is required for
+                      all actions and reusable workflows in a repository.
+                    type: boolean
                 type: object
               initProvider:
                 description: |-
@@ -315,6 +319,10 @@ spec:
                             type: string
                         type: object
                     type: object
+                  shaPinningRequired:
+                    description: Whether pinning to a specific SHA is required for
+                      all actions and reusable workflows in a repository.
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -423,6 +431,10 @@ spec:
                       The GitHub repository
                       The GitHub repository.
                     type: string
+                  shaPinningRequired:
+                    description: Whether pinning to a specific SHA is required for
+                      all actions and reusable workflows in a repository.
+                    type: boolean
                 type: object
               conditions:
                 description: Conditions of the resource.

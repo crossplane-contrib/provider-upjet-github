@@ -90,6 +90,9 @@ type RepositoryPermissionsInitParameters struct {
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+
+	// Whether pinning to a specific SHA is required for all actions and reusable workflows in a repository.
+	ShaPinningRequired *bool `json:"shaPinningRequired,omitempty" tf:"sha_pinning_required,omitempty"`
 }
 
 type RepositoryPermissionsObservation struct {
@@ -111,6 +114,9 @@ type RepositoryPermissionsObservation struct {
 	// The GitHub repository
 	// The GitHub repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// Whether pinning to a specific SHA is required for all actions and reusable workflows in a repository.
+	ShaPinningRequired *bool `json:"shaPinningRequired,omitempty" tf:"sha_pinning_required,omitempty"`
 }
 
 type RepositoryPermissionsParameters struct {
@@ -143,6 +149,10 @@ type RepositoryPermissionsParameters struct {
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+
+	// Whether pinning to a specific SHA is required for all actions and reusable workflows in a repository.
+	// +kubebuilder:validation:Optional
+	ShaPinningRequired *bool `json:"shaPinningRequired,omitempty" tf:"sha_pinning_required,omitempty"`
 }
 
 // RepositoryPermissionsSpec defines the desired state of RepositoryPermissions
