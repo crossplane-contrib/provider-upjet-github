@@ -10,8 +10,8 @@ on:
 
 env:
   # Common versions
-  GO_VERSION: '1.24'
-  GOLANGCI_VERSION: 'v2.7.2'
+  GO_VERSION: '1.26'
+  GOLANGCI_VERSION: 'v2.11.3'
   DOCKER_BUILDX_VERSION: 'v0.30.1'
 
 jobs:
@@ -54,7 +54,6 @@ jobs:
         if: ${{ inputs.upjet-based-provider }}
         run: |
           make schema-version-diff
-
 
   lint:
     runs-on: ubuntu-24.04
