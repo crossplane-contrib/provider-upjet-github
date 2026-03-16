@@ -18,7 +18,7 @@ on:
 
 jobs:
   publish-provider-package:
-    uses: crossplane-contrib/provider-workflows/.github/workflows/publish-provider.yml@main
+    uses: crossplane-contrib/provider-workflows/.github/workflows/publish-provider.yml@3812a6f8f595ae7042c39e2ea9494fa0a82790be # v0.19.0
     with:
       repository: provider-upjet-github
       registry_org: ${{ github.event.inputs.registry-org }}
