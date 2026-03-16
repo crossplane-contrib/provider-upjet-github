@@ -15,82 +15,106 @@ import (
 
 type OrganizationActionsSecretInitParameters struct {
 
+	// (DEPRECATED)  This is ignored as drift detection is built into the resource.
+	DestroyOnDrift *bool `json:"destroyOnDrift,omitempty" tf:"destroy_on_drift,omitempty"`
+
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	EncryptedValueSecretRef *v1.SecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
 
-	// Plaintext value of the secret to be encrypted
+	// ID of the public key used to encrypt the secret. This should be provided when setting encrypted_value; if it isn't then the current public key will be looked up, which could cause a missmatch. This conflicts with plaintext_value.
+	// ID of the public key used to encrypt the secret.
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
+
+	// Plaintext value of the secret to be encrypted.
 	// Plaintext value of the secret to be encrypted.
 	PlaintextValueSecretRef *v1.SecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
 
-	// Name of the secret
+	// Name of the secret.
 	// Name of the secret.
 	SecretName *string `json:"secretName,omitempty" tf:"secret_name,omitempty"`
 
-	// An array of repository ids that can access the organization secret.
-	// An array of repository ids that can access the organization secret.
+	// An array of repository IDs that can access the organization variable; this requires visibility to be set to selected.
+	// An array of repository IDs that can access the organization secret.
 	// +listType=set
 	SelectedRepositoryIds []*int64 `json:"selectedRepositoryIds,omitempty" tf:"selected_repository_ids,omitempty"`
 
-	// Configures the access that repositories have to the organization secret.
-	// Must be one of all, private, selected. selected_repository_ids is required if set to selected.
-	// Configures the access that repositories have to the organization secret. Must be one of 'all', 'private', or 'selected'. 'selected_repository_ids' is required if set to 'selected'.
+	// Configures the access that repositories have to the organization secret; must be one of all, private, or selected.
+	// Configures the access that repositories have to the organization secret. Must be one of 'all', 'private', or 'selected'.
 	Visibility *string `json:"visibility,omitempty" tf:"visibility,omitempty"`
 }
 
 type OrganizationActionsSecretObservation struct {
 
-	// Date of actions_secret creation.
-	// Date of 'actions_secret' creation.
+	// Date the secret was created.
+	// Date of secret creation.
 	CreatedAt *string `json:"createdAt,omitempty" tf:"created_at,omitempty"`
+
+	// (DEPRECATED)  This is ignored as drift detection is built into the resource.
+	DestroyOnDrift *bool `json:"destroyOnDrift,omitempty" tf:"destroy_on_drift,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Name of the secret
+	// ID of the public key used to encrypt the secret. This should be provided when setting encrypted_value; if it isn't then the current public key will be looked up, which could cause a missmatch. This conflicts with plaintext_value.
+	// ID of the public key used to encrypt the secret.
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
+
+	// Date the secret was last updated in GitHub.
+	// Date of secret update at the remote.
+	RemoteUpdatedAt *string `json:"remoteUpdatedAt,omitempty" tf:"remote_updated_at,omitempty"`
+
+	// Name of the secret.
 	// Name of the secret.
 	SecretName *string `json:"secretName,omitempty" tf:"secret_name,omitempty"`
 
-	// An array of repository ids that can access the organization secret.
-	// An array of repository ids that can access the organization secret.
+	// An array of repository IDs that can access the organization variable; this requires visibility to be set to selected.
+	// An array of repository IDs that can access the organization secret.
 	// +listType=set
 	SelectedRepositoryIds []*int64 `json:"selectedRepositoryIds,omitempty" tf:"selected_repository_ids,omitempty"`
 
-	// Date of actions_secret update.
-	// Date of 'actions_secret' update.
+	// Date the secret was last updated by the provider.
+	// Date of secret update.
 	UpdatedAt *string `json:"updatedAt,omitempty" tf:"updated_at,omitempty"`
 
-	// Configures the access that repositories have to the organization secret.
-	// Must be one of all, private, selected. selected_repository_ids is required if set to selected.
-	// Configures the access that repositories have to the organization secret. Must be one of 'all', 'private', or 'selected'. 'selected_repository_ids' is required if set to 'selected'.
+	// Configures the access that repositories have to the organization secret; must be one of all, private, or selected.
+	// Configures the access that repositories have to the organization secret. Must be one of 'all', 'private', or 'selected'.
 	Visibility *string `json:"visibility,omitempty" tf:"visibility,omitempty"`
 }
 
 type OrganizationActionsSecretParameters struct {
+
+	// (DEPRECATED)  This is ignored as drift detection is built into the resource.
+	// +kubebuilder:validation:Optional
+	DestroyOnDrift *bool `json:"destroyOnDrift,omitempty" tf:"destroy_on_drift,omitempty"`
 
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	// +kubebuilder:validation:Optional
 	EncryptedValueSecretRef *v1.SecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
 
-	// Plaintext value of the secret to be encrypted
+	// ID of the public key used to encrypt the secret. This should be provided when setting encrypted_value; if it isn't then the current public key will be looked up, which could cause a missmatch. This conflicts with plaintext_value.
+	// ID of the public key used to encrypt the secret.
+	// +kubebuilder:validation:Optional
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
+
+	// Plaintext value of the secret to be encrypted.
 	// Plaintext value of the secret to be encrypted.
 	// +kubebuilder:validation:Optional
 	PlaintextValueSecretRef *v1.SecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
 
-	// Name of the secret
+	// Name of the secret.
 	// Name of the secret.
 	// +kubebuilder:validation:Optional
 	SecretName *string `json:"secretName,omitempty" tf:"secret_name,omitempty"`
 
-	// An array of repository ids that can access the organization secret.
-	// An array of repository ids that can access the organization secret.
+	// An array of repository IDs that can access the organization variable; this requires visibility to be set to selected.
+	// An array of repository IDs that can access the organization secret.
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	SelectedRepositoryIds []*int64 `json:"selectedRepositoryIds,omitempty" tf:"selected_repository_ids,omitempty"`
 
-	// Configures the access that repositories have to the organization secret.
-	// Must be one of all, private, selected. selected_repository_ids is required if set to selected.
-	// Configures the access that repositories have to the organization secret. Must be one of 'all', 'private', or 'selected'. 'selected_repository_ids' is required if set to 'selected'.
+	// Configures the access that repositories have to the organization secret; must be one of all, private, or selected.
+	// Configures the access that repositories have to the organization secret. Must be one of 'all', 'private', or 'selected'.
 	// +kubebuilder:validation:Optional
 	Visibility *string `json:"visibility,omitempty" tf:"visibility,omitempty"`
 }

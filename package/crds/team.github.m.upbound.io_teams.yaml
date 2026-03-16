@@ -61,7 +61,7 @@ spec:
                 properties:
                   createDefaultMaintainer:
                     description: |-
-                      Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
+                      (DEPRECATED)  Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
                       Adds a default maintainer to the team. Adds the creating user to the team when 'true'.
                     type: boolean
                   description:
@@ -78,6 +78,11 @@ spec:
                     description: |-
                       The name of the team.
                       The name of the team.
+                    type: string
+                  notificationSetting:
+                    description: |-
+                      The notification setting for the team. Must be one of notifications_enabled (default) or notifications_disabled.
+                      The notification setting for the team. Must be one of 'notifications_enabled' or 'notifications_disabled'.
                     type: string
                   parentTeamId:
                     description: |-
@@ -98,8 +103,7 @@ spec:
                     type: string
                   privacy:
                     description: |-
-                      The level of privacy for the team. Must be one of secret or closed.
-                      Defaults to secret.
+                      The level of privacy for the team. Must be one of secret (default) or closed.
                       The level of privacy for the team. Must be one of 'secret' or 'closed'.
                     type: string
                 type: object
@@ -118,7 +122,7 @@ spec:
                 properties:
                   createDefaultMaintainer:
                     description: |-
-                      Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
+                      (DEPRECATED)  Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
                       Adds a default maintainer to the team. Adds the creating user to the team when 'true'.
                     type: boolean
                   description:
@@ -135,6 +139,11 @@ spec:
                     description: |-
                       The name of the team.
                       The name of the team.
+                    type: string
+                  notificationSetting:
+                    description: |-
+                      The notification setting for the team. Must be one of notifications_enabled (default) or notifications_disabled.
+                      The notification setting for the team. Must be one of 'notifications_enabled' or 'notifications_disabled'.
                     type: string
                   parentTeamId:
                     description: |-
@@ -155,8 +164,7 @@ spec:
                     type: string
                   privacy:
                     description: |-
-                      The level of privacy for the team. Must be one of secret or closed.
-                      Defaults to secret.
+                      The level of privacy for the team. Must be one of secret (default) or closed.
                       The level of privacy for the team. Must be one of 'secret' or 'closed'.
                     type: string
                 type: object
@@ -230,7 +238,7 @@ spec:
                 properties:
                   createDefaultMaintainer:
                     description: |-
-                      Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
+                      (DEPRECATED)  Adds a default maintainer to the team. Defaults to false and adds the creating user to the team when true.
                       Adds a default maintainer to the team. Adds the creating user to the team when 'true'.
                     type: boolean
                   description:
@@ -261,6 +269,11 @@ spec:
                       The Node ID of the created team.
                       The Node ID of the created team.
                     type: string
+                  notificationSetting:
+                    description: |-
+                      The notification setting for the team. Must be one of notifications_enabled (default) or notifications_disabled.
+                      The notification setting for the team. Must be one of 'notifications_enabled' or 'notifications_disabled'.
+                    type: string
                   parentTeamId:
                     description: |-
                       The ID or slug of the parent team, if this is a nested team.
@@ -280,8 +293,7 @@ spec:
                     type: string
                   privacy:
                     description: |-
-                      The level of privacy for the team. Must be one of secret or closed.
-                      Defaults to secret.
+                      The level of privacy for the team. Must be one of secret (default) or closed.
                       The level of privacy for the team. Must be one of 'secret' or 'closed'.
                     type: string
                   slug:

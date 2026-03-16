@@ -135,6 +135,8 @@ spec:
                           type: object
                       type: object
                     type: array
+                  etag:
+                    type: string
                   events:
                     description: |-
                       A list of events which should trigger the webhook. See a list of available events.
@@ -146,7 +148,7 @@ spec:
                   repository:
                     description: |-
                       The repository of the webhook.
-                      The repository of the webhook.
+                      The repository name of the webhook, not including the organization, which will be inferred.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository to populate repository.
@@ -299,6 +301,8 @@ spec:
                       - urlSecretRef
                       type: object
                     type: array
+                  etag:
+                    type: string
                   events:
                     description: |-
                       A list of events which should trigger the webhook. See a list of available events.
@@ -310,7 +314,7 @@ spec:
                   repository:
                     description: |-
                       The repository of the webhook.
-                      The repository of the webhook.
+                      The repository name of the webhook, not including the organization, which will be inferred.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository to populate repository.
@@ -521,7 +525,7 @@ spec:
                   repository:
                     description: |-
                       The repository of the webhook.
-                      The repository of the webhook.
+                      The repository name of the webhook, not including the organization, which will be inferred.
                     type: string
                   url:
                     description: |-

@@ -125,5 +125,5 @@ func (tr *EmuGroupMapping) LateInitialize(attrs []byte) (bool, error) {
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
 func (tr *EmuGroupMapping) GetTerraformSchemaVersion() int {
-	return 0
+	return 1
 }

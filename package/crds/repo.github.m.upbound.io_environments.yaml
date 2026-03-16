@@ -61,7 +61,7 @@ spec:
                 properties:
                   canAdminsBypass:
                     description: |-
-                      Can repository admins bypass the environment protections.  Defaults to true.
+                      Can repository admins bypass the environment protections. Defaults to true.
                       Can Admins bypass deployment protections
                     type: boolean
                   deploymentBranchPolicy:
@@ -221,7 +221,7 @@ spec:
                 properties:
                   canAdminsBypass:
                     description: |-
-                      Can repository admins bypass the environment protections.  Defaults to true.
+                      Can repository admins bypass the environment protections. Defaults to true.
                       Can Admins bypass deployment protections
                     type: boolean
                   deploymentBranchPolicy:
@@ -436,7 +436,7 @@ spec:
                 properties:
                   canAdminsBypass:
                     description: |-
-                      Can repository admins bypass the environment protections.  Defaults to true.
+                      Can repository admins bypass the environment protections. Defaults to true.
                       Can Admins bypass deployment protections
                     type: boolean
                   deploymentBranchPolicy:

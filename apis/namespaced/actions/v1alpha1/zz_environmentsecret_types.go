@@ -18,7 +18,7 @@ type EnvironmentSecretInitParameters struct {
 
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
-	EncryptedValueSecretRef *v1.LocalSecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
+	EncryptedValue *string `json:"encryptedValue,omitempty" tf:"encrypted_value,omitempty"`
 
 	// Name of the environment.
 	// Name of the environment.
@@ -32,6 +32,10 @@ type EnvironmentSecretInitParameters struct {
 	// Selector for a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
 	EnvironmentSelector *v1.NamespacedSelector `json:"environmentSelector,omitempty" tf:"-"`
+
+	// ID of the public key used to encrypt the secret. This should be provided when setting encrypted_value; if it isn't then the current public key will be looked up, which could cause a missmatch. This conflicts with plaintext_value.
+	// ID of the public key used to encrypt the secret.
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
 
 	// Plaintext value of the secret to be encrypted.
 	// Plaintext value of the secret to be encrypted.
@@ -57,9 +61,13 @@ type EnvironmentSecretInitParameters struct {
 
 type EnvironmentSecretObservation struct {
 
-	// Date of actions_environment_secret creation.
+	// Date the secret was created.
 	// Date of 'actions_environment_secret' creation.
 	CreatedAt *string `json:"createdAt,omitempty" tf:"created_at,omitempty"`
+
+	// Encrypted value of the secret using the GitHub public key in Base64 format.
+	// Encrypted value of the secret using the GitHub public key in Base64 format.
+	EncryptedValue *string `json:"encryptedValue,omitempty" tf:"encrypted_value,omitempty"`
 
 	// Name of the environment.
 	// Name of the environment.
@@ -67,15 +75,27 @@ type EnvironmentSecretObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// ID of the public key used to encrypt the secret. This should be provided when setting encrypted_value; if it isn't then the current public key will be looked up, which could cause a missmatch. This conflicts with plaintext_value.
+	// ID of the public key used to encrypt the secret.
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
+
+	// Date the secret was last updated in GitHub.
+	// Date of remote 'actions_environment_secret' update.
+	RemoteUpdatedAt *string `json:"remoteUpdatedAt,omitempty" tf:"remote_updated_at,omitempty"`
+
 	// Name of the repository.
 	// Name of the repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// ID of the repository.
+	// ID of the repository.
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 
 	// Name of the secret.
 	// Name of the secret.
 	SecretName *string `json:"secretName,omitempty" tf:"secret_name,omitempty"`
 
-	// Date of actions_environment_secret update.
+	// Date the secret was last updated by the provider.
 	// Date of 'actions_environment_secret' update.
 	UpdatedAt *string `json:"updatedAt,omitempty" tf:"updated_at,omitempty"`
 }
@@ -85,7 +105,7 @@ type EnvironmentSecretParameters struct {
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	// +kubebuilder:validation:Optional
-	EncryptedValueSecretRef *v1.LocalSecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
+	EncryptedValue *string `json:"encryptedValue,omitempty" tf:"encrypted_value,omitempty"`
 
 	// Name of the environment.
 	// Name of the environment.
@@ -100,6 +120,11 @@ type EnvironmentSecretParameters struct {
 	// Selector for a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
 	EnvironmentSelector *v1.NamespacedSelector `json:"environmentSelector,omitempty" tf:"-"`
+
+	// ID of the public key used to encrypt the secret. This should be provided when setting encrypted_value; if it isn't then the current public key will be looked up, which could cause a missmatch. This conflicts with plaintext_value.
+	// ID of the public key used to encrypt the secret.
+	// +kubebuilder:validation:Optional
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
 
 	// Plaintext value of the secret to be encrypted.
 	// Plaintext value of the secret to be encrypted.

@@ -162,7 +162,7 @@ spec:
                   repository:
                     description: |-
                       The repository of the environment.
-                      The name of the repository. The name is not case sensitive.
+                      The name of the GitHub repository.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -344,7 +344,7 @@ spec:
                   repository:
                     description: |-
                       The repository of the environment.
-                      The name of the repository. The name is not case sensitive.
+                      The name of the GitHub repository.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -533,7 +533,7 @@ spec:
                   repository:
                     description: |-
                       The repository of the environment.
-                      The name of the repository. The name is not case sensitive.
+                      The name of the GitHub repository.
                     type: string
                   tagPattern:
                     description: |-
