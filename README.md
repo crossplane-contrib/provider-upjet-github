@@ -9,11 +9,13 @@ GitHub API.
 
 Install the provider by using the following command after changing the image tag
 to the [latest release](https://marketplace.upbound.io/providers/crossplane-contrib/provider-upjet-github):
+
 ```
 up ctp provider install crossplane-contrib/provider-upjet-github:v0.1.0
 ```
 
 Alternatively, you can use declarative installation:
+
 ```
 cat <<EOF | kubectl apply -f -
 apiVersion: pkg.crossplane.io/v1
@@ -24,6 +26,7 @@ spec:
   package: crossplane-contrib/provider-upjet-github:v0.1.0
 EOF
 ```
+
 You can see the API reference [here](https://marketplace.upbound.io/providers/crossplane-contrib/provider-upjet-github).
 
 ### Adding provider config
@@ -43,7 +46,7 @@ metadata:
   namespace: upbound-system
 type: Opaque
 stringData:
-  credentials: "{\"token\":\"${GH_TOKEN}\",\"owner\":\"${GH_OWNER}\"}"
+  credentials: '{"token":"${GH_TOKEN}","owner":"${GH_OWNER}"}'
 
 ---
 apiVersion: github.upbound.io/v1beta1
@@ -73,7 +76,7 @@ metadata:
   namespace: upbound-system
 type: Opaque
 stringData:
-  credentials: "{\"app_auth\": [{\"id\": \"${APP_ID}\", \"installation_id\": \"${APP_INSTALLATION_ID}\", \"pem_file\": \"${APP_PEM_FILE}\"}] ,\"owner\":\"${GH_OWNER}\"}"
+  credentials: '{"app_auth": [{"id": "${APP_ID}", "installation_id": "${APP_INSTALLATION_ID}", "pem_file": "${APP_PEM_FILE}"}] ,"owner":"${GH_OWNER}"}'
 
 ---
 apiVersion: github.upbound.io/v1beta1
@@ -99,16 +102,16 @@ account.
 Note that some resources like `OrganizationActionsSecret` and `OrganizationActionsVariable` require the `owner` attribute to point to the
 organization as they are not supported at the user level.
 
-Administration of resources on the *organization* level requires a token with at least `admin:org` scope.
+Administration of resources on the _organization_ level requires a token with at least `admin:org` scope.
 
-There are a few endpoints in the GitHub API that operate on the *enterprise* level and can be used for GitHub customers that have an enterprise
+There are a few endpoints in the GitHub API that operate on the _enterprise_ level and can be used for GitHub customers that have an enterprise
 account. One such resource is `Organization` which can be used to provision new organizations on the enterprise level. In this case, the token
 or app authentication must have at least `admin:enterprise` scope.
 
 ## Supported resources
 
 | Kind                          | Group          | Terraform Resource Name                           | Notes                                                                                                                                                                                                                                                                                                                       |
-|-------------------------------|----------------|---------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ----------------------------- | -------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ActionsSecret`               | `actions`      | `github_actions_secret`                           |                                                                                                                                                                                                                                                                                                                             |
 | `ActionsVariable`             | `actions`      | `github_actions_variable`                         |                                                                                                                                                                                                                                                                                                                             |
 | `EnvironmentSecret`           | `actions`      | `github_actions_environment_secret`               |                                                                                                                                                                                                                                                                                                                             |
@@ -144,13 +147,14 @@ or app authentication must have at least `admin:enterprise` scope.
 | `TeamSyncGroupMapping`        | `team`         | `github_team_sync_group_mapping`                  |                                                                                                                                                                                                                                                                                                                             |
 | `Membership`                  | `user`         | `github_membership`                               | Works only with - GitHub App user access tokens - GitHub App installation access tokens - Fine-grained personal access tokens using a token with at least `members:read`                                                                                                                                                    |
 | `OrganizationRuleset`         | `organization` | `github_organization_ruleset`                     |                                                                                                                                                                                                                                                                                                                             |
-| `Organization`                | `enterprise`   | `github_enterprise_organization`                  | Works only with PAT based authentication using a token with at least `admin:enterprise` scope.<br/>The following *GraphQL* query can be used to obtain the required `enterprise_id`:<br/> `gh api graphql -f query='query ($slug: String!) { enterprise(slug: $slug) { id } }' -F slug='<slug>' --jq '.data.enterprise.id'` |
+| `OrganizationSettings`        | `organization` | `github_organization_settings`                    |                                                                                                                                                                                                                                                                                                                             |
+| `Organization`                | `enterprise`   | `github_enterprise_organization`                  | Works only with PAT based authentication using a token with at least `admin:enterprise` scope.<br/>The following _GraphQL_ query can be used to obtain the required `enterprise_id`:<br/> `gh api graphql -f query='query ($slug: String!) { enterprise(slug: $slug) { id } }' -F slug='<slug>' --jq '.data.enterprise.id'` |
 
 ## Adding resources
 
-* Find the resource to add here: https://registry.terraform.io/providers/integrations/github/latest/docs
-* 1 resource per PR prefered
-* Write a test case
+- Find the resource to add here: https://registry.terraform.io/providers/integrations/github/latest/docs
+- 1 resource per PR prefered
+- Write a test case
 
 Check this reference PR: https://github.com/crossplane-contrib/provider-upjet-github/pull/4
 
