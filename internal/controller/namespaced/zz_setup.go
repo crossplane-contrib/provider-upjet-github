@@ -24,6 +24,7 @@ import (
 	organizationcustomproperties "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/organization/organizationcustomproperties"
 	organizationroleteam "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/organization/organizationroleteam"
 	organizationsettings "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/organization/organizationsettings"
+	roleteamassignment "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/organization/roleteamassignment"
 	providerconfig "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/providerconfig"
 	branch "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/repo/branch"
 	branchprotection "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/repo/branchprotection"
@@ -70,6 +71,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		organizationcustomproperties.Setup,
 		organizationroleteam.Setup,
 		organizationsettings.Setup,
+		roleteamassignment.Setup,
 		providerconfig.Setup,
 		branch.Setup,
 		branchprotection.Setup,
@@ -122,6 +124,7 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		organizationcustomproperties.SetupGated,
 		organizationroleteam.SetupGated,
 		organizationsettings.SetupGated,
+		roleteamassignment.SetupGated,
 		providerconfig.SetupGated,
 		branch.SetupGated,
 		branchprotection.SetupGated,

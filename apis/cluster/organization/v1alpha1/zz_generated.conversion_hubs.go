@@ -13,4 +13,7 @@ func (tr *OrganizationCustomProperties) Hub() {}
 func (tr *OrganizationRoleTeam) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *OrganizationRoleTeamAssignment) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *OrganizationSettings) Hub() {}

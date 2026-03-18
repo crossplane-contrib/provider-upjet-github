@@ -1,0 +1,30 @@
+apiVersion: organization.github.m.upbound.io/v1alpha1
+kind: RoleTeamAssignment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: organization/v1alpha1/roleteamassignment
+  labels:
+    testing.upbound.io/example-name: test-team-role-assignment
+  name: test-team-role-assignment
+  namespace: upbound-system
+spec:
+  forProvider:
+    roleId: "8132"
+    teamSlugSelector:
+      matchLabels:
+        testing.upbound.io/example-name: test-team
+
+---
+
+apiVersion: team.github.m.upbound.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: organization/v1alpha1/roleteamassignment
+  labels:
+    testing.upbound.io/example-name: test-team
+  name: test-team
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: test-team
