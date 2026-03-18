@@ -21,6 +21,7 @@ import (
 	runnergroup "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/actions/runnergroup"
 	organization "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/enterprise/organization"
 	organizationruleset "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/enterprise/organizationruleset"
+	organizationcustomproperties "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/organization/organizationcustomproperties"
 	organizationsettings "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/organization/organizationsettings"
 	providerconfig "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/providerconfig"
 	branch "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/repo/branch"
@@ -65,6 +66,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		runnergroup.Setup,
 		organization.Setup,
 		organizationruleset.Setup,
+		organizationcustomproperties.Setup,
 		organizationsettings.Setup,
 		providerconfig.Setup,
 		branch.Setup,
@@ -115,6 +117,7 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		runnergroup.SetupGated,
 		organization.SetupGated,
 		organizationruleset.SetupGated,
+		organizationcustomproperties.SetupGated,
 		organizationsettings.SetupGated,
 		providerconfig.SetupGated,
 		branch.SetupGated,
