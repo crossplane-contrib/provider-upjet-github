@@ -29,6 +29,7 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/enterpriseorganization"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/issuelabels"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/membership"
+	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/organizationcustomproperties"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/organizationruleset"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/organizationsettings"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/repository"
@@ -87,6 +88,7 @@ func GetProviderNamespaced(ctx context.Context) (*ujconfig.Provider, error) {
 		enterpriseorganization.Configure,
 		issuelabels.Configure,
 		membership.Configure,
+		organizationcustomproperties.Configure,
 		organizationruleset.Configure,
 		organizationsettings.Configure,
 		repository.Configure,

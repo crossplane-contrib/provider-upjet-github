@@ -1,0 +1,21 @@
+apiVersion: organization.github.upbound.io/v1alpha1
+kind: OrganizationCustomProperties
+metadata:
+  annotations:
+    meta.upbound.io/example-id: organization/v1alpha1/organizationcustomproperties
+  labels:
+    testing.upbound.io/example-name: organization-custom-properties
+  name: organization-custom-properties
+spec:
+  forProvider:
+    propertyName: environment
+    valueType: single_select
+    required: true
+    description: The deployment environment for this repository
+    defaultValue: development
+    allowedValues:
+      - development
+      - staging
+      - production
+  providerConfigRef:
+    name: default
