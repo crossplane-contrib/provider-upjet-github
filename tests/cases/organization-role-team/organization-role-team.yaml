@@ -1,0 +1,30 @@
+apiVersion: organization.github.upbound.io/v1alpha1
+kind: OrganizationRoleTeam
+metadata:
+  annotations:
+    meta.upbound.io/example-id: organization/v1alpha1/organizationroleteam
+  labels:
+    testing.upbound.io/example-name: organization-role-team
+  name: organization-role-team
+spec:
+  forProvider:
+    teamSlugRef:
+      name: test-team
+    roleId: 1234
+  providerConfigRef:
+    name: default
+---
+apiVersion: team.github.upbound.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: organization/v1alpha1/organizationroleteam
+  labels:
+    testing.upbound.io/example-name: test-team
+  name: test-team
+spec:
+  forProvider:
+    description: Test team for organization role assignment
+    name: TestTeam
+  providerConfigRef:
+    name: default
