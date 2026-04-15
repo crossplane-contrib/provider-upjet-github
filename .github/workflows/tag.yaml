@@ -12,7 +12,7 @@ on:
 
 jobs:
   tag:
-    uses: crossplane-contrib/provider-workflows/.github/workflows/tag.yml@main
+    uses: crossplane-contrib/provider-workflows/.github/workflows/tag.yml@451c4dc6ad3691b0a702a997a0ac24e8bbc8bbaa # main
     with:
       version: ${{ github.event.inputs.version }}
       message: ${{ github.event.inputs.message }}
