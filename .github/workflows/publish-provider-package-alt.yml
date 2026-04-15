@@ -14,7 +14,7 @@ on:
 
 jobs:
   publish-provider-package:
-    uses: hmlkao/provider-workflows/.github/workflows/publish-provider.yml@upgrade-build-module
+    uses: hmlkao/provider-workflows/.github/workflows/publish-provider.yml@43ca8f166d0e9abd792feefb22b286146d7534a7 # upgrade-build-module
     with:
       repository: provider-upjet-github
       version: ${{ github.event.inputs.version }}
