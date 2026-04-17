@@ -5,6 +5,7 @@ metadata:
   name: github-crossplane-issue-test
 spec:
   forProvider:
+    name: github-crossplane-issue-test
     visibility: public
     autoInit: true
     hasIssues: true
