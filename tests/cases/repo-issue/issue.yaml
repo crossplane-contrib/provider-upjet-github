@@ -1,0 +1,25 @@
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  name: github-crossplane-issue-test
+spec:
+  forProvider:
+    visibility: public
+    autoInit: true
+    hasIssues: true
+  providerConfigRef:
+    name: default
+---
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: GithubIssue
+metadata:
+  name: github-issue-test
+spec:
+  forProvider:
+    title: Managed by provider-upjet-github
+    body: This issue is managed by Crossplane.
+    repositoryRef:
+      name: github-crossplane-issue-test
+  providerConfigRef:
+    name: default
