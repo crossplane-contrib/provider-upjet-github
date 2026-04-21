@@ -9,7 +9,9 @@ metadata:
 spec:
   forProvider:
     permission: pull
-    repository: example
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: some_repo
     teamIdSelector:
       matchLabels:
         testing.upbound.io/example-name: some_team

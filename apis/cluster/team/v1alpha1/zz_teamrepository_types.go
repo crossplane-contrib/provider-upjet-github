@@ -22,7 +22,16 @@ type TeamRepositoryInitParameters struct {
 
 	// The repository to add to the team.
 	// The repository to add to the team.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// Reference to a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+
+	// Selector for a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The GitHub team id or the GitHub team slug
 	// ID or slug of team
@@ -67,8 +76,17 @@ type TeamRepositoryParameters struct {
 
 	// The repository to add to the team.
 	// The repository to add to the team.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// Reference to a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+
+	// Selector for a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The GitHub team id or the GitHub team slug
 	// ID or slug of team
@@ -121,9 +139,8 @@ type TeamRepositoryStatus struct {
 type TeamRepository struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.repository) || (has(self.initProvider) && has(self.initProvider.repository))",message="spec.forProvider.repository is a required parameter"
-	Spec   TeamRepositorySpec   `json:"spec"`
-	Status TeamRepositoryStatus `json:"status,omitempty"`
+	Spec              TeamRepositorySpec   `json:"spec"`
+	Status            TeamRepositoryStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
