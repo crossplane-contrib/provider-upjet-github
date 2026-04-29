@@ -1,0 +1,21 @@
+apiVersion: enterprise.github.m.upbound.io/v1alpha1
+kind: OrganizationWebhook
+metadata:
+  annotations:
+    meta.upbound.io/example-id: enterprise/v1alpha1/organizationwebhook
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: upbound-system
+spec:
+  forProvider:
+    active: false
+    configuration:
+    - contentType: form
+      insecureSsl: false
+      urlSecretRef:
+        key: example-key
+        name: example-secret
+    events:
+    - issues
+    name: web
