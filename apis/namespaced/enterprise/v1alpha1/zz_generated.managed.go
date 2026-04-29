@@ -87,3 +87,43 @@ func (mg *OrganizationRuleset) SetProviderConfigReference(r *xpv1.ProviderConfig
 func (mg *OrganizationRuleset) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
+
+// GetCondition of this OrganizationWebhook.
+func (mg *OrganizationWebhook) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this OrganizationWebhook.
+func (mg *OrganizationWebhook) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this OrganizationWebhook.
+func (mg *OrganizationWebhook) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this OrganizationWebhook.
+func (mg *OrganizationWebhook) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this OrganizationWebhook.
+func (mg *OrganizationWebhook) SetConditions(c ...xpv1.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this OrganizationWebhook.
+func (mg *OrganizationWebhook) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this OrganizationWebhook.
+func (mg *OrganizationWebhook) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this OrganizationWebhook.
+func (mg *OrganizationWebhook) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}

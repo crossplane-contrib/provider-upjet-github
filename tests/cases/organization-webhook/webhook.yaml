@@ -1,0 +1,25 @@
+apiVersion: enterprise.github.upbound.io/v1alpha1
+kind: OrganizationWebhook
+metadata:
+  name: organization-webhook-test
+spec:
+  forProvider:
+    active: true
+    configuration:
+    - contentType: form
+      insecureSsl: false
+      urlSecretRef:
+        key: url
+        name: organization-webhook-url
+        namespace: default
+    events:
+    - issues
+  providerConfigRef:
+    name: default
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: organization-webhook-url
+stringData:
+  url: https://example.com
