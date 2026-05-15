@@ -1,4 +1,4 @@
-FROM alpine:3.23
+FROM alpine:3.23.4
 RUN apk --no-cache upgrade && apk --no-cache add ca-certificates bash
 
 ARG TARGETOS
