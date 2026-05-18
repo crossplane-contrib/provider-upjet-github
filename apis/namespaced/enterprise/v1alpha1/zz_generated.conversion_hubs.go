@@ -11,3 +11,6 @@ func (tr *Organization) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *OrganizationRuleset) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *OrganizationWebhook) Hub() {}

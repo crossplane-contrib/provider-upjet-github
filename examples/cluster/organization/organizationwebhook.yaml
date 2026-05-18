@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: org-hookurl
+  namespace: default
+type: Opaque
+data:
+  url: aHR0cHM6Ly9leGFtcGxlLmNvbQo=
+---
+apiVersion: enterprise.github.upbound.io/v1alpha1
+kind: OrganizationWebhook
+metadata:
+  annotations:
+    meta.upbound.io/example-id: enterprise/v1alpha1/organizationwebhook
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    active: true
+    configuration:
+    - contentType: form
+      insecureSsl: false
+      urlSecretRef:
+        key: url
+        name: org-hookurl
+        namespace: default
+    events:
+    - issues
+  providerConfigRef:
+    name: default
