@@ -41,6 +41,8 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	"github_emu_group_mapping": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ slug/orgname }} E.g:enterp/some-awesome-org
 	"github_enterprise_organization": config.IdentifierFromProvider,
+	// No import documentation on Terraform provider.
+	"github_issue": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository_name }}
 	"github_issue_labels": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ organization }}:{{ username }}.
