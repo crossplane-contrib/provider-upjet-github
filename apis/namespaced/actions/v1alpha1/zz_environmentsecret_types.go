@@ -33,6 +33,9 @@ type EnvironmentSecretInitParameters struct {
 	// +kubebuilder:validation:Optional
 	EnvironmentSelector *v1.NamespacedSelector `json:"environmentSelector,omitempty" tf:"-"`
 
+	// ID of the public key used to encrypt the secret.
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
+
 	// Plaintext value of the secret to be encrypted.
 	// Plaintext value of the secret to be encrypted.
 	PlaintextValueSecretRef *v1.LocalSecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
@@ -53,6 +56,12 @@ type EnvironmentSecretInitParameters struct {
 	// Name of the secret.
 	// Name of the secret.
 	SecretName *string `json:"secretName,omitempty" tf:"secret_name,omitempty"`
+
+	// Value encrypted with the GitHub public key, defined by key_id, in Base64 format.
+	ValueEncryptedSecretRef *v1.LocalSecretKeySelector `json:"valueEncryptedSecretRef,omitempty" tf:"-"`
+
+	// Plaintext value to be encrypted.
+	ValueSecretRef *v1.LocalSecretKeySelector `json:"valueSecretRef,omitempty" tf:"-"`
 }
 
 type EnvironmentSecretObservation struct {
@@ -67,9 +76,19 @@ type EnvironmentSecretObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// ID of the public key used to encrypt the secret.
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
+
+	// Date of actions_environment_secret update.
+	// Date of remote 'actions_environment_secret' update.
+	RemoteUpdatedAt *string `json:"remoteUpdatedAt,omitempty" tf:"remote_updated_at,omitempty"`
+
 	// Name of the repository.
 	// Name of the repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// ID of the repository.
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 
 	// Name of the secret.
 	// Name of the secret.
@@ -101,6 +120,10 @@ type EnvironmentSecretParameters struct {
 	// +kubebuilder:validation:Optional
 	EnvironmentSelector *v1.NamespacedSelector `json:"environmentSelector,omitempty" tf:"-"`
 
+	// ID of the public key used to encrypt the secret.
+	// +kubebuilder:validation:Optional
+	KeyID *string `json:"keyId,omitempty" tf:"key_id,omitempty"`
+
 	// Plaintext value of the secret to be encrypted.
 	// Plaintext value of the secret to be encrypted.
 	// +kubebuilder:validation:Optional
@@ -124,6 +147,14 @@ type EnvironmentSecretParameters struct {
 	// Name of the secret.
 	// +kubebuilder:validation:Optional
 	SecretName *string `json:"secretName,omitempty" tf:"secret_name,omitempty"`
+
+	// Value encrypted with the GitHub public key, defined by key_id, in Base64 format.
+	// +kubebuilder:validation:Optional
+	ValueEncryptedSecretRef *v1.LocalSecretKeySelector `json:"valueEncryptedSecretRef,omitempty" tf:"-"`
+
+	// Plaintext value to be encrypted.
+	// +kubebuilder:validation:Optional
+	ValueSecretRef *v1.LocalSecretKeySelector `json:"valueSecretRef,omitempty" tf:"-"`
 }
 
 // EnvironmentSecretSpec defines the desired state of EnvironmentSecret

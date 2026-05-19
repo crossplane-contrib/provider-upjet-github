@@ -82,18 +82,18 @@ spec:
                         actorId:
                           description: |-
                             (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
-                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
+                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`. Some resources such as DeployKey do not have an ID and this should be omitted.
                           format: int64
                           type: integer
                         actorType:
                           description: |-
                             (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
-                            The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
+                            The type of actor that can bypass a ruleset. See https://docs.github.com/en/rest/repos/rules for more information.
                           type: string
                         bypassMode:
                           description: |-
                             (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
-                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
+                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`, `exempt`.
                           type: string
                       type: object
                     type: array
@@ -139,7 +139,7 @@ spec:
                   repository:
                     description: |-
                       (String) Name of the repository to apply rulset to.
-                      Name of the repository to apply rulset to.
+                      Name of the repository to apply ruleset to.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -333,6 +333,24 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        copilotCodeReview:
+                          description: Automatically request Copilot code review for
+                            new pull requests if the author has access to Copilot
+                            code review and their premium requests quota has not reached
+                            the limit.
+                          items:
+                            properties:
+                              reviewDraftPullRequests:
+                                description: Copilot automatically reviews draft pull
+                                  requests before they are marked as ready for review.
+                                  Defaults to `false`.
+                                type: boolean
+                              reviewOnPush:
+                                description: Copilot automatically reviews each new
+                                  push to the pull request. Defaults to `false`.
+                                type: boolean
+                            type: object
+                          type: array
                         creation:
                           description: |-
                             (Boolean) Only allow users with bypass permission to create matching refs.
@@ -343,6 +361,53 @@ spec:
                             (Boolean) Only allow users with bypass permissions to delete matching refs.
                             Only allow users with bypass permissions to delete matching refs.
                           type: boolean
+                        fileExtensionRestriction:
+                          description: Prevent pushes based on file extensions.
+                          items:
+                            properties:
+                              restrictedFileExtensions:
+                                description: A list of file extensions.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                          type: array
+                        filePathRestriction:
+                          description: Prevent commits that include changes in specified
+                            file paths from being pushed to the commit graph.
+                          items:
+                            properties:
+                              restrictedFilePaths:
+                                description: The file paths that are restricted from
+                                  being pushed to the commit graph.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        maxFilePathLength:
+                          description: Prevent pushes based on file path length.
+                          items:
+                            properties:
+                              maxFilePathLength:
+                                description: The maximum allowed length of a file
+                                  path.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
+                        maxFileSize:
+                          description: Prevent pushes based on file size.
+                          items:
+                            properties:
+                              maxFileSize:
+                                description: The maximum allowed size of a file in
+                                  megabytes (MB). Valid range is 1-100 MB.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
                         mergeQueue:
                           description: |-
                             (Block List, Max: 1) Merges must be performed via a merge queue.
@@ -402,6 +467,13 @@ spec:
                             Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
                           items:
                             properties:
+                              allowedMergeMethods:
+                                description: Array of allowed merge methods. Allowed
+                                  values include `merge`, `squash`, and `rebase`.
+                                  At least one option must be enabled.
+                                items:
+                                  type: string
+                                type: array
                               dismissStaleReviewsOnPush:
                                 description: |-
                                   (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
@@ -428,6 +500,42 @@ spec:
                                   (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
                                   All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
                                 type: boolean
+                              requiredReviewers:
+                                description: 'Require specific reviewers to approve
+                                  pull requests targeting matching branches. Note:
+                                  This feature is in beta and subject to change.'
+                                items:
+                                  properties:
+                                    filePatterns:
+                                      description: File patterns (fnmatch syntax)
+                                        that this reviewer must approve.
+                                      items:
+                                        type: string
+                                      type: array
+                                    minimumApprovals:
+                                      description: Minimum number of approvals required
+                                        from this reviewer. Set to 0 to make approval
+                                        optional.
+                                      format: int64
+                                      type: integer
+                                    reviewer:
+                                      description: The reviewer that must review matching
+                                        files.
+                                      items:
+                                        properties:
+                                          id:
+                                            description: The ID of the reviewer that
+                                              must review.
+                                            format: int64
+                                            type: integer
+                                          type:
+                                            description: The type of reviewer. Currently
+                                              only `Team` is supported.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         requiredCodeScanning:
@@ -566,7 +674,7 @@ spec:
                   target:
                     description: |-
                       (String) Possible values are branch and tag.
-                      Possible values are `branch` and `tag`.
+                      Possible values are branch, push and tag
                     type: string
                 type: object
               initProvider:
@@ -591,18 +699,18 @@ spec:
                         actorId:
                           description: |-
                             (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
-                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
+                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`. Some resources such as DeployKey do not have an ID and this should be omitted.
                           format: int64
                           type: integer
                         actorType:
                           description: |-
                             (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
-                            The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
+                            The type of actor that can bypass a ruleset. See https://docs.github.com/en/rest/repos/rules for more information.
                           type: string
                         bypassMode:
                           description: |-
                             (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
-                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
+                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`, `exempt`.
                           type: string
                       type: object
                     type: array
@@ -648,7 +756,7 @@ spec:
                   repository:
                     description: |-
                       (String) Name of the repository to apply rulset to.
-                      Name of the repository to apply rulset to.
+                      Name of the repository to apply ruleset to.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -842,6 +950,24 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        copilotCodeReview:
+                          description: Automatically request Copilot code review for
+                            new pull requests if the author has access to Copilot
+                            code review and their premium requests quota has not reached
+                            the limit.
+                          items:
+                            properties:
+                              reviewDraftPullRequests:
+                                description: Copilot automatically reviews draft pull
+                                  requests before they are marked as ready for review.
+                                  Defaults to `false`.
+                                type: boolean
+                              reviewOnPush:
+                                description: Copilot automatically reviews each new
+                                  push to the pull request. Defaults to `false`.
+                                type: boolean
+                            type: object
+                          type: array
                         creation:
                           description: |-
                             (Boolean) Only allow users with bypass permission to create matching refs.
@@ -852,6 +978,53 @@ spec:
                             (Boolean) Only allow users with bypass permissions to delete matching refs.
                             Only allow users with bypass permissions to delete matching refs.
                           type: boolean
+                        fileExtensionRestriction:
+                          description: Prevent pushes based on file extensions.
+                          items:
+                            properties:
+                              restrictedFileExtensions:
+                                description: A list of file extensions.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                          type: array
+                        filePathRestriction:
+                          description: Prevent commits that include changes in specified
+                            file paths from being pushed to the commit graph.
+                          items:
+                            properties:
+                              restrictedFilePaths:
+                                description: The file paths that are restricted from
+                                  being pushed to the commit graph.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        maxFilePathLength:
+                          description: Prevent pushes based on file path length.
+                          items:
+                            properties:
+                              maxFilePathLength:
+                                description: The maximum allowed length of a file
+                                  path.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
+                        maxFileSize:
+                          description: Prevent pushes based on file size.
+                          items:
+                            properties:
+                              maxFileSize:
+                                description: The maximum allowed size of a file in
+                                  megabytes (MB). Valid range is 1-100 MB.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
                         mergeQueue:
                           description: |-
                             (Block List, Max: 1) Merges must be performed via a merge queue.
@@ -911,6 +1084,13 @@ spec:
                             Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
                           items:
                             properties:
+                              allowedMergeMethods:
+                                description: Array of allowed merge methods. Allowed
+                                  values include `merge`, `squash`, and `rebase`.
+                                  At least one option must be enabled.
+                                items:
+                                  type: string
+                                type: array
                               dismissStaleReviewsOnPush:
                                 description: |-
                                   (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
@@ -937,6 +1117,42 @@ spec:
                                   (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
                                   All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
                                 type: boolean
+                              requiredReviewers:
+                                description: 'Require specific reviewers to approve
+                                  pull requests targeting matching branches. Note:
+                                  This feature is in beta and subject to change.'
+                                items:
+                                  properties:
+                                    filePatterns:
+                                      description: File patterns (fnmatch syntax)
+                                        that this reviewer must approve.
+                                      items:
+                                        type: string
+                                      type: array
+                                    minimumApprovals:
+                                      description: Minimum number of approvals required
+                                        from this reviewer. Set to 0 to make approval
+                                        optional.
+                                      format: int64
+                                      type: integer
+                                    reviewer:
+                                      description: The reviewer that must review matching
+                                        files.
+                                      items:
+                                        properties:
+                                          id:
+                                            description: The ID of the reviewer that
+                                              must review.
+                                            format: int64
+                                            type: integer
+                                          type:
+                                            description: The type of reviewer. Currently
+                                              only `Team` is supported.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         requiredCodeScanning:
@@ -1075,7 +1291,7 @@ spec:
                   target:
                     description: |-
                       (String) Possible values are branch and tag.
-                      Possible values are `branch` and `tag`.
+                      Possible values are branch, push and tag
                     type: string
                 type: object
               managementPolicies:
@@ -1195,18 +1411,18 @@ spec:
                         actorId:
                           description: |-
                             (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
-                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
+                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`. Some resources such as DeployKey do not have an ID and this should be omitted.
                           format: int64
                           type: integer
                         actorType:
                           description: |-
                             (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
-                            The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
+                            The type of actor that can bypass a ruleset. See https://docs.github.com/en/rest/repos/rules for more information.
                           type: string
                         bypassMode:
                           description: |-
                             (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
-                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
+                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`, `exempt`.
                           type: string
                       type: object
                     type: array
@@ -1262,7 +1478,7 @@ spec:
                   repository:
                     description: |-
                       (String) Name of the repository to apply rulset to.
-                      Name of the repository to apply rulset to.
+                      Name of the repository to apply ruleset to.
                     type: string
                   rules:
                     description: |-
@@ -1382,6 +1598,24 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        copilotCodeReview:
+                          description: Automatically request Copilot code review for
+                            new pull requests if the author has access to Copilot
+                            code review and their premium requests quota has not reached
+                            the limit.
+                          items:
+                            properties:
+                              reviewDraftPullRequests:
+                                description: Copilot automatically reviews draft pull
+                                  requests before they are marked as ready for review.
+                                  Defaults to `false`.
+                                type: boolean
+                              reviewOnPush:
+                                description: Copilot automatically reviews each new
+                                  push to the pull request. Defaults to `false`.
+                                type: boolean
+                            type: object
+                          type: array
                         creation:
                           description: |-
                             (Boolean) Only allow users with bypass permission to create matching refs.
@@ -1392,6 +1626,53 @@ spec:
                             (Boolean) Only allow users with bypass permissions to delete matching refs.
                             Only allow users with bypass permissions to delete matching refs.
                           type: boolean
+                        fileExtensionRestriction:
+                          description: Prevent pushes based on file extensions.
+                          items:
+                            properties:
+                              restrictedFileExtensions:
+                                description: A list of file extensions.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                          type: array
+                        filePathRestriction:
+                          description: Prevent commits that include changes in specified
+                            file paths from being pushed to the commit graph.
+                          items:
+                            properties:
+                              restrictedFilePaths:
+                                description: The file paths that are restricted from
+                                  being pushed to the commit graph.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        maxFilePathLength:
+                          description: Prevent pushes based on file path length.
+                          items:
+                            properties:
+                              maxFilePathLength:
+                                description: The maximum allowed length of a file
+                                  path.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
+                        maxFileSize:
+                          description: Prevent pushes based on file size.
+                          items:
+                            properties:
+                              maxFileSize:
+                                description: The maximum allowed size of a file in
+                                  megabytes (MB). Valid range is 1-100 MB.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
                         mergeQueue:
                           description: |-
                             (Block List, Max: 1) Merges must be performed via a merge queue.
@@ -1451,6 +1732,13 @@ spec:
                             Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
                           items:
                             properties:
+                              allowedMergeMethods:
+                                description: Array of allowed merge methods. Allowed
+                                  values include `merge`, `squash`, and `rebase`.
+                                  At least one option must be enabled.
+                                items:
+                                  type: string
+                                type: array
                               dismissStaleReviewsOnPush:
                                 description: |-
                                   (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
@@ -1477,6 +1765,42 @@ spec:
                                   (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
                                   All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
                                 type: boolean
+                              requiredReviewers:
+                                description: 'Require specific reviewers to approve
+                                  pull requests targeting matching branches. Note:
+                                  This feature is in beta and subject to change.'
+                                items:
+                                  properties:
+                                    filePatterns:
+                                      description: File patterns (fnmatch syntax)
+                                        that this reviewer must approve.
+                                      items:
+                                        type: string
+                                      type: array
+                                    minimumApprovals:
+                                      description: Minimum number of approvals required
+                                        from this reviewer. Set to 0 to make approval
+                                        optional.
+                                      format: int64
+                                      type: integer
+                                    reviewer:
+                                      description: The reviewer that must review matching
+                                        files.
+                                      items:
+                                        properties:
+                                          id:
+                                            description: The ID of the reviewer that
+                                              must review.
+                                            format: int64
+                                            type: integer
+                                          type:
+                                            description: The type of reviewer. Currently
+                                              only `Team` is supported.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         requiredCodeScanning:
@@ -1621,7 +1945,7 @@ spec:
                   target:
                     description: |-
                       (String) Possible values are branch and tag.
-                      Possible values are `branch` and `tag`.
+                      Possible values are branch, push and tag
                     type: string
                 type: object
               conditions:

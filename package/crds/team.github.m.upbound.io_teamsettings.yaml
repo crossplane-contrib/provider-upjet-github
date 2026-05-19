@@ -59,6 +59,11 @@ spec:
             properties:
               forProvider:
                 properties:
+                  notify:
+                    description: |-
+                      whether to notify the entire team when at least one member is also assigned to the pull request
+                      Whether to notify the entire team when at least one member is also assigned to the pull request.
+                    type: boolean
                   reviewRequestDelegation:
                     description: |-
                       The settings for delegating code reviews to individuals on behalf of the team. If this block is present, even without any fields, then review request delegation will be enabled for the team. See GitHub Review Request Delegation below for details. See GitHub's documentation for more configuration details.
@@ -68,7 +73,7 @@ spec:
                         algorithm:
                           description: |-
                             The algorithm to use when assigning pull requests to team members. Supported values are ROUND_ROBIN and LOAD_BALANCE. Default value is ROUND_ROBIN
-                            The algorithm to use when assigning pull requests to team members. Supported values are 'ROUND_ROBIN' and 'LOAD_BALANCE'.
+                            The algorithm to use when assigning pull requests to team members. Supported values are ROUND_ROBIN and LOAD_BALANCE.
                           type: string
                         memberCount:
                           description: |-
@@ -182,6 +187,11 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
+                  notify:
+                    description: |-
+                      whether to notify the entire team when at least one member is also assigned to the pull request
+                      Whether to notify the entire team when at least one member is also assigned to the pull request.
+                    type: boolean
                   reviewRequestDelegation:
                     description: |-
                       The settings for delegating code reviews to individuals on behalf of the team. If this block is present, even without any fields, then review request delegation will be enabled for the team. See GitHub Review Request Delegation below for details. See GitHub's documentation for more configuration details.
@@ -191,7 +201,7 @@ spec:
                         algorithm:
                           description: |-
                             The algorithm to use when assigning pull requests to team members. Supported values are ROUND_ROBIN and LOAD_BALANCE. Default value is ROUND_ROBIN
-                            The algorithm to use when assigning pull requests to team members. Supported values are 'ROUND_ROBIN' and 'LOAD_BALANCE'.
+                            The algorithm to use when assigning pull requests to team members. Supported values are ROUND_ROBIN and LOAD_BALANCE.
                           type: string
                         memberCount:
                           description: |-
@@ -357,6 +367,11 @@ spec:
                 properties:
                   id:
                     type: string
+                  notify:
+                    description: |-
+                      whether to notify the entire team when at least one member is also assigned to the pull request
+                      Whether to notify the entire team when at least one member is also assigned to the pull request.
+                    type: boolean
                   reviewRequestDelegation:
                     description: |-
                       The settings for delegating code reviews to individuals on behalf of the team. If this block is present, even without any fields, then review request delegation will be enabled for the team. See GitHub Review Request Delegation below for details. See GitHub's documentation for more configuration details.
@@ -366,7 +381,7 @@ spec:
                         algorithm:
                           description: |-
                             The algorithm to use when assigning pull requests to team members. Supported values are ROUND_ROBIN and LOAD_BALANCE. Default value is ROUND_ROBIN
-                            The algorithm to use when assigning pull requests to team members. Supported values are 'ROUND_ROBIN' and 'LOAD_BALANCE'.
+                            The algorithm to use when assigning pull requests to team members. Supported values are ROUND_ROBIN and LOAD_BALANCE.
                           type: string
                         memberCount:
                           description: |-

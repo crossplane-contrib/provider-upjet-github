@@ -9,6 +9,7 @@ import (
 
 	"github.com/crossplane/upjet/v2/pkg/controller"
 
+	actionshostedrunner "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/actions/actionshostedrunner"
 	actionssecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/actions/actionssecret"
 	actionsvariable "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/actions/actionsvariable"
 	environmentsecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/actions/environmentsecret"
@@ -52,6 +53,7 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		actionshostedrunner.Setup,
 		actionssecret.Setup,
 		actionsvariable.Setup,
 		environmentsecret.Setup,
@@ -101,6 +103,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 // the supplied manager gated.
 func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		actionshostedrunner.SetupGated,
 		actionssecret.SetupGated,
 		actionsvariable.SetupGated,
 		environmentsecret.SetupGated,

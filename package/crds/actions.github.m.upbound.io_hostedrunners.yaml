@@ -1,0 +1,392 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: hostedrunners.actions.github.m.upbound.io
+spec:
+  group: actions.github.m.upbound.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - github
+    kind: HostedRunner
+    listKind: HostedRunnerList
+    plural: hostedrunners
+    singular: hostedrunner
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: HostedRunner is the Schema for the HostedRunners API. <no value>
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: HostedRunnerSpec defines the desired state of HostedRunner
+            properties:
+              forProvider:
+                properties:
+                  image:
+                    description: Image configuration for the hosted runner. Cannot
+                      be changed after creation.
+                    items:
+                      properties:
+                        id:
+                          description: The image ID.
+                          type: string
+                        source:
+                          description: The image source (github, partner, or custom).
+                          type: string
+                      type: object
+                    type: array
+                  imageGen:
+                    description: Whether this runner should be used to generate custom
+                      images. Cannot be changed after creation.
+                    type: boolean
+                  imageVersion:
+                    description: The version of the runner image to deploy. This is
+                      relevant only for runners using custom images.
+                    type: string
+                  maximumRunners:
+                    description: Maximum number of runners to scale up to.
+                    format: int64
+                    type: integer
+                  name:
+                    description: Name of the hosted runner. Must be between 1 and
+                      64 characters and may only contain upper and lowercase letters
+                      a-z, numbers 0-9, '.', '-', and '_'.
+                    type: string
+                  publicIpEnabled:
+                    description: Whether to enable static public IP.
+                    type: boolean
+                  runnerGroupId:
+                    description: The runner group ID.
+                    format: int64
+                    type: integer
+                  size:
+                    description: Machine size (e.g., '4-core', '8-core'). Can be updated
+                      to scale the runner.
+                    type: string
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  image:
+                    description: Image configuration for the hosted runner. Cannot
+                      be changed after creation.
+                    items:
+                      properties:
+                        id:
+                          description: The image ID.
+                          type: string
+                        source:
+                          description: The image source (github, partner, or custom).
+                          type: string
+                      type: object
+                    type: array
+                  imageGen:
+                    description: Whether this runner should be used to generate custom
+                      images. Cannot be changed after creation.
+                    type: boolean
+                  imageVersion:
+                    description: The version of the runner image to deploy. This is
+                      relevant only for runners using custom images.
+                    type: string
+                  maximumRunners:
+                    description: Maximum number of runners to scale up to.
+                    format: int64
+                    type: integer
+                  name:
+                    description: Name of the hosted runner. Must be between 1 and
+                      64 characters and may only contain upper and lowercase letters
+                      a-z, numbers 0-9, '.', '-', and '_'.
+                    type: string
+                  publicIpEnabled:
+                    description: Whether to enable static public IP.
+                    type: boolean
+                  runnerGroupId:
+                    description: The runner group ID.
+                    format: int64
+                    type: integer
+                  size:
+                    description: Machine size (e.g., '4-core', '8-core'). Can be updated
+                      to scale the runner.
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  kind: ClusterProviderConfig
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  kind:
+                    description: Kind of the referenced object.
+                    type: string
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - kind
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                required:
+                - name
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.image is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.image)
+                || (has(self.initProvider) && has(self.initProvider.image))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.runnerGroupId is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.runnerGroupId)
+                || (has(self.initProvider) && has(self.initProvider.runnerGroupId))'
+            - message: spec.forProvider.size is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.size)
+                || (has(self.initProvider) && has(self.initProvider.size))'
+          status:
+            description: HostedRunnerStatus defines the observed state of HostedRunner.
+            properties:
+              atProvider:
+                properties:
+                  id:
+                    type: string
+                  image:
+                    description: Image configuration for the hosted runner. Cannot
+                      be changed after creation.
+                    items:
+                      properties:
+                        id:
+                          description: The image ID.
+                          type: string
+                        sizeGb:
+                          description: The size of the image in GB.
+                          format: int64
+                          type: integer
+                        source:
+                          description: The image source (github, partner, or custom).
+                          type: string
+                      type: object
+                    type: array
+                  imageGen:
+                    description: Whether this runner should be used to generate custom
+                      images. Cannot be changed after creation.
+                    type: boolean
+                  imageVersion:
+                    description: The version of the runner image to deploy. This is
+                      relevant only for runners using custom images.
+                    type: string
+                  lastActiveOn:
+                    description: Timestamp when the runner was last active.
+                    type: string
+                  machineSizeDetails:
+                    description: Detailed machine size specifications.
+                    items:
+                      properties:
+                        cpuCores:
+                          description: Number of CPU cores.
+                          format: int64
+                          type: integer
+                        id:
+                          description: Machine size ID.
+                          type: string
+                        memoryGb:
+                          description: Memory in GB.
+                          format: int64
+                          type: integer
+                        storageGb:
+                          description: Storage in GB.
+                          format: int64
+                          type: integer
+                      type: object
+                    type: array
+                  maximumRunners:
+                    description: Maximum number of runners to scale up to.
+                    format: int64
+                    type: integer
+                  name:
+                    description: Name of the hosted runner. Must be between 1 and
+                      64 characters and may only contain upper and lowercase letters
+                      a-z, numbers 0-9, '.', '-', and '_'.
+                    type: string
+                  platform:
+                    description: Platform of the runner.
+                    type: string
+                  publicIpEnabled:
+                    description: Whether to enable static public IP.
+                    type: boolean
+                  publicIps:
+                    description: List of public IP ranges assigned to this runner.
+                    items:
+                      properties:
+                        enabled:
+                          description: Whether this IP range is enabled.
+                          type: boolean
+                        length:
+                          description: Subnet length.
+                          format: int64
+                          type: integer
+                        prefix:
+                          description: IP address prefix.
+                          type: string
+                      type: object
+                    type: array
+                  runnerGroupId:
+                    description: The runner group ID.
+                    format: int64
+                    type: integer
+                  size:
+                    description: Machine size (e.g., '4-core', '8-core'). Can be updated
+                      to scale the runner.
+                    type: string
+                  status:
+                    description: Current status of the runner.
+                    type: string
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

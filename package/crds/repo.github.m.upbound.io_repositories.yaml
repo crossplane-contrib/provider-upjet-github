@@ -64,6 +64,11 @@ spec:
                       Set to true to allow auto-merging pull requests on the repository.
                       Set to 'true' to allow auto-merging pull requests on the repository.
                     type: boolean
+                  allowForking:
+                    description: Set to 'true' to allow private forking on the repository;
+                      this is only relevant if the repository is owned by an organization
+                      and is private or internal.
+                    type: boolean
                   allowMergeCommit:
                     description: |-
                       Set to false to disable merge commits on the repository.
@@ -116,6 +121,11 @@ spec:
                       A description of the repository.
                       A description of the repository.
                     type: string
+                  etag:
+                    type: string
+                  fork:
+                    description: Set to 'true' to fork an existing repository.
+                    type: string
                   gitignoreTemplate:
                     description: |-
                       Use the name of the template without the extension. For example, "Haskell".
@@ -154,9 +164,9 @@ spec:
                       URL of a page describing the project.
                     type: string
                   ignoreVulnerabilityAlertsDuringRead:
-                    description: |-
-                      Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
-                      Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
+                    description: Set to true to not call the vulnerability alerts
+                      endpoint so the resource can also be used without admin permissions
+                      during read.
                     type: boolean
                   isTemplate:
                     description: |-
@@ -239,7 +249,18 @@ spec:
                               status:
                                 description: |-
                                   Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
-                                  Set to 'enabled' to enable advanced security features on the repository. Can be 'enabled' or 'disabled'.
+                                  Set to 'enabled' to enable advanced security features on the repository. Can be 'enabled' or 'disabled', This value being present when split licensing is enabled will error out.
+                                type: string
+                            type: object
+                          type: array
+                        codeSecurity:
+                          description: The code security configuration for the repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable code security on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
                                 type: string
                             type: object
                           type: array
@@ -252,7 +273,31 @@ spec:
                               status:
                                 description: |-
                                   Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
-                                  Set to 'enabled' to enable secret scanning on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
+                                  Set to 'enabled' to enable secret scanning on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
+                                type: string
+                            type: object
+                          type: array
+                        secretScanningAiDetection:
+                          description: The secret scanning AI detection configuration
+                            for this repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable secret scanning AI detection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
+                                type: string
+                            type: object
+                          type: array
+                        secretScanningNonProviderPatterns:
+                          description: The secret scanning non-provider patterns configuration
+                            for this repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable secret scanning non-provider patterns on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
                                 type: string
                             type: object
                           type: array
@@ -265,12 +310,20 @@ spec:
                               status:
                                 description: |-
                                   Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
-                                  Set to 'enabled' to enable secret scanning push protection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
+                                  Set to 'enabled' to enable secret scanning push protection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
                                 type: string
                             type: object
                           type: array
                       type: object
                     type: array
+                  sourceOwner:
+                    description: |-
+                      : The GitHub organization or user the template repository is owned by.
+                      The owner of the source repository to fork from.
+                    type: string
+                  sourceRepo:
+                    description: The name of the source repository to fork from.
+                    type: string
                   squashMergeCommitMessage:
                     description: |-
                       Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message. Applicable only if allow_squash_merge is true.
@@ -320,12 +373,12 @@ spec:
                   vulnerabilityAlerts:
                     description: |-
                       Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default.) See GitHub Documentation for details. Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
-                      Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
+                      Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on all repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
                     type: boolean
                   webCommitSignoffRequired:
                     description: |-
                       Require contributors to sign off on web-based commits. See more here. Defaults to false.
-                      Require contributors to sign off on web-based commits. Defaults to 'false'.
+                      Require contributors to sign off on web-based commits.
                     type: boolean
                 type: object
               initProvider:
@@ -346,6 +399,11 @@ spec:
                       Set to true to allow auto-merging pull requests on the repository.
                       Set to 'true' to allow auto-merging pull requests on the repository.
                     type: boolean
+                  allowForking:
+                    description: Set to 'true' to allow private forking on the repository;
+                      this is only relevant if the repository is owned by an organization
+                      and is private or internal.
+                    type: boolean
                   allowMergeCommit:
                     description: |-
                       Set to false to disable merge commits on the repository.
@@ -398,6 +456,11 @@ spec:
                       A description of the repository.
                       A description of the repository.
                     type: string
+                  etag:
+                    type: string
+                  fork:
+                    description: Set to 'true' to fork an existing repository.
+                    type: string
                   gitignoreTemplate:
                     description: |-
                       Use the name of the template without the extension. For example, "Haskell".
@@ -436,9 +499,9 @@ spec:
                       URL of a page describing the project.
                     type: string
                   ignoreVulnerabilityAlertsDuringRead:
-                    description: |-
-                      Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
-                      Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
+                    description: Set to true to not call the vulnerability alerts
+                      endpoint so the resource can also be used without admin permissions
+                      during read.
                     type: boolean
                   isTemplate:
                     description: |-
@@ -521,7 +584,18 @@ spec:
                               status:
                                 description: |-
                                   Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
-                                  Set to 'enabled' to enable advanced security features on the repository. Can be 'enabled' or 'disabled'.
+                                  Set to 'enabled' to enable advanced security features on the repository. Can be 'enabled' or 'disabled', This value being present when split licensing is enabled will error out.
+                                type: string
+                            type: object
+                          type: array
+                        codeSecurity:
+                          description: The code security configuration for the repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable code security on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
                                 type: string
                             type: object
                           type: array
@@ -534,7 +608,31 @@ spec:
                               status:
                                 description: |-
                                   Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
-                                  Set to 'enabled' to enable secret scanning on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
+                                  Set to 'enabled' to enable secret scanning on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
+                                type: string
+                            type: object
+                          type: array
+                        secretScanningAiDetection:
+                          description: The secret scanning AI detection configuration
+                            for this repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable secret scanning AI detection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
+                                type: string
+                            type: object
+                          type: array
+                        secretScanningNonProviderPatterns:
+                          description: The secret scanning non-provider patterns configuration
+                            for this repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable secret scanning non-provider patterns on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
                                 type: string
                             type: object
                           type: array
@@ -547,12 +645,20 @@ spec:
                               status:
                                 description: |-
                                   Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
-                                  Set to 'enabled' to enable secret scanning push protection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
+                                  Set to 'enabled' to enable secret scanning push protection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
                                 type: string
                             type: object
                           type: array
                       type: object
                     type: array
+                  sourceOwner:
+                    description: |-
+                      : The GitHub organization or user the template repository is owned by.
+                      The owner of the source repository to fork from.
+                    type: string
+                  sourceRepo:
+                    description: The name of the source repository to fork from.
+                    type: string
                   squashMergeCommitMessage:
                     description: |-
                       Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message. Applicable only if allow_squash_merge is true.
@@ -602,12 +708,12 @@ spec:
                   vulnerabilityAlerts:
                     description: |-
                       Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default.) See GitHub Documentation for details. Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
-                      Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
+                      Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on all repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
                     type: boolean
                   webCommitSignoffRequired:
                     description: |-
                       Require contributors to sign off on web-based commits. See more here. Defaults to false.
-                      Require contributors to sign off on web-based commits. Defaults to 'false'.
+                      Require contributors to sign off on web-based commits.
                     type: boolean
                 type: object
               managementPolicies:
@@ -683,6 +789,11 @@ spec:
                       Set to true to allow auto-merging pull requests on the repository.
                       Set to 'true' to allow auto-merging pull requests on the repository.
                     type: boolean
+                  allowForking:
+                    description: Set to 'true' to allow private forking on the repository;
+                      this is only relevant if the repository is owned by an organization
+                      and is private or internal.
+                    type: boolean
                   allowMergeCommit:
                     description: |-
                       Set to false to disable merge commits on the repository.
@@ -736,6 +847,9 @@ spec:
                       A description of the repository.
                     type: string
                   etag:
+                    type: string
+                  fork:
+                    description: Set to 'true' to fork an existing repository.
                     type: string
                   fullName:
                     description: |-
@@ -797,9 +911,9 @@ spec:
                   id:
                     type: string
                   ignoreVulnerabilityAlertsDuringRead:
-                    description: |-
-                      Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
-                      Set to true to not call the vulnerability alerts endpoint so the resource can also be used without admin permissions during read.
+                    description: Set to true to not call the vulnerability alerts
+                      endpoint so the resource can also be used without admin permissions
+                      during read.
                     type: boolean
                   isTemplate:
                     description: |-
@@ -913,7 +1027,18 @@ spec:
                               status:
                                 description: |-
                                   Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
-                                  Set to 'enabled' to enable advanced security features on the repository. Can be 'enabled' or 'disabled'.
+                                  Set to 'enabled' to enable advanced security features on the repository. Can be 'enabled' or 'disabled', This value being present when split licensing is enabled will error out.
+                                type: string
+                            type: object
+                          type: array
+                        codeSecurity:
+                          description: The code security configuration for the repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable code security on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
                                 type: string
                             type: object
                           type: array
@@ -926,7 +1051,31 @@ spec:
                               status:
                                 description: |-
                                   Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
-                                  Set to 'enabled' to enable secret scanning on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
+                                  Set to 'enabled' to enable secret scanning on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
+                                type: string
+                            type: object
+                          type: array
+                        secretScanningAiDetection:
+                          description: The secret scanning AI detection configuration
+                            for this repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable secret scanning AI detection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
+                                type: string
+                            type: object
+                          type: array
+                        secretScanningNonProviderPatterns:
+                          description: The secret scanning non-provider patterns configuration
+                            for this repository.
+                          items:
+                            properties:
+                              status:
+                                description: |-
+                                  Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
+                                  Set to 'enabled' to enable secret scanning non-provider patterns on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
                                 type: string
                             type: object
                           type: array
@@ -939,12 +1088,20 @@ spec:
                               status:
                                 description: |-
                                   Set to enabled to enable secret scanning on the repository. Can be enabled or disabled. If set to enabled, the repository's visibility must be public or security_and_analysis[0].advanced_security[0].status must also be set to enabled.
-                                  Set to 'enabled' to enable secret scanning push protection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public' or 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled'.
+                                  Set to 'enabled' to enable secret scanning push protection on the repository. Can be 'enabled' or 'disabled'. If set to 'enabled', the repository's visibility must be 'public', 'security_and_analysis[0].advanced_security[0].status' must also be set to 'enabled', or your Organization must have split licensing for Advanced security.
                                 type: string
                             type: object
                           type: array
                       type: object
                     type: array
+                  sourceOwner:
+                    description: |-
+                      : The GitHub organization or user the template repository is owned by.
+                      The owner of the source repository to fork from.
+                    type: string
+                  sourceRepo:
+                    description: The name of the source repository to fork from.
+                    type: string
                   squashMergeCommitMessage:
                     description: |-
                       Can be PR_BODY, COMMIT_MESSAGES, or BLANK for a default squash merge commit message. Applicable only if allow_squash_merge is true.
@@ -1004,12 +1161,12 @@ spec:
                   vulnerabilityAlerts:
                     description: |-
                       Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default.) See GitHub Documentation for details. Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
-                      Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
+                      Set to 'true' to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on all repos by default). Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
                     type: boolean
                   webCommitSignoffRequired:
                     description: |-
                       Require contributors to sign off on web-based commits. See more here. Defaults to false.
-                      Require contributors to sign off on web-based commits. Defaults to 'false'.
+                      Require contributors to sign off on web-based commits.
                     type: boolean
                 type: object
               conditions:

@@ -332,8 +332,15 @@ spec:
                       Integer corresponding to the external group ID to be linked.
                     format: int64
                     type: integer
+                  groupName:
+                    description: Name of the external group.
+                    type: string
                   id:
                     type: string
+                  teamId:
+                    description: ID of the GitHub team.
+                    format: int64
+                    type: integer
                   teamSlug:
                     description: |-
                       Slug of the GitHub team

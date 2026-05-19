@@ -31,6 +31,9 @@ type TeamInitParameters struct {
 	// The name of the team.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// The notification setting for the team. Must be one of 'notifications_enabled' or 'notifications_disabled'.
+	NotificationSetting *string `json:"notificationSetting,omitempty" tf:"notification_setting,omitempty"`
+
 	// The ID or slug of the parent team, if this is a nested team.
 	// The ID or slug of the parent team, if this is a nested team.
 	ParentTeamID *string `json:"parentTeamId,omitempty" tf:"parent_team_id,omitempty"`
@@ -80,6 +83,9 @@ type TeamObservation struct {
 	// The Node ID of the created team.
 	NodeID *string `json:"nodeId,omitempty" tf:"node_id,omitempty"`
 
+	// The notification setting for the team. Must be one of 'notifications_enabled' or 'notifications_disabled'.
+	NotificationSetting *string `json:"notificationSetting,omitempty" tf:"notification_setting,omitempty"`
+
 	// The ID or slug of the parent team, if this is a nested team.
 	// The ID or slug of the parent team, if this is a nested team.
 	ParentTeamID *string `json:"parentTeamId,omitempty" tf:"parent_team_id,omitempty"`
@@ -127,6 +133,10 @@ type TeamParameters struct {
 	// The name of the team.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The notification setting for the team. Must be one of 'notifications_enabled' or 'notifications_disabled'.
+	// +kubebuilder:validation:Optional
+	NotificationSetting *string `json:"notificationSetting,omitempty" tf:"notification_setting,omitempty"`
 
 	// The ID or slug of the parent team, if this is a nested team.
 	// The ID or slug of the parent team, if this is a nested team.

@@ -107,6 +107,9 @@ type OrganizationPermissionsInitParameters struct {
 	// Sets the list of selected repositories that are enabled for GitHub Actions in an organization. Only available when enabled_repositories = selected. See Enabled Repositories Config below for details.
 	// Sets the list of selected repositories that are enabled for GitHub Actions in an organization. Only available when 'enabled_repositories' = 'selected'.
 	EnabledRepositoriesConfig []EnabledRepositoriesConfigInitParameters `json:"enabledRepositoriesConfig,omitempty" tf:"enabled_repositories_config,omitempty"`
+
+	// Whether pinning to a specific SHA is required for all actions and reusable workflows in an organization.
+	ShaPinningRequired *bool `json:"shaPinningRequired,omitempty" tf:"sha_pinning_required,omitempty"`
 }
 
 type OrganizationPermissionsObservation struct {
@@ -128,6 +131,9 @@ type OrganizationPermissionsObservation struct {
 	EnabledRepositoriesConfig []EnabledRepositoriesConfigObservation `json:"enabledRepositoriesConfig,omitempty" tf:"enabled_repositories_config,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Whether pinning to a specific SHA is required for all actions and reusable workflows in an organization.
+	ShaPinningRequired *bool `json:"shaPinningRequired,omitempty" tf:"sha_pinning_required,omitempty"`
 }
 
 type OrganizationPermissionsParameters struct {
@@ -151,6 +157,10 @@ type OrganizationPermissionsParameters struct {
 	// Sets the list of selected repositories that are enabled for GitHub Actions in an organization. Only available when 'enabled_repositories' = 'selected'.
 	// +kubebuilder:validation:Optional
 	EnabledRepositoriesConfig []EnabledRepositoriesConfigParameters `json:"enabledRepositoriesConfig,omitempty" tf:"enabled_repositories_config,omitempty"`
+
+	// Whether pinning to a specific SHA is required for all actions and reusable workflows in an organization.
+	// +kubebuilder:validation:Optional
+	ShaPinningRequired *bool `json:"shaPinningRequired,omitempty" tf:"sha_pinning_required,omitempty"`
 }
 
 // OrganizationPermissionsSpec defines the desired state of OrganizationPermissions

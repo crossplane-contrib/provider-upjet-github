@@ -78,47 +78,47 @@ type BranchNamePatternParameters struct {
 type BypassActorsInitParameters struct {
 
 	// (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
-	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
+	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`. Some resources such as DeployKey do not have an ID and this should be omitted.
 	ActorID *int64 `json:"actorId,omitempty" tf:"actor_id,omitempty"`
 
 	// (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
-	// The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
+	// The type of actor that can bypass a ruleset. See https://docs.github.com/en/rest/repos/rules for more information.
 	ActorType *string `json:"actorType,omitempty" tf:"actor_type,omitempty"`
 
 	// (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
-	// When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
+	// When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`, `exempt`.
 	BypassMode *string `json:"bypassMode,omitempty" tf:"bypass_mode,omitempty"`
 }
 
 type BypassActorsObservation struct {
 
 	// (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
-	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
+	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`. Some resources such as DeployKey do not have an ID and this should be omitted.
 	ActorID *int64 `json:"actorId,omitempty" tf:"actor_id,omitempty"`
 
 	// (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
-	// The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
+	// The type of actor that can bypass a ruleset. See https://docs.github.com/en/rest/repos/rules for more information.
 	ActorType *string `json:"actorType,omitempty" tf:"actor_type,omitempty"`
 
 	// (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
-	// When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
+	// When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`, `exempt`.
 	BypassMode *string `json:"bypassMode,omitempty" tf:"bypass_mode,omitempty"`
 }
 
 type BypassActorsParameters struct {
 
 	// (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
-	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
+	// The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`. Some resources such as DeployKey do not have an ID and this should be omitted.
 	// +kubebuilder:validation:Optional
-	ActorID *int64 `json:"actorId" tf:"actor_id,omitempty"`
+	ActorID *int64 `json:"actorId,omitempty" tf:"actor_id,omitempty"`
 
 	// (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
-	// The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
+	// The type of actor that can bypass a ruleset. See https://docs.github.com/en/rest/repos/rules for more information.
 	// +kubebuilder:validation:Optional
 	ActorType *string `json:"actorType" tf:"actor_type,omitempty"`
 
 	// (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
-	// When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
+	// When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`, `exempt`.
 	// +kubebuilder:validation:Optional
 	BypassMode *string `json:"bypassMode" tf:"bypass_mode,omitempty"`
 }
@@ -325,6 +325,114 @@ type ConditionsParameters struct {
 	RefName []RefNameParameters `json:"refName" tf:"ref_name,omitempty"`
 }
 
+type CopilotCodeReviewInitParameters struct {
+
+	// Copilot automatically reviews draft pull requests before they are marked as ready for review. Defaults to `false`.
+	ReviewDraftPullRequests *bool `json:"reviewDraftPullRequests,omitempty" tf:"review_draft_pull_requests,omitempty"`
+
+	// Copilot automatically reviews each new push to the pull request. Defaults to `false`.
+	ReviewOnPush *bool `json:"reviewOnPush,omitempty" tf:"review_on_push,omitempty"`
+}
+
+type CopilotCodeReviewObservation struct {
+
+	// Copilot automatically reviews draft pull requests before they are marked as ready for review. Defaults to `false`.
+	ReviewDraftPullRequests *bool `json:"reviewDraftPullRequests,omitempty" tf:"review_draft_pull_requests,omitempty"`
+
+	// Copilot automatically reviews each new push to the pull request. Defaults to `false`.
+	ReviewOnPush *bool `json:"reviewOnPush,omitempty" tf:"review_on_push,omitempty"`
+}
+
+type CopilotCodeReviewParameters struct {
+
+	// Copilot automatically reviews draft pull requests before they are marked as ready for review. Defaults to `false`.
+	// +kubebuilder:validation:Optional
+	ReviewDraftPullRequests *bool `json:"reviewDraftPullRequests,omitempty" tf:"review_draft_pull_requests,omitempty"`
+
+	// Copilot automatically reviews each new push to the pull request. Defaults to `false`.
+	// +kubebuilder:validation:Optional
+	ReviewOnPush *bool `json:"reviewOnPush,omitempty" tf:"review_on_push,omitempty"`
+}
+
+type FileExtensionRestrictionInitParameters struct {
+
+	// A list of file extensions.
+	// +listType=set
+	RestrictedFileExtensions []*string `json:"restrictedFileExtensions,omitempty" tf:"restricted_file_extensions,omitempty"`
+}
+
+type FileExtensionRestrictionObservation struct {
+
+	// A list of file extensions.
+	// +listType=set
+	RestrictedFileExtensions []*string `json:"restrictedFileExtensions,omitempty" tf:"restricted_file_extensions,omitempty"`
+}
+
+type FileExtensionRestrictionParameters struct {
+
+	// A list of file extensions.
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	RestrictedFileExtensions []*string `json:"restrictedFileExtensions" tf:"restricted_file_extensions,omitempty"`
+}
+
+type FilePathRestrictionInitParameters struct {
+
+	// The file paths that are restricted from being pushed to the commit graph.
+	RestrictedFilePaths []*string `json:"restrictedFilePaths,omitempty" tf:"restricted_file_paths,omitempty"`
+}
+
+type FilePathRestrictionObservation struct {
+
+	// The file paths that are restricted from being pushed to the commit graph.
+	RestrictedFilePaths []*string `json:"restrictedFilePaths,omitempty" tf:"restricted_file_paths,omitempty"`
+}
+
+type FilePathRestrictionParameters struct {
+
+	// The file paths that are restricted from being pushed to the commit graph.
+	// +kubebuilder:validation:Optional
+	RestrictedFilePaths []*string `json:"restrictedFilePaths" tf:"restricted_file_paths,omitempty"`
+}
+
+type MaxFilePathLengthInitParameters struct {
+
+	// The maximum allowed length of a file path.
+	MaxFilePathLength *int64 `json:"maxFilePathLength,omitempty" tf:"max_file_path_length,omitempty"`
+}
+
+type MaxFilePathLengthObservation struct {
+
+	// The maximum allowed length of a file path.
+	MaxFilePathLength *int64 `json:"maxFilePathLength,omitempty" tf:"max_file_path_length,omitempty"`
+}
+
+type MaxFilePathLengthParameters struct {
+
+	// The maximum allowed length of a file path.
+	// +kubebuilder:validation:Optional
+	MaxFilePathLength *int64 `json:"maxFilePathLength" tf:"max_file_path_length,omitempty"`
+}
+
+type MaxFileSizeInitParameters struct {
+
+	// The maximum allowed size of a file in megabytes (MB). Valid range is 1-100 MB.
+	MaxFileSize *int64 `json:"maxFileSize,omitempty" tf:"max_file_size,omitempty"`
+}
+
+type MaxFileSizeObservation struct {
+
+	// The maximum allowed size of a file in megabytes (MB). Valid range is 1-100 MB.
+	MaxFileSize *int64 `json:"maxFileSize,omitempty" tf:"max_file_size,omitempty"`
+}
+
+type MaxFileSizeParameters struct {
+
+	// The maximum allowed size of a file in megabytes (MB). Valid range is 1-100 MB.
+	// +kubebuilder:validation:Optional
+	MaxFileSize *int64 `json:"maxFileSize" tf:"max_file_size,omitempty"`
+}
+
 type MergeQueueInitParameters struct {
 
 	// (Number)Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.
@@ -479,7 +587,7 @@ type RepositoryRulesetInitParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (String) Name of the repository to apply rulset to.
-	// Name of the repository to apply rulset to.
+	// Name of the repository to apply ruleset to.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
@@ -496,7 +604,7 @@ type RepositoryRulesetInitParameters struct {
 	Rules []RulesInitParameters `json:"rules,omitempty" tf:"rules,omitempty"`
 
 	// (String) Possible values are branch and tag.
-	// Possible values are `branch` and `tag`.
+	// Possible values are branch, push and tag
 	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 }
 
@@ -528,7 +636,7 @@ type RepositoryRulesetObservation struct {
 	NodeID *string `json:"nodeId,omitempty" tf:"node_id,omitempty"`
 
 	// (String) Name of the repository to apply rulset to.
-	// Name of the repository to apply rulset to.
+	// Name of the repository to apply ruleset to.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
 	// (Block List, Min: 1, Max: 1) Rules within the ruleset. (see below for nested schema)
@@ -540,7 +648,7 @@ type RepositoryRulesetObservation struct {
 	RulesetID *int64 `json:"rulesetId,omitempty" tf:"ruleset_id,omitempty"`
 
 	// (String) Possible values are branch and tag.
-	// Possible values are `branch` and `tag`.
+	// Possible values are branch, push and tag
 	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 }
 
@@ -567,7 +675,7 @@ type RepositoryRulesetParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// (String) Name of the repository to apply rulset to.
-	// Name of the repository to apply rulset to.
+	// Name of the repository to apply ruleset to.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
@@ -586,7 +694,7 @@ type RepositoryRulesetParameters struct {
 	Rules []RulesParameters `json:"rules,omitempty" tf:"rules,omitempty"`
 
 	// (String) Possible values are branch and tag.
-	// Possible values are `branch` and `tag`.
+	// Possible values are branch, push and tag
 	// +kubebuilder:validation:Optional
 	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 }
@@ -718,6 +826,74 @@ type RequiredDeploymentsParameters struct {
 	RequiredDeploymentEnvironments []*string `json:"requiredDeploymentEnvironments" tf:"required_deployment_environments,omitempty"`
 }
 
+type RequiredReviewersInitParameters struct {
+
+	// File patterns (fnmatch syntax) that this reviewer must approve.
+	FilePatterns []*string `json:"filePatterns,omitempty" tf:"file_patterns,omitempty"`
+
+	// Minimum number of approvals required from this reviewer. Set to 0 to make approval optional.
+	MinimumApprovals *int64 `json:"minimumApprovals,omitempty" tf:"minimum_approvals,omitempty"`
+
+	// The reviewer that must review matching files.
+	Reviewer []ReviewerInitParameters `json:"reviewer,omitempty" tf:"reviewer,omitempty"`
+}
+
+type RequiredReviewersObservation struct {
+
+	// File patterns (fnmatch syntax) that this reviewer must approve.
+	FilePatterns []*string `json:"filePatterns,omitempty" tf:"file_patterns,omitempty"`
+
+	// Minimum number of approvals required from this reviewer. Set to 0 to make approval optional.
+	MinimumApprovals *int64 `json:"minimumApprovals,omitempty" tf:"minimum_approvals,omitempty"`
+
+	// The reviewer that must review matching files.
+	Reviewer []ReviewerObservation `json:"reviewer,omitempty" tf:"reviewer,omitempty"`
+}
+
+type RequiredReviewersParameters struct {
+
+	// File patterns (fnmatch syntax) that this reviewer must approve.
+	// +kubebuilder:validation:Optional
+	FilePatterns []*string `json:"filePatterns" tf:"file_patterns,omitempty"`
+
+	// Minimum number of approvals required from this reviewer. Set to 0 to make approval optional.
+	// +kubebuilder:validation:Optional
+	MinimumApprovals *int64 `json:"minimumApprovals" tf:"minimum_approvals,omitempty"`
+
+	// The reviewer that must review matching files.
+	// +kubebuilder:validation:Optional
+	Reviewer []ReviewerParameters `json:"reviewer" tf:"reviewer,omitempty"`
+}
+
+type ReviewerInitParameters struct {
+
+	// The ID of the reviewer that must review.
+	ID *int64 `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The type of reviewer. Currently only `Team` is supported.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type ReviewerObservation struct {
+
+	// The ID of the reviewer that must review.
+	ID *int64 `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The type of reviewer. Currently only `Team` is supported.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type ReviewerParameters struct {
+
+	// The ID of the reviewer that must review.
+	// +kubebuilder:validation:Optional
+	ID *int64 `json:"id" tf:"id,omitempty"`
+
+	// The type of reviewer. Currently only `Team` is supported.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
 type RulesInitParameters struct {
 
 	// (Block List, Max: 1) Parameters to be used for the branch_name_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations. Conflicts with tag_name_pattern as it only applied to rulesets with target branch. (see below for nested schema)
@@ -736,6 +912,9 @@ type RulesInitParameters struct {
 	// Parameters to be used for the committer_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations.
 	CommitterEmailPattern []CommitterEmailPatternInitParameters `json:"committerEmailPattern,omitempty" tf:"committer_email_pattern,omitempty"`
 
+	// Automatically request Copilot code review for new pull requests if the author has access to Copilot code review and their premium requests quota has not reached the limit.
+	CopilotCodeReview []CopilotCodeReviewInitParameters `json:"copilotCodeReview,omitempty" tf:"copilot_code_review,omitempty"`
+
 	// (Boolean) Only allow users with bypass permission to create matching refs.
 	// Only allow users with bypass permission to create matching refs.
 	Creation *bool `json:"creation,omitempty" tf:"creation,omitempty"`
@@ -743,6 +922,18 @@ type RulesInitParameters struct {
 	// (Boolean) Only allow users with bypass permissions to delete matching refs.
 	// Only allow users with bypass permissions to delete matching refs.
 	Deletion *bool `json:"deletion,omitempty" tf:"deletion,omitempty"`
+
+	// Prevent pushes based on file extensions.
+	FileExtensionRestriction []FileExtensionRestrictionInitParameters `json:"fileExtensionRestriction,omitempty" tf:"file_extension_restriction,omitempty"`
+
+	// Prevent commits that include changes in specified file paths from being pushed to the commit graph.
+	FilePathRestriction []FilePathRestrictionInitParameters `json:"filePathRestriction,omitempty" tf:"file_path_restriction,omitempty"`
+
+	// Prevent pushes based on file path length.
+	MaxFilePathLength []MaxFilePathLengthInitParameters `json:"maxFilePathLength,omitempty" tf:"max_file_path_length,omitempty"`
+
+	// Prevent pushes based on file size.
+	MaxFileSize []MaxFileSizeInitParameters `json:"maxFileSize,omitempty" tf:"max_file_size,omitempty"`
 
 	// (Block List, Max: 1) Merges must be performed via a merge queue.
 	// Merges must be performed via a merge queue.
@@ -807,6 +998,9 @@ type RulesObservation struct {
 	// Parameters to be used for the committer_email_pattern rule. This rule only applies to repositories within an enterprise, it cannot be applied to repositories owned by individuals or regular organizations.
 	CommitterEmailPattern []CommitterEmailPatternObservation `json:"committerEmailPattern,omitempty" tf:"committer_email_pattern,omitempty"`
 
+	// Automatically request Copilot code review for new pull requests if the author has access to Copilot code review and their premium requests quota has not reached the limit.
+	CopilotCodeReview []CopilotCodeReviewObservation `json:"copilotCodeReview,omitempty" tf:"copilot_code_review,omitempty"`
+
 	// (Boolean) Only allow users with bypass permission to create matching refs.
 	// Only allow users with bypass permission to create matching refs.
 	Creation *bool `json:"creation,omitempty" tf:"creation,omitempty"`
@@ -814,6 +1008,18 @@ type RulesObservation struct {
 	// (Boolean) Only allow users with bypass permissions to delete matching refs.
 	// Only allow users with bypass permissions to delete matching refs.
 	Deletion *bool `json:"deletion,omitempty" tf:"deletion,omitempty"`
+
+	// Prevent pushes based on file extensions.
+	FileExtensionRestriction []FileExtensionRestrictionObservation `json:"fileExtensionRestriction,omitempty" tf:"file_extension_restriction,omitempty"`
+
+	// Prevent commits that include changes in specified file paths from being pushed to the commit graph.
+	FilePathRestriction []FilePathRestrictionObservation `json:"filePathRestriction,omitempty" tf:"file_path_restriction,omitempty"`
+
+	// Prevent pushes based on file path length.
+	MaxFilePathLength []MaxFilePathLengthObservation `json:"maxFilePathLength,omitempty" tf:"max_file_path_length,omitempty"`
+
+	// Prevent pushes based on file size.
+	MaxFileSize []MaxFileSizeObservation `json:"maxFileSize,omitempty" tf:"max_file_size,omitempty"`
 
 	// (Block List, Max: 1) Merges must be performed via a merge queue.
 	// Merges must be performed via a merge queue.
@@ -882,6 +1088,10 @@ type RulesParameters struct {
 	// +kubebuilder:validation:Optional
 	CommitterEmailPattern []CommitterEmailPatternParameters `json:"committerEmailPattern,omitempty" tf:"committer_email_pattern,omitempty"`
 
+	// Automatically request Copilot code review for new pull requests if the author has access to Copilot code review and their premium requests quota has not reached the limit.
+	// +kubebuilder:validation:Optional
+	CopilotCodeReview []CopilotCodeReviewParameters `json:"copilotCodeReview,omitempty" tf:"copilot_code_review,omitempty"`
+
 	// (Boolean) Only allow users with bypass permission to create matching refs.
 	// Only allow users with bypass permission to create matching refs.
 	// +kubebuilder:validation:Optional
@@ -891,6 +1101,22 @@ type RulesParameters struct {
 	// Only allow users with bypass permissions to delete matching refs.
 	// +kubebuilder:validation:Optional
 	Deletion *bool `json:"deletion,omitempty" tf:"deletion,omitempty"`
+
+	// Prevent pushes based on file extensions.
+	// +kubebuilder:validation:Optional
+	FileExtensionRestriction []FileExtensionRestrictionParameters `json:"fileExtensionRestriction,omitempty" tf:"file_extension_restriction,omitempty"`
+
+	// Prevent commits that include changes in specified file paths from being pushed to the commit graph.
+	// +kubebuilder:validation:Optional
+	FilePathRestriction []FilePathRestrictionParameters `json:"filePathRestriction,omitempty" tf:"file_path_restriction,omitempty"`
+
+	// Prevent pushes based on file path length.
+	// +kubebuilder:validation:Optional
+	MaxFilePathLength []MaxFilePathLengthParameters `json:"maxFilePathLength,omitempty" tf:"max_file_path_length,omitempty"`
+
+	// Prevent pushes based on file size.
+	// +kubebuilder:validation:Optional
+	MaxFileSize []MaxFileSizeParameters `json:"maxFileSize,omitempty" tf:"max_file_size,omitempty"`
 
 	// (Block List, Max: 1) Merges must be performed via a merge queue.
 	// Merges must be performed via a merge queue.
@@ -950,6 +1176,9 @@ type RulesParameters struct {
 
 type RulesPullRequestInitParameters struct {
 
+	// Array of allowed merge methods. Allowed values include `merge`, `squash`, and `rebase`. At least one option must be enabled.
+	AllowedMergeMethods []*string `json:"allowedMergeMethods,omitempty" tf:"allowed_merge_methods,omitempty"`
+
 	// (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
 	// New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to `false`.
 	DismissStaleReviewsOnPush *bool `json:"dismissStaleReviewsOnPush,omitempty" tf:"dismiss_stale_reviews_on_push,omitempty"`
@@ -969,10 +1198,16 @@ type RulesPullRequestInitParameters struct {
 	// (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
 	// All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
 	RequiredReviewThreadResolution *bool `json:"requiredReviewThreadResolution,omitempty" tf:"required_review_thread_resolution,omitempty"`
+
+	// Require specific reviewers to approve pull requests targeting matching branches. Note: This feature is in beta and subject to change.
+	RequiredReviewers []RequiredReviewersInitParameters `json:"requiredReviewers,omitempty" tf:"required_reviewers,omitempty"`
 }
 
 type RulesPullRequestObservation struct {
 
+	// Array of allowed merge methods. Allowed values include `merge`, `squash`, and `rebase`. At least one option must be enabled.
+	AllowedMergeMethods []*string `json:"allowedMergeMethods,omitempty" tf:"allowed_merge_methods,omitempty"`
+
 	// (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
 	// New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to `false`.
 	DismissStaleReviewsOnPush *bool `json:"dismissStaleReviewsOnPush,omitempty" tf:"dismiss_stale_reviews_on_push,omitempty"`
@@ -992,10 +1227,17 @@ type RulesPullRequestObservation struct {
 	// (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
 	// All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
 	RequiredReviewThreadResolution *bool `json:"requiredReviewThreadResolution,omitempty" tf:"required_review_thread_resolution,omitempty"`
+
+	// Require specific reviewers to approve pull requests targeting matching branches. Note: This feature is in beta and subject to change.
+	RequiredReviewers []RequiredReviewersObservation `json:"requiredReviewers,omitempty" tf:"required_reviewers,omitempty"`
 }
 
 type RulesPullRequestParameters struct {
 
+	// Array of allowed merge methods. Allowed values include `merge`, `squash`, and `rebase`. At least one option must be enabled.
+	// +kubebuilder:validation:Optional
+	AllowedMergeMethods []*string `json:"allowedMergeMethods,omitempty" tf:"allowed_merge_methods,omitempty"`
+
 	// (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
 	// New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to `false`.
 	// +kubebuilder:validation:Optional
@@ -1020,6 +1262,10 @@ type RulesPullRequestParameters struct {
 	// All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
 	// +kubebuilder:validation:Optional
 	RequiredReviewThreadResolution *bool `json:"requiredReviewThreadResolution,omitempty" tf:"required_review_thread_resolution,omitempty"`
+
+	// Require specific reviewers to approve pull requests targeting matching branches. Note: This feature is in beta and subject to change.
+	// +kubebuilder:validation:Optional
+	RequiredReviewers []RequiredReviewersParameters `json:"requiredReviewers,omitempty" tf:"required_reviewers,omitempty"`
 }
 
 type RulesRequiredStatusChecksInitParameters struct {
