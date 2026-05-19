@@ -109,6 +109,9 @@ type EnvironmentObservation struct {
 	// The repository of the environment.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
+	// The ID of the GitHub repository.
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+
 	// The environment reviewers configuration.
 	Reviewers []ReviewersObservation `json:"reviewers,omitempty" tf:"reviewers,omitempty"`
 

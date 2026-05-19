@@ -1,0 +1,13 @@
+apiVersion: actions.github.upbound.io/v1alpha1
+kind: ActionsHostedRunner
+metadata:
+  name: test-hosted-runner
+spec:
+  forProvider:
+    name: test-hosted-runner
+    image:
+    - id: ubuntu-latest
+      source: github
+    size: 2-core
+  providerConfigRef:
+    name: default

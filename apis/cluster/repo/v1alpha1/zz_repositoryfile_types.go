@@ -137,6 +137,9 @@ type RepositoryFileObservation struct {
 	// The repository name
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
+	// The repository ID
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+
 	// The SHA blob of the file.
 	// The blob SHA of the file
 	Sha *string `json:"sha,omitempty" tf:"sha,omitempty"`

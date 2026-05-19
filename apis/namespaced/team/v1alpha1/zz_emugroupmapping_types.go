@@ -42,7 +42,13 @@ type EmuGroupMappingObservation struct {
 	// Integer corresponding to the external group ID to be linked.
 	GroupID *int64 `json:"groupId,omitempty" tf:"group_id,omitempty"`
 
+	// Name of the external group.
+	GroupName *string `json:"groupName,omitempty" tf:"group_name,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// ID of the GitHub team.
+	TeamID *int64 `json:"teamId,omitempty" tf:"team_id,omitempty"`
 
 	// Slug of the GitHub team
 	// Slug of the GitHub team.

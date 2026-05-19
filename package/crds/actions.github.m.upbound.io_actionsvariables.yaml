@@ -348,6 +348,10 @@ spec:
                       Name of the repository
                       Name of the repository.
                     type: string
+                  repositoryId:
+                    description: ID of the repository.
+                    format: int64
+                    type: integer
                   updatedAt:
                     description: |-
                       Date of actions_variable update.

@@ -12,6 +12,7 @@ import (
 	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actions"
+	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actionshostedrunner"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actionsenvironmentsecret"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actionsenvironmentvariable"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actionsorganizationpermissions"
@@ -69,6 +70,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
 		actions.Configure,
+		actionshostedrunner.Configure,
 		actionsenvironmentsecret.Configure,
 		actionsenvironmentvariable.Configure,
 		actionsorganizationpermissions.Configure,

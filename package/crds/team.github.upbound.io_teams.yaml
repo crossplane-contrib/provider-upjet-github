@@ -93,6 +93,10 @@ spec:
                       The name of the team.
                       The name of the team.
                     type: string
+                  notificationSetting:
+                    description: The notification setting for the team. Must be one
+                      of 'notifications_enabled' or 'notifications_disabled'.
+                    type: string
                   parentTeamId:
                     description: |-
                       The ID or slug of the parent team, if this is a nested team.
@@ -149,6 +153,10 @@ spec:
                     description: |-
                       The name of the team.
                       The name of the team.
+                    type: string
+                  notificationSetting:
+                    description: The notification setting for the team. Must be one
+                      of 'notifications_enabled' or 'notifications_disabled'.
                     type: string
                   parentTeamId:
                     description: |-
@@ -302,6 +310,10 @@ spec:
                     description: |-
                       The Node ID of the created team.
                       The Node ID of the created team.
+                    type: string
+                  notificationSetting:
+                    description: The notification setting for the team. Must be one
+                      of 'notifications_enabled' or 'notifications_disabled'.
                     type: string
                   parentTeamId:
                     description: |-

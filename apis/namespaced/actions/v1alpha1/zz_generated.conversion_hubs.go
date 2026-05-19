@@ -19,6 +19,9 @@ func (tr *EnvironmentSecret) Hub() {}
 func (tr *EnvironmentVariable) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *HostedRunner) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *OrganizationActionsSecret) Hub() {}
 
 // Hub marks this type as a conversion hub.

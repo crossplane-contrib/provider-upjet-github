@@ -68,30 +68,31 @@ spec:
                         actorId:
                           description: |-
                             (Number) The ID of the actor that can bypass a ruleset.
-                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
+                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`. Some resources such as DeployKey do not have an ID and this should be omitted.
                           format: int64
                           type: integer
                         actorType:
                           description: |-
                             (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
-                            The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
+                            The type of actor that can bypass a ruleset. Can be one of: `Integration`, `OrganizationAdmin`, `RepositoryRole`, `Team`, or `DeployKey`.
                           type: string
                         bypassMode:
                           description: |-
                             (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
-                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
+                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`, `exempt`.
                           type: string
                       type: object
                     type: array
                   conditions:
                     description: |-
                       (Block List, Max: 1) Parameters for an organization ruleset condition. ref_name is required alongside one of repository_name or repository_id. (see below for nested schema)
-                      Parameters for an organization ruleset condition. `ref_name` is required alongside one of `repository_name` or `repository_id`.
+                      Parameters for an organization ruleset condition.The branch and tag rulesets conditions object should contain both repository_name and ref_name properties, or both repository_id and ref_name properties, or both repository_property and ref_name properties. The push rulesets conditions object does not require the ref_name property.
                     items:
                       properties:
                         refName:
-                          description: '(Block List, Min: 1, Max: 1) (see below for
-                            nested schema)'
+                          description: |-
+                            (Block List, Min: 1, Max: 1) (see below for nested schema)
+                            Targets refs that match the specified patterns. Required for `branch` and `tag` targets.
                           items:
                             properties:
                               exclude:
@@ -113,14 +114,15 @@ spec:
                         repositoryId:
                           description: |-
                             (List of Number) The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass. Conflicts with repository_name.
-                            The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass.
+                            The repository IDs that the ruleset applies to. One of these IDs must match for the ruleset to apply.
                           items:
                             format: int64
                             type: integer
                           type: array
                         repositoryName:
-                          description: '(Block List, Max: 1) Conflicts with repository_id.
-                            (see below for nested schema)'
+                          description: |-
+                            (Block List, Max: 1) Conflicts with repository_id. (see below for nested schema)
+                            Targets repositories that match the specified name patterns.
                           items:
                             properties:
                               exclude:
@@ -143,12 +145,67 @@ spec:
                                 type: boolean
                             type: object
                           type: array
+                        repositoryProperty:
+                          description: Conditions to target repositories by custom
+                            or system properties.
+                          items:
+                            properties:
+                              exclude:
+                                description: |-
+                                  (List of String) Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
+                                  The repository properties and values to exclude. The ruleset will not apply if any of these properties match.
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) How this rule will appear to users.
+                                        The name of the repository property to target.
+                                      type: string
+                                    propertyValues:
+                                      description: The values to match for the repository
+                                        property.
+                                      items:
+                                        type: string
+                                      type: array
+                                    source:
+                                      description: 'The source of the repository property.
+                                        Defaults to ''custom'' if not specified. Can
+                                        be one of: custom, system'
+                                      type: string
+                                  type: object
+                                type: array
+                              include:
+                                description: |-
+                                  (List of String) Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~ALL to include all repositories.
+                                  The repository properties and values to include. All of these properties must match for the condition to pass.
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) How this rule will appear to users.
+                                        The name of the repository property to target.
+                                      type: string
+                                    propertyValues:
+                                      description: The values to match for the repository
+                                        property.
+                                      items:
+                                        type: string
+                                      type: array
+                                    source:
+                                      description: 'The source of the repository property.
+                                        Defaults to ''custom'' if not specified. Can
+                                        be one of: custom, system'
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                       type: object
                     type: array
                   enforcement:
                     description: |-
                       (String) Possible values for Enforcement are disabled, active, evaluate. Note: evaluate is currently only supported for owners of type organization.
-                      Possible values for Enforcement are `disabled`, `active`, `evaluate`. Note: `evaluate` is currently only supported for owners of type `organization`.
+                      The enforcement level of the ruleset. `evaluate` allows admins to test rules before enforcing them. Possible values are `disabled`, `active`, and `evaluate`. Note: `evaluate` is only available for Enterprise plans.
                     type: string
                   name:
                     description: |-
@@ -273,6 +330,24 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        copilotCodeReview:
+                          description: Automatically request Copilot code review for
+                            new pull requests if the author has access to Copilot
+                            code review and their premium requests quota has not reached
+                            the limit.
+                          items:
+                            properties:
+                              reviewDraftPullRequests:
+                                description: Copilot automatically reviews draft pull
+                                  requests before they are marked as ready for review.
+                                  Defaults to `false`.
+                                type: boolean
+                              reviewOnPush:
+                                description: Copilot automatically reviews each new
+                                  push to the pull request. Defaults to `false`.
+                                type: boolean
+                            type: object
+                          type: array
                         creation:
                           description: |-
                             (Boolean) Only allow users with bypass permission to create matching refs.
@@ -283,10 +358,58 @@ spec:
                             (Boolean) Only allow users with bypass permissions to delete matching refs.
                             Only allow users with bypass permissions to delete matching refs.
                           type: boolean
+                        fileExtensionRestriction:
+                          description: Prevent pushes based on file extensions.
+                          items:
+                            properties:
+                              restrictedFileExtensions:
+                                description: The file extensions that are restricted
+                                  from being pushed to the commit graph.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                          type: array
+                        filePathRestriction:
+                          description: Prevent commits that include changes in specified
+                            file paths from being pushed to the commit graph.
+                          items:
+                            properties:
+                              restrictedFilePaths:
+                                description: The file paths that are restricted from
+                                  being pushed to the commit graph.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        maxFilePathLength:
+                          description: Prevent pushes based on file path length.
+                          items:
+                            properties:
+                              maxFilePathLength:
+                                description: The maximum allowed length of a file
+                                  path.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
+                        maxFileSize:
+                          description: Prevent pushes based on file size.
+                          items:
+                            properties:
+                              maxFileSize:
+                                description: The maximum allowed size of a file in
+                                  megabytes (MB). Valid range is 1-100 MB.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
                         nonFastForward:
                           description: |-
                             (Boolean) Prevent users with push access from force pushing to branches.
-                            Prevent users with push access from force pushing to branches.
+                            Prevent users with push access from force pushing to refs.
                           type: boolean
                         pullRequest:
                           description: |-
@@ -294,6 +417,13 @@ spec:
                             Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
                           items:
                             properties:
+                              allowedMergeMethods:
+                                description: Array of allowed merge methods. Allowed
+                                  values include `merge`, `squash`, and `rebase`.
+                                  At least one option must be enabled.
+                                items:
+                                  type: string
+                                type: array
                               dismissStaleReviewsOnPush:
                                 description: |-
                                   (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
@@ -320,6 +450,42 @@ spec:
                                   (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
                                   All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
                                 type: boolean
+                              requiredReviewers:
+                                description: 'Require specific reviewers to approve
+                                  pull requests targeting matching branches. Note:
+                                  This feature is in beta and subject to change.'
+                                items:
+                                  properties:
+                                    filePatterns:
+                                      description: File patterns (fnmatch syntax)
+                                        that this reviewer must approve.
+                                      items:
+                                        type: string
+                                      type: array
+                                    minimumApprovals:
+                                      description: Minimum number of approvals required
+                                        from this reviewer. Set to 0 to make approval
+                                        optional.
+                                      format: int64
+                                      type: integer
+                                    reviewer:
+                                      description: The reviewer that must review matching
+                                        files.
+                                      items:
+                                        properties:
+                                          id:
+                                            description: The ID of the reviewer that
+                                              must review.
+                                            format: int64
+                                            type: integer
+                                          type:
+                                            description: The type of reviewer. Currently
+                                              only `Team` is supported.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         requiredCodeScanning:
@@ -369,6 +535,10 @@ spec:
                             Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.
                           items:
                             properties:
+                              doNotEnforceOnCreate:
+                                description: Allow repositories and branches to be
+                                  created if a check would otherwise prohibit it.
+                                type: boolean
                               requiredCheck:
                                 description: |-
                                   (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
@@ -401,6 +571,10 @@ spec:
                             Choose which Actions workflows must pass before branches can be merged into a branch that matches this rule.
                           items:
                             properties:
+                              doNotEnforceOnCreate:
+                                description: Allow repositories and branches to be
+                                  created if a check would otherwise prohibit it.
+                                type: boolean
                               requiredWorkflow:
                                 description: |-
                                   (Block Set, Min: 1) Actions workflows that are required. Multiple can be defined. (see below for nested schema)
@@ -465,7 +639,7 @@ spec:
                   target:
                     description: |-
                       (String) Possible values are branch and tag.
-                      Possible values are `branch`, `tag` and `push`. Note: The `push` target is in beta and is subject to change.
+                      The target of the ruleset. Possible values are branch, tag and push.
                     type: string
                 type: object
               initProvider:
@@ -490,30 +664,31 @@ spec:
                         actorId:
                           description: |-
                             (Number) The ID of the actor that can bypass a ruleset.
-                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
+                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`. Some resources such as DeployKey do not have an ID and this should be omitted.
                           format: int64
                           type: integer
                         actorType:
                           description: |-
                             (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
-                            The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
+                            The type of actor that can bypass a ruleset. Can be one of: `Integration`, `OrganizationAdmin`, `RepositoryRole`, `Team`, or `DeployKey`.
                           type: string
                         bypassMode:
                           description: |-
                             (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
-                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
+                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`, `exempt`.
                           type: string
                       type: object
                     type: array
                   conditions:
                     description: |-
                       (Block List, Max: 1) Parameters for an organization ruleset condition. ref_name is required alongside one of repository_name or repository_id. (see below for nested schema)
-                      Parameters for an organization ruleset condition. `ref_name` is required alongside one of `repository_name` or `repository_id`.
+                      Parameters for an organization ruleset condition.The branch and tag rulesets conditions object should contain both repository_name and ref_name properties, or both repository_id and ref_name properties, or both repository_property and ref_name properties. The push rulesets conditions object does not require the ref_name property.
                     items:
                       properties:
                         refName:
-                          description: '(Block List, Min: 1, Max: 1) (see below for
-                            nested schema)'
+                          description: |-
+                            (Block List, Min: 1, Max: 1) (see below for nested schema)
+                            Targets refs that match the specified patterns. Required for `branch` and `tag` targets.
                           items:
                             properties:
                               exclude:
@@ -535,14 +710,15 @@ spec:
                         repositoryId:
                           description: |-
                             (List of Number) The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass. Conflicts with repository_name.
-                            The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass.
+                            The repository IDs that the ruleset applies to. One of these IDs must match for the ruleset to apply.
                           items:
                             format: int64
                             type: integer
                           type: array
                         repositoryName:
-                          description: '(Block List, Max: 1) Conflicts with repository_id.
-                            (see below for nested schema)'
+                          description: |-
+                            (Block List, Max: 1) Conflicts with repository_id. (see below for nested schema)
+                            Targets repositories that match the specified name patterns.
                           items:
                             properties:
                               exclude:
@@ -565,12 +741,67 @@ spec:
                                 type: boolean
                             type: object
                           type: array
+                        repositoryProperty:
+                          description: Conditions to target repositories by custom
+                            or system properties.
+                          items:
+                            properties:
+                              exclude:
+                                description: |-
+                                  (List of String) Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
+                                  The repository properties and values to exclude. The ruleset will not apply if any of these properties match.
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) How this rule will appear to users.
+                                        The name of the repository property to target.
+                                      type: string
+                                    propertyValues:
+                                      description: The values to match for the repository
+                                        property.
+                                      items:
+                                        type: string
+                                      type: array
+                                    source:
+                                      description: 'The source of the repository property.
+                                        Defaults to ''custom'' if not specified. Can
+                                        be one of: custom, system'
+                                      type: string
+                                  type: object
+                                type: array
+                              include:
+                                description: |-
+                                  (List of String) Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~ALL to include all repositories.
+                                  The repository properties and values to include. All of these properties must match for the condition to pass.
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) How this rule will appear to users.
+                                        The name of the repository property to target.
+                                      type: string
+                                    propertyValues:
+                                      description: The values to match for the repository
+                                        property.
+                                      items:
+                                        type: string
+                                      type: array
+                                    source:
+                                      description: 'The source of the repository property.
+                                        Defaults to ''custom'' if not specified. Can
+                                        be one of: custom, system'
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                       type: object
                     type: array
                   enforcement:
                     description: |-
                       (String) Possible values for Enforcement are disabled, active, evaluate. Note: evaluate is currently only supported for owners of type organization.
-                      Possible values for Enforcement are `disabled`, `active`, `evaluate`. Note: `evaluate` is currently only supported for owners of type `organization`.
+                      The enforcement level of the ruleset. `evaluate` allows admins to test rules before enforcing them. Possible values are `disabled`, `active`, and `evaluate`. Note: `evaluate` is only available for Enterprise plans.
                     type: string
                   name:
                     description: |-
@@ -695,6 +926,24 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        copilotCodeReview:
+                          description: Automatically request Copilot code review for
+                            new pull requests if the author has access to Copilot
+                            code review and their premium requests quota has not reached
+                            the limit.
+                          items:
+                            properties:
+                              reviewDraftPullRequests:
+                                description: Copilot automatically reviews draft pull
+                                  requests before they are marked as ready for review.
+                                  Defaults to `false`.
+                                type: boolean
+                              reviewOnPush:
+                                description: Copilot automatically reviews each new
+                                  push to the pull request. Defaults to `false`.
+                                type: boolean
+                            type: object
+                          type: array
                         creation:
                           description: |-
                             (Boolean) Only allow users with bypass permission to create matching refs.
@@ -705,10 +954,58 @@ spec:
                             (Boolean) Only allow users with bypass permissions to delete matching refs.
                             Only allow users with bypass permissions to delete matching refs.
                           type: boolean
+                        fileExtensionRestriction:
+                          description: Prevent pushes based on file extensions.
+                          items:
+                            properties:
+                              restrictedFileExtensions:
+                                description: The file extensions that are restricted
+                                  from being pushed to the commit graph.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                          type: array
+                        filePathRestriction:
+                          description: Prevent commits that include changes in specified
+                            file paths from being pushed to the commit graph.
+                          items:
+                            properties:
+                              restrictedFilePaths:
+                                description: The file paths that are restricted from
+                                  being pushed to the commit graph.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        maxFilePathLength:
+                          description: Prevent pushes based on file path length.
+                          items:
+                            properties:
+                              maxFilePathLength:
+                                description: The maximum allowed length of a file
+                                  path.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
+                        maxFileSize:
+                          description: Prevent pushes based on file size.
+                          items:
+                            properties:
+                              maxFileSize:
+                                description: The maximum allowed size of a file in
+                                  megabytes (MB). Valid range is 1-100 MB.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
                         nonFastForward:
                           description: |-
                             (Boolean) Prevent users with push access from force pushing to branches.
-                            Prevent users with push access from force pushing to branches.
+                            Prevent users with push access from force pushing to refs.
                           type: boolean
                         pullRequest:
                           description: |-
@@ -716,6 +1013,13 @@ spec:
                             Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
                           items:
                             properties:
+                              allowedMergeMethods:
+                                description: Array of allowed merge methods. Allowed
+                                  values include `merge`, `squash`, and `rebase`.
+                                  At least one option must be enabled.
+                                items:
+                                  type: string
+                                type: array
                               dismissStaleReviewsOnPush:
                                 description: |-
                                   (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
@@ -742,6 +1046,42 @@ spec:
                                   (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
                                   All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
                                 type: boolean
+                              requiredReviewers:
+                                description: 'Require specific reviewers to approve
+                                  pull requests targeting matching branches. Note:
+                                  This feature is in beta and subject to change.'
+                                items:
+                                  properties:
+                                    filePatterns:
+                                      description: File patterns (fnmatch syntax)
+                                        that this reviewer must approve.
+                                      items:
+                                        type: string
+                                      type: array
+                                    minimumApprovals:
+                                      description: Minimum number of approvals required
+                                        from this reviewer. Set to 0 to make approval
+                                        optional.
+                                      format: int64
+                                      type: integer
+                                    reviewer:
+                                      description: The reviewer that must review matching
+                                        files.
+                                      items:
+                                        properties:
+                                          id:
+                                            description: The ID of the reviewer that
+                                              must review.
+                                            format: int64
+                                            type: integer
+                                          type:
+                                            description: The type of reviewer. Currently
+                                              only `Team` is supported.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         requiredCodeScanning:
@@ -791,6 +1131,10 @@ spec:
                             Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.
                           items:
                             properties:
+                              doNotEnforceOnCreate:
+                                description: Allow repositories and branches to be
+                                  created if a check would otherwise prohibit it.
+                                type: boolean
                               requiredCheck:
                                 description: |-
                                   (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
@@ -823,6 +1167,10 @@ spec:
                             Choose which Actions workflows must pass before branches can be merged into a branch that matches this rule.
                           items:
                             properties:
+                              doNotEnforceOnCreate:
+                                description: Allow repositories and branches to be
+                                  created if a check would otherwise prohibit it.
+                                type: boolean
                               requiredWorkflow:
                                 description: |-
                                   (Block Set, Min: 1) Actions workflows that are required. Multiple can be defined. (see below for nested schema)
@@ -887,7 +1235,7 @@ spec:
                   target:
                     description: |-
                       (String) Possible values are branch and tag.
-                      Possible values are `branch`, `tag` and `push`. Note: The `push` target is in beta and is subject to change.
+                      The target of the ruleset. Possible values are branch, tag and push.
                     type: string
                 type: object
               managementPolicies:
@@ -979,30 +1327,31 @@ spec:
                         actorId:
                           description: |-
                             (Number) The ID of the actor that can bypass a ruleset.
-                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
+                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`. Some resources such as DeployKey do not have an ID and this should be omitted.
                           format: int64
                           type: integer
                         actorType:
                           description: |-
                             (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
-                            The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
+                            The type of actor that can bypass a ruleset. Can be one of: `Integration`, `OrganizationAdmin`, `RepositoryRole`, `Team`, or `DeployKey`.
                           type: string
                         bypassMode:
                           description: |-
                             (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
-                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
+                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`, `exempt`.
                           type: string
                       type: object
                     type: array
                   conditions:
                     description: |-
                       (Block List, Max: 1) Parameters for an organization ruleset condition. ref_name is required alongside one of repository_name or repository_id. (see below for nested schema)
-                      Parameters for an organization ruleset condition. `ref_name` is required alongside one of `repository_name` or `repository_id`.
+                      Parameters for an organization ruleset condition.The branch and tag rulesets conditions object should contain both repository_name and ref_name properties, or both repository_id and ref_name properties, or both repository_property and ref_name properties. The push rulesets conditions object does not require the ref_name property.
                     items:
                       properties:
                         refName:
-                          description: '(Block List, Min: 1, Max: 1) (see below for
-                            nested schema)'
+                          description: |-
+                            (Block List, Min: 1, Max: 1) (see below for nested schema)
+                            Targets refs that match the specified patterns. Required for `branch` and `tag` targets.
                           items:
                             properties:
                               exclude:
@@ -1024,14 +1373,15 @@ spec:
                         repositoryId:
                           description: |-
                             (List of Number) The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass. Conflicts with repository_name.
-                            The repository IDs that the ruleset applies to. One of these IDs must match for the condition to pass.
+                            The repository IDs that the ruleset applies to. One of these IDs must match for the ruleset to apply.
                           items:
                             format: int64
                             type: integer
                           type: array
                         repositoryName:
-                          description: '(Block List, Max: 1) Conflicts with repository_id.
-                            (see below for nested schema)'
+                          description: |-
+                            (Block List, Max: 1) Conflicts with repository_id. (see below for nested schema)
+                            Targets repositories that match the specified name patterns.
                           items:
                             properties:
                               exclude:
@@ -1054,15 +1404,72 @@ spec:
                                 type: boolean
                             type: object
                           type: array
+                        repositoryProperty:
+                          description: Conditions to target repositories by custom
+                            or system properties.
+                          items:
+                            properties:
+                              exclude:
+                                description: |-
+                                  (List of String) Array of repository names or patterns to exclude. The condition will not pass if any of these patterns match.
+                                  The repository properties and values to exclude. The ruleset will not apply if any of these properties match.
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) How this rule will appear to users.
+                                        The name of the repository property to target.
+                                      type: string
+                                    propertyValues:
+                                      description: The values to match for the repository
+                                        property.
+                                      items:
+                                        type: string
+                                      type: array
+                                    source:
+                                      description: 'The source of the repository property.
+                                        Defaults to ''custom'' if not specified. Can
+                                        be one of: custom, system'
+                                      type: string
+                                  type: object
+                                type: array
+                              include:
+                                description: |-
+                                  (List of String) Array of repository names or patterns to include. One of these patterns must match for the condition to pass. Also accepts ~ALL to include all repositories.
+                                  The repository properties and values to include. All of these properties must match for the condition to pass.
+                                items:
+                                  properties:
+                                    name:
+                                      description: |-
+                                        (String) How this rule will appear to users.
+                                        The name of the repository property to target.
+                                      type: string
+                                    propertyValues:
+                                      description: The values to match for the repository
+                                        property.
+                                      items:
+                                        type: string
+                                      type: array
+                                    source:
+                                      description: 'The source of the repository property.
+                                        Defaults to ''custom'' if not specified. Can
+                                        be one of: custom, system'
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
                       type: object
                     type: array
                   enforcement:
                     description: |-
                       (String) Possible values for Enforcement are disabled, active, evaluate. Note: evaluate is currently only supported for owners of type organization.
-                      Possible values for Enforcement are `disabled`, `active`, `evaluate`. Note: `evaluate` is currently only supported for owners of type `organization`.
+                      The enforcement level of the ruleset. `evaluate` allows admins to test rules before enforcing them. Possible values are `disabled`, `active`, and `evaluate`. Note: `evaluate` is only available for Enterprise plans.
                     type: string
                   etag:
-                    description: (String)
+                    description: |-
+                      (String)
+                      An etag representing the ruleset for caching purposes.
                     type: string
                   id:
                     type: string
@@ -1194,6 +1601,24 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        copilotCodeReview:
+                          description: Automatically request Copilot code review for
+                            new pull requests if the author has access to Copilot
+                            code review and their premium requests quota has not reached
+                            the limit.
+                          items:
+                            properties:
+                              reviewDraftPullRequests:
+                                description: Copilot automatically reviews draft pull
+                                  requests before they are marked as ready for review.
+                                  Defaults to `false`.
+                                type: boolean
+                              reviewOnPush:
+                                description: Copilot automatically reviews each new
+                                  push to the pull request. Defaults to `false`.
+                                type: boolean
+                            type: object
+                          type: array
                         creation:
                           description: |-
                             (Boolean) Only allow users with bypass permission to create matching refs.
@@ -1204,10 +1629,58 @@ spec:
                             (Boolean) Only allow users with bypass permissions to delete matching refs.
                             Only allow users with bypass permissions to delete matching refs.
                           type: boolean
+                        fileExtensionRestriction:
+                          description: Prevent pushes based on file extensions.
+                          items:
+                            properties:
+                              restrictedFileExtensions:
+                                description: The file extensions that are restricted
+                                  from being pushed to the commit graph.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                          type: array
+                        filePathRestriction:
+                          description: Prevent commits that include changes in specified
+                            file paths from being pushed to the commit graph.
+                          items:
+                            properties:
+                              restrictedFilePaths:
+                                description: The file paths that are restricted from
+                                  being pushed to the commit graph.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        maxFilePathLength:
+                          description: Prevent pushes based on file path length.
+                          items:
+                            properties:
+                              maxFilePathLength:
+                                description: The maximum allowed length of a file
+                                  path.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
+                        maxFileSize:
+                          description: Prevent pushes based on file size.
+                          items:
+                            properties:
+                              maxFileSize:
+                                description: The maximum allowed size of a file in
+                                  megabytes (MB). Valid range is 1-100 MB.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
                         nonFastForward:
                           description: |-
                             (Boolean) Prevent users with push access from force pushing to branches.
-                            Prevent users with push access from force pushing to branches.
+                            Prevent users with push access from force pushing to refs.
                           type: boolean
                         pullRequest:
                           description: |-
@@ -1215,6 +1688,13 @@ spec:
                             Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
                           items:
                             properties:
+                              allowedMergeMethods:
+                                description: Array of allowed merge methods. Allowed
+                                  values include `merge`, `squash`, and `rebase`.
+                                  At least one option must be enabled.
+                                items:
+                                  type: string
+                                type: array
                               dismissStaleReviewsOnPush:
                                 description: |-
                                   (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
@@ -1241,6 +1721,42 @@ spec:
                                   (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
                                   All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
                                 type: boolean
+                              requiredReviewers:
+                                description: 'Require specific reviewers to approve
+                                  pull requests targeting matching branches. Note:
+                                  This feature is in beta and subject to change.'
+                                items:
+                                  properties:
+                                    filePatterns:
+                                      description: File patterns (fnmatch syntax)
+                                        that this reviewer must approve.
+                                      items:
+                                        type: string
+                                      type: array
+                                    minimumApprovals:
+                                      description: Minimum number of approvals required
+                                        from this reviewer. Set to 0 to make approval
+                                        optional.
+                                      format: int64
+                                      type: integer
+                                    reviewer:
+                                      description: The reviewer that must review matching
+                                        files.
+                                      items:
+                                        properties:
+                                          id:
+                                            description: The ID of the reviewer that
+                                              must review.
+                                            format: int64
+                                            type: integer
+                                          type:
+                                            description: The type of reviewer. Currently
+                                              only `Team` is supported.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         requiredCodeScanning:
@@ -1290,6 +1806,10 @@ spec:
                             Choose which status checks must pass before branches can be merged into a branch that matches this rule. When enabled, commits must first be pushed to another branch, then merged or pushed directly to a branch that matches this rule after status checks have passed.
                           items:
                             properties:
+                              doNotEnforceOnCreate:
+                                description: Allow repositories and branches to be
+                                  created if a check would otherwise prohibit it.
+                                type: boolean
                               requiredCheck:
                                 description: |-
                                   (Block Set, Min: 1) Status checks that are required. Several can be defined. (see below for nested schema)
@@ -1322,6 +1842,10 @@ spec:
                             Choose which Actions workflows must pass before branches can be merged into a branch that matches this rule.
                           items:
                             properties:
+                              doNotEnforceOnCreate:
+                                description: Allow repositories and branches to be
+                                  created if a check would otherwise prohibit it.
+                                type: boolean
                               requiredWorkflow:
                                 description: |-
                                   (Block Set, Min: 1) Actions workflows that are required. Multiple can be defined. (see below for nested schema)
@@ -1392,7 +1916,7 @@ spec:
                   target:
                     description: |-
                       (String) Possible values are branch and tag.
-                      Possible values are `branch`, `tag` and `push`. Note: The `push` target is in beta and is subject to change.
+                      The target of the ruleset. Possible values are branch, tag and push.
                     type: string
                 type: object
               conditions:

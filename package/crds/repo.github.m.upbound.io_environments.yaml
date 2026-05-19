@@ -472,6 +472,10 @@ spec:
                       The repository of the environment.
                       The repository of the environment.
                     type: string
+                  repositoryId:
+                    description: The ID of the GitHub repository.
+                    format: int64
+                    type: integer
                   reviewers:
                     description: The environment reviewers configuration.
                     items:

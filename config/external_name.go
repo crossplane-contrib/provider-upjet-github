@@ -9,6 +9,8 @@ import (
 var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	// Can be imported using the following format: {{ runner id }}
 	"github_actions_runner_group": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ runner id }}
+	"github_actions_hosted_runner": config.IdentifierFromProvider,
 	// This cannot be imported.
 	"github_actions_environment_secret": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}:{{ environment }}:{{ variable }}

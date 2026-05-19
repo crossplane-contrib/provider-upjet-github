@@ -664,6 +664,10 @@ spec:
                       The repository to create the file in.
                       The repository name
                     type: string
+                  repositoryId:
+                    description: The repository ID
+                    format: int64
+                    type: integer
                   sha:
                     description: |-
                       The SHA blob of the file.

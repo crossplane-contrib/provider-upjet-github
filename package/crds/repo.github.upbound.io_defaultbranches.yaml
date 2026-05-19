@@ -152,6 +152,8 @@ spec:
                             type: string
                         type: object
                     type: object
+                  etag:
+                    type: string
                   rename:
                     description: |-
                       Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
@@ -250,6 +252,8 @@ spec:
                             type: string
                         type: object
                     type: object
+                  etag:
+                    type: string
                   rename:
                     description: |-
                       Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
