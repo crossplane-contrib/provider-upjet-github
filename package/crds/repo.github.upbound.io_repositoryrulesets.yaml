@@ -81,31 +81,32 @@ spec:
                       properties:
                         actorId:
                           description: |-
-                            (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
-                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
+                            (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs. Some actor types such as DeployKey do not have an ID.
+                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`. Some resources such as DeployKey do not have an ID and this should be omitted.
                           format: int64
                           type: integer
                         actorType:
                           description: |-
-                            (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
-                            The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
+                            (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin, DeployKey.
+                            The type of actor that can bypass a ruleset. See https://docs.github.com/en/rest/repos/rules for more information.
                           type: string
                         bypassMode:
                           description: |-
-                            (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
-                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
+                            (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request, exempt.
+                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`, `exempt`.
                           type: string
                       type: object
                     type: array
                   conditions:
                     description: |-
-                      (Block List, Max: 1) Parameters for a repository ruleset ref name condition. (see below for nested schema)
+                      (Block List, Max: 1) Parameters for a repository ruleset condition. For branch and tag targets, ref_name is required. For push targets, ref_name must NOT be set - conditions are optional for push targets. (see below for nested schema)
                       Parameters for a repository ruleset ref name condition.
                     items:
                       properties:
                         refName:
-                          description: '(Block List, Min: 1, Max: 1) (see below for
-                            nested schema)'
+                          description: '(Block List, Max: 1) Required for branch and
+                            tag targets. Must NOT be set for push targets. (see below
+                            for nested schema)'
                           items:
                             properties:
                               exclude:
@@ -138,8 +139,8 @@ spec:
                     type: string
                   repository:
                     description: |-
-                      (String) Name of the repository to apply rulset to.
-                      Name of the repository to apply rulset to.
+                      (String) Name of the repository to apply ruleset to.
+                      Name of the repository to apply ruleset to.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -333,6 +334,24 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        copilotCodeReview:
+                          description: |-
+                            (Block List, Max: 1) Automatically request Copilot code review for new pull requests if the author has access to Copilot code review and their premium requests quota has not reached the limit. (see below for nested schema)
+                            Automatically request Copilot code review for new pull requests if the author has access to Copilot code review and their premium requests quota has not reached the limit.
+                          items:
+                            properties:
+                              reviewDraftPullRequests:
+                                description: |-
+                                  (Boolean) Copilot automatically reviews draft pull requests before they are marked as ready for review. Defaults to false.
+                                  Copilot automatically reviews draft pull requests before they are marked as ready for review. Defaults to `false`.
+                                type: boolean
+                              reviewOnPush:
+                                description: |-
+                                  (Boolean) Copilot automatically reviews each new push to the pull request. Defaults to false.
+                                  Copilot automatically reviews each new push to the pull request. Defaults to `false`.
+                                type: boolean
+                            type: object
+                          type: array
                         creation:
                           description: |-
                             (Boolean) Only allow users with bypass permission to create matching refs.
@@ -343,21 +362,80 @@ spec:
                             (Boolean) Only allow users with bypass permissions to delete matching refs.
                             Only allow users with bypass permissions to delete matching refs.
                           type: boolean
+                        fileExtensionRestriction:
+                          description: |-
+                            (Block List, Max: 1) Prevent commits that include files with specified file extensions from being pushed to the commit graph. This rule only applies to rulesets with target push. (see below for nested schema)
+                            Prevent pushes based on file extensions.
+                          items:
+                            properties:
+                              restrictedFileExtensions:
+                                description: |-
+                                  (Block Set, Min: 1) The file extensions that are restricted from being pushed to the commit graph.
+                                  A list of file extensions.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                          type: array
+                        filePathRestriction:
+                          description: |-
+                            (Block List, Max 1) Parameters to be used for the file_path_restriction rule. When enabled restricts access to files within the repository. (See below for nested schema)
+                            Prevent commits that include changes in specified file paths from being pushed to the commit graph.
+                          items:
+                            properties:
+                              restrictedFilePaths:
+                                description: |-
+                                  (Block Set, Min: 1) The file paths that are restricted from being pushed to the commit graph.
+                                  The file paths that are restricted from being pushed to the commit graph.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        maxFilePathLength:
+                          description: |-
+                            (Block List, Max: 1) Prevent commits that include file paths that exceed a specified character limit from being pushed to the commit graph. This rule only applies to rulesets with target push. (see below for nested schema)
+                            Prevent pushes based on file path length.
+                          items:
+                            properties:
+                              maxFilePathLength:
+                                description: |-
+                                  (Integer) The maximum number of characters allowed in file paths.
+                                  The maximum allowed length of a file path.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
+                        maxFileSize:
+                          description: |-
+                            (Block List, Max 1) Parameters to be used for the max_file_size rule. When enabled restricts the maximum size of a file that can be pushed to the repository. (See below for nested schema)
+                            Prevent pushes based on file size.
+                          items:
+                            properties:
+                              maxFileSize:
+                                description: |-
+                                  (Integer) The maximum allowed size, in megabytes (MB), of a file. Valid range is 1-100 MB.
+                                  The maximum allowed size of a file in megabytes (MB). Valid range is 1-100 MB.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
                         mergeQueue:
                           description: |-
-                            (Block List, Max: 1) Merges must be performed via a merge queue.
+                            (Block List, Max: 1) Merges must be performed via a merge queue. (see below for nested schema)
                             Merges must be performed via a merge queue.
                           items:
                             properties:
                               checkResponseTimeoutMinutes:
                                 description: |-
-                                  (Number)Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.
+                                  (Number) Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.
                                   Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to `60`.
                                 format: int64
                                 type: integer
                               groupingStrategy:
                                 description: |-
-                                  (String)When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to ALLGREEN.
+                                  (String) When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to ALLGREEN.
                                   When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to `ALLGREEN`.
                                 type: string
                               maxEntriesToBuild:
@@ -368,7 +446,7 @@ spec:
                                 type: integer
                               maxEntriesToMerge:
                                 description: |-
-                                  (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+                                  (Number) Limit the number of queued pull requests that will be merged together in a group. Defaults to 5.
                                   The maximum number of PRs that will be merged together in a group. Defaults to `5`.
                                 format: int64
                                 type: integer
@@ -402,6 +480,13 @@ spec:
                             Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
                           items:
                             properties:
+                              allowedMergeMethods:
+                                description: |-
+                                  (List of String, Min: 1) Array of merge methods to be allowed. Allowed values include merge, squash, and rebase. At least one must be enabled.
+                                  Array of allowed merge methods. Allowed values include `merge`, `squash`, and `rebase`. At least one option must be enabled.
+                                items:
+                                  type: string
+                                type: array
                               dismissStaleReviewsOnPush:
                                 description: |-
                                   (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
@@ -428,6 +513,46 @@ spec:
                                   (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
                                   All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
                                 type: boolean
+                              requiredReviewers:
+                                description: |-
+                                  (Block List) Require specific reviewers to approve pull requests. Note: This feature is in beta. (see below for nested schema)
+                                  Require specific reviewers to approve pull requests targeting matching branches. Note: This feature is in beta and subject to change.
+                                items:
+                                  properties:
+                                    filePatterns:
+                                      description: |-
+                                        (List of String) File patterns (fnmatch syntax) that this reviewer must approve.
+                                        File patterns (fnmatch syntax) that this reviewer must approve.
+                                      items:
+                                        type: string
+                                      type: array
+                                    minimumApprovals:
+                                      description: |-
+                                        (Number) Minimum number of approvals required from this reviewer. Set to 0 to make approval optional.
+                                        Minimum number of approvals required from this reviewer. Set to 0 to make approval optional.
+                                      format: int64
+                                      type: integer
+                                    reviewer:
+                                      description: |-
+                                        (Block List, Max: 1) The reviewer that must review matching files. (see below for nested schema)
+                                        The reviewer that must review matching files.
+                                      items:
+                                        properties:
+                                          id:
+                                            description: |-
+                                              (Number) The ID of the reviewer (Team ID).
+                                              The ID of the reviewer that must review.
+                                            format: int64
+                                            type: integer
+                                          type:
+                                            description: |-
+                                              (String) The type of reviewer. Currently only Team is supported.
+                                              The type of reviewer. Currently only `Team` is supported.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         requiredCodeScanning:
@@ -565,8 +690,8 @@ spec:
                     type: array
                   target:
                     description: |-
-                      (String) Possible values are branch and tag.
-                      Possible values are `branch` and `tag`.
+                      (String) Possible values are branch, tag and push.
+                      Possible values are branch, push and tag
                     type: string
                 type: object
               initProvider:
@@ -590,31 +715,32 @@ spec:
                       properties:
                         actorId:
                           description: |-
-                            (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
-                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
+                            (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs. Some actor types such as DeployKey do not have an ID.
+                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`. Some resources such as DeployKey do not have an ID and this should be omitted.
                           format: int64
                           type: integer
                         actorType:
                           description: |-
-                            (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
-                            The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
+                            (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin, DeployKey.
+                            The type of actor that can bypass a ruleset. See https://docs.github.com/en/rest/repos/rules for more information.
                           type: string
                         bypassMode:
                           description: |-
-                            (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
-                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
+                            (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request, exempt.
+                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`, `exempt`.
                           type: string
                       type: object
                     type: array
                   conditions:
                     description: |-
-                      (Block List, Max: 1) Parameters for a repository ruleset ref name condition. (see below for nested schema)
+                      (Block List, Max: 1) Parameters for a repository ruleset condition. For branch and tag targets, ref_name is required. For push targets, ref_name must NOT be set - conditions are optional for push targets. (see below for nested schema)
                       Parameters for a repository ruleset ref name condition.
                     items:
                       properties:
                         refName:
-                          description: '(Block List, Min: 1, Max: 1) (see below for
-                            nested schema)'
+                          description: '(Block List, Max: 1) Required for branch and
+                            tag targets. Must NOT be set for push targets. (see below
+                            for nested schema)'
                           items:
                             properties:
                               exclude:
@@ -647,8 +773,8 @@ spec:
                     type: string
                   repository:
                     description: |-
-                      (String) Name of the repository to apply rulset to.
-                      Name of the repository to apply rulset to.
+                      (String) Name of the repository to apply ruleset to.
+                      Name of the repository to apply ruleset to.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -842,6 +968,24 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        copilotCodeReview:
+                          description: |-
+                            (Block List, Max: 1) Automatically request Copilot code review for new pull requests if the author has access to Copilot code review and their premium requests quota has not reached the limit. (see below for nested schema)
+                            Automatically request Copilot code review for new pull requests if the author has access to Copilot code review and their premium requests quota has not reached the limit.
+                          items:
+                            properties:
+                              reviewDraftPullRequests:
+                                description: |-
+                                  (Boolean) Copilot automatically reviews draft pull requests before they are marked as ready for review. Defaults to false.
+                                  Copilot automatically reviews draft pull requests before they are marked as ready for review. Defaults to `false`.
+                                type: boolean
+                              reviewOnPush:
+                                description: |-
+                                  (Boolean) Copilot automatically reviews each new push to the pull request. Defaults to false.
+                                  Copilot automatically reviews each new push to the pull request. Defaults to `false`.
+                                type: boolean
+                            type: object
+                          type: array
                         creation:
                           description: |-
                             (Boolean) Only allow users with bypass permission to create matching refs.
@@ -852,21 +996,80 @@ spec:
                             (Boolean) Only allow users with bypass permissions to delete matching refs.
                             Only allow users with bypass permissions to delete matching refs.
                           type: boolean
+                        fileExtensionRestriction:
+                          description: |-
+                            (Block List, Max: 1) Prevent commits that include files with specified file extensions from being pushed to the commit graph. This rule only applies to rulesets with target push. (see below for nested schema)
+                            Prevent pushes based on file extensions.
+                          items:
+                            properties:
+                              restrictedFileExtensions:
+                                description: |-
+                                  (Block Set, Min: 1) The file extensions that are restricted from being pushed to the commit graph.
+                                  A list of file extensions.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                          type: array
+                        filePathRestriction:
+                          description: |-
+                            (Block List, Max 1) Parameters to be used for the file_path_restriction rule. When enabled restricts access to files within the repository. (See below for nested schema)
+                            Prevent commits that include changes in specified file paths from being pushed to the commit graph.
+                          items:
+                            properties:
+                              restrictedFilePaths:
+                                description: |-
+                                  (Block Set, Min: 1) The file paths that are restricted from being pushed to the commit graph.
+                                  The file paths that are restricted from being pushed to the commit graph.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        maxFilePathLength:
+                          description: |-
+                            (Block List, Max: 1) Prevent commits that include file paths that exceed a specified character limit from being pushed to the commit graph. This rule only applies to rulesets with target push. (see below for nested schema)
+                            Prevent pushes based on file path length.
+                          items:
+                            properties:
+                              maxFilePathLength:
+                                description: |-
+                                  (Integer) The maximum number of characters allowed in file paths.
+                                  The maximum allowed length of a file path.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
+                        maxFileSize:
+                          description: |-
+                            (Block List, Max 1) Parameters to be used for the max_file_size rule. When enabled restricts the maximum size of a file that can be pushed to the repository. (See below for nested schema)
+                            Prevent pushes based on file size.
+                          items:
+                            properties:
+                              maxFileSize:
+                                description: |-
+                                  (Integer) The maximum allowed size, in megabytes (MB), of a file. Valid range is 1-100 MB.
+                                  The maximum allowed size of a file in megabytes (MB). Valid range is 1-100 MB.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
                         mergeQueue:
                           description: |-
-                            (Block List, Max: 1) Merges must be performed via a merge queue.
+                            (Block List, Max: 1) Merges must be performed via a merge queue. (see below for nested schema)
                             Merges must be performed via a merge queue.
                           items:
                             properties:
                               checkResponseTimeoutMinutes:
                                 description: |-
-                                  (Number)Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.
+                                  (Number) Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.
                                   Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to `60`.
                                 format: int64
                                 type: integer
                               groupingStrategy:
                                 description: |-
-                                  (String)When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to ALLGREEN.
+                                  (String) When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to ALLGREEN.
                                   When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to `ALLGREEN`.
                                 type: string
                               maxEntriesToBuild:
@@ -877,7 +1080,7 @@ spec:
                                 type: integer
                               maxEntriesToMerge:
                                 description: |-
-                                  (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+                                  (Number) Limit the number of queued pull requests that will be merged together in a group. Defaults to 5.
                                   The maximum number of PRs that will be merged together in a group. Defaults to `5`.
                                 format: int64
                                 type: integer
@@ -911,6 +1114,13 @@ spec:
                             Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
                           items:
                             properties:
+                              allowedMergeMethods:
+                                description: |-
+                                  (List of String, Min: 1) Array of merge methods to be allowed. Allowed values include merge, squash, and rebase. At least one must be enabled.
+                                  Array of allowed merge methods. Allowed values include `merge`, `squash`, and `rebase`. At least one option must be enabled.
+                                items:
+                                  type: string
+                                type: array
                               dismissStaleReviewsOnPush:
                                 description: |-
                                   (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
@@ -937,6 +1147,46 @@ spec:
                                   (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
                                   All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
                                 type: boolean
+                              requiredReviewers:
+                                description: |-
+                                  (Block List) Require specific reviewers to approve pull requests. Note: This feature is in beta. (see below for nested schema)
+                                  Require specific reviewers to approve pull requests targeting matching branches. Note: This feature is in beta and subject to change.
+                                items:
+                                  properties:
+                                    filePatterns:
+                                      description: |-
+                                        (List of String) File patterns (fnmatch syntax) that this reviewer must approve.
+                                        File patterns (fnmatch syntax) that this reviewer must approve.
+                                      items:
+                                        type: string
+                                      type: array
+                                    minimumApprovals:
+                                      description: |-
+                                        (Number) Minimum number of approvals required from this reviewer. Set to 0 to make approval optional.
+                                        Minimum number of approvals required from this reviewer. Set to 0 to make approval optional.
+                                      format: int64
+                                      type: integer
+                                    reviewer:
+                                      description: |-
+                                        (Block List, Max: 1) The reviewer that must review matching files. (see below for nested schema)
+                                        The reviewer that must review matching files.
+                                      items:
+                                        properties:
+                                          id:
+                                            description: |-
+                                              (Number) The ID of the reviewer (Team ID).
+                                              The ID of the reviewer that must review.
+                                            format: int64
+                                            type: integer
+                                          type:
+                                            description: |-
+                                              (String) The type of reviewer. Currently only Team is supported.
+                                              The type of reviewer. Currently only `Team` is supported.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         requiredCodeScanning:
@@ -1074,8 +1324,8 @@ spec:
                     type: array
                   target:
                     description: |-
-                      (String) Possible values are branch and tag.
-                      Possible values are `branch` and `tag`.
+                      (String) Possible values are branch, tag and push.
+                      Possible values are branch, push and tag
                     type: string
                 type: object
               managementPolicies:
@@ -1194,31 +1444,32 @@ spec:
                       properties:
                         actorId:
                           description: |-
-                            (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs
-                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`.
+                            (Number) The ID of the actor that can bypass a ruleset. If actor_type is Integration, actor_id is a GitHub App ID. App ID can be obtained by following instructions from the Get an App API docs. Some actor types such as DeployKey do not have an ID.
+                            The ID of the actor that can bypass a ruleset. When `actor_type` is `OrganizationAdmin`, this should be set to `1`. Some resources such as DeployKey do not have an ID and this should be omitted.
                           format: int64
                           type: integer
                         actorType:
                           description: |-
-                            (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin.
-                            The type of actor that can bypass a ruleset. Can be one of: `RepositoryRole`, `Team`, `Integration`, `OrganizationAdmin`.
+                            (String) The type of actor that can bypass a ruleset. Can be one of: RepositoryRole, Team, Integration, OrganizationAdmin, DeployKey.
+                            The type of actor that can bypass a ruleset. See https://docs.github.com/en/rest/repos/rules for more information.
                           type: string
                         bypassMode:
                           description: |-
-                            (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request.
-                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`.
+                            (String) When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: always, pull_request, exempt.
+                            When the specified actor can bypass the ruleset. pull_request means that an actor can only bypass rules on pull requests. Can be one of: `always`, `pull_request`, `exempt`.
                           type: string
                       type: object
                     type: array
                   conditions:
                     description: |-
-                      (Block List, Max: 1) Parameters for a repository ruleset ref name condition. (see below for nested schema)
+                      (Block List, Max: 1) Parameters for a repository ruleset condition. For branch and tag targets, ref_name is required. For push targets, ref_name must NOT be set - conditions are optional for push targets. (see below for nested schema)
                       Parameters for a repository ruleset ref name condition.
                     items:
                       properties:
                         refName:
-                          description: '(Block List, Min: 1, Max: 1) (see below for
-                            nested schema)'
+                          description: '(Block List, Max: 1) Required for branch and
+                            tag targets. Must NOT be set for push targets. (see below
+                            for nested schema)'
                           items:
                             properties:
                               exclude:
@@ -1248,6 +1499,7 @@ spec:
                     description: (String)
                     type: string
                   id:
+                    description: (Number) The ID of the reviewer (Team ID).
                     type: string
                   name:
                     description: |-
@@ -1261,8 +1513,8 @@ spec:
                     type: string
                   repository:
                     description: |-
-                      (String) Name of the repository to apply rulset to.
-                      Name of the repository to apply rulset to.
+                      (String) Name of the repository to apply ruleset to.
+                      Name of the repository to apply ruleset to.
                     type: string
                   rules:
                     description: |-
@@ -1382,6 +1634,24 @@ spec:
                                 type: string
                             type: object
                           type: array
+                        copilotCodeReview:
+                          description: |-
+                            (Block List, Max: 1) Automatically request Copilot code review for new pull requests if the author has access to Copilot code review and their premium requests quota has not reached the limit. (see below for nested schema)
+                            Automatically request Copilot code review for new pull requests if the author has access to Copilot code review and their premium requests quota has not reached the limit.
+                          items:
+                            properties:
+                              reviewDraftPullRequests:
+                                description: |-
+                                  (Boolean) Copilot automatically reviews draft pull requests before they are marked as ready for review. Defaults to false.
+                                  Copilot automatically reviews draft pull requests before they are marked as ready for review. Defaults to `false`.
+                                type: boolean
+                              reviewOnPush:
+                                description: |-
+                                  (Boolean) Copilot automatically reviews each new push to the pull request. Defaults to false.
+                                  Copilot automatically reviews each new push to the pull request. Defaults to `false`.
+                                type: boolean
+                            type: object
+                          type: array
                         creation:
                           description: |-
                             (Boolean) Only allow users with bypass permission to create matching refs.
@@ -1392,21 +1662,80 @@ spec:
                             (Boolean) Only allow users with bypass permissions to delete matching refs.
                             Only allow users with bypass permissions to delete matching refs.
                           type: boolean
+                        fileExtensionRestriction:
+                          description: |-
+                            (Block List, Max: 1) Prevent commits that include files with specified file extensions from being pushed to the commit graph. This rule only applies to rulesets with target push. (see below for nested schema)
+                            Prevent pushes based on file extensions.
+                          items:
+                            properties:
+                              restrictedFileExtensions:
+                                description: |-
+                                  (Block Set, Min: 1) The file extensions that are restricted from being pushed to the commit graph.
+                                  A list of file extensions.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
+                          type: array
+                        filePathRestriction:
+                          description: |-
+                            (Block List, Max 1) Parameters to be used for the file_path_restriction rule. When enabled restricts access to files within the repository. (See below for nested schema)
+                            Prevent commits that include changes in specified file paths from being pushed to the commit graph.
+                          items:
+                            properties:
+                              restrictedFilePaths:
+                                description: |-
+                                  (Block Set, Min: 1) The file paths that are restricted from being pushed to the commit graph.
+                                  The file paths that are restricted from being pushed to the commit graph.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          type: array
+                        maxFilePathLength:
+                          description: |-
+                            (Block List, Max: 1) Prevent commits that include file paths that exceed a specified character limit from being pushed to the commit graph. This rule only applies to rulesets with target push. (see below for nested schema)
+                            Prevent pushes based on file path length.
+                          items:
+                            properties:
+                              maxFilePathLength:
+                                description: |-
+                                  (Integer) The maximum number of characters allowed in file paths.
+                                  The maximum allowed length of a file path.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
+                        maxFileSize:
+                          description: |-
+                            (Block List, Max 1) Parameters to be used for the max_file_size rule. When enabled restricts the maximum size of a file that can be pushed to the repository. (See below for nested schema)
+                            Prevent pushes based on file size.
+                          items:
+                            properties:
+                              maxFileSize:
+                                description: |-
+                                  (Integer) The maximum allowed size, in megabytes (MB), of a file. Valid range is 1-100 MB.
+                                  The maximum allowed size of a file in megabytes (MB). Valid range is 1-100 MB.
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
                         mergeQueue:
                           description: |-
-                            (Block List, Max: 1) Merges must be performed via a merge queue.
+                            (Block List, Max: 1) Merges must be performed via a merge queue. (see below for nested schema)
                             Merges must be performed via a merge queue.
                           items:
                             properties:
                               checkResponseTimeoutMinutes:
                                 description: |-
-                                  (Number)Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.
+                                  (Number) Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to 60.
                                   Maximum time for a required status check to report a conclusion. After this much time has elapsed, checks that have not reported a conclusion will be assumed to have failed. Defaults to `60`.
                                 format: int64
                                 type: integer
                               groupingStrategy:
                                 description: |-
-                                  (String)When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to ALLGREEN.
+                                  (String) When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to ALLGREEN.
                                   When set to ALLGREEN, the merge commit created by merge queue for each PR in the group must pass all required checks to merge. When set to HEADGREEN, only the commit at the head of the merge group, i.e. the commit containing changes from all of the PRs in the group, must pass its required checks to merge. Can be one of: ALLGREEN, HEADGREEN. Defaults to `ALLGREEN`.
                                 type: string
                               maxEntriesToBuild:
@@ -1417,7 +1746,7 @@ spec:
                                 type: integer
                               maxEntriesToMerge:
                                 description: |-
-                                  (Number) Limit the number of queued pull requests requesting checks and workflow runs at the same time. Defaults to 5.
+                                  (Number) Limit the number of queued pull requests that will be merged together in a group. Defaults to 5.
                                   The maximum number of PRs that will be merged together in a group. Defaults to `5`.
                                 format: int64
                                 type: integer
@@ -1451,6 +1780,13 @@ spec:
                             Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
                           items:
                             properties:
+                              allowedMergeMethods:
+                                description: |-
+                                  (List of String, Min: 1) Array of merge methods to be allowed. Allowed values include merge, squash, and rebase. At least one must be enabled.
+                                  Array of allowed merge methods. Allowed values include `merge`, `squash`, and `rebase`. At least one option must be enabled.
+                                items:
+                                  type: string
+                                type: array
                               dismissStaleReviewsOnPush:
                                 description: |-
                                   (Boolean) New, reviewable commits pushed will dismiss previous pull request review approvals. Defaults to false.
@@ -1477,6 +1813,46 @@ spec:
                                   (Boolean) All conversations on code must be resolved before a pull request can be merged. Defaults to false.
                                   All conversations on code must be resolved before a pull request can be merged. Defaults to `false`.
                                 type: boolean
+                              requiredReviewers:
+                                description: |-
+                                  (Block List) Require specific reviewers to approve pull requests. Note: This feature is in beta. (see below for nested schema)
+                                  Require specific reviewers to approve pull requests targeting matching branches. Note: This feature is in beta and subject to change.
+                                items:
+                                  properties:
+                                    filePatterns:
+                                      description: |-
+                                        (List of String) File patterns (fnmatch syntax) that this reviewer must approve.
+                                        File patterns (fnmatch syntax) that this reviewer must approve.
+                                      items:
+                                        type: string
+                                      type: array
+                                    minimumApprovals:
+                                      description: |-
+                                        (Number) Minimum number of approvals required from this reviewer. Set to 0 to make approval optional.
+                                        Minimum number of approvals required from this reviewer. Set to 0 to make approval optional.
+                                      format: int64
+                                      type: integer
+                                    reviewer:
+                                      description: |-
+                                        (Block List, Max: 1) The reviewer that must review matching files. (see below for nested schema)
+                                        The reviewer that must review matching files.
+                                      items:
+                                        properties:
+                                          id:
+                                            description: |-
+                                              (Number) The ID of the reviewer (Team ID).
+                                              The ID of the reviewer that must review.
+                                            format: int64
+                                            type: integer
+                                          type:
+                                            description: |-
+                                              (String) The type of reviewer. Currently only Team is supported.
+                                              The type of reviewer. Currently only `Team` is supported.
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
                             type: object
                           type: array
                         requiredCodeScanning:
@@ -1620,8 +1996,8 @@ spec:
                     type: integer
                   target:
                     description: |-
-                      (String) Possible values are branch and tag.
-                      Possible values are `branch` and `tag`.
+                      (String) Possible values are branch, tag and push.
+                      Possible values are branch, push and tag
                     type: string
                 type: object
               conditions:

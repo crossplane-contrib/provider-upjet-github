@@ -61,17 +61,17 @@ spec:
                 properties:
                   autocreateBranch:
                     description: |-
-                      Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'.
+                      Deprecated Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'. Use the github_branch resource instead.
                       Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
                     type: boolean
                   autocreateBranchSourceBranch:
                     description: |-
-                      The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+                      Deprecated The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'. Use the github_branch resource instead.
                       The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
                     type: string
                   autocreateBranchSourceSha:
                     description: |-
-                      The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+                      Deprecated The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored. Use the github_branch resource instead.
                       The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
                     type: string
                   branch:
@@ -291,17 +291,17 @@ spec:
                 properties:
                   autocreateBranch:
                     description: |-
-                      Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'.
+                      Deprecated Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'. Use the github_branch resource instead.
                       Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
                     type: boolean
                   autocreateBranchSourceBranch:
                     description: |-
-                      The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+                      Deprecated The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'. Use the github_branch resource instead.
                       The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
                     type: string
                   autocreateBranchSourceSha:
                     description: |-
-                      The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+                      Deprecated The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored. Use the github_branch resource instead.
                       The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
                     type: string
                   branch:
@@ -580,17 +580,17 @@ spec:
                 properties:
                   autocreateBranch:
                     description: |-
-                      Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'.
+                      Deprecated Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'. Use the github_branch resource instead.
                       Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
                     type: boolean
                   autocreateBranchSourceBranch:
                     description: |-
-                      The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+                      Deprecated The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'. Use the github_branch resource instead.
                       The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
                     type: string
                   autocreateBranchSourceSha:
                     description: |-
-                      The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+                      Deprecated The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored. Use the github_branch resource instead.
                       The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
                     type: string
                   branch:
@@ -646,6 +646,12 @@ spec:
                       The repository to create the file in.
                       The repository name
                     type: string
+                  repositoryId:
+                    description: |-
+                      The ID of the repository.
+                      The repository ID
+                    format: int64
+                    type: integer
                   sha:
                     description: |-
                       The SHA blob of the file.

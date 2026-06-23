@@ -21,7 +21,7 @@ func (mg *OrganizationActionsSecret) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this OrganizationActionsSecret
 func (tr *OrganizationActionsSecret) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"encrypted_value": "encryptedValueSecretRef", "plaintext_value": "plaintextValueSecretRef"}
+	return map[string]string{"encrypted_value": "encryptedValueSecretRef", "plaintext_value": "plaintextValueSecretRef", "value": "valueSecretRef", "value_encrypted": "valueEncryptedSecretRef"}
 }
 
 // GetObservation of this OrganizationActionsSecret
@@ -125,5 +125,5 @@ func (tr *OrganizationActionsSecret) LateInitialize(attrs []byte) (bool, error) 
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
 func (tr *OrganizationActionsSecret) GetTerraformSchemaVersion() int {
-	return 0
+	return 1
 }

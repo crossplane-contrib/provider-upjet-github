@@ -15,15 +15,15 @@ import (
 
 type RepositoryFileInitParameters struct {
 
-	// Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'.
+	// Deprecated Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'. Use the github_branch resource instead.
 	// Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
 	AutocreateBranch *bool `json:"autocreateBranch,omitempty" tf:"autocreate_branch,omitempty"`
 
-	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+	// Deprecated The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'. Use the github_branch resource instead.
 	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
 	AutocreateBranchSourceBranch *string `json:"autocreateBranchSourceBranch,omitempty" tf:"autocreate_branch_source_branch,omitempty"`
 
-	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+	// Deprecated The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored. Use the github_branch resource instead.
 	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
 	AutocreateBranchSourceSha *string `json:"autocreateBranchSourceSha,omitempty" tf:"autocreate_branch_source_sha,omitempty"`
 
@@ -82,15 +82,15 @@ type RepositoryFileInitParameters struct {
 
 type RepositoryFileObservation struct {
 
-	// Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'.
+	// Deprecated Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'. Use the github_branch resource instead.
 	// Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
 	AutocreateBranch *bool `json:"autocreateBranch,omitempty" tf:"autocreate_branch,omitempty"`
 
-	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+	// Deprecated The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'. Use the github_branch resource instead.
 	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
 	AutocreateBranchSourceBranch *string `json:"autocreateBranchSourceBranch,omitempty" tf:"autocreate_branch_source_branch,omitempty"`
 
-	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+	// Deprecated The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored. Use the github_branch resource instead.
 	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
 	AutocreateBranchSourceSha *string `json:"autocreateBranchSourceSha,omitempty" tf:"autocreate_branch_source_sha,omitempty"`
 
@@ -137,6 +137,10 @@ type RepositoryFileObservation struct {
 	// The repository name
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
+	// The ID of the repository.
+	// The repository ID
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+
 	// The SHA blob of the file.
 	// The blob SHA of the file
 	Sha *string `json:"sha,omitempty" tf:"sha,omitempty"`
@@ -144,17 +148,17 @@ type RepositoryFileObservation struct {
 
 type RepositoryFileParameters struct {
 
-	// Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'.
+	// Deprecated Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'. Use the github_branch resource instead.
 	// Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
 	// +kubebuilder:validation:Optional
 	AutocreateBranch *bool `json:"autocreateBranch,omitempty" tf:"autocreate_branch,omitempty"`
 
-	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+	// Deprecated The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'. Use the github_branch resource instead.
 	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
 	// +kubebuilder:validation:Optional
 	AutocreateBranchSourceBranch *string `json:"autocreateBranchSourceBranch,omitempty" tf:"autocreate_branch_source_branch,omitempty"`
 
-	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+	// Deprecated The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored. Use the github_branch resource instead.
 	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
 	// +kubebuilder:validation:Optional
 	AutocreateBranchSourceSha *string `json:"autocreateBranchSourceSha,omitempty" tf:"autocreate_branch_source_sha,omitempty"`

@@ -35,13 +35,23 @@ type EmuGroupMappingInitParameters struct {
 }
 
 type EmuGroupMappingObservation struct {
+
+	// An etag representing the external group state
 	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
 
 	// Integer corresponding to the external group ID to be linked
 	// Integer corresponding to the external group ID to be linked.
 	GroupID *int64 `json:"groupId,omitempty" tf:"group_id,omitempty"`
 
+	// The name of the external group
+	// Name of the external group.
+	GroupName *string `json:"groupName,omitempty" tf:"group_name,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the GitHub team
+	// ID of the GitHub team.
+	TeamID *int64 `json:"teamId,omitempty" tf:"team_id,omitempty"`
 
 	// Slug of the GitHub team
 	// Slug of the GitHub team.

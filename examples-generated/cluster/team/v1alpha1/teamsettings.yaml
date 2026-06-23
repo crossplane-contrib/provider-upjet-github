@@ -8,10 +8,7 @@ metadata:
   name: code-review-settings
 spec:
   forProvider:
-    reviewRequestDelegation:
-    - algorithm: ROUND_ROBIN
-      memberCount: 1
-      notify: true
+    notify: true
     teamIdSelector:
       matchLabels:
         testing.upbound.io/example-name: some_team

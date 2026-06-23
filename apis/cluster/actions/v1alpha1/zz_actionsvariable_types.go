@@ -15,7 +15,7 @@ import (
 
 type ActionsVariableInitParameters struct {
 
-	// Name of the repository
+	// Name of the repository.
 	// Name of the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
@@ -28,43 +28,47 @@ type ActionsVariableInitParameters struct {
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
-	// Value of the variable
+	// Value of the variable.
 	// Value of the variable.
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 
-	// Name of the variable
+	// Name of the variable.
 	// Name of the variable.
 	VariableName *string `json:"variableName,omitempty" tf:"variable_name,omitempty"`
 }
 
 type ActionsVariableObservation struct {
 
-	// Date of actions_variable creation.
+	// Date the variable was created.
 	// Date of 'actions_variable' creation.
 	CreatedAt *string `json:"createdAt,omitempty" tf:"created_at,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Name of the repository
+	// Name of the repository.
 	// Name of the repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// Date of actions_variable update.
+	// ID of the repository.
+	// ID of the repository.
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+
+	// Date the variable was last updated.
 	// Date of 'actions_variable' update.
 	UpdatedAt *string `json:"updatedAt,omitempty" tf:"updated_at,omitempty"`
 
-	// Value of the variable
+	// Value of the variable.
 	// Value of the variable.
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 
-	// Name of the variable
+	// Name of the variable.
 	// Name of the variable.
 	VariableName *string `json:"variableName,omitempty" tf:"variable_name,omitempty"`
 }
 
 type ActionsVariableParameters struct {
 
-	// Name of the repository
+	// Name of the repository.
 	// Name of the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
@@ -78,12 +82,12 @@ type ActionsVariableParameters struct {
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
-	// Value of the variable
+	// Value of the variable.
 	// Value of the variable.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 
-	// Name of the variable
+	// Name of the variable.
 	// Name of the variable.
 	// +kubebuilder:validation:Optional
 	VariableName *string `json:"variableName,omitempty" tf:"variable_name,omitempty"`
