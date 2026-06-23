@@ -77,13 +77,15 @@ type RepositoryWebhookInitParameters struct {
 	// Configuration for the webhook.
 	Configuration []ConfigurationInitParameters `json:"configuration,omitempty" tf:"configuration,omitempty"`
 
+	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
+
 	// A list of events which should trigger the webhook. See a list of available events.
 	// A list of events which should trigger the webhook
 	// +listType=set
 	Events []*string `json:"events,omitempty" tf:"events,omitempty"`
 
 	// The repository of the webhook.
-	// The repository of the webhook.
+	// The repository name of the webhook, not including the organization, which will be inferred.
 	// +crossplane:generate:reference:type=Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
@@ -116,7 +118,7 @@ type RepositoryWebhookObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The repository of the webhook.
-	// The repository of the webhook.
+	// The repository name of the webhook, not including the organization, which will be inferred.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
 	// URL of the webhook.  This is a sensitive attribute because it may include basic auth credentials.
@@ -136,6 +138,9 @@ type RepositoryWebhookParameters struct {
 	// +kubebuilder:validation:Optional
 	Configuration []ConfigurationParameters `json:"configuration,omitempty" tf:"configuration,omitempty"`
 
+	// +kubebuilder:validation:Optional
+	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
+
 	// A list of events which should trigger the webhook. See a list of available events.
 	// A list of events which should trigger the webhook
 	// +kubebuilder:validation:Optional
@@ -143,7 +148,7 @@ type RepositoryWebhookParameters struct {
 	Events []*string `json:"events,omitempty" tf:"events,omitempty"`
 
 	// The repository of the webhook.
-	// The repository of the webhook.
+	// The repository name of the webhook, not including the organization, which will be inferred.
 	// +crossplane:generate:reference:type=Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`

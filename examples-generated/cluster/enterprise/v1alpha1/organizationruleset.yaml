@@ -27,7 +27,18 @@ spec:
         pattern: ex
       creation: true
       deletion: true
+      requiredCodeScanning:
+      - requiredCodeScanningTool:
+        - alertsThreshold: errors
+          securityAlertsThreshold: high_or_higher
+          tool: CodeQL
       requiredLinearHistory: true
       requiredSignatures: true
+      requiredWorkflows:
+      - doNotEnforceOnCreate: true
+        requiredWorkflow:
+        - path: .github/workflows/ci.yml
+          ref: main
+          repositoryId: 1234
       update: true
     target: branch
