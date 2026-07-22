@@ -16,21 +16,21 @@ import (
 
 type RepositoryCustomPropertyInitParameters struct {
 
-	// Name of the custom property. Note that a pre-requisiste for this resource is that a custom property of this name has already been defined on the organization level
+	// (String) Name of the custom property.
 	// Name of the custom property.
 	PropertyName *string `json:"propertyName,omitempty" tf:"property_name,omitempty"`
 
-	// Type of the custom property. Can be one of single_select, multi_select, string, or true_false
-	// Type of the custom property
+	// (String) Type of the custom property. Valid values are string, single_select, multi_select, true_false, and url.
+	// Type of the custom property. Valid values are `string`, `single_select`, `multi_select`, `true_false`, and `url`.
 	PropertyType *string `json:"propertyType,omitempty" tf:"property_type,omitempty"`
 
-	// Value of the custom property in the form of an array. Properties of type single_select, string, and true_false are represented as a string array of length 1
-	// Value of the custom property.
+	// (Set of String) Value of the custom property. For string, single_select, true_false, and url property types, this should be a single value. For multi_select property types, this can be multiple values.
+	// Value of the custom property. For `string`, `single_select`, `true_false`, and `url` property types, this should be a single value. For `multi_select` property types, this can be multiple values.
 	// +listType=set
 	PropertyValue []*string `json:"propertyValue,omitempty" tf:"property_value,omitempty"`
 
-	// The repository of the environment.
-	// Name of the repository which the custom properties should be on.
+	// (String) Name of the repository.
+	// Name of the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
@@ -44,46 +44,52 @@ type RepositoryCustomPropertyInitParameters struct {
 }
 
 type RepositoryCustomPropertyObservation struct {
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Name of the custom property. Note that a pre-requisiste for this resource is that a custom property of this name has already been defined on the organization level
+	// (String) Name of the custom property.
 	// Name of the custom property.
 	PropertyName *string `json:"propertyName,omitempty" tf:"property_name,omitempty"`
 
-	// Type of the custom property. Can be one of single_select, multi_select, string, or true_false
-	// Type of the custom property
+	// (String) Type of the custom property. Valid values are string, single_select, multi_select, true_false, and url.
+	// Type of the custom property. Valid values are `string`, `single_select`, `multi_select`, `true_false`, and `url`.
 	PropertyType *string `json:"propertyType,omitempty" tf:"property_type,omitempty"`
 
-	// Value of the custom property in the form of an array. Properties of type single_select, string, and true_false are represented as a string array of length 1
-	// Value of the custom property.
+	// (Set of String) Value of the custom property. For string, single_select, true_false, and url property types, this should be a single value. For multi_select property types, this can be multiple values.
+	// Value of the custom property. For `string`, `single_select`, `true_false`, and `url` property types, this should be a single value. For `multi_select` property types, this can be multiple values.
 	// +listType=set
 	PropertyValue []*string `json:"propertyValue,omitempty" tf:"property_value,omitempty"`
 
-	// The repository of the environment.
-	// Name of the repository which the custom properties should be on.
+	// (String) Name of the repository.
+	// Name of the repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// (Number) ID of the repository.
+	// ID of the repository.
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
 }
 
 type RepositoryCustomPropertyParameters struct {
 
-	// Name of the custom property. Note that a pre-requisiste for this resource is that a custom property of this name has already been defined on the organization level
+	// (String) Name of the custom property.
 	// Name of the custom property.
 	// +kubebuilder:validation:Optional
 	PropertyName *string `json:"propertyName,omitempty" tf:"property_name,omitempty"`
 
-	// Type of the custom property. Can be one of single_select, multi_select, string, or true_false
-	// Type of the custom property
+	// (String) Type of the custom property. Valid values are string, single_select, multi_select, true_false, and url.
+	// Type of the custom property. Valid values are `string`, `single_select`, `multi_select`, `true_false`, and `url`.
 	// +kubebuilder:validation:Optional
 	PropertyType *string `json:"propertyType,omitempty" tf:"property_type,omitempty"`
 
-	// Value of the custom property in the form of an array. Properties of type single_select, string, and true_false are represented as a string array of length 1
-	// Value of the custom property.
+	// (Set of String) Value of the custom property. For string, single_select, true_false, and url property types, this should be a single value. For multi_select property types, this can be multiple values.
+	// Value of the custom property. For `string`, `single_select`, `true_false`, and `url` property types, this should be a single value. For `multi_select` property types, this can be multiple values.
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	PropertyValue []*string `json:"propertyValue,omitempty" tf:"property_value,omitempty"`
 
-	// The repository of the environment.
-	// Name of the repository which the custom properties should be on.
+	// (String) Name of the repository.
+	// Name of the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
@@ -124,7 +130,7 @@ type RepositoryCustomPropertyStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// RepositoryCustomProperty is the Schema for the RepositoryCustomPropertys API. Creates and a specific custom property for a GitHub repository
+// RepositoryCustomProperty is the Schema for the RepositoryCustomPropertys API. Resource to manage GitHub repository custom properties.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

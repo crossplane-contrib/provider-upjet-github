@@ -113,6 +113,11 @@ spec:
                           x-kubernetes-list-type: set
                       type: object
                     type: array
+                  shaPinningRequired:
+                    description: |-
+                      Whether pinning to a specific SHA is required for all actions and reusable workflows in the organization.
+                      Whether pinning to a specific SHA is required for all actions and reusable workflows in an organization.
+                    type: boolean
                 type: object
               initProvider:
                 description: |-
@@ -180,6 +185,11 @@ spec:
                           x-kubernetes-list-type: set
                       type: object
                     type: array
+                  shaPinningRequired:
+                    description: |-
+                      Whether pinning to a specific SHA is required for all actions and reusable workflows in the organization.
+                      Whether pinning to a specific SHA is required for all actions and reusable workflows in an organization.
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -305,6 +315,11 @@ spec:
                     type: array
                   id:
                     type: string
+                  shaPinningRequired:
+                    description: |-
+                      Whether pinning to a specific SHA is required for all actions and reusable workflows in the organization.
+                      Whether pinning to a specific SHA is required for all actions and reusable workflows in an organization.
+                    type: boolean
                 type: object
               conditions:
                 description: Conditions of the resource.

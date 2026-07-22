@@ -75,8 +75,7 @@ spec:
                 properties:
                   role:
                     description: |-
-                      The role of the user within the team.
-                      Must be one of member or maintainer. Defaults to member.
+                      The role of the user within the team. Must be one of member or maintainer. Defaults to member.
                       The role of the user within the team. Must be one of 'member' or 'maintainer'.
                     type: string
                   teamId:
@@ -179,8 +178,7 @@ spec:
                 properties:
                   role:
                     description: |-
-                      The role of the user within the team.
-                      Must be one of member or maintainer. Defaults to member.
+                      The role of the user within the team. Must be one of member or maintainer. Defaults to member.
                       The role of the user within the team. Must be one of 'member' or 'maintainer'.
                     type: string
                   teamId:
@@ -370,8 +368,7 @@ spec:
                     type: string
                   role:
                     description: |-
-                      The role of the user within the team.
-                      Must be one of member or maintainer. Defaults to member.
+                      The role of the user within the team. Must be one of member or maintainer. Defaults to member.
                       The role of the user within the team. Must be one of 'member' or 'maintainer'.
                     type: string
                   teamId:

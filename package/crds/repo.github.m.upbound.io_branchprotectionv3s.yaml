@@ -183,9 +183,9 @@ spec:
                                 type: array
                                 x-kubernetes-list-type: set
                               teams:
-                                description: |-
-                                  :  The list of team slugs with push access.
-                                  Always use slug of the team, not its name. Each team already has to have access to the repository.
+                                description: ':  The list of team slugs with push
+                                  access. Always use slug of the team, not its name.
+                                  Each team already has to have access to the repository.'
                                 items:
                                   type: string
                                 type: array
@@ -299,8 +299,7 @@ spec:
                           x-kubernetes-list-type: set
                         dismissalTeams:
                           description: |-
-                            :  The list of team slugs with dismissal access.
-                            Always use slug of the team, not its name. Each team already has to have access to the repository.
+                            :  The list of team slugs with dismissal access. Always use slug of the team, not its name. Each team already has to have access to the repository.
                             The list of team slugs with dismissal access. Always use slug of the team, not its name. Each team already has to have access to the repository.
                           items:
                             type: string
@@ -407,7 +406,7 @@ spec:
                           type: boolean
                         requireLastPushApproval:
                           description: |-
-                            :  Require that the most recent push must be approved by someone other than the last pusher.  Defaults to false
+                            :  Require that the most recent push must be approved by someone other than the last pusher. Defaults to false
                             Require that the most recent push must be approved by someone other than the last pusher.
                           type: boolean
                         requiredApprovingReviewCount:
@@ -433,7 +432,7 @@ spec:
                           type: array
                           x-kubernetes-list-type: set
                         contexts:
-                          description: ': [DEPRECATED]  The list of status checks
+                          description: ': (DEPRECATED)  The list of status checks
                             to require in order to merge into this branch. No status
                             checks are required by default.'
                           items:
@@ -465,8 +464,7 @@ spec:
                           x-kubernetes-list-type: set
                         teams:
                           description: |-
-                            :  The list of team slugs with push access.
-                            Always use slug of the team, not its name. Each team already has to have access to the repository.
+                            :  The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
                             The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
                           items:
                             type: string
@@ -704,9 +702,9 @@ spec:
                                 type: array
                                 x-kubernetes-list-type: set
                               teams:
-                                description: |-
-                                  :  The list of team slugs with push access.
-                                  Always use slug of the team, not its name. Each team already has to have access to the repository.
+                                description: ':  The list of team slugs with push
+                                  access. Always use slug of the team, not its name.
+                                  Each team already has to have access to the repository.'
                                 items:
                                   type: string
                                 type: array
@@ -820,8 +818,7 @@ spec:
                           x-kubernetes-list-type: set
                         dismissalTeams:
                           description: |-
-                            :  The list of team slugs with dismissal access.
-                            Always use slug of the team, not its name. Each team already has to have access to the repository.
+                            :  The list of team slugs with dismissal access. Always use slug of the team, not its name. Each team already has to have access to the repository.
                             The list of team slugs with dismissal access. Always use slug of the team, not its name. Each team already has to have access to the repository.
                           items:
                             type: string
@@ -928,7 +925,7 @@ spec:
                           type: boolean
                         requireLastPushApproval:
                           description: |-
-                            :  Require that the most recent push must be approved by someone other than the last pusher.  Defaults to false
+                            :  Require that the most recent push must be approved by someone other than the last pusher. Defaults to false
                             Require that the most recent push must be approved by someone other than the last pusher.
                           type: boolean
                         requiredApprovingReviewCount:
@@ -954,7 +951,7 @@ spec:
                           type: array
                           x-kubernetes-list-type: set
                         contexts:
-                          description: ': [DEPRECATED]  The list of status checks
+                          description: ': (DEPRECATED)  The list of status checks
                             to require in order to merge into this branch. No status
                             checks are required by default.'
                           items:
@@ -986,8 +983,7 @@ spec:
                           x-kubernetes-list-type: set
                         teams:
                           description: |-
-                            :  The list of team slugs with push access.
-                            Always use slug of the team, not its name. Each team already has to have access to the repository.
+                            :  The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
                             The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
                           items:
                             type: string
@@ -1204,9 +1200,9 @@ spec:
                                 type: array
                                 x-kubernetes-list-type: set
                               teams:
-                                description: |-
-                                  :  The list of team slugs with push access.
-                                  Always use slug of the team, not its name. Each team already has to have access to the repository.
+                                description: ':  The list of team slugs with push
+                                  access. Always use slug of the team, not its name.
+                                  Each team already has to have access to the repository.'
                                 items:
                                   type: string
                                 type: array
@@ -1235,8 +1231,7 @@ spec:
                           x-kubernetes-list-type: set
                         dismissalTeams:
                           description: |-
-                            :  The list of team slugs with dismissal access.
-                            Always use slug of the team, not its name. Each team already has to have access to the repository.
+                            :  The list of team slugs with dismissal access. Always use slug of the team, not its name. Each team already has to have access to the repository.
                             The list of team slugs with dismissal access. Always use slug of the team, not its name. Each team already has to have access to the repository.
                           items:
                             type: string
@@ -1259,7 +1254,7 @@ spec:
                           type: boolean
                         requireLastPushApproval:
                           description: |-
-                            :  Require that the most recent push must be approved by someone other than the last pusher.  Defaults to false
+                            :  Require that the most recent push must be approved by someone other than the last pusher. Defaults to false
                             Require that the most recent push must be approved by someone other than the last pusher.
                           type: boolean
                         requiredApprovingReviewCount:
@@ -1285,7 +1280,7 @@ spec:
                           type: array
                           x-kubernetes-list-type: set
                         contexts:
-                          description: ': [DEPRECATED]  The list of status checks
+                          description: ': (DEPRECATED)  The list of status checks
                             to require in order to merge into this branch. No status
                             checks are required by default.'
                           items:
@@ -1317,8 +1312,7 @@ spec:
                           x-kubernetes-list-type: set
                         teams:
                           description: |-
-                            :  The list of team slugs with push access.
-                            Always use slug of the team, not its name. Each team already has to have access to the repository.
+                            :  The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
                             The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
                           items:
                             type: string

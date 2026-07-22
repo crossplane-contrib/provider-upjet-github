@@ -234,12 +234,11 @@ type RequiredPullRequestReviewsInitParameters struct {
 	// Require an approved review in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews *bool `json:"requireCodeOwnerReviews,omitempty" tf:"require_code_owner_reviews,omitempty"`
 
-	// :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+	// :  Require that The most recent push must be approved by someone other than the last pusher. Defaults to false
 	// Require that The most recent push must be approved by someone other than the last pusher.
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
-	// 6. This requirement matches GitHub's API, see the upstream documentation for more information.
-	// (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+	// 6. This requirement matches GitHub's API, see the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
 	// Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
 	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
@@ -268,12 +267,11 @@ type RequiredPullRequestReviewsObservation struct {
 	// Require an approved review in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews *bool `json:"requireCodeOwnerReviews,omitempty" tf:"require_code_owner_reviews,omitempty"`
 
-	// :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+	// :  Require that The most recent push must be approved by someone other than the last pusher. Defaults to false
 	// Require that The most recent push must be approved by someone other than the last pusher.
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
-	// 6. This requirement matches GitHub's API, see the upstream documentation for more information.
-	// (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+	// 6. This requirement matches GitHub's API, see the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
 	// Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
 	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
@@ -306,13 +304,12 @@ type RequiredPullRequestReviewsParameters struct {
 	// +kubebuilder:validation:Optional
 	RequireCodeOwnerReviews *bool `json:"requireCodeOwnerReviews,omitempty" tf:"require_code_owner_reviews,omitempty"`
 
-	// :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+	// :  Require that The most recent push must be approved by someone other than the last pusher. Defaults to false
 	// Require that The most recent push must be approved by someone other than the last pusher.
 	// +kubebuilder:validation:Optional
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
-	// 6. This requirement matches GitHub's API, see the upstream documentation for more information.
-	// (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+	// 6. This requirement matches GitHub's API, see the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
 	// Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
 	// +kubebuilder:validation:Optional
 	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`

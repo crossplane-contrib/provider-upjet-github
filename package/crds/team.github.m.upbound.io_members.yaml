@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Members is the Schema for the Memberss API. Provides an authoritative
-          GitHub team members resource.
+        description: Members is the Schema for the Memberss API. Resource to authoritatively
+          manage GitHub team members.
         properties:
           apiVersion:
             description: |-
@@ -61,27 +61,26 @@ spec:
                 properties:
                   members:
                     description: |-
-                      List of team members. See Members below for details.
-                      List of team members.
+                      (Block Set, Min: 1) List of users that should be members of the team. (see below for nested schema)
+                      List of users that should be members of the team.
                     items:
                       properties:
                         role:
                           description: |-
-                            The role of the user within the team.
-                            Must be one of member or maintainer. Defaults to member.
-                            The role of the user within the team. Must be one of 'member' or 'maintainer'.
+                            (String) Role to grant the user within the team; must be one of member or maintainer.
+                            Role to grant the user within the team; must be one of `member` or `maintainer`.
                           type: string
                         username:
                           description: |-
-                            The user to add to the team.
-                            The user to add to the team.
+                            (String) User to add to the team.
+                            User to add to the team.
                           type: string
                       type: object
                     type: array
                   teamId:
                     description: |-
-                      The team id or the team slug
-                      The GitHub team id or slug
+                      (String, Deprecated) ID or slug of the GitHub team to manage membership for.
+                      ID or slug of the GitHub team to manage membership for.
                     type: string
                   teamIdRef:
                     description: Reference to a Team in team to populate teamId.
@@ -163,6 +162,91 @@ spec:
                             type: string
                         type: object
                     type: object
+                  teamSlug:
+                    description: |-
+                      (String) Slug of the GitHub team to manage membership for.
+                      Slug of the GitHub team to manage membership for.
+                    type: string
+                  teamSlugRef:
+                    description: Reference to a Team in team to populate teamSlug.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      namespace:
+                        description: Namespace of the referenced object
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  teamSlugSelector:
+                    description: Selector for a Team in team to populate teamSlug.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      namespace:
+                        description: Namespace for the selector
+                        type: string
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
                 type: object
               initProvider:
                 description: |-
@@ -179,27 +263,26 @@ spec:
                 properties:
                   members:
                     description: |-
-                      List of team members. See Members below for details.
-                      List of team members.
+                      (Block Set, Min: 1) List of users that should be members of the team. (see below for nested schema)
+                      List of users that should be members of the team.
                     items:
                       properties:
                         role:
                           description: |-
-                            The role of the user within the team.
-                            Must be one of member or maintainer. Defaults to member.
-                            The role of the user within the team. Must be one of 'member' or 'maintainer'.
+                            (String) Role to grant the user within the team; must be one of member or maintainer.
+                            Role to grant the user within the team; must be one of `member` or `maintainer`.
                           type: string
                         username:
                           description: |-
-                            The user to add to the team.
-                            The user to add to the team.
+                            (String) User to add to the team.
+                            User to add to the team.
                           type: string
                       type: object
                     type: array
                   teamId:
                     description: |-
-                      The team id or the team slug
-                      The GitHub team id or slug
+                      (String, Deprecated) ID or slug of the GitHub team to manage membership for.
+                      ID or slug of the GitHub team to manage membership for.
                     type: string
                   teamIdRef:
                     description: Reference to a Team in team to populate teamId.
@@ -240,6 +323,91 @@ spec:
                     type: object
                   teamIdSelector:
                     description: Selector for a Team in team to populate teamId.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      namespace:
+                        description: Namespace for the selector
+                        type: string
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  teamSlug:
+                    description: |-
+                      (String) Slug of the GitHub team to manage membership for.
+                      Slug of the GitHub team to manage membership for.
+                    type: string
+                  teamSlugRef:
+                    description: Reference to a Team in team to populate teamSlug.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      namespace:
+                        description: Namespace of the referenced object
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  teamSlugSelector:
+                    description: Selector for a Team in team to populate teamSlug.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -351,30 +519,35 @@ spec:
               atProvider:
                 properties:
                   id:
+                    description: (String) The ID of this resource.
                     type: string
                   members:
                     description: |-
-                      List of team members. See Members below for details.
-                      List of team members.
+                      (Block Set, Min: 1) List of users that should be members of the team. (see below for nested schema)
+                      List of users that should be members of the team.
                     items:
                       properties:
                         role:
                           description: |-
-                            The role of the user within the team.
-                            Must be one of member or maintainer. Defaults to member.
-                            The role of the user within the team. Must be one of 'member' or 'maintainer'.
+                            (String) Role to grant the user within the team; must be one of member or maintainer.
+                            Role to grant the user within the team; must be one of `member` or `maintainer`.
                           type: string
                         username:
                           description: |-
-                            The user to add to the team.
-                            The user to add to the team.
+                            (String) User to add to the team.
+                            User to add to the team.
                           type: string
                       type: object
                     type: array
                   teamId:
                     description: |-
-                      The team id or the team slug
-                      The GitHub team id or slug
+                      (String, Deprecated) ID or slug of the GitHub team to manage membership for.
+                      ID or slug of the GitHub team to manage membership for.
+                    type: string
+                  teamSlug:
+                    description: |-
+                      (String) Slug of the GitHub team to manage membership for.
+                      Slug of the GitHub team to manage membership for.
                     type: string
                 type: object
               conditions:

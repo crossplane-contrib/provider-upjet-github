@@ -63,7 +63,7 @@ type GroupParameters struct {
 
 type TeamSyncGroupMappingInitParameters struct {
 
-	// An Array of GitHub Identity Provider Groups (or empty []).  Each group block consists of the fields documented below.
+	// An Array of GitHub Identity Provider Groups (or empty []). Each group block consists of the fields documented below.
 	// An Array of GitHub Identity Provider Groups (or empty []).
 	Group []GroupInitParameters `json:"group,omitempty" tf:"group,omitempty"`
 
@@ -75,7 +75,7 @@ type TeamSyncGroupMappingInitParameters struct {
 type TeamSyncGroupMappingObservation struct {
 	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
 
-	// An Array of GitHub Identity Provider Groups (or empty []).  Each group block consists of the fields documented below.
+	// An Array of GitHub Identity Provider Groups (or empty []). Each group block consists of the fields documented below.
 	// An Array of GitHub Identity Provider Groups (or empty []).
 	Group []GroupObservation `json:"group,omitempty" tf:"group,omitempty"`
 
@@ -88,7 +88,7 @@ type TeamSyncGroupMappingObservation struct {
 
 type TeamSyncGroupMappingParameters struct {
 
-	// An Array of GitHub Identity Provider Groups (or empty []).  Each group block consists of the fields documented below.
+	// An Array of GitHub Identity Provider Groups (or empty []). Each group block consists of the fields documented below.
 	// An Array of GitHub Identity Provider Groups (or empty []).
 	// +kubebuilder:validation:Optional
 	Group []GroupParameters `json:"group,omitempty" tf:"group,omitempty"`

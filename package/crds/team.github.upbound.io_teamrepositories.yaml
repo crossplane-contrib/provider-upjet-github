@@ -75,8 +75,7 @@ spec:
                 properties:
                   permission:
                     description: |-
-                      The permissions of team members regarding the repository.
-                      Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+                      The permissions of team members regarding the repository. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
                       The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
                     type: string
                   repository:
@@ -179,8 +178,7 @@ spec:
                 properties:
                   permission:
                     description: |-
-                      The permissions of team members regarding the repository.
-                      Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+                      The permissions of team members regarding the repository. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
                       The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
                     type: string
                   repository:
@@ -370,8 +368,7 @@ spec:
                     type: string
                   permission:
                     description: |-
-                      The permissions of team members regarding the repository.
-                      Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+                      The permissions of team members regarding the repository. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
                       The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
                     type: string
                   repository:
