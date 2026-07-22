@@ -33,6 +33,7 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/repository"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/repositoryautolinkreference"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/repositorycollaborator"
+	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/repositorycollaborators"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/repositorycustomproperty"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/repositorydeploykey"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/repositoryenvironment"
@@ -90,6 +91,7 @@ func GetProviderNamespaced(ctx context.Context) (*ujconfig.Provider, error) {
 		repository.Configure,
 		repositoryautolinkreference.Configure,
 		repositorycollaborator.Configure,
+		repositorycollaborators.Configure,
 		repositorycustomproperty.Configure,
 		repositorydeploykey.Configure,
 		repositoryenvironmentdeploymentpolicy.Configure,

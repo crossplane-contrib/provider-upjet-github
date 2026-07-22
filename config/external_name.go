@@ -53,6 +53,8 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	"github_repository_autolink_reference": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}:{{ username }}.
 	"github_repository_collaborator": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ repository }}
+	"github_repository_collaborators": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ organization }}:{{ repository }}:{{ property_name }}
 	"github_repository_custom_property": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository }}:{{ (key_id, fetchable from api) }}
