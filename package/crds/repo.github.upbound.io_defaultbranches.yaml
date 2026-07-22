@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: DefaultBranch is the Schema for the DefaultBranchs API. Provides
-          a GitHub branch default for a given repository.
+        description: DefaultBranch is the Schema for the DefaultBranchs API. Configures
+          the default branch for a GitHub repository.
         properties:
           apiVersion:
             description: |-
@@ -75,8 +75,8 @@ spec:
                 properties:
                   branch:
                     description: |-
-                      The branch (e.g. main)
-                      The branch (e.g. 'main').
+                      (String) The name of the branch to set as the default (e.g. 'main').
+                      The name of the branch to set as the default (e.g. 'main').
                     type: string
                   branchRef:
                     description: Reference to a Branch in repo to populate branch.
@@ -152,10 +152,20 @@ spec:
                             type: string
                         type: object
                     type: object
+                  etag:
+                    description: |-
+                      (String) The ETag header for the repository API response.
+                      The ETag header for the repository API response.
+                    type: string
                   rename:
                     description: |-
-                      Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
-                      Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
+                      (Boolean) If true rename the existing branch when the branch input is changed. Defaults to 'false'.
+                      If `true` rename the existing branch when the `branch` input is changed. Defaults to 'false'.
+                    type: boolean
+                  waitForRename:
+                    description: |-
+                      (Boolean) If true, poll until GitHub propagates the renamed default branch before proceeding. Only has effect when rename is also true. Defaults to 'false'.
+                      If `true`, poll until GitHub propagates the renamed default branch before proceeding. Only has effect when `rename` is also `true`. Defaults to 'false'.
                     type: boolean
                 type: object
               initProvider:
@@ -173,8 +183,8 @@ spec:
                 properties:
                   branch:
                     description: |-
-                      The branch (e.g. main)
-                      The branch (e.g. 'main').
+                      (String) The name of the branch to set as the default (e.g. 'main').
+                      The name of the branch to set as the default (e.g. 'main').
                     type: string
                   branchRef:
                     description: Reference to a Branch in repo to populate branch.
@@ -250,10 +260,20 @@ spec:
                             type: string
                         type: object
                     type: object
+                  etag:
+                    description: |-
+                      (String) The ETag header for the repository API response.
+                      The ETag header for the repository API response.
+                    type: string
                   rename:
                     description: |-
-                      Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
-                      Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
+                      (Boolean) If true rename the existing branch when the branch input is changed. Defaults to 'false'.
+                      If `true` rename the existing branch when the `branch` input is changed. Defaults to 'false'.
+                    type: boolean
+                  waitForRename:
+                    description: |-
+                      (Boolean) If true, poll until GitHub propagates the renamed default branch before proceeding. Only has effect when rename is also true. Defaults to 'false'.
+                      If `true`, poll until GitHub propagates the renamed default branch before proceeding. Only has effect when `rename` is also `true`. Defaults to 'false'.
                     type: boolean
                 type: object
               managementPolicies:
@@ -349,17 +369,32 @@ spec:
                 properties:
                   branch:
                     description: |-
-                      The branch (e.g. main)
-                      The branch (e.g. 'main').
+                      (String) The name of the branch to set as the default (e.g. 'main').
+                      The name of the branch to set as the default (e.g. 'main').
                     type: string
                   etag:
+                    description: |-
+                      (String) The ETag header for the repository API response.
+                      The ETag header for the repository API response.
                     type: string
                   id:
+                    description: (String) The ID of this resource.
                     type: string
                   rename:
                     description: |-
-                      Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
-                      Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
+                      (Boolean) If true rename the existing branch when the branch input is changed. Defaults to 'false'.
+                      If `true` rename the existing branch when the `branch` input is changed. Defaults to 'false'.
+                    type: boolean
+                  repositoryId:
+                    description: |-
+                      (Number) The ID of the GitHub repository.
+                      The ID of the GitHub repository.
+                    format: int64
+                    type: integer
+                  waitForRename:
+                    description: |-
+                      (Boolean) If true, poll until GitHub propagates the renamed default branch before proceeding. Only has effect when rename is also true. Defaults to 'false'.
+                      If `true`, poll until GitHub propagates the renamed default branch before proceeding. Only has effect when `rename` is also `true`. Defaults to 'false'.
                     type: boolean
                 type: object
               conditions:

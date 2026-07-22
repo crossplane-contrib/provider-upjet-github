@@ -83,7 +83,7 @@ func setCredentialConfigs(creds githubConfig, cnf terraform.ProviderConfiguratio
 			return cnf, errors.Errorf(errTerraformProviderMissingOwner)
 		}
 
-		aaList := []map[string]any{}
+		aaList := make([]map[string]any, 0, 1)
 
 		aa := map[string]any{
 			keyAppAuthID:             (*creds.AppAuth)[0].ID,

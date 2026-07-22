@@ -75,7 +75,7 @@ spec:
                 properties:
                   group:
                     description: |-
-                      An Array of GitHub Identity Provider Groups (or empty []).  Each group block consists of the fields documented below.
+                      An Array of GitHub Identity Provider Groups (or empty []). Each group block consists of the fields documented below.
                       An Array of GitHub Identity Provider Groups (or empty []).
                     items:
                       properties:
@@ -117,7 +117,7 @@ spec:
                 properties:
                   group:
                     description: |-
-                      An Array of GitHub Identity Provider Groups (or empty []).  Each group block consists of the fields documented below.
+                      An Array of GitHub Identity Provider Groups (or empty []). Each group block consists of the fields documented below.
                       An Array of GitHub Identity Provider Groups (or empty []).
                     items:
                       properties:
@@ -245,7 +245,7 @@ spec:
                     type: string
                   group:
                     description: |-
-                      An Array of GitHub Identity Provider Groups (or empty []).  Each group block consists of the fields documented below.
+                      An Array of GitHub Identity Provider Groups (or empty []). Each group block consists of the fields documented below.
                       An Array of GitHub Identity Provider Groups (or empty []).
                     items:
                       properties:

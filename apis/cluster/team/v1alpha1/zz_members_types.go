@@ -15,12 +15,12 @@ import (
 
 type MembersInitParameters struct {
 
-	// List of team members. See Members below for details.
-	// List of team members.
+	// (Block Set, Min: 1) List of users that should be members of the team. (see below for nested schema)
+	// List of users that should be members of the team.
 	Members []MembersMembersInitParameters `json:"members,omitempty" tf:"members,omitempty"`
 
-	// The team id or the team slug
-	// The GitHub team id or slug
+	// (String, Deprecated) ID or slug of the GitHub team to manage membership for.
+	// ID or slug of the GitHub team to manage membership for.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/team/v1alpha1.Team
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 
@@ -31,67 +31,84 @@ type MembersInitParameters struct {
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
 	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
+
+	// (String) Slug of the GitHub team to manage membership for.
+	// Slug of the GitHub team to manage membership for.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/team/v1alpha1.Team
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("slug",true)
+	TeamSlug *string `json:"teamSlug,omitempty" tf:"team_slug,omitempty"`
+
+	// Reference to a Team in team to populate teamSlug.
+	// +kubebuilder:validation:Optional
+	TeamSlugRef *v1.Reference `json:"teamSlugRef,omitempty" tf:"-"`
+
+	// Selector for a Team in team to populate teamSlug.
+	// +kubebuilder:validation:Optional
+	TeamSlugSelector *v1.Selector `json:"teamSlugSelector,omitempty" tf:"-"`
 }
 
 type MembersMembersInitParameters struct {
 
-	// The role of the user within the team.
-	// Must be one of member or maintainer. Defaults to member.
-	// The role of the user within the team. Must be one of 'member' or 'maintainer'.
+	// (String) Role to grant the user within the team; must be one of member or maintainer.
+	// Role to grant the user within the team; must be one of `member` or `maintainer`.
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
-	// The user to add to the team.
-	// The user to add to the team.
+	// (String) User to add to the team.
+	// User to add to the team.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 }
 
 type MembersMembersObservation struct {
 
-	// The role of the user within the team.
-	// Must be one of member or maintainer. Defaults to member.
-	// The role of the user within the team. Must be one of 'member' or 'maintainer'.
+	// (String) Role to grant the user within the team; must be one of member or maintainer.
+	// Role to grant the user within the team; must be one of `member` or `maintainer`.
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
-	// The user to add to the team.
-	// The user to add to the team.
+	// (String) User to add to the team.
+	// User to add to the team.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 }
 
 type MembersMembersParameters struct {
 
-	// The role of the user within the team.
-	// Must be one of member or maintainer. Defaults to member.
-	// The role of the user within the team. Must be one of 'member' or 'maintainer'.
+	// (String) Role to grant the user within the team; must be one of member or maintainer.
+	// Role to grant the user within the team; must be one of `member` or `maintainer`.
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
-	// The user to add to the team.
-	// The user to add to the team.
+	// (String) User to add to the team.
+	// User to add to the team.
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username" tf:"username,omitempty"`
 }
 
 type MembersObservation struct {
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// List of team members. See Members below for details.
-	// List of team members.
+	// (Block Set, Min: 1) List of users that should be members of the team. (see below for nested schema)
+	// List of users that should be members of the team.
 	Members []MembersMembersObservation `json:"members,omitempty" tf:"members,omitempty"`
 
-	// The team id or the team slug
-	// The GitHub team id or slug
+	// (String, Deprecated) ID or slug of the GitHub team to manage membership for.
+	// ID or slug of the GitHub team to manage membership for.
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
+
+	// (String) Slug of the GitHub team to manage membership for.
+	// Slug of the GitHub team to manage membership for.
+	TeamSlug *string `json:"teamSlug,omitempty" tf:"team_slug,omitempty"`
 }
 
 type MembersParameters struct {
 
-	// List of team members. See Members below for details.
-	// List of team members.
+	// (Block Set, Min: 1) List of users that should be members of the team. (see below for nested schema)
+	// List of users that should be members of the team.
 	// +kubebuilder:validation:Optional
 	Members []MembersMembersParameters `json:"members,omitempty" tf:"members,omitempty"`
 
-	// The team id or the team slug
-	// The GitHub team id or slug
+	// (String, Deprecated) ID or slug of the GitHub team to manage membership for.
+	// ID or slug of the GitHub team to manage membership for.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/team/v1alpha1.Team
 	// +kubebuilder:validation:Optional
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
@@ -103,6 +120,21 @@ type MembersParameters struct {
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
 	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
+
+	// (String) Slug of the GitHub team to manage membership for.
+	// Slug of the GitHub team to manage membership for.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/team/v1alpha1.Team
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("slug",true)
+	// +kubebuilder:validation:Optional
+	TeamSlug *string `json:"teamSlug,omitempty" tf:"team_slug,omitempty"`
+
+	// Reference to a Team in team to populate teamSlug.
+	// +kubebuilder:validation:Optional
+	TeamSlugRef *v1.Reference `json:"teamSlugRef,omitempty" tf:"-"`
+
+	// Selector for a Team in team to populate teamSlug.
+	// +kubebuilder:validation:Optional
+	TeamSlugSelector *v1.Selector `json:"teamSlugSelector,omitempty" tf:"-"`
 }
 
 // MembersSpec defines the desired state of Members
@@ -132,7 +164,7 @@ type MembersStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// Members is the Schema for the Memberss API. Provides an authoritative GitHub team members resource.
+// Members is the Schema for the Memberss API. Resource to authoritatively manage GitHub team members.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

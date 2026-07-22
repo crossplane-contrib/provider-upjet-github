@@ -41,7 +41,7 @@ type EnvironmentVariableInitParameters struct {
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
-	// Value of the variable
+	// Value of the variable.
 	// Value of the variable.
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 
@@ -52,7 +52,7 @@ type EnvironmentVariableInitParameters struct {
 
 type EnvironmentVariableObservation struct {
 
-	// Date of actions_environment_secret creation.
+	// Date the variable was created.
 	// Date of 'actions_variable' creation.
 	CreatedAt *string `json:"createdAt,omitempty" tf:"created_at,omitempty"`
 
@@ -66,11 +66,15 @@ type EnvironmentVariableObservation struct {
 	// Name of the repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// Date of actions_environment_secret update.
+	// ID of the repository.
+	// ID of the repository.
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+
+	// Date the variable was last updated.
 	// Date of 'actions_variable' update.
 	UpdatedAt *string `json:"updatedAt,omitempty" tf:"updated_at,omitempty"`
 
-	// Value of the variable
+	// Value of the variable.
 	// Value of the variable.
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 
@@ -109,7 +113,7 @@ type EnvironmentVariableParameters struct {
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
-	// Value of the variable
+	// Value of the variable.
 	// Value of the variable.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
