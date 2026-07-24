@@ -25,6 +25,11 @@ spec:
     rules:
     - creation: true
       deletion: true
+      requiredCodeScanning:
+      - requiredCodeScanningTool:
+        - alertsThreshold: errors
+          securityAlertsThreshold: high_or_higher
+          tool: CodeQL
       requiredDeployments:
       - requiredDeploymentEnvironments:
         - test

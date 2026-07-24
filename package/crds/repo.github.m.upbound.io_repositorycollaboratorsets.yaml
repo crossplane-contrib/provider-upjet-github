@@ -35,7 +35,8 @@ spec:
     schema:
       openAPIV3Schema:
         description: RepositoryCollaboratorSet is the Schema for the RepositoryCollaboratorSets
-          API. Provides a GitHub repository collaborators resource.
+          API. Manage the complete set of collaborators (users and teams) for a GitHub
+          repository.
         properties:
           apiVersion:
             description: |-
@@ -62,19 +63,21 @@ spec:
                 properties:
                   ignoreTeam:
                     description: |-
-                      List of teams to ignore when checking for repository access. This supports ignoring teams granted access at an organizational level.
-                      List of teams to ignore.
+                      (Block Set) Teams to ignore when managing repository collaborators. (see below for nested schema)
+                      Teams to ignore when managing repository collaborators.
                     items:
                       properties:
                         teamId:
                           description: |-
-                            The GitHub team id or the GitHub team slug.
+                            (String) ID or slug of the team to ignore.
                             ID or slug of the team to ignore.
                           type: string
                       type: object
                     type: array
                   repository:
-                    description: The GitHub repository.
+                    description: |-
+                      (String) Name of the repository.
+                      Name of the repository.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -158,20 +161,19 @@ spec:
                     type: object
                   team:
                     description: |-
-                      List of teams to grant access to the repository.
-                      List of teams.
+                      (Block Set) Teams to grant access to the repository. (see below for nested schema)
+                      Teams to grant access to the repository.
                     items:
                       properties:
                         permission:
                           description: |-
-                            The permission of the outside collaborators for the repository.
-                            Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
-                            Must be push for personal repositories. Defaults to push.
+                            (String) Permission to grant to the team. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organization. Defaults to push.
+                            Permission to grant to the team. Must be one of `pull`, `triage`, `push`, `maintain`, `admin` or the name of an existing [custom repository role](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization) within the organization. Defaults to `push`.
                           type: string
                         teamId:
                           description: |-
-                            The GitHub team id or the GitHub team slug.
-                            Team ID or slug to add to the repository as a collaborator.
+                            (String) ID or slug of the team to ignore.
+                            ID or slug of the team to add to the repository as a collaborator.
                           type: string
                         teamIdRef:
                           description: Reference to a Team in team to populate teamId.
@@ -257,20 +259,19 @@ spec:
                     type: array
                   user:
                     description: |-
-                      List of users to grant access to the repository.
-                      List of users.
+                      (Block Set) Users to grant access to the repository. (see below for nested schema)
+                      Users to grant access to the repository.
                     items:
                       properties:
                         permission:
                           description: |-
-                            The permission of the outside collaborators for the repository.
-                            Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories.
-                            Must be push for personal repositories. Defaults to push.
+                            (String) Permission to grant to the team. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organization. Defaults to push.
+                            Permission to grant to the user. Must be one of `pull`, `triage`, `push`, `maintain`, `admin` or the name of an existing [custom repository role](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization) within the organization. Must be `push` for personal repositories. Defaults to `push`.
                           type: string
                         username:
                           description: |-
-                            The user to add to the repository as a collaborator.
-                            (Required) The user to add to the repository as a collaborator.
+                            (String) Login for the user to add to the repository as a collaborator.
+                            Login for the user to add to the repository as a collaborator.
                           type: string
                       type: object
                     type: array
@@ -290,19 +291,21 @@ spec:
                 properties:
                   ignoreTeam:
                     description: |-
-                      List of teams to ignore when checking for repository access. This supports ignoring teams granted access at an organizational level.
-                      List of teams to ignore.
+                      (Block Set) Teams to ignore when managing repository collaborators. (see below for nested schema)
+                      Teams to ignore when managing repository collaborators.
                     items:
                       properties:
                         teamId:
                           description: |-
-                            The GitHub team id or the GitHub team slug.
+                            (String) ID or slug of the team to ignore.
                             ID or slug of the team to ignore.
                           type: string
                       type: object
                     type: array
                   repository:
-                    description: The GitHub repository.
+                    description: |-
+                      (String) Name of the repository.
+                      Name of the repository.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -386,20 +389,19 @@ spec:
                     type: object
                   team:
                     description: |-
-                      List of teams to grant access to the repository.
-                      List of teams.
+                      (Block Set) Teams to grant access to the repository. (see below for nested schema)
+                      Teams to grant access to the repository.
                     items:
                       properties:
                         permission:
                           description: |-
-                            The permission of the outside collaborators for the repository.
-                            Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
-                            Must be push for personal repositories. Defaults to push.
+                            (String) Permission to grant to the team. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organization. Defaults to push.
+                            Permission to grant to the team. Must be one of `pull`, `triage`, `push`, `maintain`, `admin` or the name of an existing [custom repository role](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization) within the organization. Defaults to `push`.
                           type: string
                         teamId:
                           description: |-
-                            The GitHub team id or the GitHub team slug.
-                            Team ID or slug to add to the repository as a collaborator.
+                            (String) ID or slug of the team to ignore.
+                            ID or slug of the team to add to the repository as a collaborator.
                           type: string
                         teamIdRef:
                           description: Reference to a Team in team to populate teamId.
@@ -485,20 +487,19 @@ spec:
                     type: array
                   user:
                     description: |-
-                      List of users to grant access to the repository.
-                      List of users.
+                      (Block Set) Users to grant access to the repository. (see below for nested schema)
+                      Users to grant access to the repository.
                     items:
                       properties:
                         permission:
                           description: |-
-                            The permission of the outside collaborators for the repository.
-                            Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories.
-                            Must be push for personal repositories. Defaults to push.
+                            (String) Permission to grant to the team. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organization. Defaults to push.
+                            Permission to grant to the user. Must be one of `pull`, `triage`, `push`, `maintain`, `admin` or the name of an existing [custom repository role](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization) within the organization. Must be `push` for personal repositories. Defaults to `push`.
                           type: string
                         username:
                           description: |-
-                            The user to add to the repository as a collaborator.
-                            (Required) The user to add to the repository as a collaborator.
+                            (String) Login for the user to add to the repository as a collaborator.
+                            Login for the user to add to the repository as a collaborator.
                           type: string
                       type: object
                     type: array
@@ -568,16 +569,17 @@ spec:
               atProvider:
                 properties:
                   id:
+                    description: (String) The ID of this resource.
                     type: string
                   ignoreTeam:
                     description: |-
-                      List of teams to ignore when checking for repository access. This supports ignoring teams granted access at an organizational level.
-                      List of teams to ignore.
+                      (Block Set) Teams to ignore when managing repository collaborators. (see below for nested schema)
+                      Teams to ignore when managing repository collaborators.
                     items:
                       properties:
                         teamId:
                           description: |-
-                            The GitHub team id or the GitHub team slug.
+                            (String) ID or slug of the team to ignore.
                             ID or slug of the team to ignore.
                           type: string
                       type: object
@@ -586,49 +588,59 @@ spec:
                     additionalProperties:
                       type: string
                     description: |-
-                      Map of usernames to invitation ID for any users added as part of creation of this resource to
-                      be used in github_user_invitation_accepter.
-                      Map of usernames to invitation ID for any users added
+                      (Map of String) Map of usernames to invitation ID for users that haven't yet accepted their invitation to become a collaborator. This is only set on read, and is used internally to track pending invitations for users that aren't yet collaborators.
+                      Map of usernames to invitation ID for users that haven't yet accepted their invitation to become a collaborator. This is only set on read, and is used internally to track pending invitations for users that aren't yet collaborators.
                     type: object
                     x-kubernetes-map-type: granular
+                  ownerConfigured:
+                    description: |-
+                      (Boolean) Indicates whether the owner of a personal repository is configured as a collaborator.
+                      Indicates whether the owner of a personal repository is configured as a collaborator.
+                    type: boolean
                   repository:
-                    description: The GitHub repository.
+                    description: |-
+                      (String) Name of the repository.
+                      Name of the repository.
                     type: string
+                  repositoryId:
+                    description: |-
+                      (Number) ID of the repository.
+                      ID of the repository.
+                    format: int64
+                    type: integer
                   team:
                     description: |-
-                      List of teams to grant access to the repository.
-                      List of teams.
+                      (Block Set) Teams to grant access to the repository. (see below for nested schema)
+                      Teams to grant access to the repository.
                     items:
                       properties:
                         permission:
                           description: |-
-                            The permission of the outside collaborators for the repository.
-                            Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
-                            Must be push for personal repositories. Defaults to push.
+                            (String) Permission to grant to the team. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organization. Defaults to push.
+                            Permission to grant to the team. Must be one of `pull`, `triage`, `push`, `maintain`, `admin` or the name of an existing [custom repository role](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization) within the organization. Defaults to `push`.
                           type: string
                         teamId:
                           description: |-
-                            The GitHub team id or the GitHub team slug.
-                            Team ID or slug to add to the repository as a collaborator.
+                            (String) ID or slug of the team to ignore.
+                            ID or slug of the team to add to the repository as a collaborator.
                           type: string
                       type: object
                     type: array
                   user:
                     description: |-
-                      List of users to grant access to the repository.
-                      List of users.
+                      (Block Set) Users to grant access to the repository. (see below for nested schema)
+                      Users to grant access to the repository.
                     items:
                       properties:
                         permission:
                           description: |-
-                            The permission of the outside collaborators for the repository.
-                            Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories.
-                            Must be push for personal repositories. Defaults to push.
+                            (String) Permission to grant to the team. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organization. Defaults to push.
+                            Permission to grant to the user. Must be one of `pull`, `triage`, `push`, `maintain`, `admin` or the name of an existing [custom repository role](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization) within the organization. Must be `push` for personal repositories. Defaults to `push`.
                           type: string
                         username:
                           description: |-
-                            The user to add to the repository as a collaborator.
-                            (Required) The user to add to the repository as a collaborator.
+                            (String) Login for the user to add to the repository as a collaborator.
+                            Login for the user to add to the repository as a collaborator.
                           type: string
                       type: object
                     type: array

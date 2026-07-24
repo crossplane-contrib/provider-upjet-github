@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: RepositoryCustomProperty is the Schema for the RepositoryCustomPropertys
-          API. Creates and a specific custom property for a GitHub repository
+          API. Resource to manage GitHub repository custom properties.
         properties:
           apiVersion:
             description: |-
@@ -62,26 +62,26 @@ spec:
                 properties:
                   propertyName:
                     description: |-
-                      Name of the custom property. Note that a pre-requisiste for this resource is that a custom property of this name has already been defined on the organization level
+                      (String) Name of the custom property.
                       Name of the custom property.
                     type: string
                   propertyType:
                     description: |-
-                      Type of the custom property. Can be one of single_select, multi_select, string, or true_false
-                      Type of the custom property
+                      (String) Type of the custom property. Valid values are string, single_select, multi_select, true_false, and url.
+                      Type of the custom property. Valid values are `string`, `single_select`, `multi_select`, `true_false`, and `url`.
                     type: string
                   propertyValue:
                     description: |-
-                      Value of the custom property in the form of an array. Properties of type single_select, string, and true_false are represented as a string array of length 1
-                      Value of the custom property.
+                      (Set of String) Value of the custom property. For string, single_select, true_false, and url property types, this should be a single value. For multi_select property types, this can be multiple values.
+                      Value of the custom property. For `string`, `single_select`, `true_false`, and `url` property types, this should be a single value. For `multi_select` property types, this can be multiple values.
                     items:
                       type: string
                     type: array
                     x-kubernetes-list-type: set
                   repository:
                     description: |-
-                      The repository of the environment.
-                      Name of the repository which the custom properties should be on.
+                      (String) Name of the repository.
+                      Name of the repository.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -179,26 +179,26 @@ spec:
                 properties:
                   propertyName:
                     description: |-
-                      Name of the custom property. Note that a pre-requisiste for this resource is that a custom property of this name has already been defined on the organization level
+                      (String) Name of the custom property.
                       Name of the custom property.
                     type: string
                   propertyType:
                     description: |-
-                      Type of the custom property. Can be one of single_select, multi_select, string, or true_false
-                      Type of the custom property
+                      (String) Type of the custom property. Valid values are string, single_select, multi_select, true_false, and url.
+                      Type of the custom property. Valid values are `string`, `single_select`, `multi_select`, `true_false`, and `url`.
                     type: string
                   propertyValue:
                     description: |-
-                      Value of the custom property in the form of an array. Properties of type single_select, string, and true_false are represented as a string array of length 1
-                      Value of the custom property.
+                      (Set of String) Value of the custom property. For string, single_select, true_false, and url property types, this should be a single value. For multi_select property types, this can be multiple values.
+                      Value of the custom property. For `string`, `single_select`, `true_false`, and `url` property types, this should be a single value. For `multi_select` property types, this can be multiple values.
                     items:
                       type: string
                     type: array
                     x-kubernetes-list-type: set
                   repository:
                     description: |-
-                      The repository of the environment.
-                      Name of the repository which the custom properties should be on.
+                      (String) Name of the repository.
+                      Name of the repository.
                     type: string
                   repositoryRef:
                     description: Reference to a Repository in repo to populate repository.
@@ -359,30 +359,37 @@ spec:
               atProvider:
                 properties:
                   id:
+                    description: (String) The ID of this resource.
                     type: string
                   propertyName:
                     description: |-
-                      Name of the custom property. Note that a pre-requisiste for this resource is that a custom property of this name has already been defined on the organization level
+                      (String) Name of the custom property.
                       Name of the custom property.
                     type: string
                   propertyType:
                     description: |-
-                      Type of the custom property. Can be one of single_select, multi_select, string, or true_false
-                      Type of the custom property
+                      (String) Type of the custom property. Valid values are string, single_select, multi_select, true_false, and url.
+                      Type of the custom property. Valid values are `string`, `single_select`, `multi_select`, `true_false`, and `url`.
                     type: string
                   propertyValue:
                     description: |-
-                      Value of the custom property in the form of an array. Properties of type single_select, string, and true_false are represented as a string array of length 1
-                      Value of the custom property.
+                      (Set of String) Value of the custom property. For string, single_select, true_false, and url property types, this should be a single value. For multi_select property types, this can be multiple values.
+                      Value of the custom property. For `string`, `single_select`, `true_false`, and `url` property types, this should be a single value. For `multi_select` property types, this can be multiple values.
                     items:
                       type: string
                     type: array
                     x-kubernetes-list-type: set
                   repository:
                     description: |-
-                      The repository of the environment.
-                      Name of the repository which the custom properties should be on.
+                      (String) Name of the repository.
+                      Name of the repository.
                     type: string
+                  repositoryId:
+                    description: |-
+                      (Number) ID of the repository.
+                      ID of the repository.
+                    format: int64
+                    type: integer
                 type: object
               conditions:
                 description: Conditions of the resource.
