@@ -161,74 +161,88 @@ func TerraformSetupBuilder(tfProvider *schema.Provider, l logging.Logger) terraf
 	var tfSetupLock sync.RWMutex
 	tfSetups := make(map[string]CachedTerraformSetup)
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
-		ps := terraform.Setup{}
-
 		configRefName, err := getProviderConfigName(mg)
 		if err != nil {
-			return ps, errors.Wrap(err, "cannot get provider config name")
+			return terraform.Setup{}, errors.Wrap(err, "cannot get provider config name")
 		}
 
-		tfSetup, ok := tfSetups[configRefName]
-		if ok && tfSetup.expiry.After(time.Now()) {
-			return *tfSetup.setup, nil
-		}
+		return getOrBuildTerraformSetup(&tfSetupLock, tfSetups, configRefName, time.Now, tfSetupCacheTTL,
+			func() (terraform.Setup, error) {
+				ps := terraform.Setup{}
 
-		l.Debug("Locking in order to update credentials")
-		unlocked := tfSetupLock.TryLock()
-		if !unlocked {
-			// it is actually save to return the 'old' token since
-			// it is still valid for 7 hours.
-			if ok {
-				return *tfSetup.setup, nil
-			}
+				pcSpec, err := resolveProviderConfig(ctx, client, mg)
+				if err != nil {
+					return terraform.Setup{}, errors.Wrap(err, "cannot resolve provider config")
+				}
 
-			return ps, errors.New(errGitHubTokenNotReady)
-		}
-		l.Debug("Lock succedeed")
-		defer unlockMutex(&tfSetupLock, l)
+				data, err := resource.CommonCredentialExtractor(ctx, pcSpec.Credentials.Source, client, pcSpec.Credentials.CommonCredentialSelectors)
+				if err != nil {
+					return ps, errors.Wrap(err, errExtractCredentials)
+				}
 
-		pcSpec, err := resolveProviderConfig(ctx, client, mg)
-		if err != nil {
-			return terraform.Setup{}, errors.Wrap(err, "cannot resolve provider config")
-		}
+				creds := githubConfig{}
+				if data != nil {
+					if err := json.Unmarshal(data, &creds); err != nil {
+						return ps, errors.Wrap(err, errUnmarshalCredentials)
+					}
+				}
 
-		data, err := resource.CommonCredentialExtractor(ctx, pcSpec.Credentials.Source, client, pcSpec.Credentials.CommonCredentialSelectors)
-		if err != nil {
-			return ps, errors.Wrap(err, errExtractCredentials)
-		}
+				ps.Configuration, err = terraformProviderConfigurationBuilder(creds)
+				if err != nil {
+					return ps, errors.Wrap(err, errProviderConfigurationBuilder)
+				}
 
-		creds := githubConfig{}
-		if data != nil {
-			if err := json.Unmarshal(data, &creds); err != nil {
-				return ps, errors.Wrap(err, errUnmarshalCredentials)
-			}
-		}
+				if err := configureNoForkGithubClient(ctx, &ps, *tfProvider); err != nil {
+					return ps, errors.Wrap(err, "failed to configure the Terraform Github provider meta")
+				}
 
-		ps.Configuration, err = terraformProviderConfigurationBuilder(creds)
-		if err != nil {
-			return ps, errors.Wrap(err, errProviderConfigurationBuilder)
-		}
-
-		err = configureNoForkGithubClient(ctx, &ps, *tfProvider)
-		if err != nil {
-			return ps, errors.Wrap(err, "failed to configure the Terraform Github provider meta")
-		}
-
-		tfSetups[configRefName] = CachedTerraformSetup{
-			setup:  &ps,
-			expiry: time.Now().Add(tfSetupCacheTTL),
-		}
-
-		l.Info("Refreshed Github Token", "configName", configRefName, "expiry", tfSetups[configRefName].expiry)
-
-		return ps, nil
+				l.Info("Refreshed Github Token", "configName", configRefName)
+				return ps, nil
+			})
 	}
 }
 
-func unlockMutex(lock *sync.RWMutex, l logging.Logger) {
-	l.Debug("Initiating unlock")
-	lock.Unlock()
-	l.Debug("Unlock succeeded")
+// getOrBuildTerraformSetup returns a cached terraform.Setup for configRefName,
+// building (and caching) one via build if none is cached or the cached entry has
+// expired. Concurrent callers for the same ProviderConfig are collapsed to a
+// single build; the losers wait for it rather than erroring.
+func getOrBuildTerraformSetup(
+	lock *sync.RWMutex,
+	cache map[string]CachedTerraformSetup,
+	configRefName string,
+	now func() time.Time,
+	ttl time.Duration,
+	build func() (terraform.Setup, error),
+) (terraform.Setup, error) {
+	// Fast path: return a cached, unexpired setup under a read lock.
+	lock.RLock()
+	tfSetup, ok := cache[configRefName]
+	lock.RUnlock()
+	if ok && tfSetup.expiry.After(now()) {
+		return *tfSetup.setup, nil
+	}
+
+	// Slow path: block for the write lock rather than erroring. On cold start
+	// this collapses a herd of concurrent reconciles into a single build; the
+	// losers wait here and then hit the cache populated below.
+	lock.Lock()
+	defer lock.Unlock()
+
+	// Double-checked: another goroutine may have built or refreshed the setup
+	// while we waited for the lock.
+	if tfSetup, ok := cache[configRefName]; ok && tfSetup.expiry.After(now()) {
+		return *tfSetup.setup, nil
+	}
+
+	ps, err := build()
+	if err != nil {
+		return terraform.Setup{}, err
+	}
+	cache[configRefName] = CachedTerraformSetup{
+		setup:  &ps,
+		expiry: now().Add(ttl),
+	}
+	return ps, nil
 }
 
 func configureNoForkGithubClient(ctx context.Context, ps *terraform.Setup, p schema.Provider) error {
