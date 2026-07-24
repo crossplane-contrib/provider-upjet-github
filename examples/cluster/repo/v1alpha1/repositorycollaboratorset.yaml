@@ -1,0 +1,16 @@
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: RepositoryCollaboratorSet
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositorycollaboratorset
+  labels:
+    testing.upbound.io/example-name: a_repo_collaborator_set
+  name: a-repo-collaborator-set
+spec:
+  forProvider:
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    user:
+    - permission: admin
+      username: SomeUser

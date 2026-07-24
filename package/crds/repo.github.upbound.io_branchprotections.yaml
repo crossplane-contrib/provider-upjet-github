@@ -234,13 +234,12 @@ spec:
                           type: boolean
                         requireLastPushApproval:
                           description: |-
-                            :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+                            :  Require that The most recent push must be approved by someone other than the last pusher. Defaults to false
                             Require that The most recent push must be approved by someone other than the last pusher.
                           type: boolean
                         requiredApprovingReviewCount:
                           description: |-
-                            6. This requirement matches GitHub's API, see the upstream documentation for more information.
-                            (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+                            6. This requirement matches GitHub's API, see the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
                             Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
                           format: int64
                           type: integer
@@ -468,13 +467,12 @@ spec:
                           type: boolean
                         requireLastPushApproval:
                           description: |-
-                            :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+                            :  Require that The most recent push must be approved by someone other than the last pusher. Defaults to false
                             Require that The most recent push must be approved by someone other than the last pusher.
                           type: boolean
                         requiredApprovingReviewCount:
                           description: |-
-                            6. This requirement matches GitHub's API, see the upstream documentation for more information.
-                            (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+                            6. This requirement matches GitHub's API, see the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
                             Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
                           format: int64
                           type: integer
@@ -713,13 +711,12 @@ spec:
                           type: boolean
                         requireLastPushApproval:
                           description: |-
-                            :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+                            :  Require that The most recent push must be approved by someone other than the last pusher. Defaults to false
                             Require that The most recent push must be approved by someone other than the last pusher.
                           type: boolean
                         requiredApprovingReviewCount:
                           description: |-
-                            6. This requirement matches GitHub's API, see the upstream documentation for more information.
-                            (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+                            6. This requirement matches GitHub's API, see the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
                             Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
                           format: int64
                           type: integer

@@ -34,6 +34,7 @@ import (
 	repository "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/repo/repository"
 	repositoryautolinkreference "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/repo/repositoryautolinkreference"
 	repositorycollaborator "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/repo/repositorycollaborator"
+	repositorycollaboratorset "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/repo/repositorycollaboratorset"
 	repositorycustomproperty "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/repo/repositorycustomproperty"
 	repositoryfile "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/repo/repositoryfile"
 	repositoryruleset "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/repo/repositoryruleset"
@@ -77,6 +78,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		repository.Setup,
 		repositoryautolinkreference.Setup,
 		repositorycollaborator.Setup,
+		repositorycollaboratorset.Setup,
 		repositorycustomproperty.Setup,
 		repositoryfile.Setup,
 		repositoryruleset.Setup,
@@ -126,6 +128,7 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		repository.SetupGated,
 		repositoryautolinkreference.SetupGated,
 		repositorycollaborator.SetupGated,
+		repositorycollaboratorset.SetupGated,
 		repositorycustomproperty.SetupGated,
 		repositoryfile.SetupGated,
 		repositoryruleset.SetupGated,

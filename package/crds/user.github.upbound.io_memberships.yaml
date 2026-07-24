@@ -75,17 +75,12 @@ spec:
                 properties:
                   downgradeOnDestroy:
                     description: |-
-                      Defaults to false. If set to true,
-                      when this resource is destroyed, the member will not be removed
-                      from the organization. Instead, the member's role will be
-                      downgraded to 'member'.
+                      Defaults to false. If set to true, when this resource is destroyed, the member will not be removed from the organization. Instead, the member's role will be downgraded to 'member'.
                       Instead of removing the member from the org, you can choose to downgrade their membership to 'member' when this resource is destroyed. This is useful when wanting to downgrade admins while keeping them in the organization
                     type: boolean
                   role:
                     description: |-
-                      The role of the user within the organization.
-                      Must be one of member or admin. Defaults to member.
-                      admin role represents the owner role available via GitHub UI.
+                      The role of the user within the organization. Must be one of member or admin. Defaults to member. admin role represents the owner role available via GitHub UI.
                       The role of the user within the organization. Must be one of 'member' or 'admin'.
                     type: string
                   username:
@@ -109,17 +104,12 @@ spec:
                 properties:
                   downgradeOnDestroy:
                     description: |-
-                      Defaults to false. If set to true,
-                      when this resource is destroyed, the member will not be removed
-                      from the organization. Instead, the member's role will be
-                      downgraded to 'member'.
+                      Defaults to false. If set to true, when this resource is destroyed, the member will not be removed from the organization. Instead, the member's role will be downgraded to 'member'.
                       Instead of removing the member from the org, you can choose to downgrade their membership to 'member' when this resource is destroyed. This is useful when wanting to downgrade admins while keeping them in the organization
                     type: boolean
                   role:
                     description: |-
-                      The role of the user within the organization.
-                      Must be one of member or admin. Defaults to member.
-                      admin role represents the owner role available via GitHub UI.
+                      The role of the user within the organization. Must be one of member or admin. Defaults to member. admin role represents the owner role available via GitHub UI.
                       The role of the user within the organization. Must be one of 'member' or 'admin'.
                     type: string
                   username:
@@ -226,10 +216,7 @@ spec:
                 properties:
                   downgradeOnDestroy:
                     description: |-
-                      Defaults to false. If set to true,
-                      when this resource is destroyed, the member will not be removed
-                      from the organization. Instead, the member's role will be
-                      downgraded to 'member'.
+                      Defaults to false. If set to true, when this resource is destroyed, the member will not be removed from the organization. Instead, the member's role will be downgraded to 'member'.
                       Instead of removing the member from the org, you can choose to downgrade their membership to 'member' when this resource is destroyed. This is useful when wanting to downgrade admins while keeping them in the organization
                     type: boolean
                   etag:
@@ -238,9 +225,7 @@ spec:
                     type: string
                   role:
                     description: |-
-                      The role of the user within the organization.
-                      Must be one of member or admin. Defaults to member.
-                      admin role represents the owner role available via GitHub UI.
+                      The role of the user within the organization. Must be one of member or admin. Defaults to member. admin role represents the owner role available via GitHub UI.
                       The role of the user within the organization. Must be one of 'member' or 'admin'.
                     type: string
                   username:

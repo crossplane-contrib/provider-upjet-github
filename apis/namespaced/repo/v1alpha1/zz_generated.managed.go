@@ -488,6 +488,46 @@ func (mg *RepositoryCollaborator) SetWriteConnectionSecretToReference(r *xpv1.Lo
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
+// GetCondition of this RepositoryCollaboratorSet.
+func (mg *RepositoryCollaboratorSet) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetManagementPolicies of this RepositoryCollaboratorSet.
+func (mg *RepositoryCollaboratorSet) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this RepositoryCollaboratorSet.
+func (mg *RepositoryCollaboratorSet) GetProviderConfigReference() *xpv1.ProviderConfigReference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this RepositoryCollaboratorSet.
+func (mg *RepositoryCollaboratorSet) GetWriteConnectionSecretToReference() *xpv1.LocalSecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this RepositoryCollaboratorSet.
+func (mg *RepositoryCollaboratorSet) SetConditions(c ...xpv1.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetManagementPolicies of this RepositoryCollaboratorSet.
+func (mg *RepositoryCollaboratorSet) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this RepositoryCollaboratorSet.
+func (mg *RepositoryCollaboratorSet) SetProviderConfigReference(r *xpv1.ProviderConfigReference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this RepositoryCollaboratorSet.
+func (mg *RepositoryCollaboratorSet) SetWriteConnectionSecretToReference(r *xpv1.LocalSecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this RepositoryCustomProperty.
 func (mg *RepositoryCustomProperty) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)

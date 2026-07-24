@@ -76,7 +76,7 @@ spec:
                 properties:
                   selectedRepositoryIds:
                     description: |-
-                      An array of repository ids that can access the organization variable.
+                      An array of repository IDs that can access the organization variable; this requires visibility to be set to selected.
                       An array of repository ids that can access the organization variable.
                     items:
                       format: int64
@@ -85,18 +85,17 @@ spec:
                     x-kubernetes-list-type: set
                   value:
                     description: |-
-                      Value of the variable
+                      Value of the variable.
                       Value of the variable.
                     type: string
                   variableName:
                     description: |-
-                      Name of the variable
+                      Name of the variable.
                       Name of the variable.
                     type: string
                   visibility:
                     description: |-
-                      Configures the access that repositories have to the organization variable.
-                      Must be one of all, private, selected. selected_repository_ids is required if set to selected.
+                      Configures the access that repositories have to the organization variable; must be one of all, private, or selected.
                       Configures the access that repositories have to the organization variable. Must be one of 'all', 'private', or 'selected'. 'selected_repository_ids' is required if set to 'selected'.
                     type: string
                 type: object
@@ -115,7 +114,7 @@ spec:
                 properties:
                   selectedRepositoryIds:
                     description: |-
-                      An array of repository ids that can access the organization variable.
+                      An array of repository IDs that can access the organization variable; this requires visibility to be set to selected.
                       An array of repository ids that can access the organization variable.
                     items:
                       format: int64
@@ -124,18 +123,17 @@ spec:
                     x-kubernetes-list-type: set
                   value:
                     description: |-
-                      Value of the variable
+                      Value of the variable.
                       Value of the variable.
                     type: string
                   variableName:
                     description: |-
-                      Name of the variable
+                      Name of the variable.
                       Name of the variable.
                     type: string
                   visibility:
                     description: |-
-                      Configures the access that repositories have to the organization variable.
-                      Must be one of all, private, selected. selected_repository_ids is required if set to selected.
+                      Configures the access that repositories have to the organization variable; must be one of all, private, or selected.
                       Configures the access that repositories have to the organization variable. Must be one of 'all', 'private', or 'selected'. 'selected_repository_ids' is required if set to 'selected'.
                     type: string
                 type: object
@@ -246,14 +244,14 @@ spec:
                 properties:
                   createdAt:
                     description: |-
-                      Date of actions_variable creation.
+                      Date the variable was created.
                       Date of 'actions_variable' creation.
                     type: string
                   id:
                     type: string
                   selectedRepositoryIds:
                     description: |-
-                      An array of repository ids that can access the organization variable.
+                      An array of repository IDs that can access the organization variable; this requires visibility to be set to selected.
                       An array of repository ids that can access the organization variable.
                     items:
                       format: int64
@@ -262,23 +260,22 @@ spec:
                     x-kubernetes-list-type: set
                   updatedAt:
                     description: |-
-                      Date of actions_variable update.
+                      Date the variable was last updated.
                       Date of 'actions_variable' update.
                     type: string
                   value:
                     description: |-
-                      Value of the variable
+                      Value of the variable.
                       Value of the variable.
                     type: string
                   variableName:
                     description: |-
-                      Name of the variable
+                      Name of the variable.
                       Name of the variable.
                     type: string
                   visibility:
                     description: |-
-                      Configures the access that repositories have to the organization variable.
-                      Must be one of all, private, selected. selected_repository_ids is required if set to selected.
+                      Configures the access that repositories have to the organization variable; must be one of all, private, or selected.
                       Configures the access that repositories have to the organization variable. Must be one of 'all', 'private', or 'selected'. 'selected_repository_ids' is required if set to 'selected'.
                     type: string
                 type: object
