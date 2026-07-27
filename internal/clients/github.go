@@ -151,7 +151,21 @@ type CachedTerraformSetup struct {
 }
 
 const (
-	tfSetupCacheTTL = time.Minute * 55
+	// githubInstallationTokenLifetime is how long a GitHub App installation
+	// token stays valid after the terraform provider mints it.
+	githubInstallationTokenLifetime = time.Hour
+
+	// tfSetupMaxHold is the longest a caller may hold a Setup between taking it
+	// from the cache and making its last GitHub API call with it. The cache TTL
+	// has to leave room for this, not just for the moment of the cache read:
+	// upjet's async external client captures the Setup when an operation starts
+	// and reuses it for that whole operation, which can run for minutes. With a
+	// TTL close to the token lifetime, an operation starting near the end of the
+	// window makes its calls against an already-expired token and GitHub answers
+	// 401 Bad credentials.
+	tfSetupMaxHold = time.Minute * 30
+
+	tfSetupCacheTTL = githubInstallationTokenLifetime - tfSetupMaxHold
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which returns Terraform provider setup configuration

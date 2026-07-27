@@ -124,3 +124,19 @@ func TestGetOrBuildTerraformSetup_CachesUntilExpiry(t *testing.T) {
 		t.Fatalf("expected rebuild after expiry (2 builds), got %d builds", got)
 	}
 }
+
+// TestTFSetupCacheTTLOutlivedByToken verifies the cache expires far enough ahead
+// of the GitHub App installation token that a caller still holding a Setup —
+// notably upjet's async external client, which keeps one for a whole create or
+// update — cannot make calls with an already-expired token and get back
+// 401 Bad credentials.
+func TestTFSetupCacheTTLOutlivedByToken(t *testing.T) {
+	if tfSetupCacheTTL <= 0 {
+		t.Fatalf("tfSetupCacheTTL must be positive, got %s", tfSetupCacheTTL)
+	}
+
+	if got := tfSetupCacheTTL + tfSetupMaxHold; got > githubInstallationTokenLifetime {
+		t.Errorf("a Setup taken at the end of the TTL and held for %s outlives its %s token by %s; lower tfSetupCacheTTL",
+			tfSetupMaxHold, githubInstallationTokenLifetime, got-githubInstallationTokenLifetime)
+	}
+}
