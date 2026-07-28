@@ -1,0 +1,23 @@
+apiVersion: enterprise.github.m.upbound.io/v1alpha1
+kind: ActionsPermissions
+metadata:
+  annotations:
+    meta.upbound.io/example-id: enterprise/v1alpha1/actionspermissions
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+  namespace: upbound-system
+spec:
+  forProvider:
+    allowedActions: selected
+    allowedActionsConfig:
+    - githubOwnedAllowed: true
+      patternsAllowed:
+      - actions/cache@*
+      - actions/checkout@*
+      verifiedAllowed: true
+    enabledOrganizations: selected
+    enabledOrganizationsConfig:
+    - organizationIds:
+      - ${data.github_organization.example-org.id}
+    enterpriseSlug: my-enterprise
