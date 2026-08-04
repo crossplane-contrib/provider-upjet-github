@@ -8,6 +8,9 @@ import (
 	"net/http"
 	"sync"
 	"time"
+
+	upjetmetrics "github.com/crossplane/upjet/v2/pkg/metrics"
+	ctrlmetrics "sigs.k8s.io/controller-runtime/pkg/metrics"
 )
 
 const (
@@ -46,13 +49,25 @@ var installTransportsOnce sync.Once
 // provider's client stack. It is safe to call more than once; only the first call
 // installs.
 func installTransports() {
-	installTransportsOnce.Do(installTransportChains)
+	installTransportsOnce.Do(func() {
+		ctrlmetrics.Registry.MustRegister(githubAPIRequests)
+		installTransportChains()
+	})
 }
 
 // installTransportChains does the wiring. It is separate from the sync.Once so
 // tests can exercise both the legacy and the new-client path, which the Once would
 // otherwise let only one of them reach.
+// The legacy client never consults http.DefaultTransport -- it resolves its base
+// RoundTripper from http.DefaultClient, which the Terraform provider builds its
+// authenticated client from -- so that seam is wrapped too, and unconditionally.
 func installTransportChains() {
+	base := http.DefaultClient.Transport
+	if base == nil {
+		base = http.DefaultTransport
+	}
+	http.DefaultClient.Transport = newMetricsRoundTripper(base, githubAPIRequests, upjetmetrics.ExternalAPICalls)
+
 	if !legacyClientEnabled() {
 		installNewClientTransport()
 	}
@@ -75,6 +90,7 @@ func installTransportChains() {
 func installNewClientTransport() {
 	http.DefaultTransport = chainTransports(tunedBaseTransport(http.DefaultTransport),
 		withBoundedSecondaryLimitCooldown(secondaryLimitCooldownCap),
+		withRequestMetrics(githubAPIRequests, upjetmetrics.ExternalAPICalls),
 	)
 }
 

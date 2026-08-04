@@ -115,7 +115,7 @@ func TestInstallNewClientTransport_SurvivesCloneTransport(t *testing.T) {
 	installNewClientTransport()
 
 	assertChainOrder(t, http.DefaultTransport,
-		"*clients.boundSecondaryLimitCooldown")
+		"*clients.boundSecondaryLimitCooldown", "*clients.metricsRoundTripper")
 	if !cloneTransportRetains(http.DefaultTransport) {
 		t.Error("cloneTransport would swap the wrapper for a tuned clone, dropping the counter out of the new client's chain")
 	}
@@ -131,7 +131,7 @@ func TestInstallTransports_WrapsDefaultTransportOnlyForNewClient(t *testing.T) {
 		legacy      string
 		wantWrapped bool
 	}{
-		{name: "new client wraps DefaultTransport so its chain is reachable", legacy: "false", wantWrapped: true},
+		{name: "new client wraps DefaultTransport so its chain is counted", legacy: "false", wantWrapped: true},
 		{name: "legacy client leaves DefaultTransport concrete so the provider's unchecked assertion holds", legacy: "true", wantWrapped: false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
@@ -151,7 +151,8 @@ func TestInstallTransports_WrapsDefaultTransportOnlyForNewClient(t *testing.T) {
 			}
 
 			if tc.wantWrapped {
-				assertChainOrder(t, http.DefaultTransport, "*clients.boundSecondaryLimitCooldown")
+				assertChainOrder(t, http.DefaultTransport,
+					"*clients.boundSecondaryLimitCooldown", "*clients.metricsRoundTripper")
 			}
 		})
 	}
