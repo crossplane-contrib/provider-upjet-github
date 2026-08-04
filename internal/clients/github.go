@@ -7,6 +7,8 @@ package clients
 import (
 	"context"
 	"encoding/json"
+	"os"
+	"strconv"
 	"sync"
 	"time"
 
@@ -166,12 +168,34 @@ const (
 	tfSetupMaxHold = time.Minute * 30
 
 	tfSetupCacheTTL = githubInstallationTokenLifetime - tfSetupMaxHold
+
+	// envLegacyClient is terraform-provider-github's own environment variable for
+	// the legacy_client setting.
+	envLegacyClient = "GITHUB_LEGACY_CLIENT"
 )
+
+// legacyClientEnabled mirrors how terraform-provider-github resolves
+// legacy_client: from GITHUB_LEGACY_CLIENT, defaulting to true when unset or
+// unparseable. The setting is not part of this provider's credentials blob, so
+// the environment variable is the only source.
+func legacyClientEnabled() bool {
+	v, ok := os.LookupEnv(envLegacyClient)
+	if !ok {
+		return true
+	}
+	enabled, err := strconv.ParseBool(v)
+	if err != nil {
+		return true
+	}
+	return enabled
+}
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which returns Terraform provider setup configuration
 //
 //gocyclo:ignore
 func TerraformSetupBuilder(tfProvider *schema.Provider, l logging.Logger) terraform.SetupFn {
+	installMetricsTransport()
+
 	var tfSetupLock sync.RWMutex
 	tfSetups := make(map[string]CachedTerraformSetup)
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
