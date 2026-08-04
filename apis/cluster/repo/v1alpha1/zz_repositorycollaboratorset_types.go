@@ -15,21 +15,21 @@ import (
 
 type IgnoreTeamInitParameters struct {
 
-	// The GitHub team id or the GitHub team slug.
+	// (String) ID or slug of the team to ignore.
 	// ID or slug of the team to ignore.
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 }
 
 type IgnoreTeamObservation struct {
 
-	// The GitHub team id or the GitHub team slug.
+	// (String) ID or slug of the team to ignore.
 	// ID or slug of the team to ignore.
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 }
 
 type IgnoreTeamParameters struct {
 
-	// The GitHub team id or the GitHub team slug.
+	// (String) ID or slug of the team to ignore.
 	// ID or slug of the team to ignore.
 	// +kubebuilder:validation:Optional
 	TeamID *string `json:"teamId" tf:"team_id,omitempty"`
@@ -37,11 +37,12 @@ type IgnoreTeamParameters struct {
 
 type RepositoryCollaboratorSetInitParameters struct {
 
-	// List of teams to ignore when checking for repository access. This supports ignoring teams granted access at an organizational level.
-	// List of teams to ignore.
+	// (Block Set) Teams to ignore when managing repository collaborators. (see below for nested schema)
+	// Teams to ignore when managing repository collaborators.
 	IgnoreTeam []IgnoreTeamInitParameters `json:"ignoreTeam,omitempty" tf:"ignore_team,omitempty"`
 
-	// The GitHub repository.
+	// (String) Name of the repository.
+	// Name of the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
@@ -53,48 +54,59 @@ type RepositoryCollaboratorSetInitParameters struct {
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
-	// List of teams to grant access to the repository.
-	// List of teams.
+	// (Block Set) Teams to grant access to the repository. (see below for nested schema)
+	// Teams to grant access to the repository.
 	Team []TeamInitParameters `json:"team,omitempty" tf:"team,omitempty"`
 
-	// List of users to grant access to the repository.
-	// List of users.
+	// (Block Set) Users to grant access to the repository. (see below for nested schema)
+	// Users to grant access to the repository.
 	User []UserInitParameters `json:"user,omitempty" tf:"user,omitempty"`
 }
 
 type RepositoryCollaboratorSetObservation struct {
+
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// List of teams to ignore when checking for repository access. This supports ignoring teams granted access at an organizational level.
-	// List of teams to ignore.
+	// (Block Set) Teams to ignore when managing repository collaborators. (see below for nested schema)
+	// Teams to ignore when managing repository collaborators.
 	IgnoreTeam []IgnoreTeamObservation `json:"ignoreTeam,omitempty" tf:"ignore_team,omitempty"`
 
-	// Map of usernames to invitation ID for any users added as part of creation of this resource to
-	// be used in github_user_invitation_accepter.
-	// Map of usernames to invitation ID for any users added
+	// (Map of String) Map of usernames to invitation ID for users that haven't yet accepted their invitation to become a collaborator. This is only set on read, and is used internally to track pending invitations for users that aren't yet collaborators.
+	// Map of usernames to invitation ID for users that haven't yet accepted their invitation to become a collaborator. This is only set on read, and is used internally to track pending invitations for users that aren't yet collaborators.
 	// +mapType=granular
 	InvitationIds map[string]*string `json:"invitationIds,omitempty" tf:"invitation_ids,omitempty"`
 
-	// The GitHub repository.
+	// (Boolean) Indicates whether the owner of a personal repository is configured as a collaborator.
+	// Indicates whether the owner of a personal repository is configured as a collaborator.
+	OwnerConfigured *bool `json:"ownerConfigured,omitempty" tf:"owner_configured,omitempty"`
+
+	// (String) Name of the repository.
+	// Name of the repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// List of teams to grant access to the repository.
-	// List of teams.
+	// (Number) ID of the repository.
+	// ID of the repository.
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+
+	// (Block Set) Teams to grant access to the repository. (see below for nested schema)
+	// Teams to grant access to the repository.
 	Team []TeamObservation `json:"team,omitempty" tf:"team,omitempty"`
 
-	// List of users to grant access to the repository.
-	// List of users.
+	// (Block Set) Users to grant access to the repository. (see below for nested schema)
+	// Users to grant access to the repository.
 	User []UserObservation `json:"user,omitempty" tf:"user,omitempty"`
 }
 
 type RepositoryCollaboratorSetParameters struct {
 
-	// List of teams to ignore when checking for repository access. This supports ignoring teams granted access at an organizational level.
-	// List of teams to ignore.
+	// (Block Set) Teams to ignore when managing repository collaborators. (see below for nested schema)
+	// Teams to ignore when managing repository collaborators.
 	// +kubebuilder:validation:Optional
 	IgnoreTeam []IgnoreTeamParameters `json:"ignoreTeam,omitempty" tf:"ignore_team,omitempty"`
 
-	// The GitHub repository.
+	// (String) Name of the repository.
+	// Name of the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
@@ -107,26 +119,25 @@ type RepositoryCollaboratorSetParameters struct {
 	// +kubebuilder:validation:Optional
 	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
-	// List of teams to grant access to the repository.
-	// List of teams.
+	// (Block Set) Teams to grant access to the repository. (see below for nested schema)
+	// Teams to grant access to the repository.
 	// +kubebuilder:validation:Optional
 	Team []TeamParameters `json:"team,omitempty" tf:"team,omitempty"`
 
-	// List of users to grant access to the repository.
-	// List of users.
+	// (Block Set) Users to grant access to the repository. (see below for nested schema)
+	// Users to grant access to the repository.
 	// +kubebuilder:validation:Optional
 	User []UserParameters `json:"user,omitempty" tf:"user,omitempty"`
 }
 
 type TeamInitParameters struct {
 
-	// The permission of the outside collaborators for the repository.
-	// Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
-	// Must be push for personal repositories. Defaults to push.
+	// (String) Permission to grant to the team. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organization. Defaults to push.
+	// Permission to grant to the team. Must be one of `pull`, `triage`, `push`, `maintain`, `admin` or the name of an existing [custom repository role](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization) within the organization. Defaults to `push`.
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
-	// The GitHub team id or the GitHub team slug.
-	// Team ID or slug to add to the repository as a collaborator.
+	// (String) ID or slug of the team to ignore.
+	// ID or slug of the team to add to the repository as a collaborator.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/team/v1alpha1.Team
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("slug",true)
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
@@ -142,26 +153,24 @@ type TeamInitParameters struct {
 
 type TeamObservation struct {
 
-	// The permission of the outside collaborators for the repository.
-	// Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
-	// Must be push for personal repositories. Defaults to push.
+	// (String) Permission to grant to the team. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organization. Defaults to push.
+	// Permission to grant to the team. Must be one of `pull`, `triage`, `push`, `maintain`, `admin` or the name of an existing [custom repository role](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization) within the organization. Defaults to `push`.
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
-	// The GitHub team id or the GitHub team slug.
-	// Team ID or slug to add to the repository as a collaborator.
+	// (String) ID or slug of the team to ignore.
+	// ID or slug of the team to add to the repository as a collaborator.
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 }
 
 type TeamParameters struct {
 
-	// The permission of the outside collaborators for the repository.
-	// Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
-	// Must be push for personal repositories. Defaults to push.
+	// (String) Permission to grant to the team. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organization. Defaults to push.
+	// Permission to grant to the team. Must be one of `pull`, `triage`, `push`, `maintain`, `admin` or the name of an existing [custom repository role](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization) within the organization. Defaults to `push`.
 	// +kubebuilder:validation:Optional
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
-	// The GitHub team id or the GitHub team slug.
-	// Team ID or slug to add to the repository as a collaborator.
+	// (String) ID or slug of the team to ignore.
+	// ID or slug of the team to add to the repository as a collaborator.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/team/v1alpha1.Team
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("slug",true)
 	// +kubebuilder:validation:Optional
@@ -178,38 +187,35 @@ type TeamParameters struct {
 
 type UserInitParameters struct {
 
-	// The permission of the outside collaborators for the repository.
-	// Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories.
-	// Must be push for personal repositories. Defaults to push.
+	// (String) Permission to grant to the team. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organization. Defaults to push.
+	// Permission to grant to the user. Must be one of `pull`, `triage`, `push`, `maintain`, `admin` or the name of an existing [custom repository role](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization) within the organization. Must be `push` for personal repositories. Defaults to `push`.
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
-	// The user to add to the repository as a collaborator.
-	// (Required) The user to add to the repository as a collaborator.
+	// (String) Login for the user to add to the repository as a collaborator.
+	// Login for the user to add to the repository as a collaborator.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 }
 
 type UserObservation struct {
 
-	// The permission of the outside collaborators for the repository.
-	// Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories.
-	// Must be push for personal repositories. Defaults to push.
+	// (String) Permission to grant to the team. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organization. Defaults to push.
+	// Permission to grant to the user. Must be one of `pull`, `triage`, `push`, `maintain`, `admin` or the name of an existing [custom repository role](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization) within the organization. Must be `push` for personal repositories. Defaults to `push`.
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
-	// The user to add to the repository as a collaborator.
-	// (Required) The user to add to the repository as a collaborator.
+	// (String) Login for the user to add to the repository as a collaborator.
+	// Login for the user to add to the repository as a collaborator.
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
 }
 
 type UserParameters struct {
 
-	// The permission of the outside collaborators for the repository.
-	// Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories.
-	// Must be push for personal repositories. Defaults to push.
+	// (String) Permission to grant to the team. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organization. Defaults to push.
+	// Permission to grant to the user. Must be one of `pull`, `triage`, `push`, `maintain`, `admin` or the name of an existing [custom repository role](https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-peoples-access-to-your-organization-with-roles/managing-custom-repository-roles-for-an-organization) within the organization. Must be `push` for personal repositories. Defaults to `push`.
 	// +kubebuilder:validation:Optional
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
-	// The user to add to the repository as a collaborator.
-	// (Required) The user to add to the repository as a collaborator.
+	// (String) Login for the user to add to the repository as a collaborator.
+	// Login for the user to add to the repository as a collaborator.
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username" tf:"username,omitempty"`
 }
@@ -241,7 +247,7 @@ type RepositoryCollaboratorSetStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// RepositoryCollaboratorSet is the Schema for the RepositoryCollaboratorSets API. Provides a GitHub repository collaborators resource.
+// RepositoryCollaboratorSet is the Schema for the RepositoryCollaboratorSets API. Manage the complete set of collaborators (users and teams) for a GitHub repository.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

@@ -62,7 +62,7 @@ func GetProviderNamespaced(ctx context.Context) (*ujconfig.Provider, error) {
 		ujconfig.WithTerraformPluginSDKIncludeList(resourceList(terraformPluginSDKExternalNameConfigs)),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
-		ujconfig.WithTerraformProvider(github.Provider()),
+		ujconfig.WithTerraformProvider(github.NewProvider("dev", "none")()),
 		ujconfig.WithDefaultResourceOptions(
 			resourceConfigurator(),
 		))
