@@ -12,6 +12,7 @@ require (
 	github.com/crossplane/upjet/v2 v2.2.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.40.1
 	github.com/integrations/terraform-provider-github/v6 v6.13.0
+	github.com/jferrl/go-githubauth v1.7.0
 	github.com/pkg/errors v0.9.1
 	k8s.io/api v0.34.3
 	k8s.io/apiextensions-apiserver v0.34.3
@@ -79,7 +80,6 @@ require (
 	github.com/hashicorp/yamux v0.1.2 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/jferrl/go-githubauth v1.7.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
