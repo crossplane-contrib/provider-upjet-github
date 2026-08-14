@@ -496,3 +496,191 @@ func TestWithParentDeletionWorkaroundReplacesTeamReadContext(t *testing.T) {
 		}
 	}
 }
+
+func TestBranchNotProtectedWorkaroundResourcesAreWired(t *testing.T) {
+	p := tpg.NewProvider("dev", "none")()
+	for _, name := range branchNotProtectedWorkaroundResources {
+		r, ok := p.ResourcesMap[name]
+		if !ok {
+			t.Errorf("%q is not a registered terraform-provider-github resource (silently skipped — typo or renamed key?)", name)
+			continue
+		}
+		if r.Read == nil { //nolint:staticcheck // SA1019: verifying the legacy Read field the wrapper depends on is present.
+			t.Errorf("%q has no legacy Read func; withParentDeletionWorkaround would silently skip it (migrated to ReadContext upstream?)", name)
+		}
+	}
+}
+
+// wrapReadForBranchNotProtected must translate go-github's
+// ErrBranchNotProtected sentinel -- which upstream's errors.As on
+// *github.ErrorResponse cannot see, leaving its SetId("") arm unreachable -- into
+// the SDK "gone" signal, while propagating every other error unchanged.
+//
+// The typed 404 case is asserted as *propagated*, not translated: this wrapper
+// deliberately has no StatusNotFound arm, because a real 404 keeps its
+// *github.ErrorResponse and upstream clears the ID itself.
+func TestWrapReadForBranchNotProtected(t *testing.T) {
+	const startingID = "some-repo:main"
+
+	notFound := &github.ErrorResponse{
+		Response: &http.Response{StatusCode: http.StatusNotFound},
+		Message:  "Not Found",
+	}
+	forbidden := &github.ErrorResponse{
+		Response: &http.Response{StatusCode: http.StatusForbidden},
+		Message:  "Forbidden",
+	}
+	serverErr := &github.ErrorResponse{
+		Response: &http.Response{StatusCode: http.StatusInternalServerError},
+		Message:  "Server Error",
+	}
+	genericErr := errors.New("dial tcp: connection refused")
+
+	cases := map[string]struct {
+		underlyingErr error
+		wantErr       error
+		wantClearedID bool
+	}{
+		"ErrBranchNotProtected sentinel clears ID and returns nil": {
+			underlyingErr: github.ErrBranchNotProtected,
+			wantErr:       nil,
+			wantClearedID: true,
+		},
+		"typed 404 is propagated and keeps ID (upstream clears it itself)": {
+			underlyingErr: notFound,
+			wantErr:       notFound,
+			wantClearedID: false,
+		},
+		"typed 403 is propagated and keeps ID": {
+			underlyingErr: forbidden,
+			wantErr:       forbidden,
+			wantClearedID: false,
+		},
+		"typed 500 is propagated and keeps ID": {
+			underlyingErr: serverErr,
+			wantErr:       serverErr,
+			wantClearedID: false,
+		},
+		"non-github error is propagated and keeps ID": {
+			underlyingErr: genericErr,
+			wantErr:       genericErr,
+			wantClearedID: false,
+		},
+		"nil error passes through and keeps ID": {
+			underlyingErr: nil,
+			wantErr:       nil,
+			wantClearedID: false,
+		},
+	}
+
+	for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
+			d := (&schema.Resource{Schema: map[string]*schema.Schema{}}).TestResourceData()
+			d.SetId(startingID)
+
+			wrapped := wrapReadForBranchNotProtected(func(_ *schema.ResourceData, _ interface{}) error {
+				return tc.underlyingErr
+			})
+
+			gotErr := wrapped(d, nil)
+
+			if !errors.Is(gotErr, tc.wantErr) {
+				t.Fatalf("error mismatch: got %v, want %v", gotErr, tc.wantErr)
+			}
+			if tc.wantClearedID {
+				if d.Id() != "" {
+					t.Fatalf("expected ID to be cleared, got %q", d.Id())
+				}
+			} else {
+				if d.Id() != startingID {
+					t.Fatalf("expected ID to remain %q, got %q", startingID, d.Id())
+				}
+			}
+		})
+	}
+}
+
+// The sentinel wrapped in a chain (fmt.Errorf("...: %w", ...)) must still be
+// detected, since errors.Is walks the chain. Upstream returns it bare today; this
+// guards against a regression if it starts annotating the error.
+func TestWrapReadForBranchNotProtected_WrappedSentinel(t *testing.T) {
+	d := (&schema.Resource{Schema: map[string]*schema.Schema{}}).TestResourceData()
+	d.SetId("some-repo:main")
+
+	wrapped := wrapReadForBranchNotProtected(func(_ *schema.ResourceData, _ interface{}) error {
+		return fmt.Errorf("reading branch protection: %w", github.ErrBranchNotProtected)
+	})
+	if err := wrapped(d, nil); err != nil {
+		t.Fatalf("expected wrapped sentinel to be treated as gone (nil error), got %v", err)
+	}
+	if d.Id() != "" {
+		t.Fatalf("expected ID to be cleared for wrapped sentinel, got %q", d.Id())
+	}
+}
+
+// The near-miss for an identity match is a *different* error value carrying the
+// byte-identical message. github.ErrBranchNotProtected is a bare errors.New, so
+// only its identity means "protection is absent"; an unrelated error that happens
+// to render the same text does not, and treating it as gone would drop the delete
+// finalizer on a live resource.
+//
+// This is the test that fails if anyone ever "simplifies" the wrapper to
+// strings.Contains(err.Error(), "branch is not protected") -- a real temptation
+// here, since the other three wrappers in this file are string matchers.
+func TestWrapReadForBranchNotProtected_IdenticalMessageIsNotTheSentinel(t *testing.T) {
+	const startingID = "some-repo:main"
+
+	// Same text as github.ErrBranchNotProtected, different error value.
+	impostor := errors.New("branch is not protected")
+
+	cases := map[string]error{
+		"distinct error with identical message": impostor,
+		"distinct error wrapped in a chain":     fmt.Errorf("reading branch protection: %w", impostor),
+		"message embedded in a larger error":    errors.New("upstream says branch is not protected, retrying"),
+	}
+
+	for name, underlying := range cases {
+		t.Run(name, func(t *testing.T) {
+			d := (&schema.Resource{Schema: map[string]*schema.Schema{}}).TestResourceData()
+			d.SetId(startingID)
+
+			wrapped := wrapReadForBranchNotProtected(func(_ *schema.ResourceData, _ interface{}) error {
+				return underlying
+			})
+
+			gotErr := wrapped(d, nil)
+			if gotErr == nil {
+				t.Fatalf("expected %v to propagate, but it was treated as gone", underlying)
+			}
+			if gotErr.Error() != underlying.Error() {
+				t.Fatalf("error was altered: got %q, want %q", gotErr, underlying)
+			}
+			if d.Id() != startingID {
+				t.Fatalf("expected ID to remain %q, got %q", startingID, d.Id())
+			}
+		})
+	}
+}
+
+// TestWithParentDeletionWorkaroundReplacesBranchNotProtectedRead asserts the
+// composition: withParentDeletionWorkaround must actually replace the resource's
+// legacy Read pointer, not merely leave it wired. Comparing the pointer
+// before/after catches a missing or misordered loop that the wiring test above
+// would not.
+func TestWithParentDeletionWorkaroundReplacesBranchNotProtectedRead(t *testing.T) {
+	p := tpg.NewProvider("dev", "none")()
+
+	before := map[string]string{}
+	for _, name := range branchNotProtectedWorkaroundResources {
+		before[name] = fmt.Sprintf("%p", p.ResourcesMap[name].Read) //nolint:staticcheck // SA1019: the wrapper operates on the legacy Read field.
+	}
+
+	withParentDeletionWorkaround(p)
+
+	for _, name := range branchNotProtectedWorkaroundResources {
+		after := fmt.Sprintf("%p", p.ResourcesMap[name].Read) //nolint:staticcheck // SA1019: see above.
+		if after == before[name] {
+			t.Errorf("%q Read was not wrapped (pointer unchanged: %s)", name, after)
+		}
+	}
+}

@@ -72,6 +72,64 @@ var commitLookupParentDeletionWorkaroundResources = []string{
 	"github_repository_file",
 }
 
+// branchNotProtectedWorkaroundResources lists resources that wedge on their own
+// deletion rather than a parent's. Despite living in this file, this is not a
+// parent-404 family at all: nothing about the repository, branch or any parent
+// is missing. The resource's own Read cannot recognise the resource as gone
+// immediately after its own successful Delete.
+//
+// github_branch_protection_v3 is the only member. Verified against
+// terraform-provider-github v6.13.0 and go-github v88.0.0:
+//
+//   - GitHub answers GET .../branches/<branch>/protection with 404 and the
+//     message "Branch not protected" once protection is removed.
+//   - go-github's GetBranchProtection detects exactly that message
+//     (isBranchNotProtected -> errorResponse.Message == "Branch not protected")
+//     and *substitutes* the bare sentinel github.ErrBranchNotProtected -- a
+//     plain errors.New with no Response and no wrapping -- discarding the
+//     *github.ErrorResponse.
+//   - resourceGithubBranchProtectionV3Read then does
+//     errors.As(err, &ghErr) on *github.ErrorResponse. The sentinel is not one,
+//     so errors.As fails, its http.StatusNotFound arm that would SetId("") is
+//     unreachable, and it falls through to `return err`.
+//
+// So after the provider's own Delete succeeds, the confirming Observe hard-errors
+// forever. crossplane-runtime can never conclude the external resource is absent,
+// never removes the delete finalizer, and the MR stays in Terminating
+// permanently. This is an upstream Read-contract bug. The upstream fix would be
+// an added errors.Is(err, github.ErrBranchNotProtected) check alongside the
+// existing errors.As. No issue or PR has been filed as of this commit -- unlike
+// commitLookupParentDeletionWorkaroundResources above, which cites a concrete
+// upstream issue, this is a recommendation with nothing tracking it yet.
+//
+// Only Read reaches the sentinel. requireSignedCommitsRead calls
+// GetSignaturesProtectedBranch, which can also return it, but that function
+// swallows every error (`return nil //nolint:nilerr`), so it never propagates.
+// GetRequiredStatusChecks and ListRequiredStatusChecksContexts are the other two
+// go-github functions that substitute the sentinel; no terraform-provider-github
+// resource calls either at this version.
+//
+// Deliberately NOT handled here, and why:
+//   - The parent-repository-gone case for this same resource. When the repository
+//     is gone, GitHub's message is "Not Found", not "Branch not protected", so
+//     isBranchNotProtected does not match, the *github.ErrorResponse survives,
+//     and upstream's own http.StatusNotFound arm clears the ID correctly. Note
+//     that this rests on GitHub returning "Not Found" for an absent repository:
+//     that is inferred from the API's documented behaviour and from
+//     isBranchNotProtected's exact-message match, NOT verified against a live
+//     deleted repository. A branch deleted while the repository survives is
+//     believed to behave the same way ("Branch not found"), likewise unverified.
+//     If either assumption is wrong, the symptom is a wedge on parent deletion,
+//     not a dropped finalizer on a live resource.
+//   - github_branch_protection (the non-v3, GraphQL resource). It is already
+//     excluded from parentDeletionWorkaroundResources above, but for a different
+//     question (its GraphQL repo-gone handling) -- do not look there for sentinel
+//     reasoning. It does not call this REST endpoint at all, so it can never see
+//     this sentinel.
+var branchNotProtectedWorkaroundResources = []string{
+	"github_branch_protection_v3",
+}
+
 // wrapReadForParentDeletion translates a typed GitHub 404 (parent repository gone)
 // into the SDK's "gone" signal. It runs before the SDK flattens the returned error
 // into a diagnostic, so the typed *github.ErrorResponse is still available to
@@ -192,15 +250,71 @@ func wrapReadContextForCommitLookupDeletion(orig schema.ReadContextFunc) schema.
 	}
 }
 
+// wrapReadForBranchNotProtected wraps an old-style schema.ReadFunc so that
+// go-github's github.ErrBranchNotProtected sentinel is translated into the SDK's
+// "resource no longer exists" signal (SetId("") + nil error) instead of a hard
+// error. Every other error is propagated unchanged.
+//
+// This wraps the legacy Read field, so it runs before the SDK flattens the Go
+// error into a diagnostic and can match the error *identity* with errors.Is.
+// Match the sentinel only -- never its message. github.ErrBranchNotProtected is
+// a bare errors.New, so a different error value carrying the identical text is
+// not this condition, and a string match would treat it as one.
+//
+// No http.StatusNotFound arm here, deliberately. go-github only substitutes the
+// sentinel when the repository and branch both exist and protection is absent, so
+// a genuine 404 (repository or branch gone) still arrives as a
+// *github.ErrorResponse and upstream's own StatusNotFound arm already clears the
+// ID. Adding a 404 arm would be dead code.
+//
+// Caveats (honest scope):
+//
+//   - Unlike wrapReadContextForParentDeletion, this wrapper does NOT carry the
+//     "GitHub returns 404 rather than 403 for resources a token cannot see" risk.
+//     An unreadable repository yields message "Not Found", never "Branch not
+//     protected", so a permissions blip cannot reach this sentinel and cannot
+//     drop the delete finalizer on a live resource. The sentinel means protection
+//     is genuinely absent.
+//   - The create-retry consequence also inverts relative to the other families.
+//     If protection is removed out-of-band, Observe now reports
+//     ResourceExists:false and crossplane-runtime calls Create, which re-applies
+//     protection and succeeds, because the branch still exists. That is drift
+//     correction, not the create-retry loop the parent-404 families produce
+//     (there the parent is gone, so Create cannot succeed).
+//   - It does not fix the underlying upstream bug: `terraform plan` against the
+//     unwrapped provider still errors. Only this provider's Read path is repaired.
+//
+// nolint:staticcheck // SA1019: github_branch_protection_v3 defines the legacy
+// schema.Resource.Read field (not ReadContext), and the SDK forbids setting both,
+// so the wrapper must operate on the deprecated ReadFunc.
+func wrapReadForBranchNotProtected(orig schema.ReadFunc) schema.ReadFunc {
+	return func(d *schema.ResourceData, meta interface{}) error {
+		err := orig(d, meta)
+		if err == nil {
+			return nil
+		}
+		if errors.Is(err, github.ErrBranchNotProtected) {
+			d.SetId("")
+			return nil
+		}
+		return err
+	}
+}
+
 // withParentDeletionWorkaround wraps the affected resources' read functions on the
 // in-memory provider. It mutates and returns the same provider so it can be used
 // inline at the ujconfig.WithTerraformProvider call site. A resource the pinned
 // provider no longer defines, or one that has moved off the field its wrapper
 // replaces, is skipped.
+//
+// The fourth loop is not a parent-deletion case despite the name: it lets
+// github_branch_protection_v3 recognise its own successful deletion. See
+// branchNotProtectedWorkaroundResources.
 func withParentDeletionWorkaround(p *schema.Provider) *schema.Provider {
 	wrapRepositoryChildReads(p)
 	wrapTeamChildReads(p)
 	wrapCommitLookupReads(p)
+	wrapBranchNotProtectedReads(p)
 	return p
 }
 
@@ -231,5 +345,15 @@ func wrapCommitLookupReads(p *schema.Provider) {
 			continue
 		}
 		r.ReadContext = wrapReadContextForCommitLookupDeletion(r.ReadContext)
+	}
+}
+
+func wrapBranchNotProtectedReads(p *schema.Provider) {
+	for _, name := range branchNotProtectedWorkaroundResources {
+		r, ok := p.ResourcesMap[name]
+		if !ok || r == nil || r.Read == nil { //nolint:staticcheck // SA1019: intentionally wrapping the legacy Read field this resource defines.
+			continue
+		}
+		r.Read = wrapReadForBranchNotProtected(r.Read) //nolint:staticcheck // SA1019: see above; the SDK forbids setting ReadContext alongside Read.
 	}
 }
