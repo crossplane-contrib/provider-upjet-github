@@ -1,0 +1,14 @@
+apiVersion: app.github.upbound.io/v1alpha1
+kind: AppInstallationRepositories
+metadata:
+  annotations:
+    meta.upbound.io/example-id: app/v1alpha1/appinstallationrepositories
+  labels:
+    testing.upbound.io/example-name: some-app-repos
+  name: some-app-repos
+spec:
+  forProvider:
+    installationId: "1234567"
+    selectedRepositoriesRefs:
+    - name: some-repo
+    - name: another-repo

@@ -27,6 +27,8 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	"github_actions_secret": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}:{{ variable_name }}
 	"github_actions_variable": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ installation_id }}
+	"github_app_installation_repositories": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository }}:{{ name }}:{{ source branch }}. Using this a id makes
 	// the branch field unavailable. This causes the name of the k8s object to be leading and will cause naming conflict.
 	"github_branch": config.IdentifierFromProvider,

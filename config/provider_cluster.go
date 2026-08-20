@@ -21,6 +21,7 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actionsrepositorypermissions"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actionssecret"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actionsvariable"
+	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/appinstallationrepositories"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/branch"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/branchdefault"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/branchprotection"
@@ -79,6 +80,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		actionsrepositorypermissions.Configure,
 		actionssecret.Configure,
 		actionsvariable.Configure,
+		appinstallationrepositories.Configure,
 		branch.Configure,
 		branchdefault.Configure,
 		branchprotection.Configure,
