@@ -62,7 +62,12 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		ujconfig.WithTerraformPluginSDKIncludeList(resourceList(terraformPluginSDKExternalNameConfigs)),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
-		ujconfig.WithTerraformProvider(github.NewProvider("dev", "none")()),
+		// withDirectGrantWorkaround installs a schema.ReadFunc that runs on
+		// every future Terraform Read, long after GetProvider's ctx (a
+		// build-time argument, not a per-reconcile one) has gone out of
+		// scope. It derives its own bounded context (directGrantLookupTimeout,
+		// in config/direct_grant.go) at call time instead, deliberately.
+		ujconfig.WithTerraformProvider(withDirectGrantWorkaround(github.NewProvider("dev", "none")())), //nolint:contextcheck // see comment above
 		ujconfig.WithDefaultResourceOptions(
 			resourceConfigurator(),
 		))

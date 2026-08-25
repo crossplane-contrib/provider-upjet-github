@@ -22,6 +22,7 @@ import (
 
 	clusterv1beta1 "github.com/crossplane-contrib/provider-upjet-github/apis/cluster/v1beta1"
 	namespacedv1beta1 "github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/v1beta1"
+	"github.com/crossplane-contrib/provider-upjet-github/internal/directgrant"
 )
 
 const (
@@ -174,6 +175,13 @@ const (
 func TerraformSetupBuilder(tfProvider *schema.Provider, l logging.Logger) terraform.SetupFn {
 	var tfSetupLock sync.RWMutex
 	tfSetups := make(map[string]CachedTerraformSetup)
+	// directgrant (config/direct_grant.go) runs inside the terraform SDK's
+	// legacy schema.ReadFunc signature, which carries no crossplane-runtime
+	// Logger of its own. Installing l here, once per controller setup, is
+	// what lets its fail-safe branch log through the same Logger as
+	// everything else in this provider, rather than the stdlib log package
+	// cmd/provider/main.go silences (log.Default().SetOutput(io.Discard)).
+	directgrant.SetLogger(l.Info)
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
 		configRefName, err := getProviderConfigName(mg)
 		if err != nil {
@@ -206,7 +214,7 @@ func TerraformSetupBuilder(tfProvider *schema.Provider, l logging.Logger) terraf
 					return ps, errors.Wrap(err, errProviderConfigurationBuilder)
 				}
 
-				if err := configureNoForkGithubClient(ctx, &ps, *tfProvider); err != nil {
+				if err := configureNoForkGithubClient(ctx, &ps, *tfProvider, l); err != nil {
 					return ps, errors.Wrap(err, "failed to configure the Terraform Github provider meta")
 				}
 
@@ -252,6 +260,15 @@ func getOrBuildTerraformSetup(
 	if err != nil {
 		return terraform.Setup{}, err
 	}
+	// Deregister the superseded entry's direct-grant client before it is
+	// dropped, so the registry (internal/directgrant) does not grow without
+	// bound across setup rebuilds. Guarded against old.setup.Meta == ps.Meta:
+	// build() always registers the new meta before returning, so if a future
+	// upstream ever reused meta pointers across builds, deregistering
+	// unconditionally would evict the registration just installed.
+	if old, ok := cache[configRefName]; ok && old.setup.Meta != ps.Meta {
+		directgrant.Deregister(old.setup.Meta)
+	}
 	cache[configRefName] = CachedTerraformSetup{
 		setup:  &ps,
 		expiry: now().Add(ttl),
@@ -259,7 +276,7 @@ func getOrBuildTerraformSetup(
 	return ps, nil
 }
 
-func configureNoForkGithubClient(ctx context.Context, ps *terraform.Setup, p schema.Provider) error {
+func configureNoForkGithubClient(ctx context.Context, ps *terraform.Setup, p schema.Provider, l logging.Logger) error {
 	// Please be aware that this implementation relies on the schema.Provider
 	// parameter `p` being a non-pointer. This is because normally
 	// the Terraform plugin SDK normally configures the provider
@@ -273,6 +290,24 @@ func configureNoForkGithubClient(ctx context.Context, ps *terraform.Setup, p sch
 		return errors.Errorf("failed to configure the provider: %v", diag)
 	}
 	ps.Meta = p.Meta()
+
+	// Register a GraphQL client for direct-grant lookups against this
+	// ProviderConfig's credentials -- see directgrant.go in this package.
+	//
+	// Deliberately not propagated. configureNoForkGithubClient runs inside the
+	// setup cache's build function, so returning this error would leave the
+	// ProviderConfig with no terraform.Setup at all and stop every managed
+	// resource under it from reconciling -- far worse than the effective-role
+	// bug the direct-grant lookup exists to fix, and the wrong direction for a
+	// design whose rule is to degrade to today's known bug and never past it.
+	//
+	// Nothing gets registered, so directgrant.Lookup fails loudly per call and
+	// the Read wrapper's fail-safe leaves upstream's answer standing -- exactly
+	// the degraded state a withdrawn credential produces, and just as visible.
+	if err := registerDirectGrantClient(ps); err != nil {
+		l.Info("cannot register a direct-grant client for this ProviderConfig; github_repository_collaborator reads will fall back to upstream's effective-role answer (team-inherited access will read as a direct grant)", "error", err)
+	}
+
 	return nil
 }
 

@@ -11,8 +11,41 @@ import (
 	"testing"
 	"time"
 
+	"github.com/crossplane/crossplane-runtime/v2/pkg/logging"
 	"github.com/crossplane/upjet/v2/pkg/terraform"
+	"github.com/integrations/terraform-provider-github/v6/github"
+
+	"github.com/crossplane-contrib/provider-upjet-github/internal/directgrant"
 )
+
+// capturingLogger implements logging.Logger, recording every Info call so a
+// test can assert on what actually reached it -- rather than on a
+// logging.Logger-shaped stub that was never wired to anything real.
+type capturingLogger struct {
+	mu    sync.Mutex
+	infos []string
+}
+
+func (l *capturingLogger) Info(msg string, _ ...any) {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	l.infos = append(l.infos, msg)
+}
+
+func (l *capturingLogger) Debug(string, ...any) {}
+
+func (l *capturingLogger) WithValues(...any) logging.Logger { return l }
+
+func (l *capturingLogger) contains(substr string) bool {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	for _, m := range l.infos {
+		if strings.Contains(m, substr) {
+			return true
+		}
+	}
+	return false
+}
 
 // TestGetOrBuildTerraformSetup_ConcurrentColdStart reproduces the cold-start
 // thundering-herd bug: when many managed resources reconcile at once against a
@@ -138,5 +171,27 @@ func TestTFSetupCacheTTLOutlivedByToken(t *testing.T) {
 	if got := tfSetupCacheTTL + tfSetupMaxHold; got > githubInstallationTokenLifetime {
 		t.Errorf("a Setup taken at the end of the TTL and held for %s outlives its %s token by %s; lower tfSetupCacheTTL",
 			tfSetupMaxHold, githubInstallationTokenLifetime, got-githubInstallationTokenLifetime)
+	}
+}
+
+// TerraformSetupBuilder installs its Logger into directgrant.SetLogger, so
+// wrapReadForDirectGrant's fail-safe (config/direct_grant.go) can report
+// through the same Logger as everything else in this provider. That wrapper
+// has no logger of its own to use instead -- it runs inside the terraform
+// SDK's legacy schema.ReadFunc signature -- so without this wiring its
+// failures would go to the stdlib log package, which cmd/provider/main.go
+// discards (log.Default().SetOutput(io.Discard)).
+//
+// Must fail against a build that never calls directgrant.SetLogger:
+// directgrant.Warn would then be a silent no-op.
+func TestTerraformSetupBuilder_InstallsDirectGrantLogger(t *testing.T) {
+	logger := &capturingLogger{}
+	_ = TerraformSetupBuilder(github.NewProvider("dev", "none")(), logger)
+	t.Cleanup(func() { directgrant.SetLogger(nil) })
+
+	directgrant.Warn("simulated direct-grant failure")
+
+	if !logger.contains("simulated direct-grant failure") {
+		t.Fatal("expected TerraformSetupBuilder to install its Logger into directgrant.SetLogger")
 	}
 }
