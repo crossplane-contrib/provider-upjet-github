@@ -37,6 +37,10 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	"github_branch_protection": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository }}: {{ branch}}
 	"github_branch_protection_v3": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ secret name }}
+	"github_dependabot_organization_secret": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ repository }}:{{ secret }}
+	"github_dependabot_secret": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ group_id }}
 	"github_emu_group_mapping": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ slug/orgname }} E.g:enterp/some-awesome-org
