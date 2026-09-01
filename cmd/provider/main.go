@@ -19,13 +19,13 @@ import (
 	"github.com/crossplane/crossplane-runtime/v2/pkg/gate"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/logging"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/ratelimiter"
-	"github.com/crossplane/crossplane-runtime/v2/pkg/reconciler/customresourcesgate"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/reconciler/managed"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/statemetrics"
 	tjcontroller "github.com/crossplane/upjet/v2/pkg/controller"
 	"k8s.io/client-go/tools/leaderelection/resourcelock"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
+	ctrlconfig "sigs.k8s.io/controller-runtime/pkg/config"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
@@ -48,6 +48,8 @@ func main() {
 		pollStateMetricInterval  = app.Flag("poll-state-metric", "State metric recording interval").Default("5s").Duration()
 		leaderElection           = app.Flag("leader-election", "Use leader election for the controller manager.").Short('l').Default("false").OverrideDefaultFromEnvar("LEADER_ELECTION").Bool()
 		maxReconcileRate         = app.Flag("max-reconcile-rate", "The global maximum rate per second at which resources may checked for drift from the desired state.").Default("100").Int()
+		cacheSyncTimeout         = app.Flag("cache-sync-timeout", "Controller cache sync timeout, e.g. 5m, 10m.").Default("2m").Duration()
+		activeResources          = app.Flag("active-resources", "Comma-separated list of API group patterns to activate controllers for (e.g. '*github.m.upbound.io'). Supports a single leading or trailing '*' wildcard. Empty (default) activates all groups.").Default("").Envar("ACTIVE_RESOURCES").String()
 		enableManagementPolicies = app.Flag("enable-management-policies", "Enable support for Management Policies.").Default("true").Envar("ENABLE_MANAGEMENT_POLICIES").Bool()
 	)
 
@@ -77,6 +79,9 @@ func main() {
 		LeaderElectionID: "crossplane-leader-election-provider-upjet-github",
 		Cache: cache.Options{
 			SyncPeriod: syncPeriod,
+		},
+		Controller: ctrlconfig.Controller{
+			CacheSyncTimeout: *cacheSyncTimeout,
 		},
 		LeaderElectionResourceLock: resourcelock.LeasesResourceLock,
 		LeaseDuration:              func() *time.Duration { d := 60 * time.Second; return &d }(),
@@ -142,17 +147,22 @@ func main() {
 		logr.Info("Beta feature enabled", "flag", features.EnableBetaManagementPolicies)
 	}
 
+	activeGroups := parseCSV(*activeResources)
+
 	canSafeStart, err := canWatchCRD(context.TODO(), mgr)
 	kingpin.FatalIfError(err, "SafeStart precheck failed")
 	if canSafeStart {
+		if len(activeGroups) > 0 {
+			logr.Info("active-resources filter enabled; only matching API groups will be activated", "patterns", activeGroups)
+		}
 		crdGate := new(gate.Gate[schema.GroupVersionKind])
 		clusterOpts.Gate = crdGate
 		namespacedOpts.Gate = crdGate
-		kingpin.FatalIfError(customresourcesgate.Setup(mgr, xpcontroller.Options{
+		kingpin.FatalIfError(setupScopedCRDGate(mgr, xpcontroller.Options{
 			Logger:                  logr,
 			Gate:                    crdGate,
 			MaxConcurrentReconciles: 1,
-		}), "Cannot setup CRD gate")
+		}, activeGroups), "Cannot setup CRD gate")
 		kingpin.FatalIfError(controllerCluster.SetupGated(mgr, clusterOpts), "Cannot setup cluster-scoped Template controllers")
 		kingpin.FatalIfError(controllerNamespaced.SetupGated(mgr, namespacedOpts), "Cannot setup namespaced Template controllers")
 	} else {
