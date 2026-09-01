@@ -29,6 +29,7 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/enterpriseorganization"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/issuelabels"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/membership"
+	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/organizationroleteam"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/organizationruleset"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/repository"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/repositoryautolinkreference"
@@ -87,6 +88,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		enterpriseorganization.Configure,
 		issuelabels.Configure,
 		membership.Configure,
+		organizationroleteam.Configure,
 		organizationruleset.Configure,
 		repository.Configure,
 		repositoryautolinkreference.Configure,
