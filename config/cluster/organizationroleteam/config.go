@@ -9,4 +9,3 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "team"
 	})
 }
-
