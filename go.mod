@@ -13,10 +13,10 @@ require (
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.40.1
 	github.com/integrations/terraform-provider-github/v6 v6.13.0
 	github.com/pkg/errors v0.9.1
-	k8s.io/api v0.34.3
+	k8s.io/api v0.36.3
 	k8s.io/apiextensions-apiserver v0.34.3
 	k8s.io/apimachinery v0.36.3
-	k8s.io/client-go v0.34.3
+	k8s.io/client-go v0.36.3
 	sigs.k8s.io/controller-runtime v0.22.4
 	sigs.k8s.io/controller-tools v0.19.0
 )
@@ -34,7 +34,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/dave/jennifer v1.7.1 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/emicklei/go-restful/v3 v3.12.2 // indirect
+	github.com/emicklei/go-restful/v3 v3.13.0 // indirect
 	github.com/evanphx/json-patch v5.9.11+incompatible // indirect
 	github.com/evanphx/json-patch/v5 v5.9.11 // indirect
 	github.com/fatih/camelcase v1.0.0 // indirect
