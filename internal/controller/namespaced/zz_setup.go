@@ -19,6 +19,8 @@ import (
 	repositoryaccesslevel "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/actions/repositoryaccesslevel"
 	repositorypermissions "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/actions/repositorypermissions"
 	runnergroup "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/actions/runnergroup"
+	dependabotorganizationsecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/dependabot/dependabotorganizationsecret"
+	dependabotsecret "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/dependabot/dependabotsecret"
 	organization "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/enterprise/organization"
 	organizationruleset "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/enterprise/organizationruleset"
 	providerconfig "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/providerconfig"
@@ -63,6 +65,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		repositoryaccesslevel.Setup,
 		repositorypermissions.Setup,
 		runnergroup.Setup,
+		dependabotorganizationsecret.Setup,
+		dependabotsecret.Setup,
 		organization.Setup,
 		organizationruleset.Setup,
 		providerconfig.Setup,
@@ -113,6 +117,8 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		repositoryaccesslevel.SetupGated,
 		repositorypermissions.SetupGated,
 		runnergroup.SetupGated,
+		dependabotorganizationsecret.SetupGated,
+		dependabotsecret.SetupGated,
 		organization.SetupGated,
 		organizationruleset.SetupGated,
 		providerconfig.SetupGated,

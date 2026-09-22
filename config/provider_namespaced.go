@@ -25,6 +25,8 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/branchdefault"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/branchprotection"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/branchprotectionv3"
+	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/dependabotorganizationsecret"
+	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/dependabotsecret"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/emugroupmapping"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/enterpriseorganization"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/issuelabels"
@@ -83,6 +85,8 @@ func GetProviderNamespaced(ctx context.Context) (*ujconfig.Provider, error) {
 		branchdefault.Configure,
 		branchprotection.Configure,
 		branchprotectionv3.Configure,
+		dependabotorganizationsecret.Configure,
+		dependabotsecret.Configure,
 		emugroupmapping.Configure,
 		enterpriseorganization.Configure,
 		issuelabels.Configure,
