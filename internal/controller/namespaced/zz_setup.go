@@ -22,6 +22,7 @@ import (
 	appinstallationrepositories "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/app/appinstallationrepositories"
 	organization "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/enterprise/organization"
 	organizationruleset "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/enterprise/organizationruleset"
+	organizationcustomproperty "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/organization/organizationcustomproperty"
 	providerconfig "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/providerconfig"
 	branch "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/repo/branch"
 	branchprotection "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/repo/branchprotection"
@@ -67,6 +68,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		appinstallationrepositories.Setup,
 		organization.Setup,
 		organizationruleset.Setup,
+		organizationcustomproperty.Setup,
 		providerconfig.Setup,
 		branch.Setup,
 		branchprotection.Setup,
@@ -118,6 +120,7 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		appinstallationrepositories.SetupGated,
 		organization.SetupGated,
 		organizationruleset.SetupGated,
+		organizationcustomproperty.SetupGated,
 		providerconfig.SetupGated,
 		branch.SetupGated,
 		branchprotection.SetupGated,
