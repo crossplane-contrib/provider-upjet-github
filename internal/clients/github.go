@@ -7,6 +7,8 @@ package clients
 import (
 	"context"
 	"encoding/json"
+	"os"
+	"strconv"
 	"sync"
 	"time"
 
@@ -48,6 +50,17 @@ const (
 	keyRetryDelayMs          = "retry_delay_ms"
 	keyMaxRetries            = "max_retries"
 	keyRetryableErrors       = "retryable_errors"
+	keyParallelRequests      = "parallel_requests"
+
+	// write_delay_ms, read_delay_ms and parallel_requests have no environment
+	// variable in terraform-provider-github, unlike legacy_client. This provider
+	// passes an explicit configuration map to the Terraform provider, so schema
+	// defaults do not apply to keys it sets — an operator has no way to reach
+	// these settings without a credentials Secret rotation. These env vars give
+	// them one.
+	envWriteDelayMs     = "GITHUB_WRITE_DELAY_MS"
+	envReadDelayMs      = "GITHUB_READ_DELAY_MS"
+	envParallelRequests = "GITHUB_PARALLEL_REQUESTS"
 )
 
 type appAuth struct {
@@ -98,7 +111,13 @@ func setCredentialConfigs(creds githubConfig, cnf terraform.ProviderConfiguratio
 	return cnf, nil
 }
 
-// setParameterConfigs will add configuration type fields (WriteDelayMs, ReadDelayMs, RetryDelayMs, MaxRetries, RetryableErrors) to terraform providerConfiguration
+// setParameterConfigs adds the configuration fields this provider passes through
+// to terraform-provider-github: write_delay_ms, read_delay_ms, retry_delay_ms,
+// max_retries, retryable_errors and parallel_requests.
+//
+// write_delay_ms and read_delay_ms fall back to the environment when the
+// credentials Secret doesn't set them, and the environment wins when both are
+// present — see envWriteDelayMs and envReadDelayMs.
 func setParameterConfigs(creds githubConfig, cnf terraform.ProviderConfiguration) terraform.ProviderConfiguration {
 	if creds.WriteDelayMs != nil {
 		cnf[keyWriteDelayMs] = *creds.WriteDelayMs
@@ -106,6 +125,20 @@ func setParameterConfigs(creds githubConfig, cnf terraform.ProviderConfiguration
 
 	if creds.ReadDelayMs != nil {
 		cnf[keyReadDelayMs] = *creds.ReadDelayMs
+	}
+
+	if ms, ok := envInt(envWriteDelayMs); ok {
+		cnf[keyWriteDelayMs] = ms
+	}
+
+	if ms, ok := envInt(envReadDelayMs); ok {
+		cnf[keyReadDelayMs] = ms
+	}
+
+	// Only set when true. false is already the upstream default, and writing it
+	// explicitly would be indistinguishable from an operator asking for it.
+	if parallelRequestsEnabled() {
+		cnf[keyParallelRequests] = true
 	}
 
 	if creds.RetryDelayMs != nil {
@@ -121,6 +154,42 @@ func setParameterConfigs(creds githubConfig, cnf terraform.ProviderConfiguration
 	}
 
 	return cnf
+}
+
+// parallelRequestsEnabled reports whether terraform-provider-github's legacy
+// client should skip the process-wide mutex that otherwise serializes every API
+// call (RateLimitTransport.smartLock, honoured only when legacy_client is true).
+// parallel_requests has no environment variable upstream, unlike legacy_client,
+// so this is the only way to set it without a credentials Secret rotation.
+//
+// Enabling it also makes the legacy transport's inter-request delay racy: that
+// delay is shared mutable state guarded by the very mutex this skips. Set both
+// write_delay_ms and read_delay_ms to 0 alongside it, and pace requests with
+// --max-reconcile-rate instead.
+func parallelRequestsEnabled() bool {
+	v, ok := os.LookupEnv(envParallelRequests)
+	if !ok {
+		return false
+	}
+	enabled, err := strconv.ParseBool(v)
+	if err != nil {
+		return false
+	}
+	return enabled
+}
+
+// envInt reads a non-negative integer from the environment, reporting whether a
+// usable value was found.
+func envInt(name string) (int, bool) {
+	v, ok := os.LookupEnv(name)
+	if !ok {
+		return 0, false
+	}
+	n, err := strconv.Atoi(v)
+	if err != nil || n < 0 {
+		return 0, false
+	}
+	return n, true
 }
 
 func terraformProviderConfigurationBuilder(creds githubConfig) (terraform.ProviderConfiguration, error) {

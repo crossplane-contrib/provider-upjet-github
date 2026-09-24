@@ -140,3 +140,73 @@ func TestTFSetupCacheTTLOutlivedByToken(t *testing.T) {
 			tfSetupMaxHold, githubInstallationTokenLifetime, got-githubInstallationTokenLifetime)
 	}
 }
+
+func TestSetParameterConfigsEnvOverrides(t *testing.T) {
+	ms := func(n int) *int { return &n }
+
+	for _, tc := range []struct {
+		name  string
+		creds githubConfig
+		env   map[string]string
+		want  terraform.ProviderConfiguration
+	}{
+		{
+			name:  "credentials are used when the environment is silent",
+			creds: githubConfig{WriteDelayMs: ms(1000), ReadDelayMs: ms(50)},
+			want:  terraform.ProviderConfiguration{keyWriteDelayMs: 1000, keyReadDelayMs: 50},
+		},
+		{
+			// The point of the override: reaching write_delay_ms, read_delay_ms
+			// and parallel_requests should not require a credentials Secret edit.
+			name:  "the environment wins over the credentials Secret",
+			creds: githubConfig{WriteDelayMs: ms(1000), ReadDelayMs: ms(50)},
+			env:   map[string]string{envWriteDelayMs: "0", envReadDelayMs: "0"},
+			want:  terraform.ProviderConfiguration{keyWriteDelayMs: 0, keyReadDelayMs: 0},
+		},
+		{
+			name: "the environment alone is enough",
+			env:  map[string]string{envWriteDelayMs: "250"},
+			want: terraform.ProviderConfiguration{keyWriteDelayMs: 250},
+		},
+		{
+			name:  "an unparseable or negative delay leaves the credentials value alone",
+			creds: githubConfig{WriteDelayMs: ms(1000)},
+			env:   map[string]string{envWriteDelayMs: "soon", envReadDelayMs: "-1"},
+			want:  terraform.ProviderConfiguration{keyWriteDelayMs: 1000},
+		},
+		{
+			name: "parallel_requests is set only when asked for",
+			env:  map[string]string{envParallelRequests: "true"},
+			want: terraform.ProviderConfiguration{keyParallelRequests: true},
+		},
+		{
+			// Writing false explicitly would be indistinguishable from an operator
+			// requesting it, and false is already the upstream default.
+			name: "parallel_requests false is left unset",
+			env:  map[string]string{envParallelRequests: "false"},
+			want: terraform.ProviderConfiguration{},
+		},
+		{
+			name: "an unparseable parallel_requests is left unset",
+			env:  map[string]string{envParallelRequests: "yes please"},
+			want: terraform.ProviderConfiguration{},
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			for k, v := range tc.env {
+				t.Setenv(k, v)
+			}
+
+			got := setParameterConfigs(tc.creds, terraform.ProviderConfiguration{})
+
+			if len(got) != len(tc.want) {
+				t.Fatalf("config = %v, want %v", got, tc.want)
+			}
+			for k, want := range tc.want {
+				if got[k] != want {
+					t.Errorf("config[%q] = %v, want %v", k, got[k], want)
+				}
+			}
+		})
+	}
+}
