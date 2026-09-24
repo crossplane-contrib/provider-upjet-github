@@ -21,6 +21,7 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/actionsrepositorypermissions"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/actionssecret"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/actionsvariable"
+	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/appinstallationrepositories"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/branch"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/branchdefault"
 	"github.com/crossplane-contrib/provider-upjet-github/config/namespaced/branchprotection"
@@ -79,6 +80,7 @@ func GetProviderNamespaced(ctx context.Context) (*ujconfig.Provider, error) {
 		actionsrepositorypermissions.Configure,
 		actionssecret.Configure,
 		actionsvariable.Configure,
+		appinstallationrepositories.Configure,
 		branch.Configure,
 		branchdefault.Configure,
 		branchprotection.Configure,
