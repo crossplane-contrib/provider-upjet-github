@@ -34,14 +34,7 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	"github_branch_default": config.TemplatedStringAsIdentifier("repository", "{{ .external_name }}"),
 	// Imported by using the following format: {{ repository }}:{{ pattern }}
 	// We cannot use the external_name = pattern here since pattern can contain non alpha numberic characters
-	"github_branch_protection": {
-		// Prevent Upjet from trying to send metadata.name as an ID argument during create
-		SetIdentifierArgumentFn: func(base map[string]any, externalName string) {},
-		// Read the ID assigned by Terraform/GitHub upon creation
-		GetExternalNameFn: config.IDAsExternalName,
-		// Pass external-name annotation value back to Terraform for Observe/Update/Delete
-		GetIDFn: config.ExternalNameAsID,
-	},
+	"github_branch_protection": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository }}: {{ branch}}
 	"github_branch_protection_v3": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ group_id }}

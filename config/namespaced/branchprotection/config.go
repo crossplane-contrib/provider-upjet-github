@@ -11,5 +11,7 @@ func Configure(p *config.Provider) {
 		r.References["repository_id"] = config.Reference{
 			TerraformName: "github_repository",
 		}
+		// We need the node id on creation, else we cannot manage the resource
+		r.UseAsync = false
 	})
 }
