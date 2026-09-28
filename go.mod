@@ -10,6 +10,7 @@ require (
 	github.com/crossplane/crossplane-runtime/v2 v2.1.0
 	github.com/crossplane/crossplane-tools v0.0.0-20251017183449-dd4517244339
 	github.com/crossplane/upjet/v2 v2.2.0
+	github.com/google/go-github/v88 v88.0.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.40.1
 	github.com/integrations/terraform-provider-github/v6 v6.13.0
 	github.com/pkg/errors v0.9.1
@@ -57,7 +58,6 @@ require (
 	github.com/google/btree v1.1.3 // indirect
 	github.com/google/gnostic-models v0.7.0 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
-	github.com/google/go-github/v88 v88.0.0 // indirect
 	github.com/google/go-querystring v1.2.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
