@@ -1,0 +1,36 @@
+apiVersion: organization.github.upbound.io/v1alpha1
+kind: OrganizationSettings
+metadata:
+  annotations:
+    meta.upbound.io/example-id: organization/v1alpha1/organizationsettings
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    advancedSecurityEnabledForNewRepositories: false
+    billingEmail: test@example.com
+    blog: https://example.com
+    company: Test Company
+    defaultRepositoryPermission: read
+    dependabotAlertsEnabledForNewRepositories: false
+    dependabotSecurityUpdatesEnabledForNewRepositories: false
+    dependencyGraphEnabledForNewRepositories: false
+    description: Test Description
+    email: test@example.com
+    hasOrganizationProjects: true
+    hasRepositoryProjects: true
+    location: Test Location
+    membersCanCreateInternalRepositories: true
+    membersCanCreatePages: true
+    membersCanCreatePrivatePages: true
+    membersCanCreatePrivateRepositories: true
+    membersCanCreatePublicPages: true
+    membersCanCreatePublicRepositories: true
+    membersCanCreateRepositories: true
+    membersCanForkPrivateRepositories: true
+    name: Test Name
+    secretScanningEnabledForNewRepositories: false
+    secretScanningPushProtectionEnabledForNewRepositories: false
+    twitterUsername: Test
+    webCommitSignoffRequired: true
