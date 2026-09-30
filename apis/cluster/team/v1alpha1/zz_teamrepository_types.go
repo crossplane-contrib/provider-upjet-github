@@ -15,8 +15,7 @@ import (
 
 type TeamRepositoryInitParameters struct {
 
-	// The permissions of team members regarding the repository.
-	// Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+	// The permissions of team members regarding the repository. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
 	// The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
@@ -52,8 +51,7 @@ type TeamRepositoryObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The permissions of team members regarding the repository.
-	// Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+	// The permissions of team members regarding the repository. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
 	// The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
@@ -68,8 +66,7 @@ type TeamRepositoryObservation struct {
 
 type TeamRepositoryParameters struct {
 
-	// The permissions of team members regarding the repository.
-	// Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+	// The permissions of team members regarding the repository. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
 	// The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
 	// +kubebuilder:validation:Optional
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`

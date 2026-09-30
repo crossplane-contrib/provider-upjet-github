@@ -15,8 +15,7 @@ import (
 
 type TeamMembershipInitParameters struct {
 
-	// The role of the user within the team.
-	// Must be one of member or maintainer. Defaults to member.
+	// The role of the user within the team. Must be one of member or maintainer. Defaults to member.
 	// The role of the user within the team. Must be one of 'member' or 'maintainer'.
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
@@ -43,8 +42,7 @@ type TeamMembershipObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The role of the user within the team.
-	// Must be one of member or maintainer. Defaults to member.
+	// The role of the user within the team. Must be one of member or maintainer. Defaults to member.
 	// The role of the user within the team. Must be one of 'member' or 'maintainer'.
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
@@ -59,8 +57,7 @@ type TeamMembershipObservation struct {
 
 type TeamMembershipParameters struct {
 
-	// The role of the user within the team.
-	// Must be one of member or maintainer. Defaults to member.
+	// The role of the user within the team. Must be one of member or maintainer. Defaults to member.
 	// The role of the user within the team. Must be one of 'member' or 'maintainer'.
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`

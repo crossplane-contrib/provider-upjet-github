@@ -104,6 +104,26 @@ func (mg *Members) ResolveReferences(ctx context.Context, c client.Reader) error
 		}
 
 		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.TeamSlug),
+			Extract:      resource.ExtractParamPath("slug", true),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.ForProvider.TeamSlugRef,
+			Selector:     mg.Spec.ForProvider.TeamSlugSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.TeamSlug")
+	}
+	mg.Spec.ForProvider.TeamSlug = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.TeamSlugRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("team.github.m.upbound.io", "v1alpha1", "Team", "TeamList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
 			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.TeamID),
 			Extract:      reference.ExternalName(),
 			Namespace:    mg.GetNamespace(),
@@ -117,6 +137,26 @@ func (mg *Members) ResolveReferences(ctx context.Context, c client.Reader) error
 	}
 	mg.Spec.InitProvider.TeamID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.TeamIDRef = rsp.ResolvedReference
+	{
+		m, l, err = apisresolver.GetManagedResource("team.github.m.upbound.io", "v1alpha1", "Team", "TeamList")
+		if err != nil {
+			return errors.Wrap(err, "failed to get the reference target managed resource and its list for reference resolution")
+		}
+
+		rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.TeamSlug),
+			Extract:      resource.ExtractParamPath("slug", true),
+			Namespace:    mg.GetNamespace(),
+			Reference:    mg.Spec.InitProvider.TeamSlugRef,
+			Selector:     mg.Spec.InitProvider.TeamSlugSelector,
+			To:           reference.To{List: l, Managed: m},
+		})
+	}
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.TeamSlug")
+	}
+	mg.Spec.InitProvider.TeamSlug = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.TeamSlugRef = rsp.ResolvedReference
 
 	return nil
 }

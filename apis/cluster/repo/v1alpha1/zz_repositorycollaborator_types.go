@@ -15,13 +15,11 @@ import (
 
 type RepositoryCollaboratorInitParameters struct {
 
-	// The permission of the outside collaborator for the repository.
-	// Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories.
-	// Must be push for personal repositories. Defaults to push.
+	// The permission of the outside collaborator for the repository. Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories. Must be push for personal repositories. Defaults to push.
 	// The permission of the outside collaborator for the repository. Must be one of 'pull', 'push', 'maintain', 'triage' or 'admin' or the name of an existing custom repository role within the organization for organization-owned repositories. Must be 'push' for personal repositories. Defaults to 'push'.
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
-	// Suppress plan diffs for triage and maintain.  Defaults to false.
+	// Suppress plan diffs for triage and maintain. Defaults to false.
 	// Suppress plan diffs for triage and maintain. Defaults to 'false'.
 	PermissionDiffSuppression *bool `json:"permissionDiffSuppression,omitempty" tf:"permission_diff_suppression,omitempty"`
 
@@ -46,17 +44,15 @@ type RepositoryCollaboratorInitParameters struct {
 type RepositoryCollaboratorObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// ID of the invitation to be used in github_user_invitation_accepter
+	// ID of the invitation to be used in github_user_invitation_accepter.
 	// ID of the invitation to be used in 'github_user_invitation_accepter'
 	InvitationID *string `json:"invitationId,omitempty" tf:"invitation_id,omitempty"`
 
-	// The permission of the outside collaborator for the repository.
-	// Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories.
-	// Must be push for personal repositories. Defaults to push.
+	// The permission of the outside collaborator for the repository. Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories. Must be push for personal repositories. Defaults to push.
 	// The permission of the outside collaborator for the repository. Must be one of 'pull', 'push', 'maintain', 'triage' or 'admin' or the name of an existing custom repository role within the organization for organization-owned repositories. Must be 'push' for personal repositories. Defaults to 'push'.
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
-	// Suppress plan diffs for triage and maintain.  Defaults to false.
+	// Suppress plan diffs for triage and maintain. Defaults to false.
 	// Suppress plan diffs for triage and maintain. Defaults to 'false'.
 	PermissionDiffSuppression *bool `json:"permissionDiffSuppression,omitempty" tf:"permission_diff_suppression,omitempty"`
 
@@ -71,14 +67,12 @@ type RepositoryCollaboratorObservation struct {
 
 type RepositoryCollaboratorParameters struct {
 
-	// The permission of the outside collaborator for the repository.
-	// Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories.
-	// Must be push for personal repositories. Defaults to push.
+	// The permission of the outside collaborator for the repository. Must be one of pull, push, maintain, triage or admin or the name of an existing custom repository role within the organization for organization-owned repositories. Must be push for personal repositories. Defaults to push.
 	// The permission of the outside collaborator for the repository. Must be one of 'pull', 'push', 'maintain', 'triage' or 'admin' or the name of an existing custom repository role within the organization for organization-owned repositories. Must be 'push' for personal repositories. Defaults to 'push'.
 	// +kubebuilder:validation:Optional
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
-	// Suppress plan diffs for triage and maintain.  Defaults to false.
+	// Suppress plan diffs for triage and maintain. Defaults to false.
 	// Suppress plan diffs for triage and maintain. Defaults to 'false'.
 	// +kubebuilder:validation:Optional
 	PermissionDiffSuppression *bool `json:"permissionDiffSuppression,omitempty" tf:"permission_diff_suppression,omitempty"`
