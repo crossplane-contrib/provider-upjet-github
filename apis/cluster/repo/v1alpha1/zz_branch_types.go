@@ -19,6 +19,10 @@ type BranchInitParameters struct {
 	// The repository branch to create.
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
+	// An etag representing the Branch object.
+	// An etag representing the Branch object.
+	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
+
 	// The GitHub repository name.
 	// The GitHub repository name.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Repository
@@ -80,6 +84,11 @@ type BranchParameters struct {
 	// The repository branch to create.
 	// +kubebuilder:validation:Optional
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
+
+	// An etag representing the Branch object.
+	// An etag representing the Branch object.
+	// +kubebuilder:validation:Optional
+	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
 
 	// The GitHub repository name.
 	// The GitHub repository name.

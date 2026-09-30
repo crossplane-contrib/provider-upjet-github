@@ -21,6 +21,7 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actionsrepositorypermissions"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actionssecret"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actionsvariable"
+	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/appinstallationrepositories"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/branch"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/branchdefault"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/branchprotection"
@@ -34,6 +35,7 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/repository"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/repositoryautolinkreference"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/repositorycollaborator"
+	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/repositorycollaborators"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/repositorycustomproperty"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/repositorydeploykey"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/repositoryenvironment"
@@ -62,7 +64,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		ujconfig.WithTerraformPluginSDKIncludeList(resourceList(terraformPluginSDKExternalNameConfigs)),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
-		ujconfig.WithTerraformProvider(github.Provider()),
+		ujconfig.WithTerraformProvider(github.NewProvider("dev", "none")()),
 		ujconfig.WithDefaultResourceOptions(
 			resourceConfigurator(),
 		))
@@ -79,6 +81,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		actionsrepositorypermissions.Configure,
 		actionssecret.Configure,
 		actionsvariable.Configure,
+		appinstallationrepositories.Configure,
 		branch.Configure,
 		branchdefault.Configure,
 		branchprotection.Configure,
@@ -92,6 +95,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		repository.Configure,
 		repositoryautolinkreference.Configure,
 		repositorycollaborator.Configure,
+		repositorycollaborators.Configure,
 		repositorycustomproperty.Configure,
 		repositorydeploykey.Configure,
 		repositoryenvironmentdeploymentpolicy.Configure,

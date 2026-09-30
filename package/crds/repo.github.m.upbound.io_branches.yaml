@@ -64,6 +64,11 @@ spec:
                       The repository branch to create.
                       The repository branch to create.
                     type: string
+                  etag:
+                    description: |-
+                      An etag representing the Branch object.
+                      An etag representing the Branch object.
+                    type: string
                   repository:
                     description: |-
                       The GitHub repository name.
@@ -177,6 +182,11 @@ spec:
                     description: |-
                       The repository branch to create.
                       The repository branch to create.
+                    type: string
+                  etag:
+                    description: |-
+                      An etag representing the Branch object.
+                      An etag representing the Branch object.
                     type: string
                   repository:
                     description: |-
