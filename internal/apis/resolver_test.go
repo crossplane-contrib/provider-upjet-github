@@ -14,10 +14,15 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
+const (
+	resolverAPIVersion  = "v1alpha1"
+	resolverExampleName = "example"
+)
+
 func TestGetManagedResourceResolveReference(t *testing.T) {
 	gvk := schema.GroupVersionKind{
 		Group:   "repo.github.upbound.io",
-		Version: "v1alpha1",
+		Version: resolverAPIVersion,
 		Kind:    "Repository",
 	}
 
@@ -28,18 +33,18 @@ func TestGetManagedResourceResolveReference(t *testing.T) {
 
 	repo := &unstructured.Unstructured{}
 	repo.SetGroupVersionKind(gvk)
-	repo.SetName("example")
+	repo.SetName(resolverExampleName)
 	meta.SetExternalName(repo, "example-repo")
 
 	c := fake.NewClientBuilder().WithRuntimeObjects(repo).Build()
 	r := reference.NewAPIResolver(c, newManaged(schema.GroupVersionKind{
 		Group:   "team.github.upbound.io",
-		Version: "v1alpha1",
+		Version: resolverAPIVersion,
 		Kind:    "TeamRepository",
 	}))
 
 	got, err := r.Resolve(context.Background(), reference.ResolutionRequest{
-		Reference: &xpv1.Reference{Name: "example"},
+		Reference: &xpv1.Reference{Name: resolverExampleName},
 		To:        reference.To{Managed: mg, List: list},
 		Extract:   reference.ExternalName(),
 	})
@@ -50,15 +55,15 @@ func TestGetManagedResourceResolveReference(t *testing.T) {
 	if got.ResolvedValue != "example-repo" {
 		t.Errorf("Resolve(...).ResolvedValue: got %q, want %q", got.ResolvedValue, "example-repo")
 	}
-	if got.ResolvedReference == nil || got.ResolvedReference.Name != "example" {
-		t.Errorf("Resolve(...).ResolvedReference: got %#v, want name %q", got.ResolvedReference, "example")
+	if got.ResolvedReference == nil || got.ResolvedReference.Name != resolverExampleName {
+		t.Errorf("Resolve(...).ResolvedReference: got %#v, want name %q", got.ResolvedReference, resolverExampleName)
 	}
 }
 
 func TestGetManagedResourceResolveSelector(t *testing.T) {
 	gvk := schema.GroupVersionKind{
 		Group:   "repo.github.upbound.io",
-		Version: "v1alpha1",
+		Version: resolverAPIVersion,
 		Kind:    "Repository",
 	}
 
@@ -69,19 +74,19 @@ func TestGetManagedResourceResolveSelector(t *testing.T) {
 
 	repo := &unstructured.Unstructured{}
 	repo.SetGroupVersionKind(gvk)
-	repo.SetName("example")
-	repo.SetLabels(map[string]string{"repo": "example"})
+	repo.SetName(resolverExampleName)
+	repo.SetLabels(map[string]string{"repo": resolverExampleName})
 	meta.SetExternalName(repo, "example-repo")
 
 	c := fake.NewClientBuilder().WithRuntimeObjects(repo).Build()
 	r := reference.NewAPIResolver(c, newManaged(schema.GroupVersionKind{
 		Group:   "team.github.upbound.io",
-		Version: "v1alpha1",
+		Version: resolverAPIVersion,
 		Kind:    "TeamRepository",
 	}))
 
 	got, err := r.Resolve(context.Background(), reference.ResolutionRequest{
-		Selector: &xpv1.Selector{MatchLabels: map[string]string{"repo": "example"}},
+		Selector: &xpv1.Selector{MatchLabels: map[string]string{"repo": resolverExampleName}},
 		To:       reference.To{Managed: mg, List: list},
 		Extract:  reference.ExternalName(),
 	})
@@ -92,15 +97,15 @@ func TestGetManagedResourceResolveSelector(t *testing.T) {
 	if got.ResolvedValue != "example-repo" {
 		t.Errorf("Resolve(...).ResolvedValue: got %q, want %q", got.ResolvedValue, "example-repo")
 	}
-	if got.ResolvedReference == nil || got.ResolvedReference.Name != "example" {
-		t.Errorf("Resolve(...).ResolvedReference: got %#v, want name %q", got.ResolvedReference, "example")
+	if got.ResolvedReference == nil || got.ResolvedReference.Name != resolverExampleName {
+		t.Errorf("Resolve(...).ResolvedReference: got %#v, want name %q", got.ResolvedReference, resolverExampleName)
 	}
 }
 
 func TestManagedExtractParamPath(t *testing.T) {
 	mg := newManaged(schema.GroupVersionKind{
 		Group:   "team.github.upbound.io",
-		Version: "v1alpha1",
+		Version: resolverAPIVersion,
 		Kind:    "Team",
 	})
 	mg.Object = map[string]any{
@@ -125,17 +130,17 @@ func TestManagedExtractParamPath(t *testing.T) {
 }
 
 func TestGetManagedResourceGVK(t *testing.T) {
-	mg, list, err := GetManagedResource("repo.github.upbound.io", "v1alpha1", "Repository", "RepositoryList")
+	mg, list, err := GetManagedResource("repo.github.upbound.io", resolverAPIVersion, "Repository", "RepositoryList")
 	if err != nil {
 		t.Fatalf("GetManagedResource(...): %v", err)
 	}
 
-	wantManagedGVK := schema.GroupVersionKind{Group: "repo.github.upbound.io", Version: "v1alpha1", Kind: "Repository"}
+	wantManagedGVK := schema.GroupVersionKind{Group: "repo.github.upbound.io", Version: resolverAPIVersion, Kind: "Repository"}
 	if got := mg.(runtime.Object).GetObjectKind().GroupVersionKind(); got != wantManagedGVK {
 		t.Errorf("managed GVK: got %s, want %s", got, wantManagedGVK)
 	}
 
-	wantListGVK := schema.GroupVersionKind{Group: "repo.github.upbound.io", Version: "v1alpha1", Kind: "RepositoryList"}
+	wantListGVK := schema.GroupVersionKind{Group: "repo.github.upbound.io", Version: resolverAPIVersion, Kind: "RepositoryList"}
 	if got := list.(runtime.Object).GetObjectKind().GroupVersionKind(); got != wantListGVK {
 		t.Errorf("list GVK: got %s, want %s", got, wantListGVK)
 	}
