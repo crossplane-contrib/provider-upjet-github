@@ -13,6 +13,9 @@ func (tr *EmuGroupMapping) Hub() {}
 func (tr *Members) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *OrganizationRoleTeam) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Team) Hub() {}
 
 // Hub marks this type as a conversion hub.
