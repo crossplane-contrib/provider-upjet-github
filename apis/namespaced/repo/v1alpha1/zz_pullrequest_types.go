@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type PullRequestInitParameters struct {
@@ -27,11 +26,11 @@ type PullRequestInitParameters struct {
 
 	// Reference to a Repository in repo to populate baseRepository.
 	// +kubebuilder:validation:Optional
-	BaseRepositoryRef *v1.NamespacedReference `json:"baseRepositoryRef,omitempty" tf:"-"`
+	BaseRepositoryRef *v2.NamespacedReference `json:"baseRepositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate baseRepository.
 	// +kubebuilder:validation:Optional
-	BaseRepositorySelector *v1.NamespacedSelector `json:"baseRepositorySelector,omitempty" tf:"-"`
+	BaseRepositorySelector *v2.NamespacedSelector `json:"baseRepositorySelector,omitempty" tf:"-"`
 
 	// Body of the Pull Request.
 	// Body of the Pull Request.
@@ -44,11 +43,11 @@ type PullRequestInitParameters struct {
 
 	// Reference to a Branch in repo to populate headRef.
 	// +kubebuilder:validation:Optional
-	HeadRefRef *v1.NamespacedReference `json:"headRefRef,omitempty" tf:"-"`
+	HeadRefRef *v2.NamespacedReference `json:"headRefRef,omitempty" tf:"-"`
 
 	// Selector for a Branch in repo to populate headRef.
 	// +kubebuilder:validation:Optional
-	HeadRefSelector *v1.NamespacedSelector `json:"headRefSelector,omitempty" tf:"-"`
+	HeadRefSelector *v2.NamespacedSelector `json:"headRefSelector,omitempty" tf:"-"`
 
 	// Controls whether the base repository maintainers can modify the Pull Request. Default: false.
 	// Controls whether the base repository maintainers can modify the Pull Request. Default: 'false'.
@@ -147,11 +146,11 @@ type PullRequestParameters struct {
 
 	// Reference to a Repository in repo to populate baseRepository.
 	// +kubebuilder:validation:Optional
-	BaseRepositoryRef *v1.NamespacedReference `json:"baseRepositoryRef,omitempty" tf:"-"`
+	BaseRepositoryRef *v2.NamespacedReference `json:"baseRepositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate baseRepository.
 	// +kubebuilder:validation:Optional
-	BaseRepositorySelector *v1.NamespacedSelector `json:"baseRepositorySelector,omitempty" tf:"-"`
+	BaseRepositorySelector *v2.NamespacedSelector `json:"baseRepositorySelector,omitempty" tf:"-"`
 
 	// Body of the Pull Request.
 	// Body of the Pull Request.
@@ -166,11 +165,11 @@ type PullRequestParameters struct {
 
 	// Reference to a Branch in repo to populate headRef.
 	// +kubebuilder:validation:Optional
-	HeadRefRef *v1.NamespacedReference `json:"headRefRef,omitempty" tf:"-"`
+	HeadRefRef *v2.NamespacedReference `json:"headRefRef,omitempty" tf:"-"`
 
 	// Selector for a Branch in repo to populate headRef.
 	// +kubebuilder:validation:Optional
-	HeadRefSelector *v1.NamespacedSelector `json:"headRefSelector,omitempty" tf:"-"`
+	HeadRefSelector *v2.NamespacedSelector `json:"headRefSelector,omitempty" tf:"-"`
 
 	// Controls whether the base repository maintainers can modify the Pull Request. Default: false.
 	// Controls whether the base repository maintainers can modify the Pull Request. Default: 'false'.
@@ -207,8 +206,8 @@ type PullRequestSpec struct {
 
 // PullRequestStatus defines the observed state of PullRequest.
 type PullRequestStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        PullRequestObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               PullRequestObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

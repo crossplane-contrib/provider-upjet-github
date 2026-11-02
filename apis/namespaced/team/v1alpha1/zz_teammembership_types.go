@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type TeamMembershipInitParameters struct {
@@ -27,11 +26,11 @@ type TeamMembershipInitParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 
 	// The user to add to the team.
 	// The user to add to the team.
@@ -71,11 +70,11 @@ type TeamMembershipParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 
 	// The user to add to the team.
 	// The user to add to the team.
@@ -102,8 +101,8 @@ type TeamMembershipSpec struct {
 
 // TeamMembershipStatus defines the observed state of TeamMembership.
 type TeamMembershipStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        TeamMembershipObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               TeamMembershipObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

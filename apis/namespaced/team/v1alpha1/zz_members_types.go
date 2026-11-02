@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type MembersInitParameters struct {
@@ -27,11 +26,11 @@ type MembersInitParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 
 	// (String) Slug of the GitHub team to manage membership for.
 	// Slug of the GitHub team to manage membership for.
@@ -41,11 +40,11 @@ type MembersInitParameters struct {
 
 	// Reference to a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugRef *v1.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
+	TeamSlugRef *v2.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugSelector *v1.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
+	TeamSlugSelector *v2.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
 }
 
 type MembersMembersInitParameters struct {
@@ -116,11 +115,11 @@ type MembersParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 
 	// (String) Slug of the GitHub team to manage membership for.
 	// Slug of the GitHub team to manage membership for.
@@ -131,11 +130,11 @@ type MembersParameters struct {
 
 	// Reference to a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugRef *v1.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
+	TeamSlugRef *v2.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugSelector *v1.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
+	TeamSlugSelector *v2.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
 }
 
 // MembersSpec defines the desired state of Members
@@ -157,8 +156,8 @@ type MembersSpec struct {
 
 // MembersStatus defines the observed state of Members.
 type MembersStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        MembersObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               MembersObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

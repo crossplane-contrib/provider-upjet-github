@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type BranchNamePatternInitParameters struct {
@@ -1559,8 +1559,8 @@ type TagNamePatternParameters struct {
 
 // OrganizationRulesetSpec defines the desired state of OrganizationRuleset
 type OrganizationRulesetSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     OrganizationRulesetParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   OrganizationRulesetParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -1576,8 +1576,8 @@ type OrganizationRulesetSpec struct {
 
 // OrganizationRulesetStatus defines the observed state of OrganizationRuleset.
 type OrganizationRulesetStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        OrganizationRulesetObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               OrganizationRulesetObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

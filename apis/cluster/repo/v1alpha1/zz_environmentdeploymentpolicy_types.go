@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type EnvironmentDeploymentPolicyInitParameters struct {
@@ -26,11 +26,11 @@ type EnvironmentDeploymentPolicyInitParameters struct {
 
 	// Reference to a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
-	EnvironmentRef *v1.Reference `json:"environmentRef,omitempty" tf:"-"`
+	EnvironmentRef *v2.Reference `json:"environmentRef,omitempty" tf:"-"`
 
 	// Selector for a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
-	EnvironmentSelector *v1.Selector `json:"environmentSelector,omitempty" tf:"-"`
+	EnvironmentSelector *v2.Selector `json:"environmentSelector,omitempty" tf:"-"`
 
 	// The repository of the environment.
 	// The name of the GitHub repository.
@@ -39,11 +39,11 @@ type EnvironmentDeploymentPolicyInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The name pattern that tags must match in order to deploy to the environment. If not specified, branch_pattern must be specified.
 	// The name pattern that tags must match in order to deploy to the environment.
@@ -94,11 +94,11 @@ type EnvironmentDeploymentPolicyParameters struct {
 
 	// Reference to a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
-	EnvironmentRef *v1.Reference `json:"environmentRef,omitempty" tf:"-"`
+	EnvironmentRef *v2.Reference `json:"environmentRef,omitempty" tf:"-"`
 
 	// Selector for a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
-	EnvironmentSelector *v1.Selector `json:"environmentSelector,omitempty" tf:"-"`
+	EnvironmentSelector *v2.Selector `json:"environmentSelector,omitempty" tf:"-"`
 
 	// The repository of the environment.
 	// The name of the GitHub repository.
@@ -108,11 +108,11 @@ type EnvironmentDeploymentPolicyParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The name pattern that tags must match in order to deploy to the environment. If not specified, branch_pattern must be specified.
 	// The name pattern that tags must match in order to deploy to the environment.
@@ -122,8 +122,8 @@ type EnvironmentDeploymentPolicyParameters struct {
 
 // EnvironmentDeploymentPolicySpec defines the desired state of EnvironmentDeploymentPolicy
 type EnvironmentDeploymentPolicySpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     EnvironmentDeploymentPolicyParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   EnvironmentDeploymentPolicyParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -139,8 +139,8 @@ type EnvironmentDeploymentPolicySpec struct {
 
 // EnvironmentDeploymentPolicyStatus defines the observed state of EnvironmentDeploymentPolicy.
 type EnvironmentDeploymentPolicyStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        EnvironmentDeploymentPolicyObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               EnvironmentDeploymentPolicyObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

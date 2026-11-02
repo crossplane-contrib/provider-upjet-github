@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type OrganizationActionsSecretInitParameters struct {
@@ -20,7 +20,7 @@ type OrganizationActionsSecretInitParameters struct {
 
 	// (DEPRECATED) Please use value_encrypted.
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
-	EncryptedValueSecretRef *v1.SecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
+	EncryptedValueSecretRef *v2.SecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
 
 	// ID of the public key used to encrypt the secret, required when setting encrypted_value.
 	// ID of the public key used to encrypt the secret.
@@ -28,7 +28,7 @@ type OrganizationActionsSecretInitParameters struct {
 
 	// (DEPRECATED) Please use value.
 	// Plaintext value of the secret to be encrypted.
-	PlaintextValueSecretRef *v1.SecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
+	PlaintextValueSecretRef *v2.SecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
 
 	// Name of the secret.
 	// Name of the secret.
@@ -41,11 +41,11 @@ type OrganizationActionsSecretInitParameters struct {
 
 	// Encrypted value of the secret using the GitHub public key in Base64 format, key_id is required with this value. This conflicts with value, encrypted_value & plaintext_value.
 	// Value encrypted with the GitHub public key, defined by key_id, in Base64 format.
-	ValueEncryptedSecretRef *v1.SecretKeySelector `json:"valueEncryptedSecretRef,omitempty" tf:"-"`
+	ValueEncryptedSecretRef *v2.SecretKeySelector `json:"valueEncryptedSecretRef,omitempty" tf:"-"`
 
 	// Plaintext value of the secret to be encrypted. This conflicts with value_encrypted, encrypted_value & plaintext_value.
 	// Plaintext value to be encrypted.
-	ValueSecretRef *v1.SecretKeySelector `json:"valueSecretRef,omitempty" tf:"-"`
+	ValueSecretRef *v2.SecretKeySelector `json:"valueSecretRef,omitempty" tf:"-"`
 
 	// Configures the access that repositories have to the organization secret; must be one of all, private, or selected.
 	// Configures the access that repositories have to the organization secret. Must be one of 'all', 'private', or 'selected'.
@@ -98,7 +98,7 @@ type OrganizationActionsSecretParameters struct {
 	// (DEPRECATED) Please use value_encrypted.
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	// +kubebuilder:validation:Optional
-	EncryptedValueSecretRef *v1.SecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
+	EncryptedValueSecretRef *v2.SecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
 
 	// ID of the public key used to encrypt the secret, required when setting encrypted_value.
 	// ID of the public key used to encrypt the secret.
@@ -108,7 +108,7 @@ type OrganizationActionsSecretParameters struct {
 	// (DEPRECATED) Please use value.
 	// Plaintext value of the secret to be encrypted.
 	// +kubebuilder:validation:Optional
-	PlaintextValueSecretRef *v1.SecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
+	PlaintextValueSecretRef *v2.SecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
 
 	// Name of the secret.
 	// Name of the secret.
@@ -124,12 +124,12 @@ type OrganizationActionsSecretParameters struct {
 	// Encrypted value of the secret using the GitHub public key in Base64 format, key_id is required with this value. This conflicts with value, encrypted_value & plaintext_value.
 	// Value encrypted with the GitHub public key, defined by key_id, in Base64 format.
 	// +kubebuilder:validation:Optional
-	ValueEncryptedSecretRef *v1.SecretKeySelector `json:"valueEncryptedSecretRef,omitempty" tf:"-"`
+	ValueEncryptedSecretRef *v2.SecretKeySelector `json:"valueEncryptedSecretRef,omitempty" tf:"-"`
 
 	// Plaintext value of the secret to be encrypted. This conflicts with value_encrypted, encrypted_value & plaintext_value.
 	// Plaintext value to be encrypted.
 	// +kubebuilder:validation:Optional
-	ValueSecretRef *v1.SecretKeySelector `json:"valueSecretRef,omitempty" tf:"-"`
+	ValueSecretRef *v2.SecretKeySelector `json:"valueSecretRef,omitempty" tf:"-"`
 
 	// Configures the access that repositories have to the organization secret; must be one of all, private, or selected.
 	// Configures the access that repositories have to the organization secret. Must be one of 'all', 'private', or 'selected'.
@@ -139,8 +139,8 @@ type OrganizationActionsSecretParameters struct {
 
 // OrganizationActionsSecretSpec defines the desired state of OrganizationActionsSecret
 type OrganizationActionsSecretSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     OrganizationActionsSecretParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   OrganizationActionsSecretParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -156,8 +156,8 @@ type OrganizationActionsSecretSpec struct {
 
 // OrganizationActionsSecretStatus defines the observed state of OrganizationActionsSecret.
 type OrganizationActionsSecretStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        OrganizationActionsSecretObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               OrganizationActionsSecretObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

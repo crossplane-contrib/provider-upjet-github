@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type EnvironmentVariableInitParameters struct {
@@ -23,11 +22,11 @@ type EnvironmentVariableInitParameters struct {
 
 	// Reference to a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
-	EnvironmentRef *v1.NamespacedReference `json:"environmentRef,omitempty" tf:"-"`
+	EnvironmentRef *v2.NamespacedReference `json:"environmentRef,omitempty" tf:"-"`
 
 	// Selector for a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
-	EnvironmentSelector *v1.NamespacedSelector `json:"environmentSelector,omitempty" tf:"-"`
+	EnvironmentSelector *v2.NamespacedSelector `json:"environmentSelector,omitempty" tf:"-"`
 
 	// Name of the repository.
 	// Name of the repository.
@@ -36,11 +35,11 @@ type EnvironmentVariableInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Value of the variable.
 	// Value of the variable.
@@ -94,11 +93,11 @@ type EnvironmentVariableParameters struct {
 
 	// Reference to a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
-	EnvironmentRef *v1.NamespacedReference `json:"environmentRef,omitempty" tf:"-"`
+	EnvironmentRef *v2.NamespacedReference `json:"environmentRef,omitempty" tf:"-"`
 
 	// Selector for a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
-	EnvironmentSelector *v1.NamespacedSelector `json:"environmentSelector,omitempty" tf:"-"`
+	EnvironmentSelector *v2.NamespacedSelector `json:"environmentSelector,omitempty" tf:"-"`
 
 	// Name of the repository.
 	// Name of the repository.
@@ -108,11 +107,11 @@ type EnvironmentVariableParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Value of the variable.
 	// Value of the variable.
@@ -144,8 +143,8 @@ type EnvironmentVariableSpec struct {
 
 // EnvironmentVariableStatus defines the observed state of EnvironmentVariable.
 type EnvironmentVariableStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        EnvironmentVariableObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               EnvironmentVariableObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -154,3 +154,54 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 	}
 	return nil
 }
+
+// SetupWebhookWithManager registers conversion webhooks for all resource kinds in the group.
+func SetupWebhookWithManager(mgr ctrl.Manager) error {
+	for _, setup := range []func(ctrl.Manager) error{
+		actionssecret.SetupWebhookWithManager,
+		actionsvariable.SetupWebhookWithManager,
+		environmentsecret.SetupWebhookWithManager,
+		environmentvariable.SetupWebhookWithManager,
+		organizationactionssecret.SetupWebhookWithManager,
+		organizationactionsvariable.SetupWebhookWithManager,
+		organizationpermissions.SetupWebhookWithManager,
+		repositoryaccesslevel.SetupWebhookWithManager,
+		repositorypermissions.SetupWebhookWithManager,
+		runnergroup.SetupWebhookWithManager,
+		appinstallationrepositories.SetupWebhookWithManager,
+		organization.SetupWebhookWithManager,
+		organizationruleset.SetupWebhookWithManager,
+		providerconfig.SetupWebhookWithManager,
+		branch.SetupWebhookWithManager,
+		branchprotection.SetupWebhookWithManager,
+		branchprotectionv3.SetupWebhookWithManager,
+		defaultbranch.SetupWebhookWithManager,
+		deploykey.SetupWebhookWithManager,
+		environment.SetupWebhookWithManager,
+		environmentdeploymentpolicy.SetupWebhookWithManager,
+		githubissue.SetupWebhookWithManager,
+		issuelabels.SetupWebhookWithManager,
+		pullrequest.SetupWebhookWithManager,
+		repository.SetupWebhookWithManager,
+		repositoryautolinkreference.SetupWebhookWithManager,
+		repositorycollaborator.SetupWebhookWithManager,
+		repositorycollaboratorset.SetupWebhookWithManager,
+		repositorycustomproperty.SetupWebhookWithManager,
+		repositoryfile.SetupWebhookWithManager,
+		repositoryruleset.SetupWebhookWithManager,
+		repositorywebhook.SetupWebhookWithManager,
+		emugroupmapping.SetupWebhookWithManager,
+		members.SetupWebhookWithManager,
+		team.SetupWebhookWithManager,
+		teammembership.SetupWebhookWithManager,
+		teamrepository.SetupWebhookWithManager,
+		teamsettings.SetupWebhookWithManager,
+		teamsyncgroupmapping.SetupWebhookWithManager,
+		membership.SetupWebhookWithManager,
+	} {
+		if err := setup(mgr); err != nil {
+			return err
+		}
+	}
+	return nil
+}

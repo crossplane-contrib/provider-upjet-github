@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type GithubIssueInitParameters struct {
@@ -40,11 +40,11 @@ type GithubIssueInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Title of the issue
 	// Title of the issue.
@@ -124,11 +124,11 @@ type GithubIssueParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Title of the issue
 	// Title of the issue.
@@ -138,8 +138,8 @@ type GithubIssueParameters struct {
 
 // GithubIssueSpec defines the desired state of GithubIssue
 type GithubIssueSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     GithubIssueParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   GithubIssueParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -155,8 +155,8 @@ type GithubIssueSpec struct {
 
 // GithubIssueStatus defines the observed state of GithubIssue.
 type GithubIssueStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        GithubIssueObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               GithubIssueObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

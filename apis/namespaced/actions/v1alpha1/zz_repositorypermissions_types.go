@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type RepositoryPermissionsAllowedActionsConfigInitParameters struct {
@@ -86,11 +85,11 @@ type RepositoryPermissionsInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Whether pinning to a specific SHA is required for all actions and reusable workflows in the repository.
 	// Whether pinning to a specific SHA is required for all actions and reusable workflows in a repository.
@@ -147,11 +146,11 @@ type RepositoryPermissionsParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Whether pinning to a specific SHA is required for all actions and reusable workflows in the repository.
 	// Whether pinning to a specific SHA is required for all actions and reusable workflows in a repository.
@@ -178,8 +177,8 @@ type RepositoryPermissionsSpec struct {
 
 // RepositoryPermissionsStatus defines the observed state of RepositoryPermissions.
 type RepositoryPermissionsStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RepositoryPermissionsObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RepositoryPermissionsObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

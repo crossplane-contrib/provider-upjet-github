@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type RepositoryFileInitParameters struct {
@@ -35,11 +35,11 @@ type RepositoryFileInitParameters struct {
 
 	// Reference to a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchRef *v1.Reference `json:"branchRef,omitempty" tf:"-"`
+	BranchRef *v2.Reference `json:"branchRef,omitempty" tf:"-"`
 
 	// Selector for a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchSelector *v1.Selector `json:"branchSelector,omitempty" tf:"-"`
+	BranchSelector *v2.Selector `json:"branchSelector,omitempty" tf:"-"`
 
 	// Committer author name to use. NOTE: GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App. This maybe useful when a branch protection rule requires signed commits.
 	// The commit author name, defaults to the authenticated user's name. GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App.
@@ -72,11 +72,11 @@ type RepositoryFileInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 }
 
 type RepositoryFileObservation struct {
@@ -170,11 +170,11 @@ type RepositoryFileParameters struct {
 
 	// Reference to a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchRef *v1.Reference `json:"branchRef,omitempty" tf:"-"`
+	BranchRef *v2.Reference `json:"branchRef,omitempty" tf:"-"`
 
 	// Selector for a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchSelector *v1.Selector `json:"branchSelector,omitempty" tf:"-"`
+	BranchSelector *v2.Selector `json:"branchSelector,omitempty" tf:"-"`
 
 	// Committer author name to use. NOTE: GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App. This maybe useful when a branch protection rule requires signed commits.
 	// The commit author name, defaults to the authenticated user's name. GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App.
@@ -214,17 +214,17 @@ type RepositoryFileParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 }
 
 // RepositoryFileSpec defines the desired state of RepositoryFile
 type RepositoryFileSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     RepositoryFileParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   RepositoryFileParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -240,8 +240,8 @@ type RepositoryFileSpec struct {
 
 // RepositoryFileStatus defines the observed state of RepositoryFile.
 type RepositoryFileStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RepositoryFileObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RepositoryFileObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

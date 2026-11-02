@@ -10,14 +10,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type DeployKeyInitParameters struct {
 
 	// A SSH key.
 	// A SSH key.
-	KeySecretRef v1.SecretKeySelector `json:"keySecretRef" tf:"-"`
+	KeySecretRef v2.SecretKeySelector `json:"keySecretRef" tf:"-"`
 
 	// A boolean qualifying the key to be either read only or read/write.
 	// A boolean qualifying the key to be either read only or read/write.
@@ -30,11 +30,11 @@ type DeployKeyInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// A title.
 	// A title.
@@ -64,7 +64,7 @@ type DeployKeyParameters struct {
 	// A SSH key.
 	// A SSH key.
 	// +kubebuilder:validation:Optional
-	KeySecretRef v1.SecretKeySelector `json:"keySecretRef" tf:"-"`
+	KeySecretRef v2.SecretKeySelector `json:"keySecretRef" tf:"-"`
 
 	// A boolean qualifying the key to be either read only or read/write.
 	// A boolean qualifying the key to be either read only or read/write.
@@ -79,11 +79,11 @@ type DeployKeyParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// A title.
 	// A title.
@@ -93,8 +93,8 @@ type DeployKeyParameters struct {
 
 // DeployKeySpec defines the desired state of DeployKey
 type DeployKeySpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     DeployKeyParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   DeployKeyParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -110,8 +110,8 @@ type DeployKeySpec struct {
 
 // DeployKeyStatus defines the observed state of DeployKey.
 type DeployKeyStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        DeployKeyObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               DeployKeyObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

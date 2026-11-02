@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type RepositoryAccessLevelInitParameters struct {
@@ -26,11 +26,11 @@ type RepositoryAccessLevelInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 }
 
 type RepositoryAccessLevelObservation struct {
@@ -61,17 +61,17 @@ type RepositoryAccessLevelParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 }
 
 // RepositoryAccessLevelSpec defines the desired state of RepositoryAccessLevel
 type RepositoryAccessLevelSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     RepositoryAccessLevelParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   RepositoryAccessLevelParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -87,8 +87,8 @@ type RepositoryAccessLevelSpec struct {
 
 // RepositoryAccessLevelStatus defines the observed state of RepositoryAccessLevel.
 type RepositoryAccessLevelStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RepositoryAccessLevelObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RepositoryAccessLevelObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type BranchProtectionInitParameters struct {
@@ -48,11 +47,11 @@ type BranchProtectionInitParameters struct {
 
 	// Reference to a Repository in repo to populate repositoryId.
 	// +kubebuilder:validation:Optional
-	RepositoryIDRef *v1.NamespacedReference `json:"repositoryIdRef,omitempty" tf:"-"`
+	RepositoryIDRef *v2.NamespacedReference `json:"repositoryIdRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repositoryId.
 	// +kubebuilder:validation:Optional
-	RepositoryIDSelector *v1.NamespacedSelector `json:"repositoryIdSelector,omitempty" tf:"-"`
+	RepositoryIDSelector *v2.NamespacedSelector `json:"repositoryIdSelector,omitempty" tf:"-"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
 	// Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
@@ -178,11 +177,11 @@ type BranchProtectionParameters struct {
 
 	// Reference to a Repository in repo to populate repositoryId.
 	// +kubebuilder:validation:Optional
-	RepositoryIDRef *v1.NamespacedReference `json:"repositoryIdRef,omitempty" tf:"-"`
+	RepositoryIDRef *v2.NamespacedReference `json:"repositoryIdRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repositoryId.
 	// +kubebuilder:validation:Optional
-	RepositoryIDSelector *v1.NamespacedSelector `json:"repositoryIdSelector,omitempty" tf:"-"`
+	RepositoryIDSelector *v2.NamespacedSelector `json:"repositoryIdSelector,omitempty" tf:"-"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
 	// Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
@@ -416,8 +415,8 @@ type BranchProtectionSpec struct {
 
 // BranchProtectionStatus defines the observed state of BranchProtection.
 type BranchProtectionStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        BranchProtectionObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               BranchProtectionObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

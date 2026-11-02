@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type BranchProtectionv3InitParameters struct {
@@ -31,11 +30,11 @@ type BranchProtectionv3InitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
 	// Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
@@ -117,11 +116,11 @@ type BranchProtectionv3Parameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
 	// Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
@@ -172,11 +171,11 @@ type BranchProtectionv3RequiredPullRequestReviewsInitParameters struct {
 
 	// References to Team in team to populate dismissalTeams.
 	// +kubebuilder:validation:Optional
-	DismissalTeamsRefs []v1.NamespacedReference `json:"dismissalTeamsRefs,omitempty" tf:"-"`
+	DismissalTeamsRefs []v2.NamespacedReference `json:"dismissalTeamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate dismissalTeams.
 	// +kubebuilder:validation:Optional
-	DismissalTeamsSelector *v1.NamespacedSelector `json:"dismissalTeamsSelector,omitempty" tf:"-"`
+	DismissalTeamsSelector *v2.NamespacedSelector `json:"dismissalTeamsSelector,omitempty" tf:"-"`
 
 	// :  The list of user logins with dismissal access
 	// The list of user logins with dismissal access.
@@ -264,11 +263,11 @@ type BranchProtectionv3RequiredPullRequestReviewsParameters struct {
 
 	// References to Team in team to populate dismissalTeams.
 	// +kubebuilder:validation:Optional
-	DismissalTeamsRefs []v1.NamespacedReference `json:"dismissalTeamsRefs,omitempty" tf:"-"`
+	DismissalTeamsRefs []v2.NamespacedReference `json:"dismissalTeamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate dismissalTeams.
 	// +kubebuilder:validation:Optional
-	DismissalTeamsSelector *v1.NamespacedSelector `json:"dismissalTeamsSelector,omitempty" tf:"-"`
+	DismissalTeamsSelector *v2.NamespacedSelector `json:"dismissalTeamsSelector,omitempty" tf:"-"`
 
 	// :  The list of user logins with dismissal access
 	// The list of user logins with dismissal access.
@@ -367,11 +366,11 @@ type BypassPullRequestAllowancesInitParameters struct {
 
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsRefs []v1.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
+	TeamsRefs []v2.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsSelector *v1.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
+	TeamsSelector *v2.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
 
 	// :  The list of user logins with push access.
 	// +listType=set
@@ -409,11 +408,11 @@ type BypassPullRequestAllowancesParameters struct {
 
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsRefs []v1.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
+	TeamsRefs []v2.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsSelector *v1.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
+	TeamsSelector *v2.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
 
 	// :  The list of user logins with push access.
 	// +kubebuilder:validation:Optional
@@ -437,11 +436,11 @@ type RestrictionsInitParameters struct {
 
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsRefs []v1.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
+	TeamsRefs []v2.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsSelector *v1.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
+	TeamsSelector *v2.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
 
 	// :  The list of user logins with push access.
 	// The list of user logins with push access.
@@ -485,11 +484,11 @@ type RestrictionsParameters struct {
 
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsRefs []v1.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
+	TeamsRefs []v2.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsSelector *v1.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
+	TeamsSelector *v2.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
 
 	// :  The list of user logins with push access.
 	// The list of user logins with push access.
@@ -517,8 +516,8 @@ type BranchProtectionv3Spec struct {
 
 // BranchProtectionv3Status defines the observed state of BranchProtectionv3.
 type BranchProtectionv3Status struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        BranchProtectionv3Observation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               BranchProtectionv3Observation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

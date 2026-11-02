@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type IgnoreTeamInitParameters struct {
@@ -48,11 +48,11 @@ type RepositoryCollaboratorSetInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// (Block Set) Teams to grant access to the repository. (see below for nested schema)
 	// Teams to grant access to the repository.
@@ -113,11 +113,11 @@ type RepositoryCollaboratorSetParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// (Block Set) Teams to grant access to the repository. (see below for nested schema)
 	// Teams to grant access to the repository.
@@ -144,11 +144,11 @@ type TeamInitParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type TeamObservation struct {
@@ -178,11 +178,11 @@ type TeamParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type UserInitParameters struct {
@@ -222,8 +222,8 @@ type UserParameters struct {
 
 // RepositoryCollaboratorSetSpec defines the desired state of RepositoryCollaboratorSet
 type RepositoryCollaboratorSetSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     RepositoryCollaboratorSetParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   RepositoryCollaboratorSetParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -239,8 +239,8 @@ type RepositoryCollaboratorSetSpec struct {
 
 // RepositoryCollaboratorSetStatus defines the observed state of RepositoryCollaboratorSet.
 type RepositoryCollaboratorSetStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RepositoryCollaboratorSetObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RepositoryCollaboratorSetObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

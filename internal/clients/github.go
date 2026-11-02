@@ -292,7 +292,7 @@ func toSharedPCSpec(pc *clusterv1beta1.ProviderConfig) (*namespacedv1beta1.Provi
 
 func getProviderConfigName(mg resource.Managed) (string, error) {
 	switch managed := mg.(type) {
-	case resource.LegacyManaged:
+	case resource.LegacyManaged: //nolint:staticcheck // cluster-scoped MRs are legacy
 		return managed.GetProviderConfigReference().Name, nil
 	case resource.ModernManaged:
 		return managed.GetProviderConfigReference().Name, nil
@@ -303,7 +303,7 @@ func getProviderConfigName(mg resource.Managed) (string, error) {
 
 func resolveProviderConfig(ctx context.Context, crClient client.Client, mg resource.Managed) (*namespacedv1beta1.ProviderConfigSpec, error) {
 	switch managed := mg.(type) {
-	case resource.LegacyManaged:
+	case resource.LegacyManaged: //nolint:staticcheck // cluster-scoped MRs are legacy
 		return resolveLegacy(ctx, crClient, managed)
 	case resource.ModernManaged:
 		return resolveModern(ctx, crClient, managed)
@@ -312,7 +312,7 @@ func resolveProviderConfig(ctx context.Context, crClient client.Client, mg resou
 	}
 }
 
-func resolveLegacy(ctx context.Context, client client.Client, mg resource.LegacyManaged) (*namespacedv1beta1.ProviderConfigSpec, error) {
+func resolveLegacy(ctx context.Context, client client.Client, mg resource.LegacyManaged) (*namespacedv1beta1.ProviderConfigSpec, error) { //nolint:staticcheck // cluster-scoped MRs are legacy
 	configRef := mg.GetProviderConfigReference()
 	if configRef == nil {
 		return nil, errors.New(errNoProviderConfig)

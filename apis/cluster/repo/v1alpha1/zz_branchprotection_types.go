@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type BranchProtectionInitParameters struct {
@@ -47,11 +47,11 @@ type BranchProtectionInitParameters struct {
 
 	// Reference to a Repository in repo to populate repositoryId.
 	// +kubebuilder:validation:Optional
-	RepositoryIDRef *v1.Reference `json:"repositoryIdRef,omitempty" tf:"-"`
+	RepositoryIDRef *v2.Reference `json:"repositoryIdRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repositoryId.
 	// +kubebuilder:validation:Optional
-	RepositoryIDSelector *v1.Selector `json:"repositoryIdSelector,omitempty" tf:"-"`
+	RepositoryIDSelector *v2.Selector `json:"repositoryIdSelector,omitempty" tf:"-"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
 	// Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
@@ -177,11 +177,11 @@ type BranchProtectionParameters struct {
 
 	// Reference to a Repository in repo to populate repositoryId.
 	// +kubebuilder:validation:Optional
-	RepositoryIDRef *v1.Reference `json:"repositoryIdRef,omitempty" tf:"-"`
+	RepositoryIDRef *v2.Reference `json:"repositoryIdRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repositoryId.
 	// +kubebuilder:validation:Optional
-	RepositoryIDSelector *v1.Selector `json:"repositoryIdSelector,omitempty" tf:"-"`
+	RepositoryIDSelector *v2.Selector `json:"repositoryIdSelector,omitempty" tf:"-"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
 	// Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
@@ -398,8 +398,8 @@ type RestrictPushesParameters struct {
 
 // BranchProtectionSpec defines the desired state of BranchProtection
 type BranchProtectionSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     BranchProtectionParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   BranchProtectionParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -415,8 +415,8 @@ type BranchProtectionSpec struct {
 
 // BranchProtectionStatus defines the observed state of BranchProtection.
 type BranchProtectionStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        BranchProtectionObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               BranchProtectionObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
