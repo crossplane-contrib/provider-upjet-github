@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.23.0
   name: repositorywebhooks.repo.github.m.upbound.io
 spec:
   group: repo.github.m.upbound.io
@@ -127,7 +127,7 @@ spec:
                       The repository name of the webhook, not including the organization, which will be inferred.
                     type: string
                   repositoryRef:
-                    description: Reference to a Repository to populate repository.
+                    description: Reference to a Repository in repo to populate repository.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -164,7 +164,7 @@ spec:
                     - name
                     type: object
                   repositorySelector:
-                    description: Selector for a Repository to populate repository.
+                    description: Selector for a Repository in repo to populate repository.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -289,7 +289,7 @@ spec:
                       The repository name of the webhook, not including the organization, which will be inferred.
                     type: string
                   repositoryRef:
-                    description: Reference to a Repository to populate repository.
+                    description: Reference to a Repository in repo to populate repository.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -326,7 +326,7 @@ spec:
                     - name
                     type: object
                   repositorySelector:
-                    description: Selector for a Repository to populate repository.
+                    description: Selector for a Repository in repo to populate repository.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -529,6 +529,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

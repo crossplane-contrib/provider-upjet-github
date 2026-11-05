@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ActionsSecretInitParameters struct {
@@ -20,7 +20,7 @@ type ActionsSecretInitParameters struct {
 
 	// (DEPRECATED) Please use value_encrypted.
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
-	EncryptedValueSecretRef *v1.SecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
+	EncryptedValueSecretRef *v2.SecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
 
 	// ID of the public key used to encrypt the secret, required when setting encrypted_value.
 	// ID of the public key used to encrypt the secret.
@@ -28,7 +28,7 @@ type ActionsSecretInitParameters struct {
 
 	// (DEPRECATED) Please use value.
 	// Plaintext value of the secret to be encrypted.
-	PlaintextValueSecretRef *v1.SecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
+	PlaintextValueSecretRef *v2.SecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
 
 	// Name of the repository.
 	// Name of the repository.
@@ -37,11 +37,11 @@ type ActionsSecretInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Name of the secret.
 	// Name of the secret.
@@ -49,11 +49,11 @@ type ActionsSecretInitParameters struct {
 
 	// Encrypted value of the secret using the GitHub public key in Base64 format, key_id is required with this value. This conflicts with value, encrypted_value & plaintext_value.
 	// Value encrypted with the GitHub public key, defined by key_id, in Base64 format.
-	ValueEncryptedSecretRef *v1.SecretKeySelector `json:"valueEncryptedSecretRef,omitempty" tf:"-"`
+	ValueEncryptedSecretRef *v2.SecretKeySelector `json:"valueEncryptedSecretRef,omitempty" tf:"-"`
 
 	// Plaintext value of the secret to be encrypted. This conflicts with value_encrypted, encrypted_value & plaintext_value.
 	// Plaintext value to be encrypted.
-	ValueSecretRef *v1.SecretKeySelector `json:"valueSecretRef,omitempty" tf:"-"`
+	ValueSecretRef *v2.SecretKeySelector `json:"valueSecretRef,omitempty" tf:"-"`
 }
 
 type ActionsSecretObservation struct {
@@ -101,7 +101,7 @@ type ActionsSecretParameters struct {
 	// (DEPRECATED) Please use value_encrypted.
 	// Encrypted value of the secret using the GitHub public key in Base64 format.
 	// +kubebuilder:validation:Optional
-	EncryptedValueSecretRef *v1.SecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
+	EncryptedValueSecretRef *v2.SecretKeySelector `json:"encryptedValueSecretRef,omitempty" tf:"-"`
 
 	// ID of the public key used to encrypt the secret, required when setting encrypted_value.
 	// ID of the public key used to encrypt the secret.
@@ -111,7 +111,7 @@ type ActionsSecretParameters struct {
 	// (DEPRECATED) Please use value.
 	// Plaintext value of the secret to be encrypted.
 	// +kubebuilder:validation:Optional
-	PlaintextValueSecretRef *v1.SecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
+	PlaintextValueSecretRef *v2.SecretKeySelector `json:"plaintextValueSecretRef,omitempty" tf:"-"`
 
 	// Name of the repository.
 	// Name of the repository.
@@ -121,11 +121,11 @@ type ActionsSecretParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Name of the secret.
 	// Name of the secret.
@@ -135,18 +135,18 @@ type ActionsSecretParameters struct {
 	// Encrypted value of the secret using the GitHub public key in Base64 format, key_id is required with this value. This conflicts with value, encrypted_value & plaintext_value.
 	// Value encrypted with the GitHub public key, defined by key_id, in Base64 format.
 	// +kubebuilder:validation:Optional
-	ValueEncryptedSecretRef *v1.SecretKeySelector `json:"valueEncryptedSecretRef,omitempty" tf:"-"`
+	ValueEncryptedSecretRef *v2.SecretKeySelector `json:"valueEncryptedSecretRef,omitempty" tf:"-"`
 
 	// Plaintext value of the secret to be encrypted. This conflicts with value_encrypted, encrypted_value & plaintext_value.
 	// Plaintext value to be encrypted.
 	// +kubebuilder:validation:Optional
-	ValueSecretRef *v1.SecretKeySelector `json:"valueSecretRef,omitempty" tf:"-"`
+	ValueSecretRef *v2.SecretKeySelector `json:"valueSecretRef,omitempty" tf:"-"`
 }
 
 // ActionsSecretSpec defines the desired state of ActionsSecret
 type ActionsSecretSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     ActionsSecretParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   ActionsSecretParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -162,8 +162,8 @@ type ActionsSecretSpec struct {
 
 // ActionsSecretStatus defines the observed state of ActionsSecret.
 type ActionsSecretStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ActionsSecretObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ActionsSecretObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type DefaultBranchInitParameters struct {
@@ -23,11 +22,11 @@ type DefaultBranchInitParameters struct {
 
 	// Reference to a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchRef *v1.NamespacedReference `json:"branchRef,omitempty" tf:"-"`
+	BranchRef *v2.NamespacedReference `json:"branchRef,omitempty" tf:"-"`
 
 	// Selector for a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchSelector *v1.NamespacedSelector `json:"branchSelector,omitempty" tf:"-"`
+	BranchSelector *v2.NamespacedSelector `json:"branchSelector,omitempty" tf:"-"`
 
 	// (String) The ETag header for the repository API response.
 	// The ETag header for the repository API response.
@@ -78,11 +77,11 @@ type DefaultBranchParameters struct {
 
 	// Reference to a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchRef *v1.NamespacedReference `json:"branchRef,omitempty" tf:"-"`
+	BranchRef *v2.NamespacedReference `json:"branchRef,omitempty" tf:"-"`
 
 	// Selector for a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchSelector *v1.NamespacedSelector `json:"branchSelector,omitempty" tf:"-"`
+	BranchSelector *v2.NamespacedSelector `json:"branchSelector,omitempty" tf:"-"`
 
 	// (String) The ETag header for the repository API response.
 	// The ETag header for the repository API response.
@@ -119,8 +118,8 @@ type DefaultBranchSpec struct {
 
 // DefaultBranchStatus defines the observed state of DefaultBranch.
 type DefaultBranchStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        DefaultBranchObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               DefaultBranchObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

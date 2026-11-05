@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type RepositoryCollaboratorInitParameters struct {
@@ -30,11 +30,11 @@ type RepositoryCollaboratorInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The user to add to the repository as a collaborator.
 	// The user to add to the repository as a collaborator.
@@ -85,11 +85,11 @@ type RepositoryCollaboratorParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The user to add to the repository as a collaborator.
 	// The user to add to the repository as a collaborator.
@@ -99,8 +99,8 @@ type RepositoryCollaboratorParameters struct {
 
 // RepositoryCollaboratorSpec defines the desired state of RepositoryCollaborator
 type RepositoryCollaboratorSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     RepositoryCollaboratorParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   RepositoryCollaboratorParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -116,8 +116,8 @@ type RepositoryCollaboratorSpec struct {
 
 // RepositoryCollaboratorStatus defines the observed state of RepositoryCollaborator.
 type RepositoryCollaboratorStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RepositoryCollaboratorObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RepositoryCollaboratorObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

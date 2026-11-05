@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type RunnerGroupInitParameters struct {
@@ -127,8 +127,8 @@ type RunnerGroupParameters struct {
 
 // RunnerGroupSpec defines the desired state of RunnerGroup
 type RunnerGroupSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     RunnerGroupParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   RunnerGroupParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -144,8 +144,8 @@ type RunnerGroupSpec struct {
 
 // RunnerGroupStatus defines the observed state of RunnerGroup.
 type RunnerGroupStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RunnerGroupObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RunnerGroupObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type RepositoryAutolinkReferenceInitParameters struct {
@@ -30,11 +30,11 @@ type RepositoryAutolinkReferenceInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The template of the target URL used for the links; must be a valid URL and contain <num> for the reference number
 	// The template of the target URL used for the links; must be a valid URL and contain `<num>` for the reference number
@@ -85,11 +85,11 @@ type RepositoryAutolinkReferenceParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The template of the target URL used for the links; must be a valid URL and contain <num> for the reference number
 	// The template of the target URL used for the links; must be a valid URL and contain `<num>` for the reference number
@@ -99,8 +99,8 @@ type RepositoryAutolinkReferenceParameters struct {
 
 // RepositoryAutolinkReferenceSpec defines the desired state of RepositoryAutolinkReference
 type RepositoryAutolinkReferenceSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     RepositoryAutolinkReferenceParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   RepositoryAutolinkReferenceParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -116,8 +116,8 @@ type RepositoryAutolinkReferenceSpec struct {
 
 // RepositoryAutolinkReferenceStatus defines the observed state of RepositoryAutolinkReference.
 type RepositoryAutolinkReferenceStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RepositoryAutolinkReferenceObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RepositoryAutolinkReferenceObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

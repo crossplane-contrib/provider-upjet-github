@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type AppInstallationRepositoriesInitParameters struct {
@@ -27,11 +27,11 @@ type AppInstallationRepositoriesInitParameters struct {
 
 	// References to Repository in repo to populate selectedRepositories.
 	// +kubebuilder:validation:Optional
-	SelectedRepositoriesRefs []v1.Reference `json:"selectedRepositoriesRefs,omitempty" tf:"-"`
+	SelectedRepositoriesRefs []v2.Reference `json:"selectedRepositoriesRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Repository in repo to populate selectedRepositories.
 	// +kubebuilder:validation:Optional
-	SelectedRepositoriesSelector *v1.Selector `json:"selectedRepositoriesSelector,omitempty" tf:"-"`
+	SelectedRepositoriesSelector *v2.Selector `json:"selectedRepositoriesSelector,omitempty" tf:"-"`
 }
 
 type AppInstallationRepositoriesObservation struct {
@@ -63,17 +63,17 @@ type AppInstallationRepositoriesParameters struct {
 
 	// References to Repository in repo to populate selectedRepositories.
 	// +kubebuilder:validation:Optional
-	SelectedRepositoriesRefs []v1.Reference `json:"selectedRepositoriesRefs,omitempty" tf:"-"`
+	SelectedRepositoriesRefs []v2.Reference `json:"selectedRepositoriesRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Repository in repo to populate selectedRepositories.
 	// +kubebuilder:validation:Optional
-	SelectedRepositoriesSelector *v1.Selector `json:"selectedRepositoriesSelector,omitempty" tf:"-"`
+	SelectedRepositoriesSelector *v2.Selector `json:"selectedRepositoriesSelector,omitempty" tf:"-"`
 }
 
 // AppInstallationRepositoriesSpec defines the desired state of AppInstallationRepositories
 type AppInstallationRepositoriesSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     AppInstallationRepositoriesParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   AppInstallationRepositoriesParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -89,8 +89,8 @@ type AppInstallationRepositoriesSpec struct {
 
 // AppInstallationRepositoriesStatus defines the observed state of AppInstallationRepositories.
 type AppInstallationRepositoriesStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        AppInstallationRepositoriesObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               AppInstallationRepositoriesObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

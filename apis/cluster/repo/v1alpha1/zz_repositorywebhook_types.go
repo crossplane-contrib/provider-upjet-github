@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ConfigurationInitParameters struct {
@@ -25,11 +25,11 @@ type ConfigurationInitParameters struct {
 
 	// The shared secret for the webhook. See API documentation.
 	// The shared secret for the webhook
-	SecretSecretRef *v1.SecretKeySelector `json:"secretSecretRef,omitempty" tf:"-"`
+	SecretSecretRef *v2.SecretKeySelector `json:"secretSecretRef,omitempty" tf:"-"`
 
 	// The URL of the webhook.
 	// The URL of the webhook.
-	URLSecretRef v1.SecretKeySelector `json:"urlSecretRef" tf:"-"`
+	URLSecretRef v2.SecretKeySelector `json:"urlSecretRef" tf:"-"`
 }
 
 type ConfigurationObservation struct {
@@ -58,12 +58,12 @@ type ConfigurationParameters struct {
 	// The shared secret for the webhook. See API documentation.
 	// The shared secret for the webhook
 	// +kubebuilder:validation:Optional
-	SecretSecretRef *v1.SecretKeySelector `json:"secretSecretRef,omitempty" tf:"-"`
+	SecretSecretRef *v2.SecretKeySelector `json:"secretSecretRef,omitempty" tf:"-"`
 
 	// The URL of the webhook.
 	// The URL of the webhook.
 	// +kubebuilder:validation:Optional
-	URLSecretRef v1.SecretKeySelector `json:"urlSecretRef" tf:"-"`
+	URLSecretRef v2.SecretKeySelector `json:"urlSecretRef" tf:"-"`
 }
 
 type RepositoryWebhookInitParameters struct {
@@ -85,16 +85,16 @@ type RepositoryWebhookInitParameters struct {
 
 	// The repository of the webhook.
 	// The repository name of the webhook, not including the organization, which will be inferred.
-	// +crossplane:generate:reference:type=Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// Reference to a Repository to populate repository.
+	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
-	// Selector for a Repository to populate repository.
+	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 }
 
 type RepositoryWebhookObservation struct {
@@ -148,23 +148,23 @@ type RepositoryWebhookParameters struct {
 
 	// The repository of the webhook.
 	// The repository name of the webhook, not including the organization, which will be inferred.
-	// +crossplane:generate:reference:type=Repository
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// Reference to a Repository to populate repository.
+	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
-	// Selector for a Repository to populate repository.
+	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 }
 
 // RepositoryWebhookSpec defines the desired state of RepositoryWebhook
 type RepositoryWebhookSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     RepositoryWebhookParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   RepositoryWebhookParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -180,8 +180,8 @@ type RepositoryWebhookSpec struct {
 
 // RepositoryWebhookStatus defines the observed state of RepositoryWebhook.
 type RepositoryWebhookStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RepositoryWebhookObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RepositoryWebhookObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

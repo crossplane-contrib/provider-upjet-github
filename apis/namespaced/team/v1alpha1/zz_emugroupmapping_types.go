@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type EmuGroupMappingInitParameters struct {
@@ -28,11 +27,11 @@ type EmuGroupMappingInitParameters struct {
 
 	// Reference to a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugRef *v1.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
+	TeamSlugRef *v2.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugSelector *v1.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
+	TeamSlugSelector *v2.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
 }
 
 type EmuGroupMappingObservation struct {
@@ -75,11 +74,11 @@ type EmuGroupMappingParameters struct {
 
 	// Reference to a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugRef *v1.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
+	TeamSlugRef *v2.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugSelector *v1.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
+	TeamSlugSelector *v2.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
 }
 
 // EmuGroupMappingSpec defines the desired state of EmuGroupMapping
@@ -101,8 +100,8 @@ type EmuGroupMappingSpec struct {
 
 // EmuGroupMappingStatus defines the observed state of EmuGroupMapping.
 type EmuGroupMappingStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        EmuGroupMappingObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               EmuGroupMappingObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
