@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/meta"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/reference"
+	xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 	upjetresource "github.com/crossplane/upjet/v2/pkg/resource"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -44,7 +44,7 @@ func TestGetManagedResourceResolveReference(t *testing.T) {
 	}))
 
 	got, err := r.Resolve(context.Background(), reference.ResolutionRequest{
-		Reference: &xpv1.Reference{Name: resolverExampleName},
+		Reference: &xpv2.Reference{Name: resolverExampleName},
 		To:        reference.To{Managed: mg, List: list},
 		Extract:   reference.ExternalName(),
 	})
@@ -86,7 +86,7 @@ func TestGetManagedResourceResolveSelector(t *testing.T) {
 	}))
 
 	got, err := r.Resolve(context.Background(), reference.ResolutionRequest{
-		Selector: &xpv1.Selector{MatchLabels: map[string]string{"repo": resolverExampleName}},
+		Selector: &xpv2.Selector{MatchLabels: map[string]string{"repo": resolverExampleName}},
 		To:       reference.To{Managed: mg, List: list},
 		Extract:  reference.ExternalName(),
 	})

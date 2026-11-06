@@ -1232,12 +1232,12 @@ func (in *TeamRepositoryInitParameters) DeepCopyInto(out *TeamRepositoryInitPara
 	}
 	if in.RepositoryRef != nil {
 		in, out := &in.RepositoryRef, &out.RepositoryRef
-		*out = new(v1.Reference)
+		*out = new(v2.Reference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.RepositorySelector != nil {
 		in, out := &in.RepositorySelector, &out.RepositorySelector
-		*out = new(v1.Selector)
+		*out = new(v2.Selector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.TeamID != nil {
@@ -1354,12 +1354,12 @@ func (in *TeamRepositoryParameters) DeepCopyInto(out *TeamRepositoryParameters) 
 	}
 	if in.RepositoryRef != nil {
 		in, out := &in.RepositoryRef, &out.RepositoryRef
-		*out = new(v1.Reference)
+		*out = new(v2.Reference)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.RepositorySelector != nil {
 		in, out := &in.RepositorySelector, &out.RepositorySelector
-		*out = new(v1.Selector)
+		*out = new(v2.Selector)
 		(*in).DeepCopyInto(*out)
 	}
 	if in.TeamID != nil {

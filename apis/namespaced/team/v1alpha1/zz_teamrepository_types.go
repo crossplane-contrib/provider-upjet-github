@@ -26,11 +26,11 @@ type TeamRepositoryInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The GitHub team id or the GitHub team slug
 	// ID or slug of team
@@ -79,11 +79,11 @@ type TeamRepositoryParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The GitHub team id or the GitHub team slug
 	// ID or slug of team
