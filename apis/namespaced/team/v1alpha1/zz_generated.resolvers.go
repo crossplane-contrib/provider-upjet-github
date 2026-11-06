@@ -161,6 +161,50 @@ func (mg *Members) ResolveReferences(ctx context.Context, c client.Reader) error
 	return nil
 }
 
+// ResolveReferences of this OrganizationRoleTeam.
+func (mg *OrganizationRoleTeam) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPINamespacedResolver(c, mg)
+
+	var rsp reference.NamespacedResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.TeamSlug),
+		Extract:      resource.ExtractParamPath("slug", true),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.TeamSlugRef,
+		Selector:     mg.Spec.ForProvider.TeamSlugSelector,
+		To: reference.To{
+			List:    &TeamList{},
+			Managed: &Team{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.TeamSlug")
+	}
+	mg.Spec.ForProvider.TeamSlug = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.TeamSlugRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.TeamSlug),
+		Extract:      resource.ExtractParamPath("slug", true),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.TeamSlugRef,
+		Selector:     mg.Spec.InitProvider.TeamSlugSelector,
+		To: reference.To{
+			List:    &TeamList{},
+			Managed: &Team{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.TeamSlug")
+	}
+	mg.Spec.InitProvider.TeamSlug = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.TeamSlugRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this TeamMembership.
 func (mg *TeamMembership) ResolveReferences(ctx context.Context, c client.Reader) error {
 	var m xpresource.Managed
