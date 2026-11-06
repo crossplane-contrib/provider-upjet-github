@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type OrganizationRoleTeamInitParameters struct {
@@ -28,11 +27,11 @@ type OrganizationRoleTeamInitParameters struct {
 
 	// Reference to a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugRef *v1.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
+	TeamSlugRef *v2.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugSelector *v1.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
+	TeamSlugSelector *v2.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
 }
 
 type OrganizationRoleTeamObservation struct {
@@ -63,11 +62,11 @@ type OrganizationRoleTeamParameters struct {
 
 	// Reference to a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugRef *v1.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
+	TeamSlugRef *v2.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugSelector *v1.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
+	TeamSlugSelector *v2.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
 }
 
 // OrganizationRoleTeamSpec defines the desired state of OrganizationRoleTeam
@@ -89,8 +88,8 @@ type OrganizationRoleTeamSpec struct {
 
 // OrganizationRoleTeamStatus defines the observed state of OrganizationRoleTeam.
 type OrganizationRoleTeamStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        OrganizationRoleTeamObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               OrganizationRoleTeamObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

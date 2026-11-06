@@ -195,6 +195,7 @@ func SetupWebhookWithManager(mgr ctrl.Manager) error {
 		repositorywebhook.SetupWebhookWithManager,
 		emugroupmapping.SetupWebhookWithManager,
 		members.SetupWebhookWithManager,
+		organizationroleteam.SetupWebhookWithManager,
 		team.SetupWebhookWithManager,
 		teammembership.SetupWebhookWithManager,
 		teamrepository.SetupWebhookWithManager,
