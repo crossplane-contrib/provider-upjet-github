@@ -6,8 +6,8 @@ import (
 
 	clusterteam "github.com/crossplane-contrib/provider-upjet-github/apis/cluster/team/v1alpha1"
 	namespacedteam "github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/team/v1alpha1"
-	xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/meta"
+	xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
@@ -51,9 +51,9 @@ func TestGeneratedTeamRepositoryReferences(t *testing.T) {
 					mg.SetNamespace(namespace)
 					mg.Spec.ForProvider.TeamID = &teamID
 					if selector {
-						mg.Spec.ForProvider.RepositorySelector = &xpv1.NamespacedSelector{MatchLabels: repo.GetLabels()}
+						mg.Spec.ForProvider.RepositorySelector = &xpv2.NamespacedSelector{MatchLabels: repo.GetLabels()}
 					} else {
-						mg.Spec.ForProvider.RepositoryRef = &xpv1.NamespacedReference{Name: repositoryName}
+						mg.Spec.ForProvider.RepositoryRef = &xpv2.NamespacedReference{Name: repositoryName}
 					}
 					if err := mg.ResolveReferences(context.Background(), c); err != nil {
 						t.Fatalf("ResolveReferences(): %v", err)
@@ -64,9 +64,9 @@ func TestGeneratedTeamRepositoryReferences(t *testing.T) {
 					mg := &clusterteam.TeamRepository{}
 					mg.Spec.ForProvider.TeamID = &teamID
 					if selector {
-						mg.Spec.ForProvider.RepositorySelector = &xpv1.Selector{MatchLabels: repo.GetLabels()}
+						mg.Spec.ForProvider.RepositorySelector = &xpv2.Selector{MatchLabels: repo.GetLabels()}
 					} else {
-						mg.Spec.ForProvider.RepositoryRef = &xpv1.Reference{Name: repositoryName}
+						mg.Spec.ForProvider.RepositoryRef = &xpv2.Reference{Name: repositoryName}
 					}
 					if err := mg.ResolveReferences(context.Background(), c); err != nil {
 						t.Fatalf("ResolveReferences(): %v", err)
