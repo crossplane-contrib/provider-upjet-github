@@ -3,6 +3,16 @@ name: Publish Provider Package
 on:
   workflow_dispatch:
     inputs:
+      cleanup-disk:
+        description: "reclaim extra disk space (uses jlumbroso/free-disk-space)"
+        default: true
+        required: false
+        type: boolean
+      mirror:
+        description: "mirror to additional registry"
+        default: true
+        required: false
+        type: boolean
       version:
         description: "Version string to use while publishing the package (e.g. v1.0.0-alpha.1)"
         default: ""
@@ -16,10 +26,12 @@ jobs:
   publish-provider-package:
     uses: crossplane-contrib/provider-workflows/.github/workflows/publish-provider.yml@451c4dc6ad3691b0a702a997a0ac24e8bbc8bbaa # main
     with:
-      repository: provider-upjet-github
+      repository: ${{ github.event.repository.name }}
+      registry_org: ${{ github.repository_owner }}
       version: ${{ github.event.inputs.version }}
       go-version: ${{ github.event.inputs.go-version }}
-      cleanup-disk: true
+      cleanup-disk: ${{ inputs.cleanup-disk }}
+      mirror: ${{ inputs.mirror }}
     secrets:
       GHCR_PAT: ${{ secrets.GITHUB_TOKEN }}
       XPKG_MIRROR_TOKEN: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PSW }}
