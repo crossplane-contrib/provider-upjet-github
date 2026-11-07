@@ -43,6 +43,7 @@ import (
 	repositorywebhook "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/repo/repositorywebhook"
 	emugroupmapping "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/team/emugroupmapping"
 	members "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/team/members"
+	organizationroleteam "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/team/organizationroleteam"
 	team "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/team/team"
 	teammembership "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/team/teammembership"
 	teamrepository "github.com/crossplane-contrib/provider-upjet-github/internal/controller/namespaced/team/teamrepository"
@@ -89,6 +90,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		repositorywebhook.Setup,
 		emugroupmapping.Setup,
 		members.Setup,
+		organizationroleteam.Setup,
 		team.Setup,
 		teammembership.Setup,
 		teamrepository.Setup,
@@ -141,6 +143,7 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		repositorywebhook.SetupGated,
 		emugroupmapping.SetupGated,
 		members.SetupGated,
+		organizationroleteam.SetupGated,
 		team.SetupGated,
 		teammembership.SetupGated,
 		teamrepository.SetupGated,

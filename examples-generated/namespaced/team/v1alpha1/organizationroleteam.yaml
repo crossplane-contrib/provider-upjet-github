@@ -1,0 +1,13 @@
+apiVersion: team.github.m.upbound.io/v1alpha1
+kind: OrganizationRoleTeam
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/organizationroleteam
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    roleId: 1234
+    teamSlug: example-team
