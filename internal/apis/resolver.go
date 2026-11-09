@@ -1,9 +1,9 @@
 package apis
 
 import (
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/fieldpath"
 	xpresource "github.com/crossplane/crossplane-runtime/v2/pkg/resource"
+	xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 	upjetresource "github.com/crossplane/upjet/v2/pkg/resource"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -40,28 +40,28 @@ func newManaged(gvk schema.GroupVersionKind) *managed {
 	return m
 }
 
-func (m *managed) GetCondition(ct v1.ConditionType) v1.Condition {
-	status := &v1.ConditionedStatus{}
+func (m *managed) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	status := &xpv2.ConditionedStatus{}
 	if err := fieldpath.Pave(m.object()).GetValueInto("status", status); err != nil {
-		return v1.Condition{}
+		return xpv2.Condition{}
 	}
 	return status.GetCondition(ct)
 }
 
-func (m *managed) SetConditions(conditions ...v1.Condition) {
-	status := &v1.ConditionedStatus{}
+func (m *managed) SetConditions(conditions ...xpv2.Condition) {
+	status := &xpv2.ConditionedStatus{}
 	_ = fieldpath.Pave(m.object()).GetValueInto("status", status)
 	status.SetConditions(conditions...)
 	_ = fieldpath.Pave(m.object()).SetValue("status.conditions", status.Conditions)
 }
 
-func (m *managed) GetManagementPolicies() v1.ManagementPolicies {
-	var policies v1.ManagementPolicies
+func (m *managed) GetManagementPolicies() xpv2.ManagementPolicies {
+	var policies xpv2.ManagementPolicies
 	_ = fieldpath.Pave(m.object()).GetValueInto("spec.managementPolicies", &policies)
 	return policies
 }
 
-func (m *managed) SetManagementPolicies(policies v1.ManagementPolicies) {
+func (m *managed) SetManagementPolicies(policies xpv2.ManagementPolicies) {
 	_ = fieldpath.Pave(m.object()).SetValue("spec.managementPolicies", policies)
 }
 
