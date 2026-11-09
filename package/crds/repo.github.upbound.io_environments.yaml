@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.23.0
   name: environments.repo.github.upbound.io
 spec:
   group: repo.github.upbound.io
@@ -75,7 +75,7 @@ spec:
                 properties:
                   canAdminsBypass:
                     description: |-
-                      Can repository admins bypass the environment protections.  Defaults to true.
+                      Can repository admins bypass the environment protections. Defaults to true.
                       Can Admins bypass deployment protections
                     type: boolean
                   deploymentBranchPolicy:
@@ -229,7 +229,7 @@ spec:
                 properties:
                   canAdminsBypass:
                     description: |-
-                      Can repository admins bypass the environment protections.  Defaults to true.
+                      Can repository admins bypass the environment protections. Defaults to true.
                       Can Admins bypass deployment protections
                     type: boolean
                   deploymentBranchPolicy:
@@ -466,7 +466,7 @@ spec:
                 properties:
                   canAdminsBypass:
                     description: |-
-                      Can repository admins bypass the environment protections.  Defaults to true.
+                      Can repository admins bypass the environment protections. Defaults to true.
                       Can Admins bypass deployment protections
                     type: boolean
                   deploymentBranchPolicy:
@@ -502,6 +502,12 @@ spec:
                       The repository of the environment.
                       The repository of the environment.
                     type: string
+                  repositoryId:
+                    description: |-
+                      The ID of the repository.
+                      The ID of the GitHub repository.
+                    format: int64
+                    type: integer
                   reviewers:
                     description: The environment reviewers configuration.
                     items:
@@ -579,6 +585,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

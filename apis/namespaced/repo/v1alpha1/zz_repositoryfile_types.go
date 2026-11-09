@@ -10,26 +10,24 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type RepositoryFileInitParameters struct {
 
-	// Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'.
+	// Deprecated Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'. Use the github_branch resource instead.
 	// Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
 	AutocreateBranch *bool `json:"autocreateBranch,omitempty" tf:"autocreate_branch,omitempty"`
 
-	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+	// Deprecated The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'. Use the github_branch resource instead.
 	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
 	AutocreateBranchSourceBranch *string `json:"autocreateBranchSourceBranch,omitempty" tf:"autocreate_branch_source_branch,omitempty"`
 
-	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+	// Deprecated The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored. Use the github_branch resource instead.
 	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
 	AutocreateBranchSourceSha *string `json:"autocreateBranchSourceSha,omitempty" tf:"autocreate_branch_source_sha,omitempty"`
 
-	// Git branch (defaults to the repository's default branch).
-	// The branch must already exist, it will only be created automatically if 'autocreate_branch' is set true.
+	// Git branch (defaults to the repository's default branch). The branch must already exist, it will only be created automatically if 'autocreate_branch' is set true.
 	// The branch name, defaults to the repository's default branch
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/repo/v1alpha1.Branch
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("branch",true)
@@ -37,11 +35,11 @@ type RepositoryFileInitParameters struct {
 
 	// Reference to a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchRef *v1.NamespacedReference `json:"branchRef,omitempty" tf:"-"`
+	BranchRef *v2.NamespacedReference `json:"branchRef,omitempty" tf:"-"`
 
 	// Selector for a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchSelector *v1.NamespacedSelector `json:"branchSelector,omitempty" tf:"-"`
+	BranchSelector *v2.NamespacedSelector `json:"branchSelector,omitempty" tf:"-"`
 
 	// Committer author name to use. NOTE: GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App. This maybe useful when a branch protection rule requires signed commits.
 	// The commit author name, defaults to the authenticated user's name. GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App.
@@ -74,29 +72,28 @@ type RepositoryFileInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 }
 
 type RepositoryFileObservation struct {
 
-	// Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'.
+	// Deprecated Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'. Use the github_branch resource instead.
 	// Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
 	AutocreateBranch *bool `json:"autocreateBranch,omitempty" tf:"autocreate_branch,omitempty"`
 
-	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+	// Deprecated The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'. Use the github_branch resource instead.
 	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
 	AutocreateBranchSourceBranch *string `json:"autocreateBranchSourceBranch,omitempty" tf:"autocreate_branch_source_branch,omitempty"`
 
-	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+	// Deprecated The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored. Use the github_branch resource instead.
 	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
 	AutocreateBranchSourceSha *string `json:"autocreateBranchSourceSha,omitempty" tf:"autocreate_branch_source_sha,omitempty"`
 
-	// Git branch (defaults to the repository's default branch).
-	// The branch must already exist, it will only be created automatically if 'autocreate_branch' is set true.
+	// Git branch (defaults to the repository's default branch). The branch must already exist, it will only be created automatically if 'autocreate_branch' is set true.
 	// The branch name, defaults to the repository's default branch
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
@@ -138,6 +135,10 @@ type RepositoryFileObservation struct {
 	// The repository name
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
+	// The ID of the repository.
+	// The repository ID
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+
 	// The SHA blob of the file.
 	// The blob SHA of the file
 	Sha *string `json:"sha,omitempty" tf:"sha,omitempty"`
@@ -145,23 +146,22 @@ type RepositoryFileObservation struct {
 
 type RepositoryFileParameters struct {
 
-	// Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'.
+	// Deprecated Automatically create the branch if it could not be found. Defaults to false. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'. Use the github_branch resource instead.
 	// Automatically create the branch if it could not be found. Subsequent reads if the branch is deleted will occur from 'autocreate_branch_source_branch'
 	// +kubebuilder:validation:Optional
 	AutocreateBranch *bool `json:"autocreateBranch,omitempty" tf:"autocreate_branch,omitempty"`
 
-	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
+	// Deprecated The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'. Use the github_branch resource instead.
 	// The branch name to start from, if 'autocreate_branch' is set. Defaults to 'main'.
 	// +kubebuilder:validation:Optional
 	AutocreateBranchSourceBranch *string `json:"autocreateBranchSourceBranch,omitempty" tf:"autocreate_branch_source_branch,omitempty"`
 
-	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
+	// Deprecated The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored. Use the github_branch resource instead.
 	// The commit hash to start from, if 'autocreate_branch' is set. Defaults to the tip of 'autocreate_branch_source_branch'. If provided, 'autocreate_branch_source_branch' is ignored.
 	// +kubebuilder:validation:Optional
 	AutocreateBranchSourceSha *string `json:"autocreateBranchSourceSha,omitempty" tf:"autocreate_branch_source_sha,omitempty"`
 
-	// Git branch (defaults to the repository's default branch).
-	// The branch must already exist, it will only be created automatically if 'autocreate_branch' is set true.
+	// Git branch (defaults to the repository's default branch). The branch must already exist, it will only be created automatically if 'autocreate_branch' is set true.
 	// The branch name, defaults to the repository's default branch
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/repo/v1alpha1.Branch
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("branch",true)
@@ -170,11 +170,11 @@ type RepositoryFileParameters struct {
 
 	// Reference to a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchRef *v1.NamespacedReference `json:"branchRef,omitempty" tf:"-"`
+	BranchRef *v2.NamespacedReference `json:"branchRef,omitempty" tf:"-"`
 
 	// Selector for a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchSelector *v1.NamespacedSelector `json:"branchSelector,omitempty" tf:"-"`
+	BranchSelector *v2.NamespacedSelector `json:"branchSelector,omitempty" tf:"-"`
 
 	// Committer author name to use. NOTE: GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App. This maybe useful when a branch protection rule requires signed commits.
 	// The commit author name, defaults to the authenticated user's name. GitHub app users may omit author and email information so GitHub can verify commits as the GitHub App.
@@ -214,11 +214,11 @@ type RepositoryFileParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 }
 
 // RepositoryFileSpec defines the desired state of RepositoryFile
@@ -240,8 +240,8 @@ type RepositoryFileSpec struct {
 
 // RepositoryFileStatus defines the observed state of RepositoryFile.
 type RepositoryFileStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RepositoryFileObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RepositoryFileObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -19,6 +19,7 @@ import (
 	repositoryaccesslevel "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/actions/repositoryaccesslevel"
 	repositorypermissions "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/actions/repositorypermissions"
 	runnergroup "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/actions/runnergroup"
+	appinstallationrepositories "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/app/appinstallationrepositories"
 	organization "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/enterprise/organization"
 	organizationruleset "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/enterprise/organizationruleset"
 	providerconfig "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/providerconfig"
@@ -29,6 +30,7 @@ import (
 	deploykey "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/repo/deploykey"
 	environment "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/repo/environment"
 	environmentdeploymentpolicy "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/repo/environmentdeploymentpolicy"
+	githubissue "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/repo/githubissue"
 	issuelabels "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/repo/issuelabels"
 	pullrequest "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/repo/pullrequest"
 	repository "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/repo/repository"
@@ -41,6 +43,7 @@ import (
 	repositorywebhook "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/repo/repositorywebhook"
 	emugroupmapping "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/team/emugroupmapping"
 	members "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/team/members"
+	organizationroleteam "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/team/organizationroleteam"
 	team "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/team/team"
 	teammembership "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/team/teammembership"
 	teamrepository "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster/team/teamrepository"
@@ -63,6 +66,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		repositoryaccesslevel.Setup,
 		repositorypermissions.Setup,
 		runnergroup.Setup,
+		appinstallationrepositories.Setup,
 		organization.Setup,
 		organizationruleset.Setup,
 		providerconfig.Setup,
@@ -73,6 +77,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		deploykey.Setup,
 		environment.Setup,
 		environmentdeploymentpolicy.Setup,
+		githubissue.Setup,
 		issuelabels.Setup,
 		pullrequest.Setup,
 		repository.Setup,
@@ -85,6 +90,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		repositorywebhook.Setup,
 		emugroupmapping.Setup,
 		members.Setup,
+		organizationroleteam.Setup,
 		team.Setup,
 		teammembership.Setup,
 		teamrepository.Setup,
@@ -113,6 +119,7 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		repositoryaccesslevel.SetupGated,
 		repositorypermissions.SetupGated,
 		runnergroup.SetupGated,
+		appinstallationrepositories.SetupGated,
 		organization.SetupGated,
 		organizationruleset.SetupGated,
 		providerconfig.SetupGated,
@@ -123,6 +130,7 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		deploykey.SetupGated,
 		environment.SetupGated,
 		environmentdeploymentpolicy.SetupGated,
+		githubissue.SetupGated,
 		issuelabels.SetupGated,
 		pullrequest.SetupGated,
 		repository.SetupGated,
@@ -135,6 +143,7 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		repositorywebhook.SetupGated,
 		emugroupmapping.SetupGated,
 		members.SetupGated,
+		organizationroleteam.SetupGated,
 		team.SetupGated,
 		teammembership.SetupGated,
 		teamrepository.SetupGated,
@@ -143,6 +152,58 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		membership.SetupGated,
 	} {
 		if err := setup(mgr, o); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// SetupWebhookWithManager registers conversion webhooks for all resource kinds in the group.
+func SetupWebhookWithManager(mgr ctrl.Manager) error {
+	for _, setup := range []func(ctrl.Manager) error{
+		actionssecret.SetupWebhookWithManager,
+		actionsvariable.SetupWebhookWithManager,
+		environmentsecret.SetupWebhookWithManager,
+		environmentvariable.SetupWebhookWithManager,
+		organizationactionssecret.SetupWebhookWithManager,
+		organizationactionsvariable.SetupWebhookWithManager,
+		organizationpermissions.SetupWebhookWithManager,
+		repositoryaccesslevel.SetupWebhookWithManager,
+		repositorypermissions.SetupWebhookWithManager,
+		runnergroup.SetupWebhookWithManager,
+		appinstallationrepositories.SetupWebhookWithManager,
+		organization.SetupWebhookWithManager,
+		organizationruleset.SetupWebhookWithManager,
+		providerconfig.SetupWebhookWithManager,
+		branch.SetupWebhookWithManager,
+		branchprotection.SetupWebhookWithManager,
+		branchprotectionv3.SetupWebhookWithManager,
+		defaultbranch.SetupWebhookWithManager,
+		deploykey.SetupWebhookWithManager,
+		environment.SetupWebhookWithManager,
+		environmentdeploymentpolicy.SetupWebhookWithManager,
+		githubissue.SetupWebhookWithManager,
+		issuelabels.SetupWebhookWithManager,
+		pullrequest.SetupWebhookWithManager,
+		repository.SetupWebhookWithManager,
+		repositoryautolinkreference.SetupWebhookWithManager,
+		repositorycollaborator.SetupWebhookWithManager,
+		repositorycollaboratorset.SetupWebhookWithManager,
+		repositorycustomproperty.SetupWebhookWithManager,
+		repositoryfile.SetupWebhookWithManager,
+		repositoryruleset.SetupWebhookWithManager,
+		repositorywebhook.SetupWebhookWithManager,
+		emugroupmapping.SetupWebhookWithManager,
+		members.SetupWebhookWithManager,
+		organizationroleteam.SetupWebhookWithManager,
+		team.SetupWebhookWithManager,
+		teammembership.SetupWebhookWithManager,
+		teamrepository.SetupWebhookWithManager,
+		teamsettings.SetupWebhookWithManager,
+		teamsyncgroupmapping.SetupWebhookWithManager,
+		membership.SetupWebhookWithManager,
+	} {
+		if err := setup(mgr); err != nil {
 			return err
 		}
 	}

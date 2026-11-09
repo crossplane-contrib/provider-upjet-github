@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.23.0
   name: teammemberships.team.github.m.upbound.io
 spec:
   group: team.github.m.upbound.io
@@ -61,8 +61,7 @@ spec:
                 properties:
                   role:
                     description: |-
-                      The role of the user within the team.
-                      Must be one of member or maintainer. Defaults to member.
+                      The role of the user within the team. Must be one of member or maintainer. Defaults to member.
                       The role of the user within the team. Must be one of 'member' or 'maintainer'.
                     type: string
                   teamId:
@@ -171,8 +170,7 @@ spec:
                 properties:
                   role:
                     description: |-
-                      The role of the user within the team.
-                      Must be one of member or maintainer. Defaults to member.
+                      The role of the user within the team. Must be one of member or maintainer. Defaults to member.
                       The role of the user within the team. Must be one of 'member' or 'maintainer'.
                     type: string
                   teamId:
@@ -340,8 +338,7 @@ spec:
                     type: string
                   role:
                     description: |-
-                      The role of the user within the team.
-                      Must be one of member or maintainer. Defaults to member.
+                      The role of the user within the team. Must be one of member or maintainer. Defaults to member.
                       The role of the user within the team. Must be one of 'member' or 'maintainer'.
                     type: string
                   teamId:
@@ -401,6 +398,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

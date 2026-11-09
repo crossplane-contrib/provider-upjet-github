@@ -10,22 +10,16 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type MembershipInitParameters struct {
 
-	// Defaults to false. If set to true,
-	// when this resource is destroyed, the member will not be removed
-	// from the organization. Instead, the member's role will be
-	// downgraded to 'member'.
+	// Defaults to false. If set to true, when this resource is destroyed, the member will not be removed from the organization. Instead, the member's role will be downgraded to 'member'.
 	// Instead of removing the member from the org, you can choose to downgrade their membership to 'member' when this resource is destroyed. This is useful when wanting to downgrade admins while keeping them in the organization
 	DowngradeOnDestroy *bool `json:"downgradeOnDestroy,omitempty" tf:"downgrade_on_destroy,omitempty"`
 
-	// The role of the user within the organization.
-	// Must be one of member or admin. Defaults to member.
-	// admin role represents the owner role available via GitHub UI.
+	// The role of the user within the organization. Must be one of member or admin. Defaults to member. admin role represents the owner role available via GitHub UI.
 	// The role of the user within the organization. Must be one of 'member' or 'admin'.
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
@@ -36,10 +30,7 @@ type MembershipInitParameters struct {
 
 type MembershipObservation struct {
 
-	// Defaults to false. If set to true,
-	// when this resource is destroyed, the member will not be removed
-	// from the organization. Instead, the member's role will be
-	// downgraded to 'member'.
+	// Defaults to false. If set to true, when this resource is destroyed, the member will not be removed from the organization. Instead, the member's role will be downgraded to 'member'.
 	// Instead of removing the member from the org, you can choose to downgrade their membership to 'member' when this resource is destroyed. This is useful when wanting to downgrade admins while keeping them in the organization
 	DowngradeOnDestroy *bool `json:"downgradeOnDestroy,omitempty" tf:"downgrade_on_destroy,omitempty"`
 
@@ -47,9 +38,7 @@ type MembershipObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The role of the user within the organization.
-	// Must be one of member or admin. Defaults to member.
-	// admin role represents the owner role available via GitHub UI.
+	// The role of the user within the organization. Must be one of member or admin. Defaults to member. admin role represents the owner role available via GitHub UI.
 	// The role of the user within the organization. Must be one of 'member' or 'admin'.
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
@@ -60,17 +49,12 @@ type MembershipObservation struct {
 
 type MembershipParameters struct {
 
-	// Defaults to false. If set to true,
-	// when this resource is destroyed, the member will not be removed
-	// from the organization. Instead, the member's role will be
-	// downgraded to 'member'.
+	// Defaults to false. If set to true, when this resource is destroyed, the member will not be removed from the organization. Instead, the member's role will be downgraded to 'member'.
 	// Instead of removing the member from the org, you can choose to downgrade their membership to 'member' when this resource is destroyed. This is useful when wanting to downgrade admins while keeping them in the organization
 	// +kubebuilder:validation:Optional
 	DowngradeOnDestroy *bool `json:"downgradeOnDestroy,omitempty" tf:"downgrade_on_destroy,omitempty"`
 
-	// The role of the user within the organization.
-	// Must be one of member or admin. Defaults to member.
-	// admin role represents the owner role available via GitHub UI.
+	// The role of the user within the organization. Must be one of member or admin. Defaults to member. admin role represents the owner role available via GitHub UI.
 	// The role of the user within the organization. Must be one of 'member' or 'admin'.
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
@@ -100,8 +84,8 @@ type MembershipSpec struct {
 
 // MembershipStatus defines the observed state of Membership.
 type MembershipStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        MembershipObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               MembershipObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

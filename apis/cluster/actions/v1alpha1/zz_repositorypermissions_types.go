@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type RepositoryPermissionsAllowedActionsConfigInitParameters struct {
@@ -85,11 +85,15 @@ type RepositoryPermissionsInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
+
+	// Whether pinning to a specific SHA is required for all actions and reusable workflows in the repository.
+	// Whether pinning to a specific SHA is required for all actions and reusable workflows in a repository.
+	ShaPinningRequired *bool `json:"shaPinningRequired,omitempty" tf:"sha_pinning_required,omitempty"`
 }
 
 type RepositoryPermissionsObservation struct {
@@ -111,6 +115,10 @@ type RepositoryPermissionsObservation struct {
 	// The GitHub repository
 	// The GitHub repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// Whether pinning to a specific SHA is required for all actions and reusable workflows in the repository.
+	// Whether pinning to a specific SHA is required for all actions and reusable workflows in a repository.
+	ShaPinningRequired *bool `json:"shaPinningRequired,omitempty" tf:"sha_pinning_required,omitempty"`
 }
 
 type RepositoryPermissionsParameters struct {
@@ -138,17 +146,22 @@ type RepositoryPermissionsParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.Reference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.Selector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
+
+	// Whether pinning to a specific SHA is required for all actions and reusable workflows in the repository.
+	// Whether pinning to a specific SHA is required for all actions and reusable workflows in a repository.
+	// +kubebuilder:validation:Optional
+	ShaPinningRequired *bool `json:"shaPinningRequired,omitempty" tf:"sha_pinning_required,omitempty"`
 }
 
 // RepositoryPermissionsSpec defines the desired state of RepositoryPermissions
 type RepositoryPermissionsSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     RepositoryPermissionsParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   RepositoryPermissionsParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -164,8 +177,8 @@ type RepositoryPermissionsSpec struct {
 
 // RepositoryPermissionsStatus defines the observed state of RepositoryPermissions.
 type RepositoryPermissionsStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RepositoryPermissionsObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RepositoryPermissionsObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

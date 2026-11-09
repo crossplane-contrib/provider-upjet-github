@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.23.0
   name: organizationpermissions.actions.github.upbound.io
 spec:
   group: actions.github.upbound.io
@@ -127,6 +127,11 @@ spec:
                           x-kubernetes-list-type: set
                       type: object
                     type: array
+                  shaPinningRequired:
+                    description: |-
+                      Whether pinning to a specific SHA is required for all actions and reusable workflows in the organization.
+                      Whether pinning to a specific SHA is required for all actions and reusable workflows in an organization.
+                    type: boolean
                 type: object
               initProvider:
                 description: |-
@@ -194,6 +199,11 @@ spec:
                           x-kubernetes-list-type: set
                       type: object
                     type: array
+                  shaPinningRequired:
+                    description: |-
+                      Whether pinning to a specific SHA is required for all actions and reusable workflows in the organization.
+                      Whether pinning to a specific SHA is required for all actions and reusable workflows in an organization.
+                    type: boolean
                 type: object
               managementPolicies:
                 default:
@@ -347,6 +357,11 @@ spec:
                     type: array
                   id:
                     type: string
+                  shaPinningRequired:
+                    description: |-
+                      Whether pinning to a specific SHA is required for all actions and reusable workflows in the organization.
+                      Whether pinning to a specific SHA is required for all actions and reusable workflows in an organization.
+                    type: boolean
                 type: object
               conditions:
                 description: Conditions of the resource.
@@ -394,6 +409,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

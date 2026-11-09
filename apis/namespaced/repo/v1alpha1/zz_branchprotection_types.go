@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type BranchProtectionInitParameters struct {
@@ -48,11 +47,11 @@ type BranchProtectionInitParameters struct {
 
 	// Reference to a Repository in repo to populate repositoryId.
 	// +kubebuilder:validation:Optional
-	RepositoryIDRef *v1.NamespacedReference `json:"repositoryIdRef,omitempty" tf:"-"`
+	RepositoryIDRef *v2.NamespacedReference `json:"repositoryIdRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repositoryId.
 	// +kubebuilder:validation:Optional
-	RepositoryIDSelector *v1.NamespacedSelector `json:"repositoryIdSelector,omitempty" tf:"-"`
+	RepositoryIDSelector *v2.NamespacedSelector `json:"repositoryIdSelector,omitempty" tf:"-"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
 	// Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
@@ -178,11 +177,11 @@ type BranchProtectionParameters struct {
 
 	// Reference to a Repository in repo to populate repositoryId.
 	// +kubebuilder:validation:Optional
-	RepositoryIDRef *v1.NamespacedReference `json:"repositoryIdRef,omitempty" tf:"-"`
+	RepositoryIDRef *v2.NamespacedReference `json:"repositoryIdRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repositoryId.
 	// +kubebuilder:validation:Optional
-	RepositoryIDSelector *v1.NamespacedSelector `json:"repositoryIdSelector,omitempty" tf:"-"`
+	RepositoryIDSelector *v2.NamespacedSelector `json:"repositoryIdSelector,omitempty" tf:"-"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
 	// Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
@@ -235,12 +234,11 @@ type RequiredPullRequestReviewsInitParameters struct {
 	// Require an approved review in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews *bool `json:"requireCodeOwnerReviews,omitempty" tf:"require_code_owner_reviews,omitempty"`
 
-	// :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+	// :  Require that The most recent push must be approved by someone other than the last pusher. Defaults to false
 	// Require that The most recent push must be approved by someone other than the last pusher.
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
-	// 6. This requirement matches GitHub's API, see the upstream documentation for more information.
-	// (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+	// 6. This requirement matches GitHub's API, see the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
 	// Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
 	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
@@ -269,12 +267,11 @@ type RequiredPullRequestReviewsObservation struct {
 	// Require an approved review in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews *bool `json:"requireCodeOwnerReviews,omitempty" tf:"require_code_owner_reviews,omitempty"`
 
-	// :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+	// :  Require that The most recent push must be approved by someone other than the last pusher. Defaults to false
 	// Require that The most recent push must be approved by someone other than the last pusher.
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
-	// 6. This requirement matches GitHub's API, see the upstream documentation for more information.
-	// (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+	// 6. This requirement matches GitHub's API, see the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
 	// Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
 	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
 
@@ -307,13 +304,12 @@ type RequiredPullRequestReviewsParameters struct {
 	// +kubebuilder:validation:Optional
 	RequireCodeOwnerReviews *bool `json:"requireCodeOwnerReviews,omitempty" tf:"require_code_owner_reviews,omitempty"`
 
-	// :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+	// :  Require that The most recent push must be approved by someone other than the last pusher. Defaults to false
 	// Require that The most recent push must be approved by someone other than the last pusher.
 	// +kubebuilder:validation:Optional
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
-	// 6. This requirement matches GitHub's API, see the upstream documentation for more information.
-	// (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+	// 6. This requirement matches GitHub's API, see the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
 	// Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
 	// +kubebuilder:validation:Optional
 	RequiredApprovingReviewCount *int64 `json:"requiredApprovingReviewCount,omitempty" tf:"required_approving_review_count,omitempty"`
@@ -419,8 +415,8 @@ type BranchProtectionSpec struct {
 
 // BranchProtectionStatus defines the observed state of BranchProtection.
 type BranchProtectionStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        BranchProtectionObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               BranchProtectionObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

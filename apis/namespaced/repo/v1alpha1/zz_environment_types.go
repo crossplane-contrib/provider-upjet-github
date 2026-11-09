@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type DeploymentBranchPolicyInitParameters struct {
@@ -51,7 +50,7 @@ type DeploymentBranchPolicyParameters struct {
 
 type EnvironmentInitParameters struct {
 
-	// Can repository admins bypass the environment protections.  Defaults to true.
+	// Can repository admins bypass the environment protections. Defaults to true.
 	// Can Admins bypass deployment protections
 	CanAdminsBypass *bool `json:"canAdminsBypass,omitempty" tf:"can_admins_bypass,omitempty"`
 
@@ -73,11 +72,11 @@ type EnvironmentInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The environment reviewers configuration.
 	Reviewers []ReviewersInitParameters `json:"reviewers,omitempty" tf:"reviewers,omitempty"`
@@ -89,7 +88,7 @@ type EnvironmentInitParameters struct {
 
 type EnvironmentObservation struct {
 
-	// Can repository admins bypass the environment protections.  Defaults to true.
+	// Can repository admins bypass the environment protections. Defaults to true.
 	// Can Admins bypass deployment protections
 	CanAdminsBypass *bool `json:"canAdminsBypass,omitempty" tf:"can_admins_bypass,omitempty"`
 
@@ -110,6 +109,10 @@ type EnvironmentObservation struct {
 	// The repository of the environment.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
+	// The ID of the repository.
+	// The ID of the GitHub repository.
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+
 	// The environment reviewers configuration.
 	Reviewers []ReviewersObservation `json:"reviewers,omitempty" tf:"reviewers,omitempty"`
 
@@ -120,7 +123,7 @@ type EnvironmentObservation struct {
 
 type EnvironmentParameters struct {
 
-	// Can repository admins bypass the environment protections.  Defaults to true.
+	// Can repository admins bypass the environment protections. Defaults to true.
 	// Can Admins bypass deployment protections
 	// +kubebuilder:validation:Optional
 	CanAdminsBypass *bool `json:"canAdminsBypass,omitempty" tf:"can_admins_bypass,omitempty"`
@@ -147,11 +150,11 @@ type EnvironmentParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The environment reviewers configuration.
 	// +kubebuilder:validation:Optional
@@ -223,8 +226,8 @@ type EnvironmentSpec struct {
 
 // EnvironmentStatus defines the observed state of Environment.
 type EnvironmentStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        EnvironmentObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               EnvironmentObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

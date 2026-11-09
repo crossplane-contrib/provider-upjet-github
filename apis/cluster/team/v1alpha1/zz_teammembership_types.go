@@ -10,13 +10,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type TeamMembershipInitParameters struct {
 
-	// The role of the user within the team.
-	// Must be one of member or maintainer. Defaults to member.
+	// The role of the user within the team. Must be one of member or maintainer. Defaults to member.
 	// The role of the user within the team. Must be one of 'member' or 'maintainer'.
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
@@ -27,11 +26,11 @@ type TeamMembershipInitParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 
 	// The user to add to the team.
 	// The user to add to the team.
@@ -43,8 +42,7 @@ type TeamMembershipObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The role of the user within the team.
-	// Must be one of member or maintainer. Defaults to member.
+	// The role of the user within the team. Must be one of member or maintainer. Defaults to member.
 	// The role of the user within the team. Must be one of 'member' or 'maintainer'.
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
@@ -59,8 +57,7 @@ type TeamMembershipObservation struct {
 
 type TeamMembershipParameters struct {
 
-	// The role of the user within the team.
-	// Must be one of member or maintainer. Defaults to member.
+	// The role of the user within the team. Must be one of member or maintainer. Defaults to member.
 	// The role of the user within the team. Must be one of 'member' or 'maintainer'.
 	// +kubebuilder:validation:Optional
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
@@ -73,11 +70,11 @@ type TeamMembershipParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 
 	// The user to add to the team.
 	// The user to add to the team.
@@ -87,8 +84,8 @@ type TeamMembershipParameters struct {
 
 // TeamMembershipSpec defines the desired state of TeamMembership
 type TeamMembershipSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     TeamMembershipParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   TeamMembershipParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -104,8 +101,8 @@ type TeamMembershipSpec struct {
 
 // TeamMembershipStatus defines the observed state of TeamMembership.
 type TeamMembershipStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        TeamMembershipObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               TeamMembershipObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

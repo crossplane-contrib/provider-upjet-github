@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type BranchProtectionv3InitParameters struct {
@@ -31,11 +30,11 @@ type BranchProtectionv3InitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
 	// Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
@@ -117,11 +116,11 @@ type BranchProtectionv3Parameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// Boolean, setting this to true requires all conversations on code must be resolved before a pull request can be merged.
 	// Setting this to 'true' requires all conversations on code must be resolved before a pull request can be merged.
@@ -163,8 +162,7 @@ type BranchProtectionv3RequiredPullRequestReviewsInitParameters struct {
 	// +listType=set
 	DismissalApps []*string `json:"dismissalApps,omitempty" tf:"dismissal_apps,omitempty"`
 
-	// :  The list of team slugs with dismissal access.
-	// Always use slug of the team, not its name. Each team already has to have access to the repository.
+	// :  The list of team slugs with dismissal access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// The list of team slugs with dismissal access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/team/v1alpha1.Team
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("slug",true)
@@ -173,11 +171,11 @@ type BranchProtectionv3RequiredPullRequestReviewsInitParameters struct {
 
 	// References to Team in team to populate dismissalTeams.
 	// +kubebuilder:validation:Optional
-	DismissalTeamsRefs []v1.NamespacedReference `json:"dismissalTeamsRefs,omitempty" tf:"-"`
+	DismissalTeamsRefs []v2.NamespacedReference `json:"dismissalTeamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate dismissalTeams.
 	// +kubebuilder:validation:Optional
-	DismissalTeamsSelector *v1.NamespacedSelector `json:"dismissalTeamsSelector,omitempty" tf:"-"`
+	DismissalTeamsSelector *v2.NamespacedSelector `json:"dismissalTeamsSelector,omitempty" tf:"-"`
 
 	// :  The list of user logins with dismissal access
 	// The list of user logins with dismissal access.
@@ -190,7 +188,7 @@ type BranchProtectionv3RequiredPullRequestReviewsInitParameters struct {
 	// Require an approved review in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews *bool `json:"requireCodeOwnerReviews,omitempty" tf:"require_code_owner_reviews,omitempty"`
 
-	// :  Require that the most recent push must be approved by someone other than the last pusher.  Defaults to false
+	// :  Require that the most recent push must be approved by someone other than the last pusher. Defaults to false
 	// Require that the most recent push must be approved by someone other than the last pusher.
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
@@ -213,8 +211,7 @@ type BranchProtectionv3RequiredPullRequestReviewsObservation struct {
 	// +listType=set
 	DismissalApps []*string `json:"dismissalApps,omitempty" tf:"dismissal_apps,omitempty"`
 
-	// :  The list of team slugs with dismissal access.
-	// Always use slug of the team, not its name. Each team already has to have access to the repository.
+	// :  The list of team slugs with dismissal access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// The list of team slugs with dismissal access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// +listType=set
 	DismissalTeams []*string `json:"dismissalTeams,omitempty" tf:"dismissal_teams,omitempty"`
@@ -230,7 +227,7 @@ type BranchProtectionv3RequiredPullRequestReviewsObservation struct {
 	// Require an approved review in pull requests including files with a designated code owner.
 	RequireCodeOwnerReviews *bool `json:"requireCodeOwnerReviews,omitempty" tf:"require_code_owner_reviews,omitempty"`
 
-	// :  Require that the most recent push must be approved by someone other than the last pusher.  Defaults to false
+	// :  Require that the most recent push must be approved by someone other than the last pusher. Defaults to false
 	// Require that the most recent push must be approved by someone other than the last pusher.
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
 
@@ -256,8 +253,7 @@ type BranchProtectionv3RequiredPullRequestReviewsParameters struct {
 	// +listType=set
 	DismissalApps []*string `json:"dismissalApps,omitempty" tf:"dismissal_apps,omitempty"`
 
-	// :  The list of team slugs with dismissal access.
-	// Always use slug of the team, not its name. Each team already has to have access to the repository.
+	// :  The list of team slugs with dismissal access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// The list of team slugs with dismissal access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/team/v1alpha1.Team
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("slug",true)
@@ -267,11 +263,11 @@ type BranchProtectionv3RequiredPullRequestReviewsParameters struct {
 
 	// References to Team in team to populate dismissalTeams.
 	// +kubebuilder:validation:Optional
-	DismissalTeamsRefs []v1.NamespacedReference `json:"dismissalTeamsRefs,omitempty" tf:"-"`
+	DismissalTeamsRefs []v2.NamespacedReference `json:"dismissalTeamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate dismissalTeams.
 	// +kubebuilder:validation:Optional
-	DismissalTeamsSelector *v1.NamespacedSelector `json:"dismissalTeamsSelector,omitempty" tf:"-"`
+	DismissalTeamsSelector *v2.NamespacedSelector `json:"dismissalTeamsSelector,omitempty" tf:"-"`
 
 	// :  The list of user logins with dismissal access
 	// The list of user logins with dismissal access.
@@ -287,7 +283,7 @@ type BranchProtectionv3RequiredPullRequestReviewsParameters struct {
 	// +kubebuilder:validation:Optional
 	RequireCodeOwnerReviews *bool `json:"requireCodeOwnerReviews,omitempty" tf:"require_code_owner_reviews,omitempty"`
 
-	// :  Require that the most recent push must be approved by someone other than the last pusher.  Defaults to false
+	// :  Require that the most recent push must be approved by someone other than the last pusher. Defaults to false
 	// Require that the most recent push must be approved by someone other than the last pusher.
 	// +kubebuilder:validation:Optional
 	RequireLastPushApproval *bool `json:"requireLastPushApproval,omitempty" tf:"require_last_push_approval,omitempty"`
@@ -305,7 +301,7 @@ type BranchProtectionv3RequiredStatusChecksInitParameters struct {
 	// +listType=set
 	Checks []*string `json:"checks,omitempty" tf:"checks,omitempty"`
 
-	// : [DEPRECATED]  The list of status checks to require in order to merge into this branch. No status checks are required by default.
+	// : (DEPRECATED)  The list of status checks to require in order to merge into this branch. No status checks are required by default.
 	// +listType=set
 	Contexts []*string `json:"contexts,omitempty" tf:"contexts,omitempty"`
 
@@ -323,7 +319,7 @@ type BranchProtectionv3RequiredStatusChecksObservation struct {
 	// +listType=set
 	Checks []*string `json:"checks,omitempty" tf:"checks,omitempty"`
 
-	// : [DEPRECATED]  The list of status checks to require in order to merge into this branch. No status checks are required by default.
+	// : (DEPRECATED)  The list of status checks to require in order to merge into this branch. No status checks are required by default.
 	// +listType=set
 	Contexts []*string `json:"contexts,omitempty" tf:"contexts,omitempty"`
 
@@ -342,7 +338,7 @@ type BranchProtectionv3RequiredStatusChecksParameters struct {
 	// +listType=set
 	Checks []*string `json:"checks,omitempty" tf:"checks,omitempty"`
 
-	// : [DEPRECATED]  The list of status checks to require in order to merge into this branch. No status checks are required by default.
+	// : (DEPRECATED)  The list of status checks to require in order to merge into this branch. No status checks are required by default.
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	Contexts []*string `json:"contexts,omitempty" tf:"contexts,omitempty"`
@@ -362,8 +358,7 @@ type BypassPullRequestAllowancesInitParameters struct {
 	// +listType=set
 	Apps []*string `json:"apps,omitempty" tf:"apps,omitempty"`
 
-	// :  The list of team slugs with push access.
-	// Always use slug of the team, not its name. Each team already has to have access to the repository.
+	// :  The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/team/v1alpha1.Team
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("slug",true)
 	// +listType=set
@@ -371,11 +366,11 @@ type BypassPullRequestAllowancesInitParameters struct {
 
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsRefs []v1.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
+	TeamsRefs []v2.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsSelector *v1.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
+	TeamsSelector *v2.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
 
 	// :  The list of user logins with push access.
 	// +listType=set
@@ -388,8 +383,7 @@ type BypassPullRequestAllowancesObservation struct {
 	// +listType=set
 	Apps []*string `json:"apps,omitempty" tf:"apps,omitempty"`
 
-	// :  The list of team slugs with push access.
-	// Always use slug of the team, not its name. Each team already has to have access to the repository.
+	// :  The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// +listType=set
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 
@@ -405,8 +399,7 @@ type BypassPullRequestAllowancesParameters struct {
 	// +listType=set
 	Apps []*string `json:"apps,omitempty" tf:"apps,omitempty"`
 
-	// :  The list of team slugs with push access.
-	// Always use slug of the team, not its name. Each team already has to have access to the repository.
+	// :  The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/team/v1alpha1.Team
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("slug",true)
 	// +kubebuilder:validation:Optional
@@ -415,11 +408,11 @@ type BypassPullRequestAllowancesParameters struct {
 
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsRefs []v1.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
+	TeamsRefs []v2.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsSelector *v1.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
+	TeamsSelector *v2.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
 
 	// :  The list of user logins with push access.
 	// +kubebuilder:validation:Optional
@@ -434,8 +427,7 @@ type RestrictionsInitParameters struct {
 	// +listType=set
 	Apps []*string `json:"apps,omitempty" tf:"apps,omitempty"`
 
-	// :  The list of team slugs with push access.
-	// Always use slug of the team, not its name. Each team already has to have access to the repository.
+	// :  The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/team/v1alpha1.Team
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("slug",true)
@@ -444,11 +436,11 @@ type RestrictionsInitParameters struct {
 
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsRefs []v1.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
+	TeamsRefs []v2.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsSelector *v1.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
+	TeamsSelector *v2.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
 
 	// :  The list of user logins with push access.
 	// The list of user logins with push access.
@@ -463,8 +455,7 @@ type RestrictionsObservation struct {
 	// +listType=set
 	Apps []*string `json:"apps,omitempty" tf:"apps,omitempty"`
 
-	// :  The list of team slugs with push access.
-	// Always use slug of the team, not its name. Each team already has to have access to the repository.
+	// :  The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// +listType=set
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
@@ -483,8 +474,7 @@ type RestrictionsParameters struct {
 	// +listType=set
 	Apps []*string `json:"apps,omitempty" tf:"apps,omitempty"`
 
-	// :  The list of team slugs with push access.
-	// Always use slug of the team, not its name. Each team already has to have access to the repository.
+	// :  The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// The list of team slugs with push access. Always use slug of the team, not its name. Each team already has to have access to the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/team/v1alpha1.Team
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("slug",true)
@@ -494,11 +484,11 @@ type RestrictionsParameters struct {
 
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsRefs []v1.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
+	TeamsRefs []v2.NamespacedReference `json:"teamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamsSelector *v1.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
+	TeamsSelector *v2.NamespacedSelector `json:"teamsSelector,omitempty" tf:"-"`
 
 	// :  The list of user logins with push access.
 	// The list of user logins with push access.
@@ -526,8 +516,8 @@ type BranchProtectionv3Spec struct {
 
 // BranchProtectionv3Status defines the observed state of BranchProtectionv3.
 type BranchProtectionv3Status struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        BranchProtectionv3Observation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               BranchProtectionv3Observation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

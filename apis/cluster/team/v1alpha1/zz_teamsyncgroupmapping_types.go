@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type GroupInitParameters struct {
@@ -63,7 +63,7 @@ type GroupParameters struct {
 
 type TeamSyncGroupMappingInitParameters struct {
 
-	// An Array of GitHub Identity Provider Groups (or empty []).  Each group block consists of the fields documented below.
+	// An Array of GitHub Identity Provider Groups (or empty []). Each group block consists of the fields documented below.
 	// An Array of GitHub Identity Provider Groups (or empty []).
 	Group []GroupInitParameters `json:"group,omitempty" tf:"group,omitempty"`
 
@@ -75,7 +75,7 @@ type TeamSyncGroupMappingInitParameters struct {
 type TeamSyncGroupMappingObservation struct {
 	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
 
-	// An Array of GitHub Identity Provider Groups (or empty []).  Each group block consists of the fields documented below.
+	// An Array of GitHub Identity Provider Groups (or empty []). Each group block consists of the fields documented below.
 	// An Array of GitHub Identity Provider Groups (or empty []).
 	Group []GroupObservation `json:"group,omitempty" tf:"group,omitempty"`
 
@@ -88,7 +88,7 @@ type TeamSyncGroupMappingObservation struct {
 
 type TeamSyncGroupMappingParameters struct {
 
-	// An Array of GitHub Identity Provider Groups (or empty []).  Each group block consists of the fields documented below.
+	// An Array of GitHub Identity Provider Groups (or empty []). Each group block consists of the fields documented below.
 	// An Array of GitHub Identity Provider Groups (or empty []).
 	// +kubebuilder:validation:Optional
 	Group []GroupParameters `json:"group,omitempty" tf:"group,omitempty"`
@@ -101,8 +101,8 @@ type TeamSyncGroupMappingParameters struct {
 
 // TeamSyncGroupMappingSpec defines the desired state of TeamSyncGroupMapping
 type TeamSyncGroupMappingSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     TeamSyncGroupMappingParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   TeamSyncGroupMappingParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -118,8 +118,8 @@ type TeamSyncGroupMappingSpec struct {
 
 // TeamSyncGroupMappingStatus defines the observed state of TeamSyncGroupMapping.
 type TeamSyncGroupMappingStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        TeamSyncGroupMappingObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               TeamSyncGroupMappingObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

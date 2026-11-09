@@ -10,62 +10,65 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ActionsVariableInitParameters struct {
 
-	// Name of the repository
+	// Name of the repository.
 	// Name of the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
-	// Value of the variable
+	// Value of the variable.
 	// Value of the variable.
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 
-	// Name of the variable
+	// Name of the variable.
 	// Name of the variable.
 	VariableName *string `json:"variableName,omitempty" tf:"variable_name,omitempty"`
 }
 
 type ActionsVariableObservation struct {
 
-	// Date of actions_variable creation.
+	// Date the variable was created.
 	// Date of 'actions_variable' creation.
 	CreatedAt *string `json:"createdAt,omitempty" tf:"created_at,omitempty"`
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Name of the repository
+	// Name of the repository.
 	// Name of the repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// Date of actions_variable update.
+	// ID of the repository.
+	// ID of the repository.
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+
+	// Date the variable was last updated.
 	// Date of 'actions_variable' update.
 	UpdatedAt *string `json:"updatedAt,omitempty" tf:"updated_at,omitempty"`
 
-	// Value of the variable
+	// Value of the variable.
 	// Value of the variable.
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 
-	// Name of the variable
+	// Name of the variable.
 	// Name of the variable.
 	VariableName *string `json:"variableName,omitempty" tf:"variable_name,omitempty"`
 }
 
 type ActionsVariableParameters struct {
 
-	// Name of the repository
+	// Name of the repository.
 	// Name of the repository.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
@@ -73,18 +76,18 @@ type ActionsVariableParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
-	// Value of the variable
+	// Value of the variable.
 	// Value of the variable.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 
-	// Name of the variable
+	// Name of the variable.
 	// Name of the variable.
 	// +kubebuilder:validation:Optional
 	VariableName *string `json:"variableName,omitempty" tf:"variable_name,omitempty"`
@@ -109,8 +112,8 @@ type ActionsVariableSpec struct {
 
 // ActionsVariableStatus defines the observed state of ActionsVariable.
 type ActionsVariableStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ActionsVariableObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ActionsVariableObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

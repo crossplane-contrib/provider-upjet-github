@@ -10,70 +10,99 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type DefaultBranchInitParameters struct {
 
-	// The branch (e.g. main)
-	// The branch (e.g. 'main').
+	// (String) The name of the branch to set as the default (e.g. 'main').
+	// The name of the branch to set as the default (e.g. 'main').
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Branch
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
 	// Reference to a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchRef *v1.Reference `json:"branchRef,omitempty" tf:"-"`
+	BranchRef *v2.Reference `json:"branchRef,omitempty" tf:"-"`
 
 	// Selector for a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchSelector *v1.Selector `json:"branchSelector,omitempty" tf:"-"`
+	BranchSelector *v2.Selector `json:"branchSelector,omitempty" tf:"-"`
 
-	// Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
-	// Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
+	// (String) The ETag header for the repository API response.
+	// The ETag header for the repository API response.
+	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
+
+	// (Boolean) If true rename the existing branch when the branch input is changed. Defaults to 'false'.
+	// If `true` rename the existing branch when the `branch` input is changed. Defaults to 'false'.
 	Rename *bool `json:"rename,omitempty" tf:"rename,omitempty"`
+
+	// (Boolean) If true, poll until GitHub propagates the renamed default branch before proceeding. Only has effect when rename is also true. Defaults to 'false'.
+	// If `true`, poll until GitHub propagates the renamed default branch before proceeding. Only has effect when `rename` is also `true`. Defaults to 'false'.
+	WaitForRename *bool `json:"waitForRename,omitempty" tf:"wait_for_rename,omitempty"`
 }
 
 type DefaultBranchObservation struct {
 
-	// The branch (e.g. main)
-	// The branch (e.g. 'main').
+	// (String) The name of the branch to set as the default (e.g. 'main').
+	// The name of the branch to set as the default (e.g. 'main').
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
+	// (String) The ETag header for the repository API response.
+	// The ETag header for the repository API response.
 	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
 
+	// (String) The ID of this resource.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
-	// Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
+	// (Boolean) If true rename the existing branch when the branch input is changed. Defaults to 'false'.
+	// If `true` rename the existing branch when the `branch` input is changed. Defaults to 'false'.
 	Rename *bool `json:"rename,omitempty" tf:"rename,omitempty"`
+
+	// (Number) The ID of the GitHub repository.
+	// The ID of the GitHub repository.
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+
+	// (Boolean) If true, poll until GitHub propagates the renamed default branch before proceeding. Only has effect when rename is also true. Defaults to 'false'.
+	// If `true`, poll until GitHub propagates the renamed default branch before proceeding. Only has effect when `rename` is also `true`. Defaults to 'false'.
+	WaitForRename *bool `json:"waitForRename,omitempty" tf:"wait_for_rename,omitempty"`
 }
 
 type DefaultBranchParameters struct {
 
-	// The branch (e.g. main)
-	// The branch (e.g. 'main').
+	// (String) The name of the branch to set as the default (e.g. 'main').
+	// The name of the branch to set as the default (e.g. 'main').
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Branch
 	// +kubebuilder:validation:Optional
 	Branch *string `json:"branch,omitempty" tf:"branch,omitempty"`
 
 	// Reference to a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchRef *v1.Reference `json:"branchRef,omitempty" tf:"-"`
+	BranchRef *v2.Reference `json:"branchRef,omitempty" tf:"-"`
 
 	// Selector for a Branch in repo to populate branch.
 	// +kubebuilder:validation:Optional
-	BranchSelector *v1.Selector `json:"branchSelector,omitempty" tf:"-"`
+	BranchSelector *v2.Selector `json:"branchSelector,omitempty" tf:"-"`
 
-	// Indicate if it should rename the branch rather than use an existing branch. Defaults to false.
-	// Indicate if it should rename the branch rather than use an existing branch. Defaults to 'false'.
+	// (String) The ETag header for the repository API response.
+	// The ETag header for the repository API response.
+	// +kubebuilder:validation:Optional
+	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
+
+	// (Boolean) If true rename the existing branch when the branch input is changed. Defaults to 'false'.
+	// If `true` rename the existing branch when the `branch` input is changed. Defaults to 'false'.
 	// +kubebuilder:validation:Optional
 	Rename *bool `json:"rename,omitempty" tf:"rename,omitempty"`
+
+	// (Boolean) If true, poll until GitHub propagates the renamed default branch before proceeding. Only has effect when rename is also true. Defaults to 'false'.
+	// If `true`, poll until GitHub propagates the renamed default branch before proceeding. Only has effect when `rename` is also `true`. Defaults to 'false'.
+	// +kubebuilder:validation:Optional
+	WaitForRename *bool `json:"waitForRename,omitempty" tf:"wait_for_rename,omitempty"`
 }
 
 // DefaultBranchSpec defines the desired state of DefaultBranch
 type DefaultBranchSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     DefaultBranchParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   DefaultBranchParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -89,15 +118,15 @@ type DefaultBranchSpec struct {
 
 // DefaultBranchStatus defines the observed state of DefaultBranch.
 type DefaultBranchStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        DefaultBranchObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               DefaultBranchObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// DefaultBranch is the Schema for the DefaultBranchs API. Provides a GitHub branch default for a given repository.
+// DefaultBranch is the Schema for the DefaultBranchs API. Configures the default branch for a GitHub repository.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

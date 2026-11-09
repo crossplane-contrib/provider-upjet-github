@@ -28,7 +28,7 @@ EOF
 
 echo "Creating a default cluster provider config (v2-style)..."
 cat <<EOF | ${KUBECTL} apply -f -
-apiVersion: github.m.crossplane.io/v1beta1
+apiVersion: github.m.upbound.io/v1beta1
 kind: ClusterProviderConfig
 metadata:
   name: default

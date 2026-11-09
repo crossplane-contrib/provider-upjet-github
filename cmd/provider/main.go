@@ -4,13 +4,19 @@ import (
 	"context"
 	"io"
 	"log"
+	"maps"
 	"os"
 	"path/filepath"
+	"slices"
+	"strings"
 	"time"
 
 	authv1 "k8s.io/api/authorization/v1"
+	corev1 "k8s.io/api/core/v1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 
 	"github.com/alecthomas/kingpin/v2"
 	xpcontroller "github.com/crossplane/crossplane-runtime/v2/pkg/controller"
@@ -26,12 +32,15 @@ import (
 	"k8s.io/client-go/tools/leaderelection/resourcelock"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
 
 	apisCluster "github.com/crossplane-contrib/provider-upjet-github/apis/cluster"
+	apisClusterv1beta1 "github.com/crossplane-contrib/provider-upjet-github/apis/cluster/v1beta1"
 	apisNamespaced "github.com/crossplane-contrib/provider-upjet-github/apis/namespaced"
+	apisNamespacedv1beta1 "github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/v1beta1"
 	"github.com/crossplane-contrib/provider-upjet-github/config"
 	"github.com/crossplane-contrib/provider-upjet-github/internal/clients"
 	controllerCluster "github.com/crossplane-contrib/provider-upjet-github/internal/controller/cluster"
@@ -49,6 +58,8 @@ func main() {
 		leaderElection           = app.Flag("leader-election", "Use leader election for the controller manager.").Short('l').Default("false").OverrideDefaultFromEnvar("LEADER_ELECTION").Bool()
 		maxReconcileRate         = app.Flag("max-reconcile-rate", "The global maximum rate per second at which resources may checked for drift from the desired state.").Default("100").Int()
 		enableManagementPolicies = app.Flag("enable-management-policies", "Enable support for Management Policies.").Default("true").Envar("ENABLE_MANAGEMENT_POLICIES").Bool()
+		enableSecretCache        = app.Flag("enable-secret-cache", "Cache Secrets via a cluster-wide informer. Disabling it routes Secret reads to the API server, trading memory for API server requests.").Default("true").Envar("ENABLE_SECRET_CACHE").Bool()
+		pprofBindAddress         = app.Flag("pprof-bind-address", "Address the pprof profiling server listens on, such as :8083. Empty disables profiling.").Default("").Envar("PPROF_BIND_ADDRESS").String()
 	)
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
@@ -72,21 +83,44 @@ func main() {
 	cfg, err := ctrl.GetConfig()
 	kingpin.FatalIfError(err, "Cannot get API server rest config")
 
+	// The scheme must be populated before ctrl.NewManager: the CRD cache
+	// transform below resolves its ByObject GVK at manager construction time.
+	scheme := runtime.NewScheme()
+	kingpin.FatalIfError(clientgoscheme.AddToScheme(scheme), "Cannot add client-go APIs to scheme")
+	kingpin.FatalIfError(apisCluster.AddToScheme(scheme), "Cannot add cluster scoped GitHub APIs to scheme")
+	kingpin.FatalIfError(apisNamespaced.AddToScheme(scheme), "Cannot add namespaced GitHub APIs to scheme")
+	kingpin.FatalIfError(apiextensionsv1.AddToScheme(scheme), "Cannot add api-extensions APIs to scheme")
+
+	var clientOpts client.Options
+	if !*enableSecretCache {
+		clientOpts.Cache = &client.CacheOptions{DisableFor: []client.Object{&corev1.Secret{}}}
+	}
+
 	mgr, err := ctrl.NewManager(cfg, ctrl.Options{
+		Scheme:           scheme,
+		Client:           clientOpts,
 		LeaderElection:   *leaderElection,
 		LeaderElectionID: "crossplane-leader-election-provider-upjet-github",
 		Cache: cache.Options{
 			SyncPeriod: syncPeriod,
+			// Nobody reads managedFields from the cache; dropping them roughly
+			// halves the size of objects written with server-side apply.
+			DefaultTransform: cache.TransformStripManagedFields(),
+			ByObject: map[client.Object]cache.ByObject{
+				// The CRD gate caches every CRD in the cluster but only needs
+				// names and conditions. This transform replaces DefaultTransform
+				// and also strips managedFields. Never Update a cached CRD.
+				&apiextensionsv1.CustomResourceDefinition{}: {
+					Transform: customresourcesgate.TransformStripCRDSchema,
+				},
+			},
 		},
+		PprofBindAddress:           *pprofBindAddress,
 		LeaderElectionResourceLock: resourcelock.LeasesResourceLock,
 		LeaseDuration:              func() *time.Duration { d := 60 * time.Second; return &d }(),
 		RenewDeadline:              func() *time.Duration { d := 50 * time.Second; return &d }(),
 	})
 	kingpin.FatalIfError(err, "Cannot create controller manager")
-	kingpin.FatalIfError(apisCluster.AddToScheme(mgr.GetScheme()), "Cannot add cluster scoped GitHub APIs to scheme")
-	kingpin.FatalIfError(apisNamespaced.AddToScheme(mgr.GetScheme()), "Cannot add namespaced GitHub APIs to scheme")
-	kingpin.FatalIfError(apiextensionsv1.AddToScheme(mgr.GetScheme()), "Cannot add api-extensions APIs to scheme")
-	kingpin.FatalIfError(authv1.AddToScheme(mgr.GetScheme()), "Cannot add k8s authorization APIs to scheme")
 
 	metricRecorder := managed.NewMRMetricRecorder()
 	stateMetrics := statemetrics.NewMRStateMetrics()
@@ -152,6 +186,7 @@ func main() {
 			Logger:                  logr,
 			Gate:                    crdGate,
 			MaxConcurrentReconciles: 1,
+			Groups:                  providerGroups(scheme, apisClusterv1beta1.Group, apisNamespacedv1beta1.Group),
 		}), "Cannot setup CRD gate")
 		kingpin.FatalIfError(controllerCluster.SetupGated(mgr, clusterOpts), "Cannot setup cluster-scoped Template controllers")
 		kingpin.FatalIfError(controllerNamespaced.SetupGated(mgr, namespacedOpts), "Cannot setup namespaced Template controllers")
@@ -162,6 +197,20 @@ func main() {
 	}
 
 	kingpin.FatalIfError(mgr.Start(ctrl.SetupSignalHandler()), "Cannot start controller manager")
+}
+
+// providerGroups returns the API groups registered in s that are a root group
+// or one of its sub-groups, so the CRD gate ignores unrelated CRDs.
+func providerGroups(s *runtime.Scheme, roots ...string) []string {
+	set := map[string]struct{}{}
+	for gvk := range s.AllKnownTypes() {
+		for _, root := range roots {
+			if gvk.Group == root || strings.HasSuffix(gvk.Group, "."+root) {
+				set[gvk.Group] = struct{}{}
+			}
+		}
+	}
+	return slices.Sorted(maps.Keys(set))
 }
 
 func canWatchCRD(ctx context.Context, mgr manager.Manager) (bool, error) {

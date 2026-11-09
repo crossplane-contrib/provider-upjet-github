@@ -10,21 +10,20 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ReviewRequestDelegationInitParameters struct {
 
 	// The algorithm to use when assigning pull requests to team members. Supported values are ROUND_ROBIN and LOAD_BALANCE. Default value is ROUND_ROBIN
-	// The algorithm to use when assigning pull requests to team members. Supported values are 'ROUND_ROBIN' and 'LOAD_BALANCE'.
+	// The algorithm to use when assigning pull requests to team members. Supported values are ROUND_ROBIN and LOAD_BALANCE.
 	Algorithm *string `json:"algorithm,omitempty" tf:"algorithm,omitempty"`
 
-	// The number of team members to assign to a pull request
+	// The number of team members to assign to a pull request. Default value is 1.
 	// The number of team members to assign to a pull request.
 	MemberCount *int64 `json:"memberCount,omitempty" tf:"member_count,omitempty"`
 
-	// whether to notify the entire team when at least one member is also assigned to the pull request
+	// Whether to notify the entire team when at least one member is also assigned to the pull request. Can be set independently of review_request_delegation. Default value is false.
 	// whether to notify the entire team when at least one member is also assigned to the pull request.
 	Notify *bool `json:"notify,omitempty" tf:"notify,omitempty"`
 }
@@ -32,14 +31,14 @@ type ReviewRequestDelegationInitParameters struct {
 type ReviewRequestDelegationObservation struct {
 
 	// The algorithm to use when assigning pull requests to team members. Supported values are ROUND_ROBIN and LOAD_BALANCE. Default value is ROUND_ROBIN
-	// The algorithm to use when assigning pull requests to team members. Supported values are 'ROUND_ROBIN' and 'LOAD_BALANCE'.
+	// The algorithm to use when assigning pull requests to team members. Supported values are ROUND_ROBIN and LOAD_BALANCE.
 	Algorithm *string `json:"algorithm,omitempty" tf:"algorithm,omitempty"`
 
-	// The number of team members to assign to a pull request
+	// The number of team members to assign to a pull request. Default value is 1.
 	// The number of team members to assign to a pull request.
 	MemberCount *int64 `json:"memberCount,omitempty" tf:"member_count,omitempty"`
 
-	// whether to notify the entire team when at least one member is also assigned to the pull request
+	// Whether to notify the entire team when at least one member is also assigned to the pull request. Can be set independently of review_request_delegation. Default value is false.
 	// whether to notify the entire team when at least one member is also assigned to the pull request.
 	Notify *bool `json:"notify,omitempty" tf:"notify,omitempty"`
 }
@@ -47,22 +46,26 @@ type ReviewRequestDelegationObservation struct {
 type ReviewRequestDelegationParameters struct {
 
 	// The algorithm to use when assigning pull requests to team members. Supported values are ROUND_ROBIN and LOAD_BALANCE. Default value is ROUND_ROBIN
-	// The algorithm to use when assigning pull requests to team members. Supported values are 'ROUND_ROBIN' and 'LOAD_BALANCE'.
+	// The algorithm to use when assigning pull requests to team members. Supported values are ROUND_ROBIN and LOAD_BALANCE.
 	// +kubebuilder:validation:Optional
 	Algorithm *string `json:"algorithm,omitempty" tf:"algorithm,omitempty"`
 
-	// The number of team members to assign to a pull request
+	// The number of team members to assign to a pull request. Default value is 1.
 	// The number of team members to assign to a pull request.
 	// +kubebuilder:validation:Optional
 	MemberCount *int64 `json:"memberCount,omitempty" tf:"member_count,omitempty"`
 
-	// whether to notify the entire team when at least one member is also assigned to the pull request
+	// Whether to notify the entire team when at least one member is also assigned to the pull request. Can be set independently of review_request_delegation. Default value is false.
 	// whether to notify the entire team when at least one member is also assigned to the pull request.
 	// +kubebuilder:validation:Optional
 	Notify *bool `json:"notify,omitempty" tf:"notify,omitempty"`
 }
 
 type TeamSettingsInitParameters struct {
+
+	// Whether to notify the entire team when at least one member is also assigned to the pull request. Can be set independently of review_request_delegation. Default value is false.
+	// Whether to notify the entire team when at least one member is also assigned to the pull request.
+	Notify *bool `json:"notify,omitempty" tf:"notify,omitempty"`
 
 	// The settings for delegating code reviews to individuals on behalf of the team. If this block is present, even without any fields, then review request delegation will be enabled for the team. See GitHub Review Request Delegation below for details. See GitHub's documentation for more configuration details.
 	// The settings for delegating code reviews to individuals on behalf of the team. If this block is present, even without any fields, then review request delegation will be enabled for the team.
@@ -75,15 +78,19 @@ type TeamSettingsInitParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type TeamSettingsObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Whether to notify the entire team when at least one member is also assigned to the pull request. Can be set independently of review_request_delegation. Default value is false.
+	// Whether to notify the entire team when at least one member is also assigned to the pull request.
+	Notify *bool `json:"notify,omitempty" tf:"notify,omitempty"`
 
 	// The settings for delegating code reviews to individuals on behalf of the team. If this block is present, even without any fields, then review request delegation will be enabled for the team. See GitHub Review Request Delegation below for details. See GitHub's documentation for more configuration details.
 	// The settings for delegating code reviews to individuals on behalf of the team. If this block is present, even without any fields, then review request delegation will be enabled for the team.
@@ -93,14 +100,21 @@ type TeamSettingsObservation struct {
 	// The GitHub team id or the GitHub team slug.
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 
+	// The slug of the Team.
 	// The slug of the Team within the Organization.
 	TeamSlug *string `json:"teamSlug,omitempty" tf:"team_slug,omitempty"`
 
+	// The unique node ID of the Team on GitHub. Corresponds to the ID of the github_team_settings resource.
 	// The unique ID of the Team on GitHub. Corresponds to the ID of the 'github_team_settings' resource.
 	TeamUID *string `json:"teamUid,omitempty" tf:"team_uid,omitempty"`
 }
 
 type TeamSettingsParameters struct {
+
+	// Whether to notify the entire team when at least one member is also assigned to the pull request. Can be set independently of review_request_delegation. Default value is false.
+	// Whether to notify the entire team when at least one member is also assigned to the pull request.
+	// +kubebuilder:validation:Optional
+	Notify *bool `json:"notify,omitempty" tf:"notify,omitempty"`
 
 	// The settings for delegating code reviews to individuals on behalf of the team. If this block is present, even without any fields, then review request delegation will be enabled for the team. See GitHub Review Request Delegation below for details. See GitHub's documentation for more configuration details.
 	// The settings for delegating code reviews to individuals on behalf of the team. If this block is present, even without any fields, then review request delegation will be enabled for the team.
@@ -115,11 +129,11 @@ type TeamSettingsParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 // TeamSettingsSpec defines the desired state of TeamSettings
@@ -141,8 +155,8 @@ type TeamSettingsSpec struct {
 
 // TeamSettingsStatus defines the observed state of TeamSettings.
 type TeamSettingsStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        TeamSettingsObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               TeamSettingsObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

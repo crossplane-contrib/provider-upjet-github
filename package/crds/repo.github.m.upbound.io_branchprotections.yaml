@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.23.0
   name: branchprotections.repo.github.m.upbound.io
 spec:
   group: repo.github.m.upbound.io
@@ -226,13 +226,12 @@ spec:
                           type: boolean
                         requireLastPushApproval:
                           description: |-
-                            :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+                            :  Require that The most recent push must be approved by someone other than the last pusher. Defaults to false
                             Require that The most recent push must be approved by someone other than the last pusher.
                           type: boolean
                         requiredApprovingReviewCount:
                           description: |-
-                            6. This requirement matches GitHub's API, see the upstream documentation for more information.
-                            (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+                            6. This requirement matches GitHub's API, see the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
                             Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
                           format: int64
                           type: integer
@@ -466,13 +465,12 @@ spec:
                           type: boolean
                         requireLastPushApproval:
                           description: |-
-                            :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+                            :  Require that The most recent push must be approved by someone other than the last pusher. Defaults to false
                             Require that The most recent push must be approved by someone other than the last pusher.
                           type: boolean
                         requiredApprovingReviewCount:
                           description: |-
-                            6. This requirement matches GitHub's API, see the upstream documentation for more information.
-                            (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+                            6. This requirement matches GitHub's API, see the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
                             Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
                           format: int64
                           type: integer
@@ -683,13 +681,12 @@ spec:
                           type: boolean
                         requireLastPushApproval:
                           description: |-
-                            :  Require that The most recent push must be approved by someone other than the last pusher.  Defaults to false
+                            :  Require that The most recent push must be approved by someone other than the last pusher. Defaults to false
                             Require that The most recent push must be approved by someone other than the last pusher.
                           type: boolean
                         requiredApprovingReviewCount:
                           description: |-
-                            6. This requirement matches GitHub's API, see the upstream documentation for more information.
-                            (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
+                            6. This requirement matches GitHub's API, see the upstream documentation for more information. (https://developer.github.com/v3/repos/branches/#parameters-1) for more information.
                             Require 'x' number of approvals to satisfy branch protection requirements. If this is specified it must be a number between 0-6.
                           format: int64
                           type: integer
@@ -789,6 +786,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

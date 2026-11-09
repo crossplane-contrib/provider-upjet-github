@@ -21,14 +21,17 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actionsrepositorypermissions"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actionssecret"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/actionsvariable"
+	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/appinstallationrepositories"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/branch"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/branchdefault"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/branchprotection"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/branchprotectionv3"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/emugroupmapping"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/enterpriseorganization"
+	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/githubissue"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/issuelabels"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/membership"
+	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/organizationroleteam"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/organizationruleset"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/repository"
 	"github.com/crossplane-contrib/provider-upjet-github/config/cluster/repositoryautolinkreference"
@@ -62,7 +65,7 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		ujconfig.WithTerraformPluginSDKIncludeList(resourceList(terraformPluginSDKExternalNameConfigs)),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
-		ujconfig.WithTerraformProvider(github.Provider()),
+		ujconfig.WithTerraformProvider(github.NewProvider("dev", "none")()),
 		ujconfig.WithDefaultResourceOptions(
 			resourceConfigurator(),
 		))
@@ -79,14 +82,17 @@ func GetProvider(ctx context.Context) (*ujconfig.Provider, error) {
 		actionsrepositorypermissions.Configure,
 		actionssecret.Configure,
 		actionsvariable.Configure,
+		appinstallationrepositories.Configure,
 		branch.Configure,
 		branchdefault.Configure,
 		branchprotection.Configure,
 		branchprotectionv3.Configure,
 		emugroupmapping.Configure,
 		enterpriseorganization.Configure,
+		githubissue.Configure,
 		issuelabels.Configure,
 		membership.Configure,
+		organizationroleteam.Configure,
 		organizationruleset.Configure,
 		repository.Configure,
 		repositoryautolinkreference.Configure,

@@ -10,15 +10,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type DeployKeyInitParameters struct {
 
 	// A SSH key.
 	// A SSH key.
-	KeySecretRef v1.LocalSecretKeySelector `json:"keySecretRef" tf:"-"`
+	KeySecretRef v2.LocalSecretKeySelector `json:"keySecretRef" tf:"-"`
 
 	// A boolean qualifying the key to be either read only or read/write.
 	// A boolean qualifying the key to be either read only or read/write.
@@ -31,11 +30,11 @@ type DeployKeyInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// A title.
 	// A title.
@@ -65,7 +64,7 @@ type DeployKeyParameters struct {
 	// A SSH key.
 	// A SSH key.
 	// +kubebuilder:validation:Optional
-	KeySecretRef v1.LocalSecretKeySelector `json:"keySecretRef" tf:"-"`
+	KeySecretRef v2.LocalSecretKeySelector `json:"keySecretRef" tf:"-"`
 
 	// A boolean qualifying the key to be either read only or read/write.
 	// A boolean qualifying the key to be either read only or read/write.
@@ -80,11 +79,11 @@ type DeployKeyParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// A title.
 	// A title.
@@ -111,8 +110,8 @@ type DeployKeySpec struct {
 
 // DeployKeyStatus defines the observed state of DeployKey.
 type DeployKeyStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        DeployKeyObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               DeployKeyObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

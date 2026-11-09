@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type EmuGroupMappingInitParameters struct {
@@ -28,21 +27,31 @@ type EmuGroupMappingInitParameters struct {
 
 	// Reference to a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugRef *v1.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
+	TeamSlugRef *v2.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugSelector *v1.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
+	TeamSlugSelector *v2.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
 }
 
 type EmuGroupMappingObservation struct {
+
+	// An etag representing the external group state
 	Etag *string `json:"etag,omitempty" tf:"etag,omitempty"`
 
 	// Integer corresponding to the external group ID to be linked
 	// Integer corresponding to the external group ID to be linked.
 	GroupID *int64 `json:"groupId,omitempty" tf:"group_id,omitempty"`
 
+	// The name of the external group
+	// Name of the external group.
+	GroupName *string `json:"groupName,omitempty" tf:"group_name,omitempty"`
+
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the GitHub team
+	// ID of the GitHub team.
+	TeamID *int64 `json:"teamId,omitempty" tf:"team_id,omitempty"`
 
 	// Slug of the GitHub team
 	// Slug of the GitHub team.
@@ -65,11 +74,11 @@ type EmuGroupMappingParameters struct {
 
 	// Reference to a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugRef *v1.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
+	TeamSlugRef *v2.NamespacedReference `json:"teamSlugRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamSlug.
 	// +kubebuilder:validation:Optional
-	TeamSlugSelector *v1.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
+	TeamSlugSelector *v2.NamespacedSelector `json:"teamSlugSelector,omitempty" tf:"-"`
 }
 
 // EmuGroupMappingSpec defines the desired state of EmuGroupMapping
@@ -91,8 +100,8 @@ type EmuGroupMappingSpec struct {
 
 // EmuGroupMappingStatus defines the observed state of EmuGroupMapping.
 type EmuGroupMappingStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        EmuGroupMappingObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               EmuGroupMappingObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

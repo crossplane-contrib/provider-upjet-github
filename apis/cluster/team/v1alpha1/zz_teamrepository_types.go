@@ -10,19 +10,27 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type TeamRepositoryInitParameters struct {
 
-	// The permissions of team members regarding the repository.
-	// Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+	// The permissions of team members regarding the repository. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
 	// The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
 	// The repository to add to the team.
 	// The repository to add to the team.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// Reference to a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
+
+	// Selector for a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The GitHub team id or the GitHub team slug
 	// ID or slug of team
@@ -31,11 +39,11 @@ type TeamRepositoryInitParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type TeamRepositoryObservation struct {
@@ -43,8 +51,7 @@ type TeamRepositoryObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The permissions of team members regarding the repository.
-	// Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+	// The permissions of team members regarding the repository. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
 	// The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
@@ -59,16 +66,24 @@ type TeamRepositoryObservation struct {
 
 type TeamRepositoryParameters struct {
 
-	// The permissions of team members regarding the repository.
-	// Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
+	// The permissions of team members regarding the repository. Must be one of pull, triage, push, maintain, admin or the name of an existing custom repository role within the organisation. Defaults to pull.
 	// The permissions of team members regarding the repository. Must be one of 'pull', 'triage', 'push', 'maintain', 'admin' or the name of an existing custom repository role within the organisation.
 	// +kubebuilder:validation:Optional
 	Permission *string `json:"permission,omitempty" tf:"permission,omitempty"`
 
 	// The repository to add to the team.
 	// The repository to add to the team.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/cluster/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// Reference to a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositoryRef *v2.Reference `json:"repositoryRef,omitempty" tf:"-"`
+
+	// Selector for a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositorySelector *v2.Selector `json:"repositorySelector,omitempty" tf:"-"`
 
 	// The GitHub team id or the GitHub team slug
 	// ID or slug of team
@@ -78,17 +93,17 @@ type TeamRepositoryParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 // TeamRepositorySpec defines the desired state of TeamRepository
 type TeamRepositorySpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     TeamRepositoryParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   TeamRepositoryParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -104,8 +119,8 @@ type TeamRepositorySpec struct {
 
 // TeamRepositoryStatus defines the observed state of TeamRepository.
 type TeamRepositoryStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        TeamRepositoryObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               TeamRepositoryObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
@@ -121,9 +136,8 @@ type TeamRepositoryStatus struct {
 type TeamRepository struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.repository) || (has(self.initProvider) && has(self.initProvider.repository))",message="spec.forProvider.repository is a required parameter"
-	Spec   TeamRepositorySpec   `json:"spec"`
-	Status TeamRepositoryStatus `json:"status,omitempty"`
+	Spec              TeamRepositorySpec   `json:"spec"`
+	Status            TeamRepositoryStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

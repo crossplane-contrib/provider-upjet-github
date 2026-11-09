@@ -1,0 +1,18 @@
+apiVersion: enterprise.github.m.upbound.io/v1alpha1
+kind: Organization
+metadata:
+  annotations:
+    meta.upbound.io/example-id: enterprise/v1alpha1/organization
+  labels:
+    testing.upbound.io/example-name: org
+  name: org
+  namespace: upbound-system
+spec:
+  forProvider:
+    adminLogins:
+    - jon-snow
+    billingEmail: jon@winteriscoming.com
+    description: Organization created with terraform
+    displayName: Some Awesome Org
+    enterpriseId: ${data.github_enterprise.enterprise.id}
+    name: some-awesome-org

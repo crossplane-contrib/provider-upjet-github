@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type EnvironmentVariableInitParameters struct {
@@ -23,11 +22,11 @@ type EnvironmentVariableInitParameters struct {
 
 	// Reference to a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
-	EnvironmentRef *v1.NamespacedReference `json:"environmentRef,omitempty" tf:"-"`
+	EnvironmentRef *v2.NamespacedReference `json:"environmentRef,omitempty" tf:"-"`
 
 	// Selector for a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
-	EnvironmentSelector *v1.NamespacedSelector `json:"environmentSelector,omitempty" tf:"-"`
+	EnvironmentSelector *v2.NamespacedSelector `json:"environmentSelector,omitempty" tf:"-"`
 
 	// Name of the repository.
 	// Name of the repository.
@@ -36,13 +35,13 @@ type EnvironmentVariableInitParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
-	// Value of the variable
+	// Value of the variable.
 	// Value of the variable.
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 
@@ -53,7 +52,7 @@ type EnvironmentVariableInitParameters struct {
 
 type EnvironmentVariableObservation struct {
 
-	// Date of actions_environment_secret creation.
+	// Date the variable was created.
 	// Date of 'actions_variable' creation.
 	CreatedAt *string `json:"createdAt,omitempty" tf:"created_at,omitempty"`
 
@@ -67,11 +66,15 @@ type EnvironmentVariableObservation struct {
 	// Name of the repository.
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
 
-	// Date of actions_environment_secret update.
+	// ID of the repository.
+	// ID of the repository.
+	RepositoryID *int64 `json:"repositoryId,omitempty" tf:"repository_id,omitempty"`
+
+	// Date the variable was last updated.
 	// Date of 'actions_variable' update.
 	UpdatedAt *string `json:"updatedAt,omitempty" tf:"updated_at,omitempty"`
 
-	// Value of the variable
+	// Value of the variable.
 	// Value of the variable.
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 
@@ -90,11 +93,11 @@ type EnvironmentVariableParameters struct {
 
 	// Reference to a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
-	EnvironmentRef *v1.NamespacedReference `json:"environmentRef,omitempty" tf:"-"`
+	EnvironmentRef *v2.NamespacedReference `json:"environmentRef,omitempty" tf:"-"`
 
 	// Selector for a Environment in repo to populate environment.
 	// +kubebuilder:validation:Optional
-	EnvironmentSelector *v1.NamespacedSelector `json:"environmentSelector,omitempty" tf:"-"`
+	EnvironmentSelector *v2.NamespacedSelector `json:"environmentSelector,omitempty" tf:"-"`
 
 	// Name of the repository.
 	// Name of the repository.
@@ -104,13 +107,13 @@ type EnvironmentVariableParameters struct {
 
 	// Reference to a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositoryRef *v1.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
 
 	// Selector for a Repository in repo to populate repository.
 	// +kubebuilder:validation:Optional
-	RepositorySelector *v1.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 
-	// Value of the variable
+	// Value of the variable.
 	// Value of the variable.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
@@ -140,8 +143,8 @@ type EnvironmentVariableSpec struct {
 
 // EnvironmentVariableStatus defines the observed state of EnvironmentVariable.
 type EnvironmentVariableStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        EnvironmentVariableObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               EnvironmentVariableObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
