@@ -1,6 +1,7 @@
 package repository
 
 import (
+	commonrepository "github.com/crossplane-contrib/provider-upjet-github/config/common/repository"
 	"github.com/crossplane/upjet/v2/pkg/config"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
@@ -14,9 +15,14 @@ func Configure(p *config.Provider) {
 			IgnoredFields: []string{"private", "default_branch"},
 		}
 
-		r.TerraformCustomDiff = func(diff *terraform.InstanceDiff, _ *terraform.InstanceState, _ *terraform.ResourceConfig) (*terraform.InstanceDiff, error) {
+		r.TerraformCustomDiff = func(diff *terraform.InstanceDiff, state *terraform.InstanceState, cfg *terraform.ResourceConfig) (*terraform.InstanceDiff, error) {
 			if diff == nil || diff.Destroy {
 				return diff, nil
+			}
+			var err error
+			diff, err = commonrepository.PreserveArchivedRepositoryState(diff, state, cfg)
+			if err != nil {
+				return nil, err
 			}
 			if ppDiff, ok := diff.Attributes["security_and_analysis.#"]; ok && ppDiff.Old == "" && ppDiff.New == "" {
 				delete(diff.Attributes, "security_and_analysis.#")
