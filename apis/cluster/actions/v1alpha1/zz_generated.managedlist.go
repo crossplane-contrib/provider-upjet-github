@@ -44,8 +44,35 @@ func (l *EnvironmentVariableList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this HostedRunnerList.
+func (l *HostedRunnerList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this OrganizationActionsSecretList.
 func (l *OrganizationActionsSecretList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this OrganizationActionsSecretRepositoryList.
+func (l *OrganizationActionsSecretRepositoryList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this OrganizationActionsSecretRepositorySetList.
+func (l *OrganizationActionsSecretRepositorySetList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -62,8 +89,44 @@ func (l *OrganizationActionsVariableList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this OrganizationActionsVariableRepositoryList.
+func (l *OrganizationActionsVariableRepositoryList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this OrganizationActionsVariableRepositorySetList.
+func (l *OrganizationActionsVariableRepositorySetList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this OrganizationOIDCSubjectClaimCustomizationTemplateList.
+func (l *OrganizationOIDCSubjectClaimCustomizationTemplateList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this OrganizationPermissionsList.
 func (l *OrganizationPermissionsList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this OrganizationWorkflowPermissionsList.
+func (l *OrganizationWorkflowPermissionsList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -80,8 +143,26 @@ func (l *RepositoryAccessLevelList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this RepositoryOIDCSubjectClaimCustomizationTemplateList.
+func (l *RepositoryOIDCSubjectClaimCustomizationTemplateList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this RepositoryPermissionsList.
 func (l *RepositoryPermissionsList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this RepositoryWorkflowPermissionsList.
+func (l *RepositoryWorkflowPermissionsList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

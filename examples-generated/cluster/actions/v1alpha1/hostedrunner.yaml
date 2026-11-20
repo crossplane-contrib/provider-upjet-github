@@ -1,0 +1,31 @@
+apiVersion: actions.github.upbound.io/v1alpha1
+kind: HostedRunner
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/hostedrunner
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    image:
+    - id: "2306"
+      source: github
+    name: example-hosted-runner
+    runnerGroupId: ${github_actions_runner_group.example.id}
+    size: 4-core
+
+---
+
+apiVersion: actions.github.upbound.io/v1alpha1
+kind: RunnerGroup
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/hostedrunner
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: example-runner-group
+    visibility: all

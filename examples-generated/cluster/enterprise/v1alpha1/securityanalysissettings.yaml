@@ -1,0 +1,12 @@
+apiVersion: enterprise.github.upbound.io/v1alpha1
+kind: SecurityAnalysisSettings
+metadata:
+  annotations:
+    meta.upbound.io/example-id: enterprise/v1alpha1/securityanalysissettings
+  labels:
+    testing.upbound.io/example-name: basic
+  name: basic
+spec:
+  forProvider:
+    enterpriseSlug: my-enterprise
+    secretScanningEnabledForNewRepositories: true

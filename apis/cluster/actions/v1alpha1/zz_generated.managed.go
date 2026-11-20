@@ -208,6 +208,56 @@ func (mg *EnvironmentVariable) SetWriteConnectionSecretToReference(r *xpv2.Secre
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
+// GetCondition of this HostedRunner.
+func (mg *HostedRunner) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this HostedRunner.
+func (mg *HostedRunner) GetDeletionPolicy() xpv2.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this HostedRunner.
+func (mg *HostedRunner) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this HostedRunner.
+func (mg *HostedRunner) GetProviderConfigReference() *xpv2.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this HostedRunner.
+func (mg *HostedRunner) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this HostedRunner.
+func (mg *HostedRunner) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this HostedRunner.
+func (mg *HostedRunner) SetDeletionPolicy(r xpv2.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this HostedRunner.
+func (mg *HostedRunner) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this HostedRunner.
+func (mg *HostedRunner) SetProviderConfigReference(r *xpv2.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this HostedRunner.
+func (mg *HostedRunner) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this OrganizationActionsSecret.
 func (mg *OrganizationActionsSecret) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
@@ -255,6 +305,106 @@ func (mg *OrganizationActionsSecret) SetProviderConfigReference(r *xpv2.Referenc
 
 // SetWriteConnectionSecretToReference of this OrganizationActionsSecret.
 func (mg *OrganizationActionsSecret) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this OrganizationActionsSecretRepository.
+func (mg *OrganizationActionsSecretRepository) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this OrganizationActionsSecretRepository.
+func (mg *OrganizationActionsSecretRepository) GetDeletionPolicy() xpv2.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this OrganizationActionsSecretRepository.
+func (mg *OrganizationActionsSecretRepository) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this OrganizationActionsSecretRepository.
+func (mg *OrganizationActionsSecretRepository) GetProviderConfigReference() *xpv2.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this OrganizationActionsSecretRepository.
+func (mg *OrganizationActionsSecretRepository) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this OrganizationActionsSecretRepository.
+func (mg *OrganizationActionsSecretRepository) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this OrganizationActionsSecretRepository.
+func (mg *OrganizationActionsSecretRepository) SetDeletionPolicy(r xpv2.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this OrganizationActionsSecretRepository.
+func (mg *OrganizationActionsSecretRepository) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this OrganizationActionsSecretRepository.
+func (mg *OrganizationActionsSecretRepository) SetProviderConfigReference(r *xpv2.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this OrganizationActionsSecretRepository.
+func (mg *OrganizationActionsSecretRepository) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this OrganizationActionsSecretRepositorySet.
+func (mg *OrganizationActionsSecretRepositorySet) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this OrganizationActionsSecretRepositorySet.
+func (mg *OrganizationActionsSecretRepositorySet) GetDeletionPolicy() xpv2.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this OrganizationActionsSecretRepositorySet.
+func (mg *OrganizationActionsSecretRepositorySet) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this OrganizationActionsSecretRepositorySet.
+func (mg *OrganizationActionsSecretRepositorySet) GetProviderConfigReference() *xpv2.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this OrganizationActionsSecretRepositorySet.
+func (mg *OrganizationActionsSecretRepositorySet) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this OrganizationActionsSecretRepositorySet.
+func (mg *OrganizationActionsSecretRepositorySet) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this OrganizationActionsSecretRepositorySet.
+func (mg *OrganizationActionsSecretRepositorySet) SetDeletionPolicy(r xpv2.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this OrganizationActionsSecretRepositorySet.
+func (mg *OrganizationActionsSecretRepositorySet) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this OrganizationActionsSecretRepositorySet.
+func (mg *OrganizationActionsSecretRepositorySet) SetProviderConfigReference(r *xpv2.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this OrganizationActionsSecretRepositorySet.
+func (mg *OrganizationActionsSecretRepositorySet) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
@@ -308,6 +458,156 @@ func (mg *OrganizationActionsVariable) SetWriteConnectionSecretToReference(r *xp
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
+// GetCondition of this OrganizationActionsVariableRepository.
+func (mg *OrganizationActionsVariableRepository) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this OrganizationActionsVariableRepository.
+func (mg *OrganizationActionsVariableRepository) GetDeletionPolicy() xpv2.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this OrganizationActionsVariableRepository.
+func (mg *OrganizationActionsVariableRepository) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this OrganizationActionsVariableRepository.
+func (mg *OrganizationActionsVariableRepository) GetProviderConfigReference() *xpv2.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this OrganizationActionsVariableRepository.
+func (mg *OrganizationActionsVariableRepository) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this OrganizationActionsVariableRepository.
+func (mg *OrganizationActionsVariableRepository) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this OrganizationActionsVariableRepository.
+func (mg *OrganizationActionsVariableRepository) SetDeletionPolicy(r xpv2.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this OrganizationActionsVariableRepository.
+func (mg *OrganizationActionsVariableRepository) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this OrganizationActionsVariableRepository.
+func (mg *OrganizationActionsVariableRepository) SetProviderConfigReference(r *xpv2.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this OrganizationActionsVariableRepository.
+func (mg *OrganizationActionsVariableRepository) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this OrganizationActionsVariableRepositorySet.
+func (mg *OrganizationActionsVariableRepositorySet) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this OrganizationActionsVariableRepositorySet.
+func (mg *OrganizationActionsVariableRepositorySet) GetDeletionPolicy() xpv2.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this OrganizationActionsVariableRepositorySet.
+func (mg *OrganizationActionsVariableRepositorySet) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this OrganizationActionsVariableRepositorySet.
+func (mg *OrganizationActionsVariableRepositorySet) GetProviderConfigReference() *xpv2.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this OrganizationActionsVariableRepositorySet.
+func (mg *OrganizationActionsVariableRepositorySet) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this OrganizationActionsVariableRepositorySet.
+func (mg *OrganizationActionsVariableRepositorySet) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this OrganizationActionsVariableRepositorySet.
+func (mg *OrganizationActionsVariableRepositorySet) SetDeletionPolicy(r xpv2.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this OrganizationActionsVariableRepositorySet.
+func (mg *OrganizationActionsVariableRepositorySet) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this OrganizationActionsVariableRepositorySet.
+func (mg *OrganizationActionsVariableRepositorySet) SetProviderConfigReference(r *xpv2.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this OrganizationActionsVariableRepositorySet.
+func (mg *OrganizationActionsVariableRepositorySet) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this OrganizationOIDCSubjectClaimCustomizationTemplate.
+func (mg *OrganizationOIDCSubjectClaimCustomizationTemplate) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this OrganizationOIDCSubjectClaimCustomizationTemplate.
+func (mg *OrganizationOIDCSubjectClaimCustomizationTemplate) GetDeletionPolicy() xpv2.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this OrganizationOIDCSubjectClaimCustomizationTemplate.
+func (mg *OrganizationOIDCSubjectClaimCustomizationTemplate) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this OrganizationOIDCSubjectClaimCustomizationTemplate.
+func (mg *OrganizationOIDCSubjectClaimCustomizationTemplate) GetProviderConfigReference() *xpv2.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this OrganizationOIDCSubjectClaimCustomizationTemplate.
+func (mg *OrganizationOIDCSubjectClaimCustomizationTemplate) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this OrganizationOIDCSubjectClaimCustomizationTemplate.
+func (mg *OrganizationOIDCSubjectClaimCustomizationTemplate) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this OrganizationOIDCSubjectClaimCustomizationTemplate.
+func (mg *OrganizationOIDCSubjectClaimCustomizationTemplate) SetDeletionPolicy(r xpv2.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this OrganizationOIDCSubjectClaimCustomizationTemplate.
+func (mg *OrganizationOIDCSubjectClaimCustomizationTemplate) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this OrganizationOIDCSubjectClaimCustomizationTemplate.
+func (mg *OrganizationOIDCSubjectClaimCustomizationTemplate) SetProviderConfigReference(r *xpv2.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this OrganizationOIDCSubjectClaimCustomizationTemplate.
+func (mg *OrganizationOIDCSubjectClaimCustomizationTemplate) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this OrganizationPermissions.
 func (mg *OrganizationPermissions) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
@@ -355,6 +655,56 @@ func (mg *OrganizationPermissions) SetProviderConfigReference(r *xpv2.Reference)
 
 // SetWriteConnectionSecretToReference of this OrganizationPermissions.
 func (mg *OrganizationPermissions) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this OrganizationWorkflowPermissions.
+func (mg *OrganizationWorkflowPermissions) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this OrganizationWorkflowPermissions.
+func (mg *OrganizationWorkflowPermissions) GetDeletionPolicy() xpv2.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this OrganizationWorkflowPermissions.
+func (mg *OrganizationWorkflowPermissions) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this OrganizationWorkflowPermissions.
+func (mg *OrganizationWorkflowPermissions) GetProviderConfigReference() *xpv2.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this OrganizationWorkflowPermissions.
+func (mg *OrganizationWorkflowPermissions) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this OrganizationWorkflowPermissions.
+func (mg *OrganizationWorkflowPermissions) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this OrganizationWorkflowPermissions.
+func (mg *OrganizationWorkflowPermissions) SetDeletionPolicy(r xpv2.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this OrganizationWorkflowPermissions.
+func (mg *OrganizationWorkflowPermissions) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this OrganizationWorkflowPermissions.
+func (mg *OrganizationWorkflowPermissions) SetProviderConfigReference(r *xpv2.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this OrganizationWorkflowPermissions.
+func (mg *OrganizationWorkflowPermissions) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
@@ -408,6 +758,56 @@ func (mg *RepositoryAccessLevel) SetWriteConnectionSecretToReference(r *xpv2.Sec
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
+// GetCondition of this RepositoryOIDCSubjectClaimCustomizationTemplate.
+func (mg *RepositoryOIDCSubjectClaimCustomizationTemplate) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this RepositoryOIDCSubjectClaimCustomizationTemplate.
+func (mg *RepositoryOIDCSubjectClaimCustomizationTemplate) GetDeletionPolicy() xpv2.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this RepositoryOIDCSubjectClaimCustomizationTemplate.
+func (mg *RepositoryOIDCSubjectClaimCustomizationTemplate) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this RepositoryOIDCSubjectClaimCustomizationTemplate.
+func (mg *RepositoryOIDCSubjectClaimCustomizationTemplate) GetProviderConfigReference() *xpv2.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this RepositoryOIDCSubjectClaimCustomizationTemplate.
+func (mg *RepositoryOIDCSubjectClaimCustomizationTemplate) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this RepositoryOIDCSubjectClaimCustomizationTemplate.
+func (mg *RepositoryOIDCSubjectClaimCustomizationTemplate) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this RepositoryOIDCSubjectClaimCustomizationTemplate.
+func (mg *RepositoryOIDCSubjectClaimCustomizationTemplate) SetDeletionPolicy(r xpv2.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this RepositoryOIDCSubjectClaimCustomizationTemplate.
+func (mg *RepositoryOIDCSubjectClaimCustomizationTemplate) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this RepositoryOIDCSubjectClaimCustomizationTemplate.
+func (mg *RepositoryOIDCSubjectClaimCustomizationTemplate) SetProviderConfigReference(r *xpv2.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this RepositoryOIDCSubjectClaimCustomizationTemplate.
+func (mg *RepositoryOIDCSubjectClaimCustomizationTemplate) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
 // GetCondition of this RepositoryPermissions.
 func (mg *RepositoryPermissions) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
@@ -455,6 +855,56 @@ func (mg *RepositoryPermissions) SetProviderConfigReference(r *xpv2.Reference) {
 
 // SetWriteConnectionSecretToReference of this RepositoryPermissions.
 func (mg *RepositoryPermissions) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this RepositoryWorkflowPermissions.
+func (mg *RepositoryWorkflowPermissions) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this RepositoryWorkflowPermissions.
+func (mg *RepositoryWorkflowPermissions) GetDeletionPolicy() xpv2.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this RepositoryWorkflowPermissions.
+func (mg *RepositoryWorkflowPermissions) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this RepositoryWorkflowPermissions.
+func (mg *RepositoryWorkflowPermissions) GetProviderConfigReference() *xpv2.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this RepositoryWorkflowPermissions.
+func (mg *RepositoryWorkflowPermissions) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this RepositoryWorkflowPermissions.
+func (mg *RepositoryWorkflowPermissions) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this RepositoryWorkflowPermissions.
+func (mg *RepositoryWorkflowPermissions) SetDeletionPolicy(r xpv2.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this RepositoryWorkflowPermissions.
+func (mg *RepositoryWorkflowPermissions) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this RepositoryWorkflowPermissions.
+func (mg *RepositoryWorkflowPermissions) SetProviderConfigReference(r *xpv2.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this RepositoryWorkflowPermissions.
+func (mg *RepositoryWorkflowPermissions) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 

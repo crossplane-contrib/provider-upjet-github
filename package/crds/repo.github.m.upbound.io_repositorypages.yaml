@@ -1,0 +1,525 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.23.0
+  name: repositorypages.repo.github.m.upbound.io
+spec:
+  group: repo.github.m.upbound.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - github
+    kind: RepositoryPages
+    listKind: RepositoryPagesList
+    plural: repositorypages
+    singular: repositorypages
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: RepositoryPages is the Schema for the RepositoryPagess API. Manages
+          GitHub Pages for a repository
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RepositoryPagesSpec defines the desired state of RepositoryPages
+            properties:
+              forProvider:
+                properties:
+                  buildType:
+                    description: |-
+                      The type of GitHub Pages site to build. Can be legacy or workflow. Defaults to legacy.
+                      The type of GitHub Pages site to build. Can be 'legacy' or 'workflow'.
+                    type: string
+                  cname:
+                    description: |-
+                      The custom domain for the repository.
+                      The custom domain for the repository.
+                    type: string
+                  httpsEnforced:
+                    description: |-
+                      Whether HTTPS is enforced for the GitHub Pages site. GitHub Pages sites serve over HTTPS by default; this setting only applies when a custom domain (cname) is configured. Requires cname to be set.
+                      Whether the rendered GitHub Pages site will only be served over HTTPS. Requires 'cname' to be set.
+                    type: boolean
+                  public:
+                    description: |-
+                      Whether the GitHub Pages site is public.
+                      Whether the GitHub Pages site is publicly visible. If set to `true`, the site is accessible to anyone on the internet. If set to `false`, the site will only be accessible to users who have at least `read` access to the repository that published the site.
+                    type: boolean
+                  repository:
+                    description: |-
+                      The repository name to configure GitHub Pages for.
+                      The repository name to configure GitHub Pages for.
+                    type: string
+                  repositoryRef:
+                    description: Reference to a Repository in repo to populate repository.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      namespace:
+                        description: Namespace of the referenced object
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  repositorySelector:
+                    description: Selector for a Repository in repo to populate repository.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      namespace:
+                        description: Namespace for the selector
+                        type: string
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  source:
+                    description: |-
+                      The source branch and directory for the rendered Pages site. Required when build_type is legacy. See Source below for details.
+                      The source branch and directory for the rendered Pages site.
+                    items:
+                      properties:
+                        branch:
+                          description: |-
+                            The repository branch used to publish the site's source files (e.g., main or gh-pages).
+                            The repository branch used to publish the site's source files. (i.e. 'main' or 'gh-pages')
+                          type: string
+                        path:
+                          description: |-
+                            The repository directory from which the site publishes. Defaults to /. Can be / or /docs.
+                            The repository directory from which the site publishes (Default: '/')
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  buildType:
+                    description: |-
+                      The type of GitHub Pages site to build. Can be legacy or workflow. Defaults to legacy.
+                      The type of GitHub Pages site to build. Can be 'legacy' or 'workflow'.
+                    type: string
+                  cname:
+                    description: |-
+                      The custom domain for the repository.
+                      The custom domain for the repository.
+                    type: string
+                  httpsEnforced:
+                    description: |-
+                      Whether HTTPS is enforced for the GitHub Pages site. GitHub Pages sites serve over HTTPS by default; this setting only applies when a custom domain (cname) is configured. Requires cname to be set.
+                      Whether the rendered GitHub Pages site will only be served over HTTPS. Requires 'cname' to be set.
+                    type: boolean
+                  public:
+                    description: |-
+                      Whether the GitHub Pages site is public.
+                      Whether the GitHub Pages site is publicly visible. If set to `true`, the site is accessible to anyone on the internet. If set to `false`, the site will only be accessible to users who have at least `read` access to the repository that published the site.
+                    type: boolean
+                  repository:
+                    description: |-
+                      The repository name to configure GitHub Pages for.
+                      The repository name to configure GitHub Pages for.
+                    type: string
+                  repositoryRef:
+                    description: Reference to a Repository in repo to populate repository.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      namespace:
+                        description: Namespace of the referenced object
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  repositorySelector:
+                    description: Selector for a Repository in repo to populate repository.
+                    properties:
+                      matchControllerRef:
+                        description: |-
+                          MatchControllerRef ensures an object with the same controller reference
+                          as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      namespace:
+                        description: Namespace for the selector
+                        type: string
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: |-
+                              Resolution specifies whether resolution of this reference is required.
+                              The default is 'Required', which means the reconcile will fail if the
+                              reference cannot be resolved. 'Optional' means this reference will be
+                              a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: |-
+                              Resolve specifies when this reference should be resolved. The default
+                              is 'IfNotPresent', which will attempt to resolve the reference only when
+                              the corresponding field is not present. Use 'Always' to resolve the
+                              reference on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  source:
+                    description: |-
+                      The source branch and directory for the rendered Pages site. Required when build_type is legacy. See Source below for details.
+                      The source branch and directory for the rendered Pages site.
+                    items:
+                      properties:
+                        branch:
+                          description: |-
+                            The repository branch used to publish the site's source files (e.g., main or gh-pages).
+                            The repository branch used to publish the site's source files. (i.e. 'main' or 'gh-pages')
+                          type: string
+                        path:
+                          description: |-
+                            The repository directory from which the site publishes. Defaults to /. Can be / or /docs.
+                            The repository directory from which the site publishes (Default: '/')
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  kind: ClusterProviderConfig
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  kind:
+                    description: Kind of the referenced object.
+                    type: string
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - kind
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                required:
+                - name
+                type: object
+            required:
+            - forProvider
+            type: object
+          status:
+            description: RepositoryPagesStatus defines the observed state of RepositoryPages.
+            properties:
+              atProvider:
+                properties:
+                  apiUrl:
+                    description: |-
+                      The API URL of the GitHub Pages resource.
+                      The API URL of the GitHub Pages resource.
+                    type: string
+                  buildStatus:
+                    description: |-
+                      The GitHub Pages site's build status (e.g., building or built).
+                      The GitHub Pages site's build status e.g. 'building' or 'built'.
+                    type: string
+                  buildType:
+                    description: |-
+                      The type of GitHub Pages site to build. Can be legacy or workflow. Defaults to legacy.
+                      The type of GitHub Pages site to build. Can be 'legacy' or 'workflow'.
+                    type: string
+                  cname:
+                    description: |-
+                      The custom domain for the repository.
+                      The custom domain for the repository.
+                    type: string
+                  custom404:
+                    description: |-
+                      Whether the rendered GitHub Pages site has a custom 404 page.
+                      Whether the rendered GitHub Pages site has a custom 404 page.
+                    type: boolean
+                  htmlUrl:
+                    description: |-
+                      The absolute URL (with scheme) to the rendered GitHub Pages site.
+                      The absolute URL (with scheme) to the rendered GitHub Pages site.
+                    type: string
+                  httpsEnforced:
+                    description: |-
+                      Whether HTTPS is enforced for the GitHub Pages site. GitHub Pages sites serve over HTTPS by default; this setting only applies when a custom domain (cname) is configured. Requires cname to be set.
+                      Whether the rendered GitHub Pages site will only be served over HTTPS. Requires 'cname' to be set.
+                    type: boolean
+                  id:
+                    type: string
+                  public:
+                    description: |-
+                      Whether the GitHub Pages site is public.
+                      Whether the GitHub Pages site is publicly visible. If set to `true`, the site is accessible to anyone on the internet. If set to `false`, the site will only be accessible to users who have at least `read` access to the repository that published the site.
+                    type: boolean
+                  repository:
+                    description: |-
+                      The repository name to configure GitHub Pages for.
+                      The repository name to configure GitHub Pages for.
+                    type: string
+                  repositoryId:
+                    description: |-
+                      The ID of the repository.
+                      The ID of the repository to configure GitHub Pages for.
+                    format: int64
+                    type: integer
+                  source:
+                    description: |-
+                      The source branch and directory for the rendered Pages site. Required when build_type is legacy. See Source below for details.
+                      The source branch and directory for the rendered Pages site.
+                    items:
+                      properties:
+                        branch:
+                          description: |-
+                            The repository branch used to publish the site's source files (e.g., main or gh-pages).
+                            The repository branch used to publish the site's source files. (i.e. 'main' or 'gh-pages')
+                          type: string
+                        path:
+                          description: |-
+                            The repository directory from which the site publishes. Defaults to /. Can be / or /docs.
+                            The repository directory from which the site publishes (Default: '/')
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

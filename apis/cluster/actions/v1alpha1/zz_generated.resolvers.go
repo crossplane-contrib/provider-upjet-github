@@ -258,6 +258,182 @@ func (mg *EnvironmentVariable) ResolveReferences(ctx context.Context, c client.R
 	return nil
 }
 
+// ResolveReferences of this OrganizationActionsSecretRepository.
+func (mg *OrganizationActionsSecretRepository) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.SecretName),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.SecretNameRef,
+		Selector:     mg.Spec.ForProvider.SecretNameSelector,
+		To: reference.To{
+			List:    &OrganizationActionsSecretList{},
+			Managed: &OrganizationActionsSecret{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.SecretName")
+	}
+	mg.Spec.ForProvider.SecretName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.SecretNameRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.SecretName),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.SecretNameRef,
+		Selector:     mg.Spec.InitProvider.SecretNameSelector,
+		To: reference.To{
+			List:    &OrganizationActionsSecretList{},
+			Managed: &OrganizationActionsSecret{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.SecretName")
+	}
+	mg.Spec.InitProvider.SecretName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.SecretNameRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this OrganizationActionsSecretRepositorySet.
+func (mg *OrganizationActionsSecretRepositorySet) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.SecretName),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.SecretNameRef,
+		Selector:     mg.Spec.ForProvider.SecretNameSelector,
+		To: reference.To{
+			List:    &OrganizationActionsSecretList{},
+			Managed: &OrganizationActionsSecret{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.SecretName")
+	}
+	mg.Spec.ForProvider.SecretName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.SecretNameRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.SecretName),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.SecretNameRef,
+		Selector:     mg.Spec.InitProvider.SecretNameSelector,
+		To: reference.To{
+			List:    &OrganizationActionsSecretList{},
+			Managed: &OrganizationActionsSecret{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.SecretName")
+	}
+	mg.Spec.InitProvider.SecretName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.SecretNameRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this OrganizationActionsVariableRepository.
+func (mg *OrganizationActionsVariableRepository) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VariableName),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.VariableNameRef,
+		Selector:     mg.Spec.ForProvider.VariableNameSelector,
+		To: reference.To{
+			List:    &OrganizationActionsVariableList{},
+			Managed: &OrganizationActionsVariable{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.VariableName")
+	}
+	mg.Spec.ForProvider.VariableName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.VariableNameRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.VariableName),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.VariableNameRef,
+		Selector:     mg.Spec.InitProvider.VariableNameSelector,
+		To: reference.To{
+			List:    &OrganizationActionsVariableList{},
+			Managed: &OrganizationActionsVariable{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.VariableName")
+	}
+	mg.Spec.InitProvider.VariableName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.VariableNameRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this OrganizationActionsVariableRepositorySet.
+func (mg *OrganizationActionsVariableRepositorySet) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VariableName),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.VariableNameRef,
+		Selector:     mg.Spec.ForProvider.VariableNameSelector,
+		To: reference.To{
+			List:    &OrganizationActionsVariableList{},
+			Managed: &OrganizationActionsVariable{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.VariableName")
+	}
+	mg.Spec.ForProvider.VariableName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.VariableNameRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.VariableName),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.VariableNameRef,
+		Selector:     mg.Spec.InitProvider.VariableNameSelector,
+		To: reference.To{
+			List:    &OrganizationActionsVariableList{},
+			Managed: &OrganizationActionsVariable{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.VariableName")
+	}
+	mg.Spec.InitProvider.VariableName = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.VariableNameRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this RepositoryAccessLevel.
 func (mg *RepositoryAccessLevel) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
@@ -302,8 +478,96 @@ func (mg *RepositoryAccessLevel) ResolveReferences(ctx context.Context, c client
 	return nil
 }
 
+// ResolveReferences of this RepositoryOIDCSubjectClaimCustomizationTemplate.
+func (mg *RepositoryOIDCSubjectClaimCustomizationTemplate) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Repository),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.RepositoryRef,
+		Selector:     mg.Spec.ForProvider.RepositorySelector,
+		To: reference.To{
+			List:    &v1alpha1.RepositoryList{},
+			Managed: &v1alpha1.Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Repository")
+	}
+	mg.Spec.ForProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RepositoryRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Repository),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.RepositoryRef,
+		Selector:     mg.Spec.InitProvider.RepositorySelector,
+		To: reference.To{
+			List:    &v1alpha1.RepositoryList{},
+			Managed: &v1alpha1.Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Repository")
+	}
+	mg.Spec.InitProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RepositoryRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this RepositoryPermissions.
 func (mg *RepositoryPermissions) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Repository),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.RepositoryRef,
+		Selector:     mg.Spec.ForProvider.RepositorySelector,
+		To: reference.To{
+			List:    &v1alpha1.RepositoryList{},
+			Managed: &v1alpha1.Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Repository")
+	}
+	mg.Spec.ForProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RepositoryRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Repository),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.RepositoryRef,
+		Selector:     mg.Spec.InitProvider.RepositorySelector,
+		To: reference.To{
+			List:    &v1alpha1.RepositoryList{},
+			Managed: &v1alpha1.Repository{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Repository")
+	}
+	mg.Spec.InitProvider.Repository = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RepositoryRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this RepositoryWorkflowPermissions.
+func (mg *RepositoryWorkflowPermissions) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse

@@ -37,6 +37,9 @@ func (tr *IssueLabels) Hub() {}
 func (tr *PullRequest) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *Release) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Repository) Hub() {}
 
 // Hub marks this type as a conversion hub.
@@ -52,10 +55,28 @@ func (tr *RepositoryCollaboratorSet) Hub() {}
 func (tr *RepositoryCustomProperty) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *RepositoryDependabotSecurityUpdates) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *RepositoryFile) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *RepositoryLabel) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *RepositoryMilestone) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *RepositoryPages) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *RepositoryRuleset) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *RepositoryTopics) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *RepositoryVulnerabilityAlerts) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *RepositoryWebhook) Hub() {}

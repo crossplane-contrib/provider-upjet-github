@@ -8,6 +8,33 @@ package v1alpha1
 
 import resource "github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 
+// GetItems of this ActionsRunnerGroupList.
+func (l *ActionsRunnerGroupList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this ActionsWorkflowPermissionsList.
+func (l *ActionsWorkflowPermissionsList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this IPAllowListEntryList.
+func (l *IPAllowListEntryList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this OrganizationList.
 func (l *OrganizationList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -19,6 +46,15 @@ func (l *OrganizationList) GetItems() []resource.Managed {
 
 // GetItems of this OrganizationRulesetList.
 func (l *OrganizationRulesetList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this SecurityAnalysisSettingsList.
+func (l *SecurityAnalysisSettingsList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

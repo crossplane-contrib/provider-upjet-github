@@ -7,7 +7,19 @@
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
+func (tr *ActionsRunnerGroup) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *ActionsWorkflowPermissions) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *IPAllowListEntry) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Organization) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *OrganizationRuleset) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SecurityAnalysisSettings) Hub() {}

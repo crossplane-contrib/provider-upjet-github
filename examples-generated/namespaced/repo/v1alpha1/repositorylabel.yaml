@@ -1,0 +1,16 @@
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: RepositoryLabel
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositorylabel
+  labels:
+    testing.upbound.io/example-name: test_repo
+  name: test-repo
+  namespace: upbound-system
+spec:
+  forProvider:
+    color: FF0000
+    name: Urgent
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

@@ -98,6 +98,15 @@ func (l *PullRequestList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this ReleaseList.
+func (l *ReleaseList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this RepositoryAutolinkReferenceList.
 func (l *RepositoryAutolinkReferenceList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -134,8 +143,26 @@ func (l *RepositoryCustomPropertyList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this RepositoryDependabotSecurityUpdatesList.
+func (l *RepositoryDependabotSecurityUpdatesList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this RepositoryFileList.
 func (l *RepositoryFileList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this RepositoryLabelList.
+func (l *RepositoryLabelList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -152,8 +179,44 @@ func (l *RepositoryList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this RepositoryMilestoneList.
+func (l *RepositoryMilestoneList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this RepositoryPagesList.
+func (l *RepositoryPagesList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this RepositoryRulesetList.
 func (l *RepositoryRulesetList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this RepositoryTopicsList.
+func (l *RepositoryTopicsList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this RepositoryVulnerabilityAlertsList.
+func (l *RepositoryVulnerabilityAlertsList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
