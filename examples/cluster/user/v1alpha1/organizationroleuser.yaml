@@ -1,0 +1,12 @@
+apiVersion: user.github.upbound.io/v1alpha1
+kind: OrganizationRoleUser
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/organizationroleuser
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    login: example-user
+    roleId: 1234

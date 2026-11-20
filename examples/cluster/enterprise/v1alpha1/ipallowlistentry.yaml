@@ -1,0 +1,14 @@
+apiVersion: enterprise.github.upbound.io/v1alpha1
+kind: IPAllowListEntry
+metadata:
+  annotations:
+    meta.upbound.io/example-id: enterprise/v1alpha1/ipallowlistentry
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    enterpriseSlug: my-enterprise
+    ip: 192.168.1.0/20
+    isActive: true
+    name: My IP Range Name

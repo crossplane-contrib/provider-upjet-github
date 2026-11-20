@@ -1,0 +1,15 @@
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: RepositoryMilestone
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositorymilestone
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    owner: example-owner
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    title: v1.1.0

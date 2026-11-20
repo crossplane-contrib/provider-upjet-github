@@ -1,0 +1,45 @@
+apiVersion: actions.github.upbound.io/v1alpha1
+kind: OrganizationActionsVariableRepository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/organizationactionsvariablerepository
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    repositoryId: 123456789 # a repository's numeric ID: what a Repository reports as status.atProvider.repoId
+    variableNameSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: actions.github.upbound.io/v1alpha1
+kind: OrganizationActionsVariable
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/organizationactionsvariablerepository
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    value: foo
+    variableName: myvariable
+    visibility: selected
+
+---
+
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/organizationactionsvariablerepository
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: myrepo
+    visibility: public

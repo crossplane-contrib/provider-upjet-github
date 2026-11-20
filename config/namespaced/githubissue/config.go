@@ -11,5 +11,8 @@ func Configure(p *config.Provider) {
 		r.References["repository"] = config.Reference{
 			TerraformName: "github_repository",
 		}
+
+		// A number, which a reference can't populate: references resolve to strings
+		delete(r.References, "milestone_number")
 	})
 }
