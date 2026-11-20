@@ -8,9 +8,12 @@ spec:
     target: branch
     enforcement: disabled
     conditions:
-      refName:
-        include: ["~ALL"]
-        exclude: []
+      - refName:
+          - include: ["~ALL"]
+            exclude: []
+        repositoryName:
+          - include: ["~ALL"]
+            exclude: []
     bypassActors:
       - actorId: 13473
         actorType: "Integration"

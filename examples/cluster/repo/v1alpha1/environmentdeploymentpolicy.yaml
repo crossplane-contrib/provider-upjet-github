@@ -28,7 +28,7 @@ metadata:
   name: test
 spec:
   forProvider:
-    name: tf-acc-test-%s
+    name: example-environment-deployment-policy
 
 ---
 
@@ -48,8 +48,8 @@ spec:
     environment: environment/test
     repositorySelector:
       matchLabels:
-        testing.upbound.io/example-name: example
+        testing.upbound.io/example-name: test
     reviewers:
     - users:
-      - ${data.github_user.current.id}
+      - 1234567 # a GitHub user's numeric ID
     waitTimer: 10000

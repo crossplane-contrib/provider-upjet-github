@@ -8,11 +8,9 @@ metadata:
   name: example
 spec:
   forProvider:
-    nameSelector:
-      matchLabels:
-        testing.upbound.io/example-name: example
+    name: example-runner-group
     selectedRepositoryIds:
-    - ${github_repository.example.repo_id}
+    - 123456789 # a repository's numeric ID: what a Repository reports as status.atProvider.repoId
     visibility: selected
 
 ---
