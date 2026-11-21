@@ -42,6 +42,9 @@ jobs:
         with:
           files: |
             package/crds/**
+      - name: Fetch the base branch
+        if: github.event_name == 'pull_request' && steps.modified-crds.outputs.any_changed == 'true'
+        run: git fetch --no-tags --depth=1 origin "${GITHUB_BASE_REF}:${GITHUB_BASE_REF}"
       - name: Report breaking CRD OpenAPI v3 schema changes
         if: steps.modified-crds.outputs.any_changed == 'true'
         env:

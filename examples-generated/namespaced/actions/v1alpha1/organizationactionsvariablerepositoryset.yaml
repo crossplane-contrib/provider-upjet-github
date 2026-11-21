@@ -1,0 +1,49 @@
+apiVersion: actions.github.m.upbound.io/v1alpha1
+kind: OrganizationActionsVariableRepositorySet
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/organizationactionsvariablerepositoryset
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    selectedRepositoryIds:
+    - ${github_repository.example.repo_id}
+    variableNameSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: actions.github.m.upbound.io/v1alpha1
+kind: OrganizationActionsVariable
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/organizationactionsvariablerepositoryset
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    plaintext_value: foo
+    variableName: myvariable
+    visibility: selected
+
+---
+
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/organizationactionsvariablerepositoryset
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: myrepo
+    visibility: public

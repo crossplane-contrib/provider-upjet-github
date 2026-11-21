@@ -1,0 +1,48 @@
+apiVersion: user.github.upbound.io/v1alpha1
+kind: InvitationAccepter
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/invitationaccepter
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    invitationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+  # The invitation is accepted as the invited user, so this ProviderConfig holds that user's token
+  providerConfigRef:
+    name: invitee
+
+---
+
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/invitationaccepter
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: example-repo
+
+---
+
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: RepositoryCollaborator
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/invitationaccepter
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    permission: push
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    username: example-username

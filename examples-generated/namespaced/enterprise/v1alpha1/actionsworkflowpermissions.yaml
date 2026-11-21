@@ -1,0 +1,14 @@
+apiVersion: enterprise.github.m.upbound.io/v1alpha1
+kind: ActionsWorkflowPermissions
+metadata:
+  annotations:
+    meta.upbound.io/example-id: enterprise/v1alpha1/actionsworkflowpermissions
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    canApprovePullRequestReviews: false
+    defaultWorkflowPermissions: read
+    enterpriseSlug: my-enterprise

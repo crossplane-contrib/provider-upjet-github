@@ -1,0 +1,14 @@
+apiVersion: user.github.upbound.io/v1alpha1
+kind: GPGKey
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/gpgkey
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    armoredPublicKey: |-
+      -----BEGIN PGP PUBLIC KEY BLOCK-----
+      ...
+      -----END PGP PUBLIC KEY BLOCK-----

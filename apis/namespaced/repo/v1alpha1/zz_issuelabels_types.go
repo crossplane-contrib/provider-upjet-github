@@ -20,7 +20,16 @@ type IssueLabelsInitParameters struct {
 
 	// The GitHub repository
 	// The GitHub repository.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/repo/v1alpha1.Repository
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// Reference to a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+
+	// Selector for a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 }
 
 type IssueLabelsObservation struct {
@@ -42,8 +51,17 @@ type IssueLabelsParameters struct {
 
 	// The GitHub repository
 	// The GitHub repository.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-github/apis/namespaced/repo/v1alpha1.Repository
 	// +kubebuilder:validation:Optional
 	Repository *string `json:"repository,omitempty" tf:"repository,omitempty"`
+
+	// Reference to a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositoryRef *v2.NamespacedReference `json:"repositoryRef,omitempty" tf:"-"`
+
+	// Selector for a Repository in repo to populate repository.
+	// +kubebuilder:validation:Optional
+	RepositorySelector *v2.NamespacedSelector `json:"repositorySelector,omitempty" tf:"-"`
 }
 
 type LabelInitParameters struct {
@@ -134,9 +152,8 @@ type IssueLabelsStatus struct {
 type IssueLabels struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.repository) || (has(self.initProvider) && has(self.initProvider.repository))",message="spec.forProvider.repository is a required parameter"
-	Spec   IssueLabelsSpec   `json:"spec"`
-	Status IssueLabelsStatus `json:"status,omitempty"`
+	Spec              IssueLabelsSpec   `json:"spec"`
+	Status            IssueLabelsStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

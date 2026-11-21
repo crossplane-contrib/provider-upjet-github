@@ -1,0 +1,13 @@
+apiVersion: user.github.m.upbound.io/v1alpha1
+kind: SSHKey
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/sshkey
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    key: ${file("~/.ssh/id_rsa.pub")}
+    title: example title

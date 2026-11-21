@@ -1,0 +1,14 @@
+apiVersion: actions.github.m.upbound.io/v1alpha1
+kind: OrganizationWorkflowPermissions
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/organizationworkflowpermissions
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    canApprovePullRequestReviews: false
+    defaultWorkflowPermissions: read
+    organizationSlug: my-organization

@@ -1,0 +1,19 @@
+apiVersion: enterprise.github.upbound.io/v1alpha1
+kind: ActionsRunnerGroup
+metadata:
+  annotations:
+    meta.upbound.io/example-id: enterprise/v1alpha1/actionsrunnergroup
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    allowsPublicRepositories: true
+    enterpriseSlug: my-enterprise
+    name: my-awesome-runner-group
+    restrictedToWorkflows: true
+    selectedOrganizationIds:
+    - 123456 # an organization's database ID: what an enterprise Organization reports as status.atProvider.databaseId
+    selectedWorkflows:
+    - my-organization/my-repo/.github/workflows/cool-workflow.yaml@refs/tags/v1
+    visibility: selected

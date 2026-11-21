@@ -1,0 +1,16 @@
+apiVersion: organization.github.m.upbound.io/v1alpha1
+kind: OrganizationRepositoryRole
+metadata:
+  annotations:
+    meta.upbound.io/example-id: organization/v1alpha1/organizationrepositoryrole
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    baseRole: read
+    name: example
+    permissions:
+    - add_assignee
+    - add_label

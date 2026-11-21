@@ -1,0 +1,49 @@
+apiVersion: user.github.m.upbound.io/v1alpha1
+kind: InvitationAccepter
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/invitationaccepter
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    invitationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    provider: github.invitee
+
+---
+
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/invitationaccepter
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: example-repo
+
+---
+
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: RepositoryCollaborator
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/invitationaccepter
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    permission: push
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    username: example-username

@@ -13,4 +13,6 @@ spec:
       name: Urgent
     - color: FF0000
       name: Critical
-    repository: test-repo
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
