@@ -1,0 +1,33 @@
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: RepositoryPages
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositorypages
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    buildType: legacy
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    source:
+    - branch: main
+      path: /
+
+---
+
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositorypages
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    autoInit: true
+    name: my-repo
+    visibility: public

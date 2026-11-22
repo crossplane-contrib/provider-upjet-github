@@ -19,19 +19,46 @@ func (tr *EnvironmentSecret) Hub() {}
 func (tr *EnvironmentVariable) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *HostedRunner) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *OrganizationActionsSecret) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *OrganizationActionsSecretRepository) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *OrganizationActionsSecretRepositorySet) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *OrganizationActionsVariable) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *OrganizationActionsVariableRepository) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *OrganizationActionsVariableRepositorySet) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *OrganizationOIDCSubjectClaimCustomizationTemplate) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *OrganizationPermissions) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *OrganizationWorkflowPermissions) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *RepositoryAccessLevel) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *RepositoryOIDCSubjectClaimCustomizationTemplate) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *RepositoryPermissions) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *RepositoryWorkflowPermissions) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *RunnerGroup) Hub() {}

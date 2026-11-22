@@ -57,3 +57,53 @@ func (mg *AppInstallationRepositories) SetProviderConfigReference(r *xpv2.Refere
 func (mg *AppInstallationRepositories) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
+
+// GetCondition of this AppInstallationRepositoryAssociation.
+func (mg *AppInstallationRepositoryAssociation) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this AppInstallationRepositoryAssociation.
+func (mg *AppInstallationRepositoryAssociation) GetDeletionPolicy() xpv2.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this AppInstallationRepositoryAssociation.
+func (mg *AppInstallationRepositoryAssociation) GetManagementPolicies() xpv2.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this AppInstallationRepositoryAssociation.
+func (mg *AppInstallationRepositoryAssociation) GetProviderConfigReference() *xpv2.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetWriteConnectionSecretToReference of this AppInstallationRepositoryAssociation.
+func (mg *AppInstallationRepositoryAssociation) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this AppInstallationRepositoryAssociation.
+func (mg *AppInstallationRepositoryAssociation) SetConditions(c ...xpv2.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this AppInstallationRepositoryAssociation.
+func (mg *AppInstallationRepositoryAssociation) SetDeletionPolicy(r xpv2.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this AppInstallationRepositoryAssociation.
+func (mg *AppInstallationRepositoryAssociation) SetManagementPolicies(r xpv2.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this AppInstallationRepositoryAssociation.
+func (mg *AppInstallationRepositoryAssociation) SetProviderConfigReference(r *xpv2.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetWriteConnectionSecretToReference of this AppInstallationRepositoryAssociation.
+func (mg *AppInstallationRepositoryAssociation) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}

@@ -1,0 +1,30 @@
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Release
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/release
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: repo
+    tagName: v1.0.0
+
+---
+
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/release
+  labels:
+    testing.upbound.io/example-name: repo
+  name: repo
+spec:
+  forProvider:
+    description: GitHub repo managed by Terraform
+    name: repo
+    private: false

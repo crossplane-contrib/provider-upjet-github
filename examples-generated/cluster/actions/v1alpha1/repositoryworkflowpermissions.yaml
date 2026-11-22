@@ -1,0 +1,29 @@
+apiVersion: actions.github.upbound.io/v1alpha1
+kind: RepositoryWorkflowPermissions
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/repositoryworkflowpermissions
+  labels:
+    testing.upbound.io/example-name: test
+  name: test
+spec:
+  forProvider:
+    canApprovePullRequestReviews: true
+    defaultWorkflowPermissions: read
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: repo.github.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/repositoryworkflowpermissions
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: my-repository

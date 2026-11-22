@@ -7,4 +7,16 @@
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
+func (tr *GPGKey) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *InvitationAccepter) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Membership) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *OrganizationRoleUser) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *SSHKey) Hub() {}

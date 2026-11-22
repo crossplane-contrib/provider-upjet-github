@@ -1,0 +1,15 @@
+apiVersion: actions.github.m.upbound.io/v1alpha1
+kind: OrganizationOIDCSubjectClaimCustomizationTemplate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: actions/v1alpha1/organizationoidcsubjectclaimcustomizationtemplate
+  labels:
+    testing.upbound.io/example-name: example_template
+  name: example-template
+  namespace: upbound-system
+spec:
+  forProvider:
+    includeClaimKeys:
+    - actor
+    - context
+    - repository_owner

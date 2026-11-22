@@ -5,6 +5,7 @@ metadata:
   name: hello-provider-github
 spec:
   forProvider:
+    name: hello-provider-github
     visibility: public
     gitignoreTemplate: Terraform
 

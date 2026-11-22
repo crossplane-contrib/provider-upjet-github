@@ -1,0 +1,37 @@
+apiVersion: enterprise.github.upbound.io/v1alpha1
+kind: ActionsRunnerGroup
+metadata:
+  annotations:
+    meta.upbound.io/example-id: enterprise/v1alpha1/actionsrunnergroup
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    allowsPublicRepositories: true
+    enterpriseSlug: ${data.github_enterprise.enterprise.slug}
+    name: my-awesome-runner-group
+    restrictedToWorkflows: true
+    selectedOrganizationIds:
+    - ${github_enterprise_organization.enterprise_organization.database_id}
+    selectedWorkflows:
+    - my-organization/my-repo/.github/workflows/cool-workflow.yaml@refs/tags/v1
+    visibility: selected
+
+---
+
+apiVersion: enterprise.github.upbound.io/v1alpha1
+kind: Organization
+metadata:
+  annotations:
+    meta.upbound.io/example-id: enterprise/v1alpha1/actionsrunnergroup
+  labels:
+    testing.upbound.io/example-name: enterprise_organization
+  name: enterprise-organization
+spec:
+  forProvider:
+    adminLogins:
+    - octocat
+    billingEmail: octocat@octo.cat
+    enterpriseId: ${data.github_enterprise.enterprise.id}
+    name: my-organization

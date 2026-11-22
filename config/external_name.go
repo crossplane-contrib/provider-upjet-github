@@ -8,6 +8,22 @@ import (
 // provider.
 var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	// Can be imported using the following format: {{ runner id }}
+	"github_actions_hosted_runner": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ organization }}
+	"github_actions_organization_oidc_subject_claim_customization_template": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ secret name }}
+	"github_actions_organization_secret_repositories": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ secret name }}:{{ repository id }}
+	"github_actions_organization_secret_repository": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ variable name }}
+	"github_actions_organization_variable_repositories": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ variable name }}:{{ repository id }}
+	"github_actions_organization_variable_repository": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ organization }}
+	"github_actions_organization_workflow_permissions": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ repository }}
+	"github_actions_repository_oidc_subject_claim_customization_template": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ runner id }}
 	"github_actions_runner_group": config.IdentifierFromProvider,
 	// This cannot be imported.
 	"github_actions_environment_secret": config.IdentifierFromProvider,
@@ -29,6 +45,8 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	"github_actions_variable": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ installation_id }}
 	"github_app_installation_repositories": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ installation id }}:{{ repository }}
+	"github_app_installation_repository": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository }}:{{ name }}:{{ source branch }}. Using this a id makes
 	// the branch field unavailable. This causes the name of the k8s object to be leading and will cause naming conflict.
 	"github_branch": config.IdentifierFromProvider,
@@ -39,20 +57,50 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	"github_branch_protection": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository }}: {{ branch}}
 	"github_branch_protection_v3": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ secret name }}
+	"github_codespaces_organization_secret": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ secret name }}
+	"github_codespaces_organization_secret_repositories": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ repository }}/{{ secret name }}
+	"github_codespaces_secret": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ secret name }}
+	"github_codespaces_user_secret": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ group_id }}
 	"github_emu_group_mapping": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ enterprise slug }}/{{ runner group id }}
+	"github_enterprise_actions_runner_group": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ enterprise slug }}
+	"github_enterprise_actions_workflow_permissions": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ entry node id }}
+	"github_enterprise_ip_allow_list_entry": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ slug/orgname }} E.g:enterp/some-awesome-org
 	"github_enterprise_organization": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ enterprise slug }}
+	"github_enterprise_security_analysis_settings": config.IdentifierFromProvider,
 	// No import documentation on Terraform provider.
 	"github_issue": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ repository }}:{{ name }}
+	"github_issue_label": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository_name }}
 	"github_issue_labels": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ organization }}:{{ username }}.
 	"github_membership": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ username }}
+	"github_organization_block": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ role id }}
+	"github_organization_repository_role": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ role id }}
+	"github_organization_role": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ role_id }}:{{ team_slug }}
 	"github_organization_role_team": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ role id }}:{{ login }}
+	"github_organization_role_user": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ ruleset ID }}
 	"github_organization_ruleset": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ webhook id }}
+	"github_organization_webhook": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ repository }}:{{ release id }}
+	"github_release": config.IdentifierFromProvider,
 	// Imported by using the following format: {{name}}
 	"github_repository": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}/{{ id }} or {{ key_prefix }}.
@@ -63,6 +111,8 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	"github_repository_collaborators": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ organization }}:{{ repository }}:{{ property_name }}
 	"github_repository_custom_property": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ repository }}
+	"github_repository_dependabot_security_updates": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ repository }}:{{ (key_id, fetchable from api) }}
 	"github_repository_deploy_key": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}:{{ environment }}
@@ -72,12 +122,20 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	// Imported by using the following format: github_repository_file.gitignore {{repository}}/{{file}}:{{branch}}
 	// We cannot use file as external name since filenames are not DNSSpec and metadata.name requires this.
 	"github_repository_file": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ owner }}/{{ repository }}/{{ number }}
+	"github_repository_milestone": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ repository }}
+	"github_repository_pages": config.IdentifierFromProvider,
 	// No documentation on how to import
 	"github_repository_pull_request": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}:{{ ruleset id }}
 	"github_repository_ruleset": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}:{{ tag protection id }}
 	"github_repository_tag_protection": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ repository }}
+	"github_repository_topics": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ repository }}
+	"github_repository_vulnerability_alerts": config.IdentifierFromProvider,
 	// Can be imported using the following format: {{ repository }}/{{ id }}.
 	"github_repository_webhook": config.IdentifierFromProvider,
 	// Imported by using the following format: {{ id / slug }}
@@ -94,6 +152,14 @@ var terraformPluginSDKExternalNameConfigs = map[string]config.ExternalName{
 	"github_team_settings": config.IdentifierFromProvider,
 	// Imported by using the following format: {{team_slug}}
 	"github_team_sync_group_mapping": config.IdentifierFromProvider,
+	// This cannot be imported.
+	"github_user_gpg_key": config.IdentifierFromProvider,
+	// This cannot be imported.
+	"github_user_invitation_accepter": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ key id }}
+	"github_user_ssh_key": config.IdentifierFromProvider,
+	// Can be imported using the following format: {{ repository }}
+	"github_workflow_repository_permissions": config.IdentifierFromProvider,
 }
 
 // cliReconciledExternalNameConfigs contains all external name configurations

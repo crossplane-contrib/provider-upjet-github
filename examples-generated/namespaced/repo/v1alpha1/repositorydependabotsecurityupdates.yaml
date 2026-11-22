@@ -1,0 +1,33 @@
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: RepositoryDependabotSecurityUpdates
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositorydependabotsecurityupdates
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    enabled: true
+    repositorySelector:
+      matchLabels:
+        testing.upbound.io/example-name: test
+
+---
+
+apiVersion: repo.github.m.upbound.io/v1alpha1
+kind: Repository
+metadata:
+  annotations:
+    meta.upbound.io/example-id: repo/v1alpha1/repositorydependabotsecurityupdates
+  labels:
+    testing.upbound.io/example-name: repo
+  name: repo
+  namespace: upbound-system
+spec:
+  forProvider:
+    description: GitHub repo managed by Terraform
+    name: my-repo
+    private: false
+    vulnerabilityAlerts: true
